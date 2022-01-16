@@ -1,2 +1,2 @@
 # commander
-Command-line Rust
+Command-line Rust example

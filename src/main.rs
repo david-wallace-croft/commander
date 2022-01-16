@@ -1,18 +1,18 @@
-use clap::Parser;
-
-#[derive(Parser, Debug)]
-#[clap(author, version, about, long_about = None)]
-struct Args {
-  #[clap(short, long, default_value = "World")]
-  name: String,
-  #[clap(short, long, default_value_t = 1)]
-  count: u8,
-}
+use clap::App;
+use clap::Arg;
 
 fn main() {
-  println!("Commander © 2022 CroftSoft Inc");
-  let args = Args::parse();
-  for _ in 0..args.count {
-    println!("Hello, {}!", args.name);
-  }
+  let matches = App::new("CroftSoft Commander © 2022 CroftSoft Inc")
+    .author("David Wallace Croft, david@croftsoft.com")
+    .about("Command-line Rust example")
+    .arg(
+      Arg::new("name")
+        .short('n')
+        .long("name")
+        .help("name to greet")
+        .default_value("World"),
+    )
+    .get_matches();
+  let name = matches.value_of("name").unwrap();
+  println!("Hello, {}!", name);
 }

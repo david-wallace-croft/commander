@@ -31,11 +31,11 @@ fn main() {
     )
     .get_matches();
   let name_option = matches.value_of("name");
-  if name_option.is_none() {
-    let name = ask("What is your name?");
-    greet(&name);
-  } else {
-    let name = name_option.unwrap();
-    greet(name);
+  match name_option {
+    Some(name) => greet(name),
+    None => {
+      let name = ask("What is your name?");
+      greet(&name);
+    },
   }
 }

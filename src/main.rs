@@ -1,25 +1,33 @@
 // https://docs.rs/clap/latest/clap/
-use clap::App;
-use clap::Arg;
+use clap::{App, Arg, ArgMatches};
+use std::io::{stdin, stdout, Error, Stdin, Write};
 
-fn ask(prompt: &str) -> String {
+const NAME_DEFAULT: &str = "World";
+const NAME_PROMPT: &str = "What is your name? [World]: ";
+
+fn ask(prompt: &str, default: &str) -> String {
   loop {
-    let mut reply = String::new();
     println!("");
-    println!("{}", prompt);
-    let b1 = std::io::stdin().read_line(&mut reply).unwrap();
-    if b1 != 0 {
-      return reply.trim().to_string();
+    print!("{}", prompt);
+    stdout().flush().unwrap();
+    let mut buffer: String = String::new();
+    let stdin: Stdin = stdin();
+    let result: Result<usize, Error> = stdin.read_line(&mut buffer);
+    match result {
+      Ok(_) => {
+        let trimmed_buffer: &str = buffer.trim();
+        if trimmed_buffer.len() == 0 {
+          return default.to_string();
+        }
+        return trimmed_buffer.to_string();
+      }
+      Err(error) => println!("ERROR: {}", error),
     }
   }
 }
 
-fn greet(name: &str) {
-  println!("Hello, {}!", name);
-}
-
 fn main() {
-  let matches = App::new("CroftSoft Commander © 2022 CroftSoft Inc")
+  let app: App = App::new("CroftSoft Commander © 2022 CroftSoft Inc")
     .author("David Wallace Croft, david@croftsoft.com")
     .about("Command-line Rust example")
     .arg(
@@ -27,15 +35,13 @@ fn main() {
         .long("name")
         .help("name to greet")
         .short('n')
-        .takes_value(true)
-    )
-    .get_matches();
-  let name_option = matches.value_of("name");
-  match name_option {
-    Some(name) => greet(name),
-    None => {
-      let name = ask("What is your name?");
-      greet(&name);
-    },
-  }
+        .takes_value(true),
+    );
+  let arg_matches: ArgMatches = app.get_matches();
+  let name_option: Option<&str> = arg_matches.value_of("name");
+  let name: String = match name_option {
+    Some(arg_name) => arg_name.to_string(),
+    None => ask(NAME_PROMPT, NAME_DEFAULT),
+  };
+  println!("Hello, {}!", name);
 }

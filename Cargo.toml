@@ -1,9 +1,17 @@
 [package]
-name = "commander"
+name = "croftsoft-commander"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+name = "commander"
+path = "src/lib.rs"
+
+[[bin]]
+name = "commander"
+path = "src/main.rs"
 
 [dependencies]
 clap = { version = "3", features = ["derive"] }

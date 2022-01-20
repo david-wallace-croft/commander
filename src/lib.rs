@@ -21,7 +21,7 @@ pub fn ask(prompt: &str, default: &str) -> String {
     match result {
       Ok(_) => {
         let trimmed_buffer: &str = buffer.trim();
-        if trimmed_buffer.len() == 0 {
+        if trimmed_buffer.is_empty() {
           return default.to_string();
         }
         return trimmed_buffer.to_string();
@@ -31,13 +31,16 @@ pub fn ask(prompt: &str, default: &str) -> String {
   }
 }
 
-pub struct MainArgs<'a> {
-  pub name_option: Option<&'a str>,
+#[derive(Debug)]
+pub struct MainArgs {
+  pub name_option: Option<String>,
 }
 
 pub fn main(main_args: MainArgs) {
+  // println!("{:?}", main_args);
+  // println!("{:#?}", main_args);
   let name: String = match main_args.name_option {
-    Some(arg_name) => arg_name.to_string(),
+    Some(arg_name) => arg_name,
     None => ask(NAME_PROMPT, NAME_DEFAULT),
   };
   println!("Hello, {}!", name);

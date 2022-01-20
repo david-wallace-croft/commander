@@ -13,6 +13,11 @@ fn main() {
     .arg(name_arg)
     .author(APP_AUTHOR);
   let arg_matches: ArgMatches = app.get_matches();
-  let name_option: Option<&str> = arg_matches.value_of(ARG_NAME_NAME);
-  commander::main(MainArgs { name_option });
+  let arg_match_name: Option<&str> = arg_matches.value_of(ARG_NAME_NAME);
+  let name_option: Option<String> = match arg_match_name {
+    Some(name) => Some(name.to_string()),
+    None => None,
+  };
+  let main_args: MainArgs = MainArgs { name_option };
+  commander::main(main_args);
 }

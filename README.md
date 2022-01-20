@@ -4,6 +4,7 @@
 
 ## Manual Testing
 
-- cargo run -- --help
-- cargo run -- --name World
 - cargo run
+- cargo run -- --help
+- cargo run -- --interactive false
+- cargo run -- --name World

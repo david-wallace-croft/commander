@@ -41,7 +41,7 @@ pub struct MainArgs {
   pub name_option: Option<String>,
 }
 
-pub fn main(main_args: MainArgs) -> () {
+pub fn main(main_args: MainArgs) {
   // println!("{:?}", main_args);
   // println!("{:#?}", main_args);
   let greeting: String = make_greeting(main_args);

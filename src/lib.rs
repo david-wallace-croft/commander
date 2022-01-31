@@ -1,53 +1,12 @@
-use std::io::{stdin, stdout, Error, Stdin, Write};
-// https://docs.rs/clap/latest/clap/
-use clap::{App, Arg, ArgMatches};
+pub mod constants;
 
-pub const APP_NAME: &str = "CroftSoft Commander © 2022 CroftSoft Inc";
-pub const APP_ABOUT: &str = "Command-line Rust example";
-pub const APP_AUTHOR: &str = "David Wallace Croft, david@croftsoft.com";
-pub const ARG_INTERACTIVE_HELP: &str = "prompt user for inputs";
-pub const ARG_INTERACTIVE_NAME: &str = "interactive";
-pub const ARG_INTERACTIVE_SHORT: char = 'i';
-pub const ARG_INTERACTIVE_TAKES_VALUE: bool = true;
-pub const ARG_NAME_HELP: &str = "name to greet";
-pub const ARG_NAME_NAME: &str = "name";
-pub const ARG_NAME_SHORT: char = 'n';
-pub const ARG_NAME_TAKES_VALUE: bool = true;
-pub const NAME_DEFAULT: &str = "World";
-pub const NAME_PROMPT: &str = "What is your name? [World]: ";
+use constants::*;
+use std::io::{stdin, stdout, Error, Stdin, Write};
 
 #[derive(Debug)]
 pub struct MainArgs {
   pub interactive: bool,
   pub name_option: Option<String>,
-}
-
-pub fn args_from_clap() -> MainArgs {
-  let interactive_arg = Arg::new(ARG_INTERACTIVE_NAME)
-    .help(ARG_INTERACTIVE_HELP)
-    .long(ARG_INTERACTIVE_NAME)
-    .short(ARG_INTERACTIVE_SHORT)
-    .takes_value(ARG_INTERACTIVE_TAKES_VALUE);
-  let name_arg = Arg::new(ARG_NAME_NAME)
-    .help(ARG_NAME_HELP)
-    .long(ARG_NAME_NAME)
-    .short(ARG_NAME_SHORT)
-    .takes_value(ARG_NAME_TAKES_VALUE);
-  let app: App = App::new(APP_NAME)
-    .about(APP_ABOUT)
-    .arg(interactive_arg)
-    .arg(name_arg)
-    .author(APP_AUTHOR);
-  let arg_matches: ArgMatches = app.get_matches();
-  let arg_match_interactive: Option<&str> =
-    arg_matches.value_of(ARG_INTERACTIVE_NAME);
-  let arg_match_name: Option<&str> = arg_matches.value_of(ARG_NAME_NAME);
-  let interactive: bool = !matches!(arg_match_interactive, Some("false"));
-  let name_option: Option<String> = arg_match_name.map(|name| name.to_string());
-  MainArgs {
-    interactive,
-    name_option,
-  }
 }
 
 pub fn ask(prompt: &str, default: &str) -> String {

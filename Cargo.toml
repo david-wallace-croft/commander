@@ -12,11 +12,11 @@ path = "src/lib.rs"
 
 [[bin]]
 name = "commander"
-path = "src/main.rs"
+path = "src/main-clap-lib.rs"
 
 [[bin]]
-name = "commander-no-clap"
-path = "src/main-no-clap.rs"
+name = "commander-args-lib"
+path = "src/main-args-lib.rs"
 
 [dependencies]
 clap = { version = "3", features = ["derive"] }

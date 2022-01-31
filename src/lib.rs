@@ -5,6 +5,7 @@ use std::io::{stdin, stdout, Error, Stdin, Write};
 
 #[derive(Debug)]
 pub struct MainArgs {
+  pub help_wanted: bool,
   pub interactive: bool,
   pub name_option: Option<String>,
 }
@@ -33,6 +34,10 @@ pub fn ask(prompt: &str, default: &str) -> String {
 pub fn main(main_args: MainArgs) {
   // println!("{:?}", main_args);
   // println!("{:#?}", main_args);
+  if main_args.help_wanted {
+    show_help();
+    return;
+  }
   let greeting: String = make_greeting(main_args);
   println!("{}", greeting);
 }
@@ -53,6 +58,15 @@ fn make_greeting(main_args: MainArgs) -> String {
   format!("Hello, {}!", name)
 }
 
+fn show_help() {
+  println!("{}", APP_NAME);
+  println!("{}", APP_AUTHOR);
+  println!("{}", APP_ABOUT);
+  println!();
+  println!("OPTIONS:");
+  println!("  -h, --help");
+}
+
 #[cfg(test)]
 mod tests {
 
@@ -61,6 +75,7 @@ mod tests {
   #[test]
   fn test_make_greeting_when_name_none() {
     let main_args: MainArgs = MainArgs {
+      help_wanted: false,
       interactive: false,
       name_option: None,
     };
@@ -71,6 +86,7 @@ mod tests {
   #[test]
   fn test_make_greeting_when_name_some() {
     let main_args: MainArgs = MainArgs {
+      help_wanted: false,
       interactive: false,
       name_option: Some(String::from("Test")),
     };

@@ -26,6 +26,7 @@ pub fn args_from_clap() -> MainArgs {
   let interactive: bool = !matches!(arg_match_interactive, Some("false"));
   let name_option: Option<String> = arg_match_name.map(|name| name.to_string());
   MainArgs {
+    help_wanted: false,
     interactive,
     name_option,
   }

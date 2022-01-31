@@ -1,6 +1,6 @@
 pub const APP_NAME: &str = "CroftSoft Commander © 2022 CroftSoft Inc";
 pub const APP_ABOUT: &str = "Command-line Rust example";
-pub const APP_AUTHOR: &str = "David Wallace Croft, david@croftsoft.com";
+pub const APP_AUTHOR: &str = "David Wallace Croft <david@croftsoft.com>";
 pub const ARG_INTERACTIVE_HELP: &str = "prompt user for inputs";
 pub const ARG_INTERACTIVE_NAME: &str = "interactive";
 pub const ARG_INTERACTIVE_SHORT: char = 'i';

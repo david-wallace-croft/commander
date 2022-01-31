@@ -71,16 +71,11 @@ pub fn ask(prompt: &str, default: &str) -> String {
   }
 }
 
-pub fn main_with_args(main_args: MainArgs) {
+pub fn main(main_args: MainArgs) {
   // println!("{:?}", main_args);
   // println!("{:#?}", main_args);
   let greeting: String = make_greeting(main_args);
   println!("{}", greeting);
-}
-
-pub fn main_with_clap() {
-  let main_args: MainArgs = args_from_clap();
-  main_with_args(main_args);
 }
 
 // private functions

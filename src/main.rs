@@ -22,17 +22,8 @@ fn main() {
   let arg_match_interactive: Option<&str> =
     arg_matches.value_of(ARG_INTERACTIVE_NAME);
   let arg_match_name: Option<&str> = arg_matches.value_of(ARG_NAME_NAME);
-  let interactive: bool = match arg_match_interactive {
-    Some(interactive_string) => match interactive_string {
-      "false" => false,
-      _ => true,
-    },
-    None => true,
-  };
-  let name_option: Option<String> = match arg_match_name {
-    Some(name) => Some(name.to_string()),
-    None => None,
-  };
+  let interactive: bool = !matches!(arg_match_interactive, Some("false"));
+  let name_option: Option<String> = arg_match_name.map(|name| name.to_string());
   let main_args: MainArgs = MainArgs {
     interactive,
     name_option,

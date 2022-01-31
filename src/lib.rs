@@ -16,7 +16,7 @@ pub const NAME_PROMPT: &str = "What is your name? [World]: ";
 
 pub fn ask(prompt: &str, default: &str) -> String {
   loop {
-    println!("");
+    println!();
     print!("{}", prompt);
     stdout().flush().unwrap();
     let mut buffer: String = String::new();

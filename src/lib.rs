@@ -72,7 +72,7 @@ fn show_help() {
   println!("OPTIONS:");
   println!("  -h, --help");
   println!("  -i, --interactive true/false, defaults to true");
-  println!("  -n, --name        any value not string with -");
+  println!("  -n, --name        any value not starting with a hyphen (-)");
 }
 
 #[cfg(test)]

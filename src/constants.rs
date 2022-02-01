@@ -10,4 +10,4 @@ pub const ARG_NAME_NAME: &str = "name";
 pub const ARG_NAME_SHORT: char = 'n';
 pub const ARG_NAME_TAKES_VALUE: bool = true;
 pub const NAME_DEFAULT: &str = "World";
-pub const NAME_PROMPT: &str = "What is your name? [World]: ";
+pub const NAME_PROMPT: &str = "What is your name?";

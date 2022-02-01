@@ -13,7 +13,7 @@ pub struct MainArgs {
 pub fn ask(prompt: &str, default: &str) -> String {
   loop {
     println!();
-    print!("{}", prompt);
+    print!("{} [{}]: ", prompt, default);
     stdout().flush().unwrap();
     let mut buffer: String = String::new();
     let stdin: Stdin = stdin();
@@ -46,14 +46,20 @@ pub fn main(main_args: MainArgs) {
 
 fn make_greeting(main_args: MainArgs) -> String {
   let name: String = match main_args.name_option {
-    Some(arg_name) => arg_name,
+    Some(arg_name) => {
+      if main_args.interactive {
+        ask(NAME_PROMPT, &arg_name)
+      } else {
+        arg_name
+      }
+    },
     None => {
       if main_args.interactive {
         ask(NAME_PROMPT, NAME_DEFAULT)
       } else {
         NAME_DEFAULT.to_string()
       }
-    }
+    },
   };
   format!("Hello, {}!", name)
 }

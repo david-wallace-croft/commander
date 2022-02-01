@@ -71,6 +71,8 @@ fn show_help() {
   println!();
   println!("OPTIONS:");
   println!("  -h, --help");
+  println!("  -i, --interactive true/false, defaults to true");
+  println!("  -n, --name        any value not string with -");
 }
 
 #[cfg(test)]

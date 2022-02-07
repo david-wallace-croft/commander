@@ -1,7 +1,15 @@
 pub mod constants;
 
 use constants::*;
+use std::env;
 use std::io::{stdin, stdout, Error, Stdin, Write};
+
+#[derive(Debug)]
+pub struct ArgOption<'a> {
+  brief_description: Option<&'a str>,
+  name_short: Option<char>,
+  name_long: Option<&'a str>,
+}
 
 #[derive(Debug)]
 pub struct MainArgs {
@@ -9,6 +17,12 @@ pub struct MainArgs {
   pub interactive: bool,
   pub name_option: Option<String>,
 }
+
+const ARG_OPTION_H: ArgOption = ArgOption {
+  brief_description: Some("Show command-line options"),
+  name_long: Some("help"),
+  name_short: Some('h'),
+};
 
 pub fn ask(prompt: &str, default: &str) -> String {
   loop {
@@ -52,16 +66,68 @@ fn make_greeting(main_args: MainArgs) -> String {
       } else {
         arg_name
       }
-    },
+    }
     None => {
       if main_args.interactive {
         ask(NAME_PROMPT, NAME_DEFAULT)
       } else {
         NAME_DEFAULT.to_string()
       }
-    },
+    }
   };
   format!("Hello, {}!", name)
+}
+
+// https://doc.rust-lang.org/book/ch12-01-accepting-command-line-arguments.html
+
+pub fn make_main_args() -> MainArgs {
+  let args: Vec<String> = env::args().collect();
+  // println!("{:?}", args);
+  let length: usize = args.len();
+  // println!("Args length = {}", length);
+  let help_wanted: bool = args.contains(&String::from("--help"))
+    || args.contains(&String::from("-h"));
+  let mut interactive = true;
+  for index in 2..length {
+    let option: &String = &args[index - 1];
+    let value: &String = &args[index];
+    if (option.eq("-i") || option.eq("--interactive")) && value.eq("false") {
+      interactive = false;
+    }
+  }
+  let mut name_option = None;
+  for index in 2..length {
+    let option: &String = &args[index - 1];
+    let value: &String = &args[index];
+    if (option.eq("-n") || option.eq("--name")) && !value.starts_with('-') {
+      name_option = Some(value.to_string());
+      break;
+    }
+  }
+  MainArgs {
+    help_wanted,
+    interactive,
+    name_option,
+  }
+}
+
+fn print_options(arg_options: Vec<ArgOption>) {
+  for arg_option in arg_options {
+    let mut line: String = "".to_string();
+    if arg_option.name_short.is_some() {
+      line.push_str("  -");
+      line.push(arg_option.name_short.unwrap());
+      if arg_option.name_long.is_some() {
+        line.push_str(", --");
+        line.push_str(arg_option.name_long.unwrap());
+      }
+    }
+    if arg_option.brief_description.is_some() {
+      line.push_str("        ");
+      line.push_str(arg_option.brief_description.unwrap());
+    }
+    println!("{}", line);
+  }
 }
 
 fn show_help() {
@@ -70,7 +136,7 @@ fn show_help() {
   println!("{}", APP_ABOUT);
   println!();
   println!("OPTIONS:");
-  println!("  -h, --help");
+  print_options(Vec::from([ARG_OPTION_H]));
   println!("  -i, --interactive true/false, defaults to true");
   println!("  -n, --name        any value not starting with a hyphen (-)");
 }

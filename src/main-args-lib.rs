@@ -1,7 +1,4 @@
-mod args_lib;
-
-use args_lib::*;
-use commander::*;
+use commander::{make_main_args, MainArgs};
 
 fn main() {
   let main_args: MainArgs = make_main_args();

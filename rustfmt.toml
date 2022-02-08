@@ -1,3 +1,7 @@
 # https://rust-lang.github.io/rustfmt/
+# group_imports = "StdExternalCrate"
+# imports_layout = "HorizontalVertical"
 max_width = 80
 tab_spaces = 2
+# version = "Two"
+# wrap_comments = true

@@ -31,3 +31,7 @@ pub const ARG_OPTION_N: ArgOption = ArgOption {
   name_long: Some("name"),
   name_short: Some('n'),
 };
+
+// TODO: Try this as an array
+// pub const ARG_OPTIONS: Vec<ArgOption> =
+//   vec![ARG_OPTION_H, ARG_OPTION_I, ARG_OPTION_N];

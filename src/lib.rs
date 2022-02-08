@@ -1,5 +1,5 @@
-pub mod constants;
 mod args_lib;
+pub mod constants;
 
 use args_lib::*;
 use constants::*;
@@ -125,6 +125,7 @@ fn show_help() {
   println!("{}", APP_ABOUT);
   println!();
   println!("OPTIONS:");
+  // TODO: Pass in an array instead of a Vec
   print_options(Vec::from([ARG_OPTION_H]));
   print_options(Vec::from([ARG_OPTION_I]));
   print_options(Vec::from([ARG_OPTION_N]));

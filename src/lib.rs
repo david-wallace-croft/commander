@@ -1,15 +1,16 @@
 pub mod constants;
+mod args_lib;
 
+use args_lib::ArgOption;
 use constants::*;
 use std::env;
 use std::io::{stdin, stdout, Error, Stdin, Write};
 
-#[derive(Debug)]
-pub struct ArgOption<'a> {
-  brief_description: Option<&'a str>,
-  name_short: Option<char>,
-  name_long: Option<&'a str>,
-}
+pub const ARG_OPTION_H: ArgOption = ArgOption {
+  brief_description: Some("Show command-line options"),
+  name_long: Some("help"),
+  name_short: Some('h'),
+};
 
 #[derive(Debug)]
 pub struct MainArgs {
@@ -17,12 +18,6 @@ pub struct MainArgs {
   pub interactive: bool,
   pub name_option: Option<String>,
 }
-
-const ARG_OPTION_H: ArgOption = ArgOption {
-  brief_description: Some("Show command-line options"),
-  name_long: Some("help"),
-  name_short: Some('h'),
-};
 
 pub fn ask(prompt: &str, default: &str) -> String {
   loop {

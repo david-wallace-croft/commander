@@ -1,16 +1,10 @@
 pub mod constants;
 mod args_lib;
 
-use args_lib::ArgOption;
+use args_lib::*;
 use constants::*;
 use std::env;
 use std::io::{stdin, stdout, Error, Stdin, Write};
-
-pub const ARG_OPTION_H: ArgOption = ArgOption {
-  brief_description: Some("Show command-line options"),
-  name_long: Some("help"),
-  name_short: Some('h'),
-};
 
 #[derive(Debug)]
 pub struct MainArgs {
@@ -132,8 +126,8 @@ fn show_help() {
   println!();
   println!("OPTIONS:");
   print_options(Vec::from([ARG_OPTION_H]));
-  println!("  -i, --interactive true/false, defaults to true");
-  println!("  -n, --name        any value not starting with a hyphen (-)");
+  print_options(Vec::from([ARG_OPTION_I]));
+  print_options(Vec::from([ARG_OPTION_N]));
 }
 
 #[cfg(test)]

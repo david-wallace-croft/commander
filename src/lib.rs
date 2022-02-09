@@ -100,7 +100,7 @@ pub fn make_main_args() -> MainArgs {
   }
 }
 
-fn print_options(arg_options: Vec<ArgOption>) {
+fn print_options(arg_options: &[ArgOption]) {
   for arg_option in arg_options {
     let mut line: String = "".to_string();
     if arg_option.name_short.is_some() {
@@ -125,10 +125,7 @@ fn show_help() {
   println!("{}", APP_ABOUT);
   println!();
   println!("OPTIONS:");
-  // TODO: Pass in an array instead of a Vec
-  print_options(Vec::from([ARG_OPTION_H]));
-  print_options(Vec::from([ARG_OPTION_I]));
-  print_options(Vec::from([ARG_OPTION_N]));
+  print_options(&ARG_OPTIONS);
 }
 
 #[cfg(test)]

@@ -100,19 +100,41 @@ pub fn make_main_args() -> MainArgs {
   }
 }
 
+fn make_print_option_prefix(arg_option: &ArgOption) -> String {
+  let mut prefix: String = "".to_string();
+  if arg_option.name_short.is_some() {
+    prefix.push_str("  -");
+    prefix.push(arg_option.name_short.unwrap());
+    if arg_option.name_long.is_some() {
+      prefix.push_str(", --");
+      prefix.push_str(arg_option.name_long.unwrap());
+    }
+  } else {
+    prefix.push_str("  --");
+    prefix.push_str(arg_option.name_long.unwrap());
+  }
+  return prefix;
+}
+
 fn print_options(arg_options: &[ArgOption]) {
+  let mut prefix_len_max: usize = 0;
+  for arg_option in arg_options {
+    // TODO: save generated prefix
+    let prefix = make_print_option_prefix(arg_option);
+    let prefix_len = prefix.len();
+    if prefix_len > prefix_len_max {
+      prefix_len_max = prefix_len;
+    }
+  }
   for arg_option in arg_options {
     let mut line: String = "".to_string();
-    if arg_option.name_short.is_some() {
-      line.push_str("  -");
-      line.push(arg_option.name_short.unwrap());
-      if arg_option.name_long.is_some() {
-        line.push_str(", --");
-        line.push_str(arg_option.name_long.unwrap());
-      }
+    let prefix = make_print_option_prefix(arg_option);
+    line.push_str(&prefix);
+    let spaces_count = 2 + prefix_len_max - prefix.len();
+    for _ in 0..spaces_count {
+      line.push(' ');
     }
     if arg_option.brief_description.is_some() {
-      line.push_str("        ");
       line.push_str(arg_option.brief_description.unwrap());
     }
     println!("{}", line);
@@ -120,6 +142,7 @@ fn print_options(arg_options: &[ArgOption]) {
 }
 
 fn show_help() {
+  println!();
   println!("{}", APP_NAME);
   println!("{}", APP_AUTHOR);
   println!("{}", APP_ABOUT);

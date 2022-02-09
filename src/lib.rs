@@ -113,7 +113,7 @@ fn make_print_option_prefix(arg_option: &ArgOption) -> String {
     prefix.push_str("  --");
     prefix.push_str(arg_option.name_long.unwrap());
   }
-  return prefix;
+  prefix
 }
 
 fn print_options(arg_options: &[ArgOption]) {

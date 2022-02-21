@@ -4,6 +4,7 @@ pub mod constants;
 use args_lib::{
   parse_option_type_bool_with_optional_value,
   parse_option_type_bool_without_value,
+  parse_option_type_string_with_required_value,
   print_help,
 };
 use constants::*;
@@ -76,7 +77,6 @@ fn make_greeting(main_args: MainArgs) -> String {
 pub fn make_main_args() -> MainArgs {
   let args: Vec<String> = env::args().collect();
   // println!("{:?}", args);
-  let length: usize = args.len();
   // println!("Args length = {}", length);
   let args_slice: &[String] = &args[1..];
   let help_wanted: bool = parse_option_type_bool_without_value(
@@ -85,15 +85,10 @@ pub fn make_main_args() -> MainArgs {
   let interactive: bool = parse_option_type_bool_with_optional_value(
     args_slice,
     &ARG_OPTION_I);
-  let mut name_option = None;
-  for index in 2..length {
-    let option: &String = &args[index - 1];
-    let value: &String = &args[index];
-    if (option.eq("-n") || option.eq("--name")) && !value.starts_with('-') {
-      name_option = Some(value.to_string());
-      break;
-    }
-  }
+  // TODO: parse_option_type_string_with_default_value
+  let name_option = parse_option_type_string_with_required_value(
+    args_slice,
+    &ARG_OPTION_N);
   MainArgs {
     help_wanted,
     interactive,

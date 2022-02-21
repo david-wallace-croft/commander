@@ -63,6 +63,47 @@ pub fn parse_option_type_bool_without_value(
   arg_option.default_value_bool
 }
 
+pub fn parse_option_type_bool_with_optional_value(
+  args_slice: &[String],
+  arg_option: &ArgOption) -> bool {
+  let length: usize = args_slice.len();
+  if arg_option.name_short.is_some() {
+    let hyphenated_name_short: String
+      = format!("-{}", arg_option.name_short.unwrap());
+    for index in 0..length {
+      let arg: &String = &args_slice[index];
+      if !arg.eq(&hyphenated_name_short) {
+        continue;
+      }
+      if index < length - 1 {
+        let value: &String = &args_slice[index + 1];
+        if value.eq("false") {
+          return false;
+        }
+      }
+      return true;
+    }
+  }
+  if arg_option.name_long.is_some() {
+    let hyphenated_name_long: String
+      = format!("--{}", arg_option.name_short.unwrap());
+    for index in 0..length {
+      let arg: &String = &args_slice[index];
+      if !arg.eq(&hyphenated_name_long) {
+        continue;
+      }
+      if index < length - 1 {
+        let value: &String = &args_slice[index + 1];
+        if value.eq("false") {
+          return false;
+        }
+      }
+      return true;
+    }
+  }
+  arg_option.default_value_bool
+}
+
 pub fn print_app_info(app_info: &AppInfo) {
   if app_info.name.is_some() {
     println!("{}", app_info.name.unwrap());

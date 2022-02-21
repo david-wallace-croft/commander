@@ -1,7 +1,11 @@
 mod args_lib;
 pub mod constants;
 
-use args_lib::{parse_option_type_bool_without_value, print_help};
+use args_lib::{
+  parse_option_type_bool_with_optional_value,
+  parse_option_type_bool_without_value,
+  print_help,
+};
 use constants::*;
 use std::env;
 use std::io::{stdin, stdout, Error, Stdin, Write};
@@ -76,16 +80,11 @@ pub fn make_main_args() -> MainArgs {
   // println!("Args length = {}", length);
   let args_slice: &[String] = &args[1..];
   let help_wanted: bool = parse_option_type_bool_without_value(
-    &args_slice,
+    args_slice,
     &ARG_OPTION_H);
-  let mut interactive = true;
-  for index in 2..length {
-    let option: &String = &args[index - 1];
-    let value: &String = &args[index];
-    if (option.eq("-i") || option.eq("--interactive")) && value.eq("false") {
-      interactive = false;
-    }
-  }
+  let interactive: bool = parse_option_type_bool_with_optional_value(
+    args_slice,
+    &ARG_OPTION_I);
   let mut name_option = None;
   for index in 2..length {
     let option: &String = &args[index - 1];

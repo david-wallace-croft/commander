@@ -116,6 +116,21 @@ fn make_print_option_prefix(arg_option: &ArgOption) -> String {
   prefix
 }
 
+fn print_info(app_info: &AppInfo) {
+  if app_info.name.is_some() {
+    println!("{}", app_info.name.unwrap());
+  }
+  if app_info.copyright.is_some() {
+    println!("{}", app_info.copyright.unwrap());
+  }
+  if app_info.contact.is_some() {
+    println!("{}", app_info.contact.unwrap());
+  }
+  if app_info.about.is_some() {
+    println!("{}", app_info.about.unwrap());
+  }
+}
+
 fn print_options(arg_options: &[ArgOption]) {
   let mut prefix_len_max: usize = 0;
   for arg_option in arg_options {
@@ -143,9 +158,7 @@ fn print_options(arg_options: &[ArgOption]) {
 
 fn show_help() {
   println!();
-  println!("{}", APP_NAME);
-  println!("{}", APP_AUTHOR);
-  println!("{}", APP_ABOUT);
+  print_info(&APP_INFO);
   println!();
   println!("OPTIONS:");
   print_options(&ARG_OPTIONS);

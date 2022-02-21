@@ -1,7 +1,7 @@
 mod args_lib;
 pub mod constants;
 
-use args_lib::{print_help};
+use args_lib::{parse_option_type_bool_without_value, print_help};
 use constants::*;
 use std::env;
 use std::io::{stdin, stdout, Error, Stdin, Write};
@@ -74,8 +74,9 @@ pub fn make_main_args() -> MainArgs {
   // println!("{:?}", args);
   let length: usize = args.len();
   // println!("Args length = {}", length);
-  let help_wanted: bool = args.contains(&String::from("--help"))
-    || args.contains(&String::from("-h"));
+  let help_wanted: bool = parse_option_type_bool_without_value(
+    &args,
+    &ARG_OPTION_H);
   let mut interactive = true;
   for index in 2..length {
     let option: &String = &args[index - 1];

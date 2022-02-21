@@ -6,11 +6,21 @@ pub struct AppInfo<'a> {
   pub name: Option<&'a str>,
 }
 
+// TODO: rename to OptionDefinition
 #[derive(Debug)]
 pub struct ArgOption<'a> {
   pub brief_description: Option<&'a str>,
+  pub can_have_value: bool,
+  pub default_value_bool: bool,
+  pub is_type_bool: bool,
   pub name_short: Option<char>,
   pub name_long: Option<&'a str>,
+}
+
+#[derive(Debug)]
+pub struct OptionValueBool<'a> {
+  pub arg_option: ArgOption<'a>,
+  pub value: Option<bool>,
 }
 
 #[derive(Debug)]
@@ -35,7 +45,25 @@ pub fn make_print_option_prefix(arg_option: &ArgOption) -> String {
   prefix
 }
 
-fn print_app_info(app_info: &AppInfo) {
+pub fn parse_option_type_bool_without_value(
+  args: &[String],
+  arg_option: &ArgOption) -> bool {
+  if arg_option.name_short.is_some() {
+    let hyphenated_name_short = format!("-{}", arg_option.name_short.unwrap());
+    if args.contains(&hyphenated_name_short) {
+      return true;
+    }
+  }
+  if arg_option.name_long.is_some() {
+    let hyphenated_name_long = format!("--{}", arg_option.name_long.unwrap());
+    if args.contains(&hyphenated_name_long) {
+      return true;
+    }
+  }
+  arg_option.default_value_bool
+}
+
+pub fn print_app_info(app_info: &AppInfo) {
   if app_info.name.is_some() {
     println!("{}", app_info.name.unwrap());
   }

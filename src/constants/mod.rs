@@ -4,6 +4,9 @@ pub const APP_INFO_ABOUT: &str = "Command-line Rust example";
 pub const APP_INFO_CONTACT: &str = "David Wallace Croft <david@CroftSoft.com>";
 pub const APP_INFO_COPYRIGHT: &str = "Copyright © 2022 CroftSoft Inc";
 pub const APP_INFO_NAME: &str = "CroftSoft Commander";
+pub const ARG_HELP_BRIEF_DESCRIPTION: &str = "Show command-line options";
+pub const ARG_HELP_NAME_LONG: &str = "help";
+pub const ARG_HELP_NAME_SHORT: char = 'h';
 pub const ARG_INTERACTIVE_HELP: &str = "true/false, defaults to true";
 pub const ARG_INTERACTIVE_NAME: &str = "interactive";
 pub const ARG_INTERACTIVE_SHORT: char = 'i';
@@ -23,19 +26,28 @@ pub const APP_INFO: AppInfo = AppInfo {
 };
 
 pub const ARG_OPTION_H: ArgOption = ArgOption {
-  brief_description: Some("Show command-line options"),
-  name_long: Some("help"),
-  name_short: Some('h'),
+  brief_description: Some(ARG_HELP_BRIEF_DESCRIPTION),
+  can_have_value: false,
+  default_value_bool: false,
+  is_type_bool: true,
+  name_long: Some(ARG_HELP_NAME_LONG),
+  name_short: Some(ARG_HELP_NAME_SHORT),
 };
 
 pub const ARG_OPTION_I: ArgOption = ArgOption {
   brief_description: Some(ARG_INTERACTIVE_HELP),
+  can_have_value: true,
+  default_value_bool: true,
+  is_type_bool: true,
   name_long: Some(ARG_INTERACTIVE_NAME),
   name_short: Some(ARG_INTERACTIVE_SHORT),
 };
 
 pub const ARG_OPTION_N: ArgOption = ArgOption {
   brief_description: Some(ARG_NAME_HELP),
+  can_have_value: true,
+  default_value_bool: false,
+  is_type_bool: false,
   name_long: Some(ARG_NAME_NAME),
   name_short: Some(ARG_NAME_SHORT),
 };

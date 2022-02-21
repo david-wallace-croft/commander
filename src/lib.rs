@@ -74,8 +74,9 @@ pub fn make_main_args() -> MainArgs {
   // println!("{:?}", args);
   let length: usize = args.len();
   // println!("Args length = {}", length);
+  let args_slice: &[String] = &args[1..];
   let help_wanted: bool = parse_option_type_bool_without_value(
-    &args,
+    &args_slice,
     &ARG_OPTION_H);
   let mut interactive = true;
   for index in 2..length {

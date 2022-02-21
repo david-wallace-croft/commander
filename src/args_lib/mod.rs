@@ -46,17 +46,17 @@ pub fn make_print_option_prefix(arg_option: &ArgOption) -> String {
 }
 
 pub fn parse_option_type_bool_without_value(
-  args: &[String],
+  args_slice: &[String],
   arg_option: &ArgOption) -> bool {
   if arg_option.name_short.is_some() {
     let hyphenated_name_short = format!("-{}", arg_option.name_short.unwrap());
-    if args.contains(&hyphenated_name_short) {
+    if args_slice.contains(&hyphenated_name_short) {
       return true;
     }
   }
   if arg_option.name_long.is_some() {
     let hyphenated_name_long = format!("--{}", arg_option.name_long.unwrap());
-    if args.contains(&hyphenated_name_long) {
+    if args_slice.contains(&hyphenated_name_long) {
       return true;
     }
   }

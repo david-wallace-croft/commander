@@ -1,7 +1,7 @@
 mod args_lib;
 pub mod constants;
 
-use args_lib::*;
+use args_lib::{print_help};
 use constants::*;
 use std::env;
 use std::io::{stdin, stdout, Error, Stdin, Write};
@@ -100,68 +100,8 @@ pub fn make_main_args() -> MainArgs {
   }
 }
 
-fn make_print_option_prefix(arg_option: &ArgOption) -> String {
-  let mut prefix: String = "".to_string();
-  if arg_option.name_short.is_some() {
-    prefix.push_str("  -");
-    prefix.push(arg_option.name_short.unwrap());
-    if arg_option.name_long.is_some() {
-      prefix.push_str(", --");
-      prefix.push_str(arg_option.name_long.unwrap());
-    }
-  } else {
-    prefix.push_str("  --");
-    prefix.push_str(arg_option.name_long.unwrap());
-  }
-  prefix
-}
-
-fn print_info(app_info: &AppInfo) {
-  if app_info.name.is_some() {
-    println!("{}", app_info.name.unwrap());
-  }
-  if app_info.copyright.is_some() {
-    println!("{}", app_info.copyright.unwrap());
-  }
-  if app_info.contact.is_some() {
-    println!("{}", app_info.contact.unwrap());
-  }
-  if app_info.about.is_some() {
-    println!("{}", app_info.about.unwrap());
-  }
-}
-
-fn print_options(arg_options: &[ArgOption]) {
-  let mut prefix_len_max: usize = 0;
-  for arg_option in arg_options {
-    // TODO: save generated prefix
-    let prefix = make_print_option_prefix(arg_option);
-    let prefix_len = prefix.len();
-    if prefix_len > prefix_len_max {
-      prefix_len_max = prefix_len;
-    }
-  }
-  for arg_option in arg_options {
-    let mut line: String = "".to_string();
-    let prefix = make_print_option_prefix(arg_option);
-    line.push_str(&prefix);
-    let spaces_count = 2 + prefix_len_max - prefix.len();
-    for _ in 0..spaces_count {
-      line.push(' ');
-    }
-    if arg_option.brief_description.is_some() {
-      line.push_str(arg_option.brief_description.unwrap());
-    }
-    println!("{}", line);
-  }
-}
-
 fn show_help() {
-  println!();
-  print_info(&APP_INFO);
-  println!();
-  println!("OPTIONS:");
-  print_options(&ARG_OPTIONS);
+  print_help(&HELP_INFO);
 }
 
 #[cfg(test)]

@@ -1,8 +1,8 @@
-use crate::args_lib::{AppInfo, ArgOption};
+use crate::args_lib::{AppInfo, ArgOption, HelpInfo};
 
 pub const APP_INFO_ABOUT: &str = "Command-line Rust example";
-pub const APP_INFO_CONTACT: &str = "David Wallace Croft <david@croftsoft.com>";
-pub const APP_INFO_COPYRIGHT: &str = "© 2022 CroftSoft Inc";
+pub const APP_INFO_CONTACT: &str = "David Wallace Croft <david@CroftSoft.com>";
+pub const APP_INFO_COPYRIGHT: &str = "Copyright © 2022 CroftSoft Inc";
 pub const APP_INFO_NAME: &str = "CroftSoft Commander";
 pub const ARG_INTERACTIVE_HELP: &str = "true/false, defaults to true";
 pub const ARG_INTERACTIVE_NAME: &str = "interactive";
@@ -45,3 +45,8 @@ pub const ARG_OPTIONS: [ArgOption; 3] = [
   ARG_OPTION_I,
   ARG_OPTION_N,
 ];
+
+pub const HELP_INFO: HelpInfo = HelpInfo {
+  app_info: &APP_INFO,
+  arg_options: &ARG_OPTIONS,
+};

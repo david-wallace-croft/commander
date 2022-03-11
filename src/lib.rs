@@ -4,8 +4,7 @@ pub mod constants;
 use args_lib::{
   parse_option_type_bool_with_optional_value,
   parse_option_type_bool_without_value,
-  parse_option_type_string_with_required_value,
-  print_help,
+  parse_option_type_string_with_required_value, print_help,
 };
 use constants::*;
 use std::env;
@@ -79,16 +78,13 @@ pub fn make_main_args() -> MainArgs {
   // println!("{:?}", args);
   // println!("Args length = {}", length);
   let args_slice: &[String] = &args[1..];
-  let help_wanted: bool = parse_option_type_bool_without_value(
-    args_slice,
-    &ARG_OPTION_H);
-  let interactive: bool = parse_option_type_bool_with_optional_value(
-    args_slice,
-    &ARG_OPTION_I);
+  let help_wanted: bool =
+    parse_option_type_bool_without_value(args_slice, &ARG_OPTION_H);
+  let interactive: bool =
+    parse_option_type_bool_with_optional_value(args_slice, &ARG_OPTION_I);
   // TODO: parse_option_type_string_with_default_value
-  let name_option = parse_option_type_string_with_required_value(
-    args_slice,
-    &ARG_OPTION_N);
+  let name_option =
+    parse_option_type_string_with_required_value(args_slice, &ARG_OPTION_N);
   MainArgs {
     help_wanted,
     interactive,

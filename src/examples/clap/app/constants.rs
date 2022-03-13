@@ -1,4 +1,4 @@
-use crate::args_lib::{AppInfo, HelpInfo, OptionDefinition};
+use commander::{AppInfo, HelpInfo, OptionDefinition};
 
 pub const APP_INFO_ABOUT: &str = "Command-line Rust example";
 pub const APP_INFO_CONTACT: &str = "David Wallace Croft <david@CroftSoft.com>";

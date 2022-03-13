@@ -1,19 +1,41 @@
 # CroftSoft Commander
 
 ## Purpose
-- Command-line Rust example
-  - My first open source Rust program
-- Demonstrates using the Command Line Argument Parser (clap) for Rust
-- Demonstrates using a custom alternative library instead of clap
-  - I wanted to learn how to parse arguments as part of learning Rust
-  - Shows how to configure a Rust project to use an alternative main file
+
+- A command-line arguments parser library
+  - An alternative to using the Command Line Argument Parser (clap) for Rust
+
+## History
+
+- My first open source Rust program
+- Started off as an example of a Rust-based command-line program
+  - To be copied as a template to start new projects
+  - The project originally used clap to parse the command-line arguments
+- Morphed into a parser library instead
+  - I decided I should learn how to parse command-line arguments myself
+  - As part of my learning the basics of the Rust programming language
 
 ## Usage
 
-- cargo run
-  - Runs the default main that uses the clap library
-- cargo run --bin commander-args-lib
-  - Runs the other main that uses the alternative parser library
-- cargo run -- --help
-- cargo run -- --interactive false
-- cargo run -- --name World
+### Parser Library Example
+
+- cargo run --example commander -- --help
+  - Prints the help information for the examples that uses the library
+- cargo run --example commander
+  - Runs the example that uses the library
+- cargo run --example commander -- -i false
+- cargo run --example commander -- -n World
+- cargo run --example commander -- -i false -n World
+- cargo run --example commander -- --interactive false
+- cargo run --example commander -- --name World
+
+### clap Example
+
+- Usage for the clap Example is similar to the Parser Library Example
+  - Except that the commands start with "cargo run --example clap"
+
+## TODO
+
+- Bug: cargo run --example commander -- --interactive false
+- Move the clap example code to another project
+  - Remove this clap dependency

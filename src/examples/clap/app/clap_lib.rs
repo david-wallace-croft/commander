@@ -1,7 +1,7 @@
 // https://docs.rs/clap/latest/clap/
 use clap::{App, Arg, ArgMatches};
-use commander::constants::*;
-use commander::MainArgs;
+use super::constants::*;
+use super::MainArgs;
 
 pub fn args_from_clap() -> MainArgs {
   let interactive_arg = Arg::new(ARG_INTERACTIVE_NAME)

@@ -2,7 +2,6 @@
 name = "croftsoft-commander"
 version = "0.1.0"
 edition = "2021"
-default-run = "commander"
 
 # See more keys and their definitions at
 #   https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -11,13 +10,13 @@ default-run = "commander"
 name = "commander"
 path = "src/lib.rs"
 
-[[bin]]
-name = "commander"
-path = "src/main-clap-lib.rs"
+[[example]]
+name = "clap"
+path = "src/examples/clap/main.rs"
 
-[[bin]]
-name = "commander-args-lib"
-path = "src/main-args-lib.rs"
+[[example]]
+name = "commander"
+path = "src/examples/commander/main.rs"
 
 [dependencies]
 clap = { version = "3", features = ["derive"] }

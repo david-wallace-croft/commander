@@ -1,99 +1,203 @@
-mod args_lib;
-pub mod constants;
-
-use args_lib::{
-  parse_option_type_bool_with_optional_value,
-  parse_option_type_bool_without_value,
-  parse_option_type_string_with_required_value, print_help,
-};
-use constants::*;
-use std::env;
-use std::io::{stdin, stdout, Error, Stdin, Write};
+#[derive(Debug)]
+pub struct AppInfo<'a> {
+  pub about: Option<&'a str>,
+  pub contact: Option<&'a str>,
+  pub copyright: Option<&'a str>,
+  pub name: Option<&'a str>,
+}
 
 #[derive(Debug)]
-pub struct MainArgs {
-  pub help_wanted: bool,
-  pub interactive: bool,
-  pub name_option: Option<String>,
+pub struct OptionDefinition<'a> {
+  pub brief_description: Option<&'a str>,
+  pub can_have_value: bool,
+  pub default_value_bool: bool,
+  pub is_type_bool: bool,
+  pub name_short: Option<char>,
+  pub name_long: Option<&'a str>,
 }
 
-pub fn ask(prompt: &str, default: &str) -> String {
-  loop {
-    println!();
-    print!("{} [{}]: ", prompt, default);
-    stdout().flush().unwrap();
-    let mut buffer: String = String::new();
-    let stdin: Stdin = stdin();
-    let result: Result<usize, Error> = stdin.read_line(&mut buffer);
-    match result {
-      Ok(_) => {
-        let trimmed_buffer: &str = buffer.trim();
-        if trimmed_buffer.is_empty() {
-          return default.to_string();
+#[derive(Debug)]
+pub struct OptionValueBool<'a> {
+  pub arg_option: OptionDefinition<'a>,
+  pub value: Option<bool>,
+}
+
+#[derive(Debug)]
+pub struct HelpInfo<'a> {
+  pub app_info: &'a AppInfo<'a>,
+  pub arg_options: &'a [OptionDefinition<'a>],
+}
+
+pub fn make_print_option_prefix(arg_option: &OptionDefinition) -> String {
+  let mut prefix: String = "".to_string();
+  if arg_option.name_short.is_some() {
+    prefix.push_str("  -");
+    prefix.push(arg_option.name_short.unwrap());
+    if arg_option.name_long.is_some() {
+      prefix.push_str(", --");
+      prefix.push_str(arg_option.name_long.unwrap());
+    }
+  } else {
+    prefix.push_str("  --");
+    prefix.push_str(arg_option.name_long.unwrap());
+  }
+  prefix
+}
+
+pub fn parse_option_type_bool_without_value(
+  args_slice: &[String],
+  arg_option: &OptionDefinition,
+) -> bool {
+  if arg_option.name_short.is_some() {
+    let hyphenated_name_short = format!("-{}", arg_option.name_short.unwrap());
+    if args_slice.contains(&hyphenated_name_short) {
+      return true;
+    }
+  }
+  if arg_option.name_long.is_some() {
+    let hyphenated_name_long = format!("--{}", arg_option.name_long.unwrap());
+    if args_slice.contains(&hyphenated_name_long) {
+      return true;
+    }
+  }
+  arg_option.default_value_bool
+}
+
+pub fn parse_option_type_bool_with_optional_value(
+  args_slice: &[String],
+  arg_option: &OptionDefinition,
+) -> bool {
+  let length: usize = args_slice.len();
+  if arg_option.name_short.is_some() {
+    let hyphenated_name_short: String =
+      format!("-{}", arg_option.name_short.unwrap());
+    for index in 0..length {
+      let arg: &String = &args_slice[index];
+      if !arg.eq(&hyphenated_name_short) {
+        continue;
+      }
+      if index < length - 1 {
+        let value: &String = &args_slice[index + 1];
+        if value.eq("false") {
+          return false;
         }
-        return trimmed_buffer.to_string();
       }
-      Err(error) => println!("ERROR: {}", error),
+      return true;
     }
   }
-}
-
-pub fn main(main_args: MainArgs) {
-  // println!("{:?}", main_args);
-  // println!("{:#?}", main_args);
-  if main_args.help_wanted {
-    show_help();
-    return;
+  if arg_option.name_long.is_some() {
+    let hyphenated_name_long: String =
+      format!("--{}", arg_option.name_short.unwrap());
+    for index in 0..length {
+      let arg: &String = &args_slice[index];
+      if !arg.eq(&hyphenated_name_long) {
+        continue;
+      }
+      if index < length - 1 {
+        let value: &String = &args_slice[index + 1];
+        if value.eq("false") {
+          return false;
+        }
+      }
+      return true;
+    }
   }
-  let greeting: String = make_greeting(main_args);
-  println!("{}", greeting);
+  arg_option.default_value_bool
 }
 
-// private functions
-
-fn make_greeting(main_args: MainArgs) -> String {
-  let name: String = match main_args.name_option {
-    Some(arg_name) => {
-      if main_args.interactive {
-        ask(NAME_PROMPT, &arg_name)
+// TODO: Can we return a string slice instead of a String?
+pub fn parse_option_type_string_with_required_value(
+  args_slice: &[String],
+  arg_option: &OptionDefinition,
+) -> Option<String> {
+  let length: usize = args_slice.len();
+  if arg_option.name_short.is_some() {
+    let hyphenated_name_short: String =
+      format!("-{}", arg_option.name_short.unwrap());
+    for index in 0..length {
+      let arg: &String = &args_slice[index];
+      if !arg.eq(&hyphenated_name_short) {
+        continue;
+      }
+      if index < length - 1 {
+        let value: &String = &args_slice[index + 1];
+        // TODO: What if value starts with a hyphen?
+        return Some(value.to_string());
       } else {
-        arg_name
+        return None;
       }
     }
-    None => {
-      if main_args.interactive {
-        ask(NAME_PROMPT, NAME_DEFAULT)
+  }
+  if arg_option.name_long.is_some() {
+    let hyphenated_name_long: String =
+      format!("--{}", arg_option.name_long.unwrap());
+    for index in 0..length {
+      let arg: &String = &args_slice[index];
+      if !arg.eq(&hyphenated_name_long) {
+        continue;
+      }
+      if index < length - 1 {
+        let value: &String = &args_slice[index + 1];
+        // TODO: What if value starts with a hyphen?
+        return Some(value.to_string());
       } else {
-        NAME_DEFAULT.to_string()
+        return None;
       }
     }
-  };
-  format!("Hello, {}!", name)
+  }
+  None
 }
 
-// https://doc.rust-lang.org/book/ch12-01-accepting-command-line-arguments.html
-
-pub fn make_main_args() -> MainArgs {
-  let args: Vec<String> = env::args().collect();
-  // println!("{:?}", args);
-  // println!("Args length = {}", length);
-  let args_slice: &[String] = &args[1..];
-  let help_wanted: bool =
-    parse_option_type_bool_without_value(args_slice, &ARG_OPTION_H);
-  let interactive: bool =
-    parse_option_type_bool_with_optional_value(args_slice, &ARG_OPTION_I);
-  // TODO: parse_option_type_string_with_default_value
-  let name_option =
-    parse_option_type_string_with_required_value(args_slice, &ARG_OPTION_N);
-  MainArgs {
-    help_wanted,
-    interactive,
-    name_option,
+pub fn print_app_info(app_info: &AppInfo) {
+  if app_info.name.is_some() {
+    println!("{}", app_info.name.unwrap());
+  }
+  if app_info.copyright.is_some() {
+    println!("{}", app_info.copyright.unwrap());
+  }
+  if app_info.contact.is_some() {
+    println!("{}", app_info.contact.unwrap());
+  }
+  if app_info.about.is_some() {
+    println!("{}", app_info.about.unwrap());
   }
 }
 
-fn show_help() {
-  print_help(&HELP_INFO);
+pub fn print_help(help_info: &HelpInfo) {
+  println!();
+  print_app_info(help_info.app_info);
+  println!();
+  println!("OPTIONS:");
+  print_options(help_info.arg_options);
+}
+
+pub fn print_option(arg_option: &OptionDefinition, prefix_len_max: usize) {
+  let mut line: String = "".to_string();
+  let prefix = make_print_option_prefix(arg_option);
+  line.push_str(&prefix);
+  let spaces_count = 2 + prefix_len_max - prefix.len();
+  for _ in 0..spaces_count {
+    line.push(' ');
+  }
+  if arg_option.brief_description.is_some() {
+    line.push_str(arg_option.brief_description.unwrap());
+  }
+  println!("{}", line);
+}
+
+pub fn print_options(arg_options: &[OptionDefinition]) {
+  let mut prefix_len_max: usize = 0;
+  for arg_option in arg_options {
+    // TODO: save generated prefix
+    let prefix = make_print_option_prefix(arg_option);
+    let prefix_len = prefix.len();
+    if prefix_len > prefix_len_max {
+      prefix_len_max = prefix_len;
+    }
+  }
+  for arg_option in arg_options {
+    print_option(arg_option, prefix_len_max);
+  }
 }
 
 #[cfg(test)]
@@ -102,24 +206,48 @@ mod tests {
   use super::*;
 
   #[test]
-  fn test_make_greeting_when_name_none() {
-    let main_args: MainArgs = MainArgs {
-      help_wanted: false,
-      interactive: false,
-      name_option: None,
+  fn test_make_print_option_prefix() {
+    const ARG_OPTION_TEST: OptionDefinition = OptionDefinition {
+      brief_description: Some("ARG_HELP_BRIEF_DESCRIPTION"),
+      can_have_value: false,
+      default_value_bool: false,
+      is_type_bool: true,
+      name_long: Some("ARG_HELP_NAME_LONG"),
+      name_short: Some('T'),
     };
-    let actual_greeting = make_greeting(main_args);
-    assert_eq!(actual_greeting, "Hello, World!");
+    let actual_prefix = make_print_option_prefix(&ARG_OPTION_TEST);
+    assert_eq!("  -T, --ARG_HELP_NAME_LONG", actual_prefix);
   }
 
   #[test]
-  fn test_make_greeting_when_name_some() {
-    let main_args: MainArgs = MainArgs {
-      help_wanted: false,
-      interactive: false,
-      name_option: Some(String::from("Test")),
+  fn test_parse_option_type_bool_without_value() {
+    const ARG_OPTION_TEST: OptionDefinition = OptionDefinition {
+      brief_description: None,
+      can_have_value: false,
+      default_value_bool: false,
+      is_type_bool: true,
+      name_long: Some("TEST"),
+      name_short: Some('T'),
     };
-    let actual_greeting = make_greeting(main_args);
-    assert_eq!(actual_greeting, "Hello, Test!");
+    let test_args_slice: &[String] = &["-T".to_string()];
+    let actual_result =
+      parse_option_type_bool_without_value(test_args_slice, &ARG_OPTION_TEST);
+    assert_eq!(true, actual_result);
+    let test_args_slice: &[String] = &["-t".to_string()];
+    let actual_result =
+      parse_option_type_bool_without_value(test_args_slice, &ARG_OPTION_TEST);
+    assert_eq!(false, actual_result);
+    let test_args_slice: &[String] = &["--TEST".to_string()];
+    let actual_result =
+      parse_option_type_bool_without_value(test_args_slice, &ARG_OPTION_TEST);
+    assert_eq!(true, actual_result);
+    let test_args_slice: &[String] = &["--test".to_string()];
+    let actual_result =
+      parse_option_type_bool_without_value(test_args_slice, &ARG_OPTION_TEST);
+    assert_eq!(false, actual_result);
+    let test_args_slice: &[String] = &["-TEST".to_string()];
+    let actual_result =
+      parse_option_type_bool_without_value(test_args_slice, &ARG_OPTION_TEST);
+    assert_eq!(false, actual_result);
   }
 }

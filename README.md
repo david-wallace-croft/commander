@@ -24,10 +24,15 @@
 - cargo run --example commander
   - Runs the example that uses the library
 - cargo run --example commander -- -i false
+  - Disable interactive mode
 - cargo run --example commander -- -n World
+  - Provide the default name
 - cargo run --example commander -- -i false -n World
+  - Disable interactive mode and use the specified name
 - cargo run --example commander -- --interactive false
+  - Disable interactive mode
 - cargo run --example commander -- --name World
+  - Provide the default name
 
 ### clap Example
 
@@ -44,5 +49,6 @@
 
 ## TODO
 
+- Unit tests for when the default option value is true
 - Move the clap example code to another project
   - Remove this clap dependency

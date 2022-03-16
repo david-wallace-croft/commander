@@ -34,6 +34,14 @@
 - Usage for the clap Example is similar to the Parser Library Example
   - Except that the commands start with "cargo run --example clap"
 
+### Development Commands
+
+- cargo clippy
+- cargo doc
+- cargo fmt
+- cargo test
+- rustup update
+
 ## TODO
 
 - Move the clap example code to another project

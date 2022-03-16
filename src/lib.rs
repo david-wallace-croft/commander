@@ -87,7 +87,7 @@ pub fn parse_option_type_bool_with_optional_value(
   }
   if arg_option.name_long.is_some() {
     let hyphenated_name_long: String =
-      format!("--{}", arg_option.name_short.unwrap());
+      format!("--{}", arg_option.name_long.unwrap());
     for index in 0..length {
       let arg: &String = &args_slice[index];
       if !arg.eq(&hyphenated_name_long) {

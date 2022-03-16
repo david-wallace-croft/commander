@@ -36,6 +36,5 @@
 
 ## TODO
 
-- Bug: cargo run --example commander -- --interactive false
 - Move the clap example code to another project
   - Remove this clap dependency

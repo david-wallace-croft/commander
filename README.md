@@ -42,7 +42,8 @@
 ### Development Commands
 
 - cargo clippy
-- cargo doc
+- cargo doc --no-deps
+  - Makes target/doc/commander/index.html
 - cargo fmt
 - cargo test
 - rustup update

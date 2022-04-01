@@ -1,3 +1,13 @@
+//! An alternative command-line arguments parser library
+//!
+//! - Author: [`David Wallace Croft`]
+//! - Copyright: &copy; 2022 [`CroftSoft Inc`]
+//! - Since: 2022-01-15
+//!
+//! [`CroftSoft Inc`]: http://www.croftsoft.com/
+//! [`David Wallace Croft`]: http://www.croftsoft.com/people/david/
+
+/// Application data shown for the -\-help option
 #[derive(Debug)]
 pub struct AppInfo<'a> {
   pub about: Option<&'a str>,
@@ -6,6 +16,7 @@ pub struct AppInfo<'a> {
   pub name: Option<&'a str>,
 }
 
+/// Command-line option configuration
 #[derive(Debug)]
 pub struct OptionDefinition<'a> {
   pub brief_description: Option<&'a str>,
@@ -16,18 +27,21 @@ pub struct OptionDefinition<'a> {
   pub name_long: Option<&'a str>,
 }
 
-#[derive(Debug)]
-pub struct OptionValueBool<'a> {
-  pub arg_option: OptionDefinition<'a>,
-  pub value: Option<bool>,
-}
+// The boolean value for an option parsed from the command-line arguments
+// #[derive(Debug)]
+// pub struct OptionValueBool<'a> {
+//   pub arg_option: OptionDefinition<'a>,
+//   pub value: Option<bool>,
+// }
 
+/// Application and option data shown for the -\-help option
 #[derive(Debug)]
 pub struct HelpInfo<'a> {
   pub app_info: &'a AppInfo<'a>,
   pub arg_options: &'a [OptionDefinition<'a>],
 }
 
+/// Start of command-line option shown for -\-help
 pub fn make_print_option_prefix(arg_option: &OptionDefinition) -> String {
   let mut prefix: String = "".to_string();
   if arg_option.name_short.is_some() {

@@ -19,19 +19,19 @@
 
 ### Parser Library Example
 
-- cargo run --example commander -- --help
+- cargo run --example example-commander -- --help
   - Prints the help information for the examples that uses the library
-- cargo run --example commander
+- cargo run --example example-commander
   - Runs the example that uses the library
-- cargo run --example commander -- -i false
+- cargo run --example example-commander -- -i false
   - Disable interactive mode
-- cargo run --example commander -- -n World
+- cargo run --example example-commander -- -n World
   - Provide the default name
-- cargo run --example commander -- -i false -n World
+- cargo run --example example-commander -- -i false -n World
   - Disable interactive mode and use the specified name
-- cargo run --example commander -- --interactive false
+- cargo run --example example-commander -- --interactive false
   - Disable interactive mode
-- cargo run --example commander -- --name World
+- cargo run --example example-commander -- --name World
   - Provide the default name
 
 ### clap Example
@@ -42,7 +42,7 @@
 ### Development Commands
 
 - cargo clippy
-- cargo doc --no-deps
+- cargo doc --examples --no-deps
   - Makes target/doc/commander/index.html
 - cargo fmt
 - cargo test

@@ -1,5 +1,5 @@
 //==============================================================================
-//! Print module unit tests
+//! Unit tests module Print module
 //!
 //! # Metadata
 //! - Author: [`David Wallace Croft`]

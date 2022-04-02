@@ -1,5 +1,5 @@
 //==============================================================================
-//! Module Parse unit tests
+//! Unit tests for module Parse
 //!
 //! # Metadata
 //! - Author: [`David Wallace Croft`]
@@ -13,7 +13,7 @@
 use super::*;
 
 //----------------------------------------------------------------------------
-/// placeholder
+/// Unit test for parse_option_type_bool_without_value()
 //----------------------------------------------------------------------------
 #[test]
 fn test_parse_option_type_bool_without_value() {
@@ -48,7 +48,7 @@ fn test_parse_option_type_bool_without_value() {
 }
 
 //----------------------------------------------------------------------------
-/// placeholder
+/// Unit test for parse_option_type_bool_with_optional_value()
 //----------------------------------------------------------------------------
 #[test]
 fn test_parse_option_type_bool_with_optional_value() {

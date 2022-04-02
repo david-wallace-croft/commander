@@ -1,3 +1,15 @@
+//==============================================================================
+//! Functions to parse options from command-line arguments
+//!
+//! # Metadata
+//! - Author: [`David Wallace Croft`]
+//! - Copyright: &copy; 2022 [`CroftSoft Inc`]
+//! - Since: 2022-04-02
+//!
+//! [`CroftSoft Inc`]: http://www.croftsoft.com/
+//! [`David Wallace Croft`]: http://www.croftsoft.com/people/david/
+//==============================================================================
+
 use crate::*;
 
 //------------------------------------------------------------------------------

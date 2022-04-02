@@ -12,12 +12,12 @@ name = "commander"
 path = "src/lib/mod.rs"
 
 [[example]]
-name = "clap"
-path = "src/examples/clap/main.rs"
+name = "example-clap"
+path = "src/examples/example-clap/main.rs"
 
 [[example]]
-name = "commander"
-path = "src/examples/commander/main.rs"
+name = "example-commander"
+path = "src/examples/example-commander/main.rs"
 
 [dependencies]
 clap = { version = "3", features = ["derive"] }

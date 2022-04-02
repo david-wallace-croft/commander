@@ -23,7 +23,7 @@ use std::env;
 use std::io::{stdin, stdout, Error, Stdin, Write};
 
 #[derive(Debug)]
-pub struct MainArgs {
+pub struct MainOptions {
   pub help_wanted: bool,
   pub interactive: bool,
   pub name_option: Option<String>,
@@ -50,30 +50,30 @@ pub fn ask(prompt: &str, default: &str) -> String {
   }
 }
 
-pub fn main(main_args: MainArgs) {
-  // println!("{:?}", main_args);
-  // println!("{:#?}", main_args);
-  if main_args.help_wanted {
+pub fn main(main_options: MainOptions) {
+  // println!("{:?}", main_options);
+  // println!("{:#?}", main_options);
+  if main_options.help_wanted {
     show_help();
     return;
   }
-  let greeting: String = make_greeting(main_args);
+  let greeting: String = make_greeting(main_options);
   println!("{}", greeting);
 }
 
 // private functions
 
-fn make_greeting(main_args: MainArgs) -> String {
-  let name: String = match main_args.name_option {
+fn make_greeting(main_options: MainOptions) -> String {
+  let name: String = match main_options.name_option {
     Some(arg_name) => {
-      if main_args.interactive {
+      if main_options.interactive {
         ask(NAME_PROMPT, &arg_name)
       } else {
         arg_name
       }
     }
     None => {
-      if main_args.interactive {
+      if main_options.interactive {
         ask(NAME_PROMPT, NAME_DEFAULT)
       } else {
         NAME_DEFAULT.to_string()
@@ -83,9 +83,11 @@ fn make_greeting(main_args: MainArgs) -> String {
   format!("Hello, {}!", name)
 }
 
+//------------------------------------------------------------------------------
+/// Uses the CroftSoft Commander library to parse the application options
+//------------------------------------------------------------------------------
 // https://doc.rust-lang.org/book/ch12-01-accepting-command-line-arguments.html
-
-pub fn make_main_args() -> MainArgs {
+pub fn make_main_options() -> MainOptions {
   let args: Vec<String> = env::args().collect();
   // println!("{:?}", args);
   // println!("Args length = {}", length);
@@ -97,7 +99,7 @@ pub fn make_main_args() -> MainArgs {
   // TODO: parse_option_type_string_with_default_value
   let name_option =
     parse_option_type_string_with_required_value(args_slice, &ARG_OPTION_N);
-  MainArgs {
+  MainOptions {
     help_wanted,
     interactive,
     name_option,
@@ -115,23 +117,23 @@ mod tests {
 
   #[test]
   fn test_make_greeting_when_name_none() {
-    let main_args: MainArgs = MainArgs {
+    let main_options: MainOptions = MainOptions {
       help_wanted: false,
       interactive: false,
       name_option: None,
     };
-    let actual_greeting = make_greeting(main_args);
+    let actual_greeting = make_greeting(main_options);
     assert_eq!(actual_greeting, "Hello, World!");
   }
 
   #[test]
   fn test_make_greeting_when_name_some() {
-    let main_args: MainArgs = MainArgs {
+    let main_options: MainOptions = MainOptions {
       help_wanted: false,
       interactive: false,
       name_option: Some(String::from("Test")),
     };
-    let actual_greeting = make_greeting(main_args);
+    let actual_greeting = make_greeting(main_options);
     assert_eq!(actual_greeting, "Hello, Test!");
   }
 }

@@ -18,7 +18,7 @@ use constants::*;
 use std::io::{stdin, stdout, Error, Stdin, Write};
 
 #[derive(Debug)]
-pub struct MainArgs {
+pub struct MainOptions {
   pub help_wanted: bool,
   pub interactive: bool,
   pub name_option: Option<String>,
@@ -45,30 +45,30 @@ pub fn ask(prompt: &str, default: &str) -> String {
   }
 }
 
-pub fn main(main_args: MainArgs) {
-  // println!("{:?}", main_args);
-  // println!("{:#?}", main_args);
-  if main_args.help_wanted {
+pub fn main(main_options: MainOptions) {
+  // println!("{:?}", main_options);
+  // println!("{:#?}", main_options);
+  if main_options.help_wanted {
     show_help();
     return;
   }
-  let greeting: String = make_greeting(main_args);
+  let greeting: String = make_greeting(main_options);
   println!("{}", greeting);
 }
 
 // private functions
 
-fn make_greeting(main_args: MainArgs) -> String {
-  let name: String = match main_args.name_option {
+fn make_greeting(main_options: MainOptions) -> String {
+  let name: String = match main_options.name_option {
     Some(arg_name) => {
-      if main_args.interactive {
+      if main_options.interactive {
         ask(NAME_PROMPT, &arg_name)
       } else {
         arg_name
       }
     }
     None => {
-      if main_args.interactive {
+      if main_options.interactive {
         ask(NAME_PROMPT, NAME_DEFAULT)
       } else {
         NAME_DEFAULT.to_string()
@@ -89,23 +89,23 @@ mod tests {
 
   #[test]
   fn test_make_greeting_when_name_none() {
-    let main_args: MainArgs = MainArgs {
+    let main_options: MainOptions = MainOptions {
       help_wanted: false,
       interactive: false,
       name_option: None,
     };
-    let actual_greeting = make_greeting(main_args);
+    let actual_greeting = make_greeting(main_options);
     assert_eq!(actual_greeting, "Hello, World!");
   }
 
   #[test]
   fn test_make_greeting_when_name_some() {
-    let main_args: MainArgs = MainArgs {
+    let main_options: MainOptions = MainOptions {
       help_wanted: false,
       interactive: false,
       name_option: Some(String::from("Test")),
     };
-    let actual_greeting = make_greeting(main_args);
+    let actual_greeting = make_greeting(main_options);
     assert_eq!(actual_greeting, "Hello, Test!");
   }
 }

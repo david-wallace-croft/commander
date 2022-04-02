@@ -12,12 +12,12 @@
 
 mod app;
 
-use app::{make_main_args, MainArgs};
+use app::{make_main_options, MainOptions};
 
 //------------------------------------------------------------------------------
 /// Parses the options from the command-line and then runs the example
 //------------------------------------------------------------------------------
 fn main() {
-  let main_args: MainArgs = make_main_args();
-  app::main(main_args);
+  let main_options: MainOptions = make_main_options();
+  app::main(main_options);
 }

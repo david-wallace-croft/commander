@@ -1,3 +1,15 @@
+//==============================================================================
+//! Command-Line Arguments Parser (clap) library usage example application
+//!
+//! # Metadata
+//! - Author: [`David Wallace Croft`]
+//! - Copyright: &copy; 2022 [`CroftSoft Inc`]
+//! - Since: 2022-01-15
+//!
+//! [`CroftSoft Inc`]: http://www.croftsoft.com/
+//! [`David Wallace Croft`]: http://www.croftsoft.com/people/david/
+//==============================================================================
+
 pub mod clap_lib;
 mod constants;
 

@@ -1,3 +1,15 @@
+//==============================================================================
+//! Command-Line Arguments Parser (clap) library usage example constants
+//!
+//! # Metadata
+//! - Author: [`David Wallace Croft`]
+//! - Copyright: &copy; 2022 [`CroftSoft Inc`]
+//! - Since: 2022-01-15
+//!
+//! [`CroftSoft Inc`]: http://www.croftsoft.com/
+//! [`David Wallace Croft`]: http://www.croftsoft.com/people/david/
+//==============================================================================
+
 use commander::{AppInfo, HelpInfo, OptionConfig};
 
 pub const APP_INFO_ABOUT: &str = "Command-line Rust example";

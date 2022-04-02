@@ -16,7 +16,7 @@ mod test;
 use crate::*;
 
 //------------------------------------------------------------------------------
-/// Parses an option that has no value
+/// Parses a boolean option that has no value
 //------------------------------------------------------------------------------
 pub fn parse_option_type_bool_without_value(
   args_slice: &[String],

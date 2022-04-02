@@ -1,13 +1,11 @@
 mod constants;
 
-use commander::print::{
-  print_help,
-};
 use commander::parse::{
   parse_option_type_bool_with_optional_value,
   parse_option_type_bool_without_value,
   parse_option_type_string_with_required_value,
 };
+use commander::print::print_help;
 use constants::*;
 use std::env;
 use std::io::{stdin, stdout, Error, Stdin, Write};

@@ -1,4 +1,4 @@
-use commander::{AppInfo, HelpInfo, OptionDefinition};
+use commander::{AppInfo, HelpInfo, OptionConfiguration};
 
 pub const APP_INFO_ABOUT: &str = "Command-line Rust example";
 pub const APP_INFO_CONTACT: &str = "David Wallace Croft <david@CroftSoft.com>";
@@ -25,7 +25,7 @@ pub const APP_INFO: AppInfo = AppInfo {
   name: Some(APP_INFO_NAME),
 };
 
-pub const ARG_OPTION_H: OptionDefinition = OptionDefinition {
+pub const ARG_OPTION_H: OptionConfiguration = OptionConfiguration {
   brief_description: Some(ARG_HELP_BRIEF_DESCRIPTION),
   can_have_value: false,
   default_value_bool: false,
@@ -34,7 +34,7 @@ pub const ARG_OPTION_H: OptionDefinition = OptionDefinition {
   name_short: Some(ARG_HELP_NAME_SHORT),
 };
 
-pub const ARG_OPTION_I: OptionDefinition = OptionDefinition {
+pub const ARG_OPTION_I: OptionConfiguration = OptionConfiguration {
   brief_description: Some(ARG_INTERACTIVE_HELP),
   can_have_value: true,
   default_value_bool: true,
@@ -43,7 +43,7 @@ pub const ARG_OPTION_I: OptionDefinition = OptionDefinition {
   name_short: Some(ARG_INTERACTIVE_SHORT),
 };
 
-pub const ARG_OPTION_N: OptionDefinition = OptionDefinition {
+pub const ARG_OPTION_N: OptionConfiguration = OptionConfiguration {
   brief_description: Some(ARG_NAME_HELP),
   can_have_value: true,
   default_value_bool: false,
@@ -52,7 +52,7 @@ pub const ARG_OPTION_N: OptionDefinition = OptionDefinition {
   name_short: Some(ARG_NAME_SHORT),
 };
 
-pub const ARG_OPTIONS: [OptionDefinition; 3] = [
+pub const ARG_OPTIONS: [OptionConfiguration; 3] = [
   ARG_OPTION_H,
   ARG_OPTION_I,
   ARG_OPTION_N,

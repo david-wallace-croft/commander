@@ -29,7 +29,7 @@ pub struct AppInfo<'a> {
 /// Command-line option configuration
 ////////////////////////////////////////////////////////////////////////////////
 #[derive(Debug)]
-pub struct OptionDefinition<'a> {
+pub struct OptionConfiguration<'a> {
   pub brief_description: Option<&'a str>,
   pub can_have_value: bool,
   pub default_value_bool: bool,
@@ -41,7 +41,7 @@ pub struct OptionDefinition<'a> {
 // The boolean value for an option parsed from the command-line arguments
 // #[derive(Debug)]
 // pub struct OptionValueBool<'a> {
-//   pub arg_option: OptionDefinition<'a>,
+//   pub arg_option: OptionConfiguration<'a>,
 //   pub value: Option<bool>,
 // }
 
@@ -51,13 +51,13 @@ pub struct OptionDefinition<'a> {
 #[derive(Debug)]
 pub struct HelpInfo<'a> {
   pub app_info: &'a AppInfo<'a>,
-  pub arg_options: &'a [OptionDefinition<'a>],
+  pub arg_options: &'a [OptionConfiguration<'a>],
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-/// Start of command-line option shown for -\-help
+/// String prefix for a command-line option shown for -\-help
 ////////////////////////////////////////////////////////////////////////////////
-pub fn make_print_option_prefix(arg_option: &OptionDefinition) -> String {
+pub fn make_print_option_prefix(arg_option: &OptionConfiguration) -> String {
   let mut prefix: String = "".to_string();
   if arg_option.name_short.is_some() {
     prefix.push_str("  -");
@@ -73,9 +73,12 @@ pub fn make_print_option_prefix(arg_option: &OptionDefinition) -> String {
   prefix
 }
 
+////////////////////////////////////////////////////////////////////////////////
+/// Parses an option that has no value
+////////////////////////////////////////////////////////////////////////////////
 pub fn parse_option_type_bool_without_value(
   args_slice: &[String],
-  arg_option: &OptionDefinition,
+  arg_option: &OptionConfiguration,
 ) -> bool {
   if arg_option.name_short.is_some() {
     let hyphenated_name_short = format!("-{}", arg_option.name_short.unwrap());
@@ -92,9 +95,12 @@ pub fn parse_option_type_bool_without_value(
   arg_option.default_value_bool
 }
 
+////////////////////////////////////////////////////////////////////////////////
+/// Parses an option that has an optional boolean value
+////////////////////////////////////////////////////////////////////////////////
 pub fn parse_option_type_bool_with_optional_value(
   args_slice: &[String],
-  arg_option: &OptionDefinition,
+  arg_option: &OptionConfiguration,
 ) -> bool {
   let length: usize = args_slice.len();
   if arg_option.name_short.is_some() {
@@ -134,10 +140,13 @@ pub fn parse_option_type_bool_with_optional_value(
   arg_option.default_value_bool
 }
 
+////////////////////////////////////////////////////////////////////////////////
+/// Parses an option that requires a string value
+////////////////////////////////////////////////////////////////////////////////
 // TODO: Can we return a string slice instead of a String?
 pub fn parse_option_type_string_with_required_value(
   args_slice: &[String],
-  arg_option: &OptionDefinition,
+  arg_option: &OptionConfiguration,
 ) -> Option<String> {
   let length: usize = args_slice.len();
   if arg_option.name_short.is_some() {
@@ -177,6 +186,9 @@ pub fn parse_option_type_string_with_required_value(
   None
 }
 
+////////////////////////////////////////////////////////////////////////////////
+/// Prints the application description
+////////////////////////////////////////////////////////////////////////////////
 pub fn print_app_info(app_info: &AppInfo) {
   if app_info.name.is_some() {
     println!("{}", app_info.name.unwrap());
@@ -192,6 +204,9 @@ pub fn print_app_info(app_info: &AppInfo) {
   }
 }
 
+////////////////////////////////////////////////////////////////////////////////
+/// Prints the application and options descriptions
+////////////////////////////////////////////////////////////////////////////////
 pub fn print_help(help_info: &HelpInfo) {
   println!();
   print_app_info(help_info.app_info);
@@ -200,7 +215,10 @@ pub fn print_help(help_info: &HelpInfo) {
   print_options(help_info.arg_options);
 }
 
-pub fn print_option(arg_option: &OptionDefinition, prefix_len_max: usize) {
+////////////////////////////////////////////////////////////////////////////////
+/// Prints a single option description
+////////////////////////////////////////////////////////////////////////////////
+pub fn print_option(arg_option: &OptionConfiguration, prefix_len_max: usize) {
   let mut line: String = "".to_string();
   let prefix = make_print_option_prefix(arg_option);
   line.push_str(&prefix);
@@ -214,7 +232,10 @@ pub fn print_option(arg_option: &OptionDefinition, prefix_len_max: usize) {
   println!("{}", line);
 }
 
-pub fn print_options(arg_options: &[OptionDefinition]) {
+////////////////////////////////////////////////////////////////////////////////
+/// Prints multiple option descriptions
+////////////////////////////////////////////////////////////////////////////////
+pub fn print_options(arg_options: &[OptionConfiguration]) {
   let mut prefix_len_max: usize = 0;
   for arg_option in arg_options {
     // TODO: save generated prefix
@@ -236,7 +257,7 @@ mod tests {
 
   #[test]
   fn test_make_print_option_prefix() {
-    const ARG_OPTION_TEST: OptionDefinition = OptionDefinition {
+    const ARG_OPTION_TEST: OptionConfiguration = OptionConfiguration {
       brief_description: Some("ARG_HELP_BRIEF_DESCRIPTION"),
       can_have_value: false,
       default_value_bool: false,
@@ -250,7 +271,7 @@ mod tests {
 
   #[test]
   fn test_parse_option_type_bool_without_value() {
-    const ARG_OPTION_TEST: OptionDefinition = OptionDefinition {
+    const ARG_OPTION_TEST: OptionConfiguration = OptionConfiguration {
       brief_description: None,
       can_have_value: false,
       default_value_bool: false,
@@ -282,7 +303,7 @@ mod tests {
 
   #[test]
   fn test_parse_option_type_bool_with_optional_value() {
-    const ARG_OPTION_TEST: OptionDefinition = OptionDefinition {
+    const ARG_OPTION_TEST: OptionConfiguration = OptionConfiguration {
       brief_description: None,
       can_have_value: false,
       default_value_bool: false,

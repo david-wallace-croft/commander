@@ -1,7 +1,7 @@
 // https://docs.rs/clap/latest/clap/
 use super::constants::*;
 use super::MainArgs;
-use clap::{App, Arg, ArgMatches};
+use clap::{Arg, ArgMatches, Command};
 
 pub fn args_from_clap() -> MainArgs {
   let interactive_arg = Arg::new(ARG_INTERACTIVE_NAME)
@@ -15,12 +15,12 @@ pub fn args_from_clap() -> MainArgs {
     .short(ARG_NAME_SHORT)
     .takes_value(ARG_NAME_TAKES_VALUE);
   let app_name: String = format!("{} {}", APP_INFO_NAME, APP_INFO_COPYRIGHT);
-  let app: App = App::new(app_name)
+  let command: Command = Command::new(app_name)
     .about(APP_INFO_ABOUT)
     .arg(interactive_arg)
     .arg(name_arg)
     .author(APP_INFO_CONTACT);
-  let arg_matches: ArgMatches = app.get_matches();
+  let arg_matches: ArgMatches = command.get_matches();
   let arg_match_interactive: Option<&str> =
     arg_matches.value_of(ARG_INTERACTIVE_NAME);
   let arg_match_name: Option<&str> = arg_matches.value_of(ARG_NAME_NAME);

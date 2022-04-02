@@ -1,7 +1,7 @@
 pub mod clap_lib;
 mod constants;
 
-use commander::print_help;
+use commander::print::print_help;
 use constants::*;
 use std::io::{stdin, stdout, Error, Stdin, Write};
 

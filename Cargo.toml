@@ -9,7 +9,7 @@ authors = ["David Wallace Croft <david@CroftSoft.com>"]
 
 [lib]
 name = "commander"
-path = "src/lib.rs"
+path = "src/lib/mod.rs"
 
 [[example]]
 name = "clap"

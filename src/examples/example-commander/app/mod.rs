@@ -11,6 +11,8 @@
 //==============================================================================
 
 mod constants;
+#[cfg(test)]
+mod test;
 
 use commander::parse::{
   parse_option_type_bool_with_optional_value,
@@ -108,32 +110,4 @@ pub fn make_main_options() -> MainOptions {
 
 fn show_help() {
   print_help(&HELP_INFO);
-}
-
-#[cfg(test)]
-mod tests {
-
-  use super::*;
-
-  #[test]
-  fn test_make_greeting_when_name_none() {
-    let main_options: MainOptions = MainOptions {
-      help_wanted: false,
-      interactive: false,
-      name_option: None,
-    };
-    let actual_greeting = make_greeting(main_options);
-    assert_eq!(actual_greeting, "Hello, World!");
-  }
-
-  #[test]
-  fn test_make_greeting_when_name_some() {
-    let main_options: MainOptions = MainOptions {
-      help_wanted: false,
-      interactive: false,
-      name_option: Some(String::from("Test")),
-    };
-    let actual_greeting = make_greeting(main_options);
-    assert_eq!(actual_greeting, "Hello, Test!");
-  }
 }

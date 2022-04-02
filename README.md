@@ -46,6 +46,7 @@
   - Makes target/doc/commander/index.html
 - cargo fmt
 - cargo test
+- cargo test --all-targets
 - cargo update
 - rustup update
 

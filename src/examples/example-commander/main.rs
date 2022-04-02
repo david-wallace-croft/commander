@@ -14,6 +14,9 @@ mod app;
 
 use app::{make_main_args, MainArgs};
 
+//------------------------------------------------------------------------------
+/// Parses the options from the command-line and then runs the example
+//------------------------------------------------------------------------------
 fn main() {
   let main_args: MainArgs = make_main_args();
   app::main(main_args);

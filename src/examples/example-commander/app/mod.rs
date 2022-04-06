@@ -89,7 +89,7 @@ fn make_greeting(option_values: OptionValues) -> String {
 /// Uses the CroftSoft Commander library to parse the application options
 //------------------------------------------------------------------------------
 // https://doc.rust-lang.org/book/ch12-01-accepting-command-line-arguments.html
-pub fn parse_option_values_from_command_line_arguments() -> OptionValues {
+pub fn parse_option_values_using_commander() -> OptionValues {
   let args: Vec<String> = env::args().collect();
   // println!("{:?}", args);
   // println!("Args length = {}", length);

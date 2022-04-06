@@ -37,7 +37,7 @@
 ### clap Example
 
 - Usage for the clap Example is similar to the Parser Library Example
-  - Except that the commands start with "cargo run --example clap"
+  - Except that the commands start with "cargo run --example example-clap"
 
 ### Development Commands
 

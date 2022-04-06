@@ -12,13 +12,13 @@
 
 mod app;
 
-use app::clap_lib::options_from_clap;
-use app::MainOptions;
+use app::clap_lib::parse_option_values_using_clap;
+use app::OptionValues;
 
 //------------------------------------------------------------------------------
-/// Parses the options from the command-line and then runs the example
+/// Parses the option values using clap and then runs the example application
 //------------------------------------------------------------------------------
 fn main() {
-  let main_options: MainOptions = options_from_clap();
-  app::main(main_options);
+  let option_values: OptionValues = parse_option_values_using_clap();
+  app::main(option_values);
 }

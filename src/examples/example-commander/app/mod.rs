@@ -25,7 +25,7 @@ use std::env;
 use std::io::{stdin, stdout, Error, Stdin, Write};
 
 #[derive(Debug)]
-pub struct MainOptions {
+pub struct OptionValues {
   pub help_wanted: bool,
   pub interactive: bool,
   pub name_option: Option<String>,
@@ -52,30 +52,30 @@ pub fn ask(prompt: &str, default: &str) -> String {
   }
 }
 
-pub fn main(main_options: MainOptions) {
-  // println!("{:?}", main_options);
-  // println!("{:#?}", main_options);
-  if main_options.help_wanted {
+pub fn main(option_values: OptionValues) {
+  // println!("{:?}", option_values);
+  // println!("{:#?}", option_values);
+  if option_values.help_wanted {
     show_help();
     return;
   }
-  let greeting: String = make_greeting(main_options);
+  let greeting: String = make_greeting(option_values);
   println!("{}", greeting);
 }
 
 // private functions
 
-fn make_greeting(main_options: MainOptions) -> String {
-  let name: String = match main_options.name_option {
+fn make_greeting(option_values: OptionValues) -> String {
+  let name: String = match option_values.name_option {
     Some(arg_name) => {
-      if main_options.interactive {
+      if option_values.interactive {
         ask(NAME_PROMPT, &arg_name)
       } else {
         arg_name
       }
     }
     None => {
-      if main_options.interactive {
+      if option_values.interactive {
         ask(NAME_PROMPT, NAME_DEFAULT)
       } else {
         NAME_DEFAULT.to_string()
@@ -89,7 +89,7 @@ fn make_greeting(main_options: MainOptions) -> String {
 /// Uses the CroftSoft Commander library to parse the application options
 //------------------------------------------------------------------------------
 // https://doc.rust-lang.org/book/ch12-01-accepting-command-line-arguments.html
-pub fn make_main_options() -> MainOptions {
+pub fn parse_option_values_from_command_line_arguments() -> OptionValues {
   let args: Vec<String> = env::args().collect();
   // println!("{:?}", args);
   // println!("Args length = {}", length);
@@ -101,7 +101,7 @@ pub fn make_main_options() -> MainOptions {
   // TODO: parse_option_type_string_with_default_value
   let name_option =
     parse_option_type_string_with_required_value(args_slice, &ARG_OPTION_N);
-  MainOptions {
+  OptionValues {
     help_wanted,
     interactive,
     name_option,

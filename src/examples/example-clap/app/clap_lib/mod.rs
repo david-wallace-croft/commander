@@ -12,13 +12,13 @@
 
 // https://docs.rs/clap/latest/clap/
 use super::constants::*;
-use super::MainOptions;
+use super::OptionValues;
 use clap::{Arg, ArgMatches, Command};
 
 //------------------------------------------------------------------------------
 /// Uses the clap library to parse the application options
 //------------------------------------------------------------------------------
-pub fn options_from_clap() -> MainOptions {
+pub fn parse_option_values_using_clap() -> OptionValues {
   let interactive_arg = Arg::new(ARG_INTERACTIVE_NAME)
     .help(ARG_INTERACTIVE_HELP)
     .long(ARG_INTERACTIVE_NAME)
@@ -41,7 +41,7 @@ pub fn options_from_clap() -> MainOptions {
   let arg_match_name: Option<&str> = arg_matches.value_of(ARG_NAME_NAME);
   let interactive: bool = !matches!(arg_match_interactive, Some("false"));
   let name_option: Option<String> = arg_match_name.map(|name| name.to_string());
-  MainOptions {
+  OptionValues {
     help_wanted: false,
     interactive,
     name_option,

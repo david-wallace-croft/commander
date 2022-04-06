@@ -12,12 +12,13 @@
 
 mod app;
 
-use app::{make_main_options, MainOptions};
+use app::{parse_option_values_from_command_line_arguments, OptionValues};
 
 //------------------------------------------------------------------------------
 /// Parses the options from the command-line and then runs the example
 //------------------------------------------------------------------------------
 fn main() {
-  let main_options: MainOptions = make_main_options();
-  app::main(main_options);
+  let option_values: OptionValues =
+    parse_option_values_from_command_line_arguments();
+  app::main(option_values);
 }

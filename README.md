@@ -50,8 +50,15 @@
 - cargo update
 - rustup update
 
+## Project Structure
+
+- A Rust workspace
+- With a lib crate "croftsoft-commander"
+- And another lib crate "croftsoft-commander-examples"
+  - With two examples
+    - One showing how to use the lib "croftsoft-commander"
+    - The other showing how to use the lib "clap"
+
 ## TODO
 
 - Unit tests for when the default option value is true
-- Move the clap example code to another project
-  - Remove this clap dependency

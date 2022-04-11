@@ -1,5 +1,5 @@
 //==============================================================================
-//! Command-Line Arguments Parser (clap) library usage example application
+//! CroftSoft Commander library usage example application
 //!
 //! # Metadata
 //! - Author: [`David Wallace Croft`]
@@ -10,8 +10,9 @@
 //! [`David Wallace Croft`]: http://www.croftsoft.com/people/david/
 //==============================================================================
 
-pub mod clap_lib;
-mod constants;
+pub mod constants;
+#[cfg(test)]
+mod test;
 
 use commander::print::print_help;
 use constants::*;
@@ -80,32 +81,4 @@ fn make_greeting(option_values: OptionValues) -> String {
 
 fn show_help() {
   print_help(&HELP_INFO);
-}
-
-#[cfg(test)]
-mod tests {
-
-  use super::*;
-
-  #[test]
-  fn test_make_greeting_when_name_none() {
-    let option_values: OptionValues = OptionValues {
-      help_wanted: false,
-      interactive: false,
-      name_option: None,
-    };
-    let actual_greeting = make_greeting(option_values);
-    assert_eq!(actual_greeting, "Hello, World!");
-  }
-
-  #[test]
-  fn test_make_greeting_when_name_some() {
-    let option_values: OptionValues = OptionValues {
-      help_wanted: false,
-      interactive: false,
-      name_option: Some(String::from("Test")),
-    };
-    let actual_greeting = make_greeting(option_values);
-    assert_eq!(actual_greeting, "Hello, Test!");
-  }
 }

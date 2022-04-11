@@ -22,11 +22,13 @@ pub const ARG_HELP_NAME_SHORT: char = 'h';
 pub const ARG_INTERACTIVE_HELP: &str = "true/false, defaults to true";
 pub const ARG_INTERACTIVE_NAME: &str = "interactive";
 pub const ARG_INTERACTIVE_SHORT: char = 'i';
-// pub const ARG_INTERACTIVE_TAKES_VALUE: bool = true;
+// TODO: This one is clap-only.
+pub const ARG_INTERACTIVE_TAKES_VALUE: bool = true;
 pub const ARG_NAME_HELP: &str = "Any value not starting with a hyphen (-)";
 pub const ARG_NAME_NAME: &str = "name";
 pub const ARG_NAME_SHORT: char = 'n';
-// pub const ARG_NAME_TAKES_VALUE: bool = true;
+// TODO: This one is clap-only.
+pub const ARG_NAME_TAKES_VALUE: bool = true;
 pub const NAME_DEFAULT: &str = "World";
 pub const NAME_PROMPT: &str = "What is your name?";
 

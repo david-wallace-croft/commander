@@ -1,5 +1,5 @@
 //==============================================================================
-//! Command-Line Arguments Parser (clap) library usage example functions
+//! Command-Line Arguments Parser (clap) library usage example
 //!
 //! # Metadata
 //! - Author: [`David Wallace Croft`]
@@ -10,10 +10,18 @@
 //! [`David Wallace Croft`]: http://www.croftsoft.com/people/david/
 //==============================================================================
 
-// https://docs.rs/clap/latest/clap/
-use super::constants::*;
-use super::OptionValues;
 use clap::{Arg, ArgMatches, Command};
+
+use croftsoft_commander_examples::constants::*;
+use croftsoft_commander_examples::OptionValues;
+
+//------------------------------------------------------------------------------
+/// Parses the option values using clap and then runs the example application.
+//------------------------------------------------------------------------------
+fn main() {
+  let option_values: OptionValues = parse_option_values_using_clap();
+  croftsoft_commander_examples::main(option_values);
+}
 
 //------------------------------------------------------------------------------
 /// Uses the clap library to parse the application options

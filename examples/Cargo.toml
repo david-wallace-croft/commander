@@ -7,14 +7,17 @@ authors = ["David Wallace Croft <david@CroftSoft.com>"]
 # See more keys and their definitions at
 #   https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[[example]]
-name = "example-clap"
-path = "src/examples/example-clap/main.rs"
-
-[[example]]
-name = "example-commander"
-path = "src/examples/example-commander/main.rs"
-
 [dependencies]
 clap = { version = "3", features = ["derive"] }
 croftsoft-commander = { path = "../commander" }
+
+[[example]]
+name = "example-clap"
+path = "src/examples/example-clap-main.rs"
+
+[[example]]
+name = "example-commander"
+path = "src/examples/example-commander-main.rs"
+
+[lib]
+path = "src/lib/mod.rs"

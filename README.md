@@ -3,7 +3,7 @@
 ## Purpose
 
 - A command-line arguments parser library
-  - An alternative to using the Command Line Argument Parser (clap) for Rust
+  - An alternative to using the [Command Line Argument Parser](https://github.com/clap-rs/clap) (clap) for Rust
 
 ## History
 

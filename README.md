@@ -39,6 +39,21 @@
 - Usage for the clap Example is similar to the Parser Library Example
   - Except that the commands start with "cargo run --example example-clap"
 
+## Project Structure
+
+- A Rust workspace with two crates
+- The primary library crate "croftsoft-commander"
+  - Functions for parsing option values from command-line arguments
+  - Functions for displaying application help information including options
+- The secondary library crate "croftsoft-commander-examples"
+  - With two example applications
+    - One showing how to use the library crate "croftsoft-commander"
+    - The other showing how to run the same example application using "clap"
+  - And a library containing the application code common to the two examples
+    - A "Hello, World" application that prompts the user for a name
+    - Configured by parsing option values from command-line arguments
+    - Using either the "croftsoft-commander" library or the "clap" library
+
 ### Development Commands
 
 - cargo clippy
@@ -49,15 +64,6 @@
 - cargo test --all-targets
 - cargo update
 - rustup update
-
-## Project Structure
-
-- A Rust workspace
-- With a lib crate "croftsoft-commander"
-- And another lib crate "croftsoft-commander-examples"
-  - With two examples
-    - One showing how to use the lib "croftsoft-commander"
-    - The other showing how to use the lib "clap"
 
 ## TODO
 

@@ -71,9 +71,9 @@ pub fn print_option(
   prefix_len_max: usize,
 ) {
   let mut line: String = "".to_string();
-  let prefix = make_print_option_prefix(arg_option);
+  let prefix: String = make_print_option_prefix(arg_option);
   line.push_str(&prefix);
-  let spaces_count = 2 + prefix_len_max - prefix.len();
+  let spaces_count: usize = 2 + prefix_len_max - prefix.len();
   for _ in 0..spaces_count {
     line.push(' ');
   }
@@ -90,8 +90,8 @@ pub fn print_options(arg_options: &[OptionConfig]) {
   let mut prefix_len_max: usize = 0;
   for arg_option in arg_options {
     // TODO: save generated prefix
-    let prefix = make_print_option_prefix(arg_option);
-    let prefix_len = prefix.len();
+    let prefix: String = make_print_option_prefix(arg_option);
+    let prefix_len: usize = prefix.len();
     if prefix_len > prefix_len_max {
       prefix_len_max = prefix_len;
     }

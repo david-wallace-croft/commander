@@ -26,23 +26,23 @@ fn test_parse_option_type_bool_without_value() {
     name_short: Some('T'),
   };
   let test_args_slice: &[String] = &["-T".to_string()];
-  let actual_result =
+  let actual_result: bool =
     parse_option_type_bool_without_value(test_args_slice, &ARG_OPTION_TEST);
   assert_eq!(true, actual_result);
   let test_args_slice: &[String] = &["-t".to_string()];
-  let actual_result =
+  let actual_result: bool =
     parse_option_type_bool_without_value(test_args_slice, &ARG_OPTION_TEST);
   assert_eq!(false, actual_result);
   let test_args_slice: &[String] = &["--TEST".to_string()];
-  let actual_result =
+  let actual_result: bool =
     parse_option_type_bool_without_value(test_args_slice, &ARG_OPTION_TEST);
   assert_eq!(true, actual_result);
   let test_args_slice: &[String] = &["--test".to_string()];
-  let actual_result =
+  let actual_result: bool =
     parse_option_type_bool_without_value(test_args_slice, &ARG_OPTION_TEST);
   assert_eq!(false, actual_result);
   let test_args_slice: &[String] = &["-TEST".to_string()];
-  let actual_result =
+  let actual_result: bool =
     parse_option_type_bool_without_value(test_args_slice, &ARG_OPTION_TEST);
   assert_eq!(false, actual_result);
 }

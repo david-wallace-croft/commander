@@ -41,7 +41,7 @@ pub fn parse_option_values_using_commander() -> OptionValues {
   let interactive: bool =
     parse_option_type_bool_with_optional_value(args_slice, &ARG_OPTION_I);
   // TODO: parse_option_type_string_with_default_value
-  let name_option =
+  let name_option: Option<String> =
     parse_option_type_string_with_required_value(args_slice, &ARG_OPTION_N);
   OptionValues {
     help_wanted,

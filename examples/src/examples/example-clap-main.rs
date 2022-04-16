@@ -27,12 +27,12 @@ fn main() {
 /// Uses the clap library to parse the application options
 //------------------------------------------------------------------------------
 pub fn parse_option_values_using_clap() -> OptionValues {
-  let interactive_arg = Arg::new(ARG_INTERACTIVE_NAME)
+  let interactive_arg: Arg = Arg::new(ARG_INTERACTIVE_NAME)
     .help(ARG_INTERACTIVE_HELP)
     .long(ARG_INTERACTIVE_NAME)
     .short(ARG_INTERACTIVE_SHORT)
     .takes_value(ARG_INTERACTIVE_TAKES_VALUE);
-  let name_arg = Arg::new(ARG_NAME_NAME)
+  let name_arg: Arg = Arg::new(ARG_NAME_NAME)
     .help(ARG_NAME_HELP)
     .long(ARG_NAME_NAME)
     .short(ARG_NAME_SHORT)
@@ -48,7 +48,8 @@ pub fn parse_option_values_using_clap() -> OptionValues {
     arg_matches.value_of(ARG_INTERACTIVE_NAME);
   let arg_match_name: Option<&str> = arg_matches.value_of(ARG_NAME_NAME);
   let interactive: bool = !matches!(arg_match_interactive, Some("false"));
-  let name_option: Option<String> = arg_match_name.map(|name| name.to_string());
+  let name_option: Option<String> =
+    arg_match_name.map(|name: &str| name.to_string());
   OptionValues {
     help_wanted: false,
     interactive,

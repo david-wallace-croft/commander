@@ -1,5 +1,5 @@
 # https://rust-lang.github.io/rustfmt/
-array_width = 0
+array_width = 1
 # group_imports = "StdExternalCrate"
 # imports_layout = "HorizontalVertical"
 max_width = 80

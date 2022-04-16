@@ -43,7 +43,7 @@ pub fn ask(
           return default.to_string();
         }
         return trimmed_buffer.to_string();
-      }
+      },
       Err(error) => println!("ERROR: {}", error),
     }
   }
@@ -70,14 +70,14 @@ fn make_greeting(option_values: OptionValues) -> String {
       } else {
         arg_name
       }
-    }
+    },
     None => {
       if option_values.interactive {
         ask(NAME_PROMPT, NAME_DEFAULT)
       } else {
         NAME_DEFAULT.to_string()
       }
-    }
+    },
   };
   format!("Hello, {}!", name)
 }

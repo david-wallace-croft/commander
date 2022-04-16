@@ -25,6 +25,6 @@ fn test_make_print_option_prefix() {
     name_long: Some("ARG_HELP_NAME_LONG"),
     name_short: Some('T'),
   };
-  let actual_prefix = make_print_option_prefix(&ARG_OPTION_TEST);
+  let actual_prefix: String = make_print_option_prefix(&ARG_OPTION_TEST);
   assert_eq!("  -T, --ARG_HELP_NAME_LONG", actual_prefix);
 }

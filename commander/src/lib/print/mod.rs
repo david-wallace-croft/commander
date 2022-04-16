@@ -66,7 +66,10 @@ pub fn print_help(help_info: &HelpInfo) {
 //------------------------------------------------------------------------------
 /// Prints a single option description
 //------------------------------------------------------------------------------
-pub fn print_option(arg_option: &OptionConfig, prefix_len_max: usize) {
+pub fn print_option(
+  arg_option: &OptionConfig,
+  prefix_len_max: usize,
+) {
   let mut line: String = "".to_string();
   let prefix = make_print_option_prefix(arg_option);
   line.push_str(&prefix);

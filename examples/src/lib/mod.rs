@@ -25,7 +25,10 @@ pub struct OptionValues {
   pub name_option: Option<String>,
 }
 
-pub fn ask(prompt: &str, default: &str) -> String {
+pub fn ask(
+  prompt: &str,
+  default: &str,
+) -> String {
   loop {
     println!();
     print!("{} [{}]: ", prompt, default);

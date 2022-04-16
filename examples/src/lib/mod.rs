@@ -53,7 +53,7 @@ pub fn main(option_values: OptionValues) {
   // println!("{:?}", option_values);
   // println!("{:#?}", option_values);
   if option_values.help_wanted {
-    show_help();
+    print_help(&HELP_INFO);
     return;
   }
   let greeting: String = make_greeting(option_values);
@@ -80,8 +80,4 @@ fn make_greeting(option_values: OptionValues) -> String {
     },
   };
   format!("Hello, {}!", name)
-}
-
-fn show_help() {
-  print_help(&HELP_INFO);
 }

@@ -58,7 +58,7 @@
     - Configured by parsing option values from command-line arguments
     - Using either the "croftsoft-commander" library or the "clap" library
 
-### Development Commands
+## Development Commands
 
 - cargo clippy
 - cargo doc --examples --no-deps

@@ -121,7 +121,8 @@ pub fn parse_option_type_string_with_required_value(
     for index in 0..length {
       let arg: &String = &args_slice[index];
       if arg.starts_with(hyphenated_name_short_equals) {
-        let value: &str = &arg[hyphenated_name_short_equals.len()..];
+        let value: &str =
+          arg.strip_prefix(hyphenated_name_short_equals).unwrap();
         return Some(value.to_string());
       }
       if !arg.eq(&hyphenated_name_short) {
@@ -144,7 +145,8 @@ pub fn parse_option_type_string_with_required_value(
     for index in 0..length {
       let arg: &String = &args_slice[index];
       if arg.starts_with(hyphenated_name_long_equals) {
-        let value: &str = &arg[hyphenated_name_long_equals.len()..];
+        let value: &str =
+          arg.strip_prefix(hyphenated_name_long_equals).unwrap();
         return Some(value.to_string());
       }
       if !arg.eq(&hyphenated_name_long) {

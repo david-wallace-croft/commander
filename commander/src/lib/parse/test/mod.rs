@@ -226,4 +226,18 @@ fn test_parse_option_type_string_with_required_value() {
       &ARG_OPTION_TEST,
     );
   assert_eq!(Some(String::from("abc")), actual_result);
+  let test_args_slice: &[String] = &["-T=".to_string()];
+  let actual_result: Option<String> =
+    parse_option_type_string_with_required_value(
+      test_args_slice,
+      &ARG_OPTION_TEST,
+    );
+  assert_eq!(Some(String::from("")), actual_result);
+  let test_args_slice: &[String] = &["--TEST=".to_string()];
+  let actual_result: Option<String> =
+    parse_option_type_string_with_required_value(
+      test_args_slice,
+      &ARG_OPTION_TEST,
+    );
+  assert_eq!(Some(String::from("")), actual_result);
 }

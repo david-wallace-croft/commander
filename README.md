@@ -72,4 +72,4 @@
 ## TODO
 
 - Unit tests for when the default option value is true
-- Use code coverage tool such as tarpaulin
+- Use a code coverage tool

@@ -25,6 +25,8 @@
   - Runs the example that uses the library
 - cargo run --example example-commander -- -i false
   - Disable interactive mode
+- cargo run --example example-commander -- -i=false
+  - Disable interactive mode using the equals sign
 - cargo run --example example-commander -- -n World
   - Provide the default name
 - cargo run --example example-commander -- -i false -n World
@@ -33,6 +35,8 @@
   - Disable interactive mode
 - cargo run --example example-commander -- --name World
   - Provide the default name
+- cargo run --example example-commander -- --name=World
+  - Provide the default name using the equals sign
 
 ### clap Example
 
@@ -67,5 +71,5 @@
 
 ## TODO
 
-- Support the equals sign for the value of an option
 - Unit tests for when the default option value is true
+- Use code coverage tool such as tarpaulin

@@ -114,10 +114,16 @@ pub fn parse_option_type_string_with_required_value(
 ) -> Option<String> {
   let length: usize = args_slice.len();
   if arg_option.name_short.is_some() {
-    let hyphenated_name_short: String =
-      format!("-{}", arg_option.name_short.unwrap());
+    let arg_option_name_short = arg_option.name_short.unwrap();
+    let hyphenated_name_short: String = format!("-{}", arg_option_name_short);
+    let hyphenated_name_short_equals: &str =
+      &format!("-{}=", arg_option_name_short);
     for index in 0..length {
       let arg: &String = &args_slice[index];
+      if arg.starts_with(hyphenated_name_short_equals) {
+        let value: &str = &arg[hyphenated_name_short_equals.len()..];
+        return Some(value.to_string());
+      }
       if !arg.eq(&hyphenated_name_short) {
         continue;
       }
@@ -131,10 +137,16 @@ pub fn parse_option_type_string_with_required_value(
     }
   }
   if arg_option.name_long.is_some() {
-    let hyphenated_name_long: String =
-      format!("--{}", arg_option.name_long.unwrap());
+    let arg_option_name_long = arg_option.name_long.unwrap();
+    let hyphenated_name_long: String = format!("--{}", arg_option_name_long);
+    let hyphenated_name_long_equals: &str =
+      &format!("--{}=", arg_option_name_long);
     for index in 0..length {
       let arg: &String = &args_slice[index];
+      if arg.starts_with(hyphenated_name_long_equals) {
+        let value: &str = &arg[hyphenated_name_long_equals.len()..];
+        return Some(value.to_string());
+      }
       if !arg.eq(&hyphenated_name_long) {
         continue;
       }

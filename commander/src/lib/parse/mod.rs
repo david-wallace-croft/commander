@@ -48,10 +48,20 @@ pub fn parse_option_type_bool_with_optional_value(
 ) -> bool {
   let length: usize = args_slice.len();
   if arg_option.name_short.is_some() {
-    let hyphenated_name_short: String =
-      format!("-{}", arg_option.name_short.unwrap());
+    let arg_option_name_short: char = arg_option.name_short.unwrap();
+    let hyphenated_name_short: String = format!("-{}", arg_option_name_short);
+    let hyphenated_name_short_equals_false: String =
+      format!("-{}=false", arg_option_name_short);
+    let hyphenated_name_short_equals_true: String =
+      format!("-{}=true", arg_option_name_short);
     for index in 0..length {
       let arg: &String = &args_slice[index];
+      if arg.eq(&hyphenated_name_short_equals_false) {
+        return false;
+      }
+      if arg.eq(&hyphenated_name_short_equals_true) {
+        return true;
+      }
       if !arg.eq(&hyphenated_name_short) {
         continue;
       }
@@ -65,10 +75,20 @@ pub fn parse_option_type_bool_with_optional_value(
     }
   }
   if arg_option.name_long.is_some() {
-    let hyphenated_name_long: String =
-      format!("--{}", arg_option.name_long.unwrap());
+    let arg_option_name_long: &str = arg_option.name_long.unwrap();
+    let hyphenated_name_long: String = format!("--{}", arg_option_name_long);
+    let hyphenated_name_long_equals_false: String =
+      format!("--{}=false", arg_option_name_long);
+    let hyphenated_name_long_equals_true: String =
+      format!("--{}=true", arg_option_name_long);
     for index in 0..length {
       let arg: &String = &args_slice[index];
+      if arg.eq(&hyphenated_name_long_equals_false) {
+        return false;
+      }
+      if arg.eq(&hyphenated_name_long_equals_true) {
+        return true;
+      }
       if !arg.eq(&hyphenated_name_long) {
         continue;
       }

@@ -153,4 +153,28 @@ fn test_parse_option_type_bool_with_optional_value() {
     &ARG_OPTION_TEST,
   );
   assert_eq!(false, actual_result);
+  let test_args_slice: &[String] = &["-T=false".to_string()];
+  let actual_result = parse_option_type_bool_with_optional_value(
+    test_args_slice,
+    &ARG_OPTION_TEST,
+  );
+  assert_eq!(false, actual_result);
+  let test_args_slice: &[String] = &["-T=true".to_string()];
+  let actual_result = parse_option_type_bool_with_optional_value(
+    test_args_slice,
+    &ARG_OPTION_TEST,
+  );
+  assert_eq!(true, actual_result);
+  let test_args_slice: &[String] = &["--TEST=false".to_string()];
+  let actual_result = parse_option_type_bool_with_optional_value(
+    test_args_slice,
+    &ARG_OPTION_TEST,
+  );
+  assert_eq!(false, actual_result);
+  let test_args_slice: &[String] = &["--TEST=true".to_string()];
+  let actual_result = parse_option_type_bool_with_optional_value(
+    test_args_slice,
+    &ARG_OPTION_TEST,
+  );
+  assert_eq!(true, actual_result);
 }

@@ -67,4 +67,5 @@
 
 ## TODO
 
+- Support the equals sign for the value of an option
 - Unit tests for when the default option value is true

@@ -71,5 +71,6 @@
 
 ## TODO
 
+- Report when unknown options are used
 - Unit tests for when the default option value is true
 - Use a code coverage tool

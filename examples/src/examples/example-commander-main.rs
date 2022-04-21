@@ -14,7 +14,9 @@ use commander::parse::{
   parse_option_type_bool_with_optional_value,
   parse_option_type_bool_without_value,
   parse_option_type_string_with_required_value,
+  parse_unrecognized,
 };
+use commander::OptionConfig;
 use croftsoft_commander_examples::constants::*;
 use croftsoft_commander_examples::OptionValues;
 use std::env;
@@ -37,15 +39,19 @@ pub fn parse_option_values_using_commander() -> OptionValues {
   // println!("Args length = {}", length);
   let args_slice: &[String] = &args[1..];
   let help_wanted: bool =
-    parse_option_type_bool_without_value(args_slice, &ARG_OPTION_H);
+    parse_option_type_bool_without_value(args_slice, &OPTION_CONFIG_H);
   let interactive: bool =
-    parse_option_type_bool_with_optional_value(args_slice, &ARG_OPTION_I);
+    parse_option_type_bool_with_optional_value(args_slice, &OPTION_CONFIG_I);
   // TODO: parse_option_type_string_with_default_value
   let name_option: Option<String> =
-    parse_option_type_string_with_required_value(args_slice, &ARG_OPTION_N);
+    parse_option_type_string_with_required_value(args_slice, &OPTION_CONFIG_N);
+  let arg_option_vector: Vec<OptionConfig> = OPTION_CONFIGS.to_vec();
+  let unrecognized: Option<Vec<String>> =
+    parse_unrecognized(args_slice, arg_option_vector);
   OptionValues {
     help_wanted,
     interactive,
     name_option,
+    unrecognized,
   }
 }

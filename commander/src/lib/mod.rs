@@ -31,7 +31,7 @@ pub struct AppInfo<'a> {
 //------------------------------------------------------------------------------
 /// Command-line option configuration
 //------------------------------------------------------------------------------
-#[derive(Debug)]
+#[derive(Clone, Copy, Debug)]
 pub struct OptionConfig<'a> {
   pub brief_description: Option<&'a str>,
   pub can_have_value: bool,

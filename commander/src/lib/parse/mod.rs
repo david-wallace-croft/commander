@@ -20,23 +20,23 @@ use crate::*;
 //------------------------------------------------------------------------------
 pub fn parse_option_type_bool_without_value(
   args_slice: &[String],
-  arg_option: &OptionConfig,
+  option_config: &OptionConfig,
 ) -> bool {
-  if arg_option.name_short.is_some() {
+  if option_config.name_short.is_some() {
     let hyphenated_name_short: String =
-      format!("-{}", arg_option.name_short.unwrap());
+      format!("-{}", option_config.name_short.unwrap());
     if args_slice.contains(&hyphenated_name_short) {
       return true;
     }
   }
-  if arg_option.name_long.is_some() {
+  if option_config.name_long.is_some() {
     let hyphenated_name_long: String =
-      format!("--{}", arg_option.name_long.unwrap());
+      format!("--{}", option_config.name_long.unwrap());
     if args_slice.contains(&hyphenated_name_long) {
       return true;
     }
   }
-  arg_option.default_value_bool
+  option_config.default_value_bool
 }
 
 //------------------------------------------------------------------------------
@@ -44,11 +44,11 @@ pub fn parse_option_type_bool_without_value(
 //------------------------------------------------------------------------------
 pub fn parse_option_type_bool_with_optional_value(
   args_slice: &[String],
-  arg_option: &OptionConfig,
+  option_config: &OptionConfig,
 ) -> bool {
   let length: usize = args_slice.len();
-  if arg_option.name_short.is_some() {
-    let arg_option_name_short: char = arg_option.name_short.unwrap();
+  if option_config.name_short.is_some() {
+    let arg_option_name_short: char = option_config.name_short.unwrap();
     let hyphenated_name_short: String = format!("-{}", arg_option_name_short);
     let hyphenated_name_short_equals_false: String =
       format!("-{}=false", arg_option_name_short);
@@ -74,8 +74,8 @@ pub fn parse_option_type_bool_with_optional_value(
       return true;
     }
   }
-  if arg_option.name_long.is_some() {
-    let arg_option_name_long: &str = arg_option.name_long.unwrap();
+  if option_config.name_long.is_some() {
+    let arg_option_name_long: &str = option_config.name_long.unwrap();
     let hyphenated_name_long: String = format!("--{}", arg_option_name_long);
     let hyphenated_name_long_equals_false: String =
       format!("--{}=false", arg_option_name_long);
@@ -101,7 +101,7 @@ pub fn parse_option_type_bool_with_optional_value(
       return true;
     }
   }
-  arg_option.default_value_bool
+  option_config.default_value_bool
 }
 
 //------------------------------------------------------------------------------
@@ -110,11 +110,11 @@ pub fn parse_option_type_bool_with_optional_value(
 // TODO: Can we return a string slice instead of a String?
 pub fn parse_option_type_string_with_required_value(
   args_slice: &[String],
-  arg_option: &OptionConfig,
+  option_config: &OptionConfig,
 ) -> Option<String> {
   let length: usize = args_slice.len();
-  if arg_option.name_short.is_some() {
-    let arg_option_name_short = arg_option.name_short.unwrap();
+  if option_config.name_short.is_some() {
+    let arg_option_name_short = option_config.name_short.unwrap();
     let hyphenated_name_short: String = format!("-{}", arg_option_name_short);
     let hyphenated_name_short_equals: &str =
       &format!("-{}=", arg_option_name_short);
@@ -137,8 +137,8 @@ pub fn parse_option_type_string_with_required_value(
       }
     }
   }
-  if arg_option.name_long.is_some() {
-    let arg_option_name_long = arg_option.name_long.unwrap();
+  if option_config.name_long.is_some() {
+    let arg_option_name_long = option_config.name_long.unwrap();
     let hyphenated_name_long: String = format!("--{}", arg_option_name_long);
     let hyphenated_name_long_equals: &str =
       &format!("--{}=", arg_option_name_long);
@@ -162,4 +162,15 @@ pub fn parse_option_type_string_with_required_value(
     }
   }
   None
+}
+
+//------------------------------------------------------------------------------
+/// Parses unrecognized options from the arguments.
+//------------------------------------------------------------------------------
+pub fn parse_unrecognized(
+  _args_slice: &[String],
+  _recognized_options: Vec<OptionConfig>,
+) -> Option<Vec<String>> {
+  // TODO
+  Option::None
 }

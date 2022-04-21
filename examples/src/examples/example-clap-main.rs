@@ -50,9 +50,11 @@ pub fn parse_option_values_using_clap() -> OptionValues {
   let interactive: bool = !matches!(arg_match_interactive, Some("false"));
   let name_option: Option<String> =
     arg_match_name.map(|name: &str| name.to_string());
+  let unrecognized: Option<Vec<String>> = None;
   OptionValues {
     help_wanted: false,
     interactive,
     name_option,
+    unrecognized,
   }
 }

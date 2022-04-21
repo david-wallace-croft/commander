@@ -39,7 +39,7 @@ pub const APP_INFO: AppInfo = AppInfo {
   name: Some(APP_INFO_NAME),
 };
 
-pub const ARG_OPTION_H: OptionConfig = OptionConfig {
+pub const OPTION_CONFIG_H: OptionConfig = OptionConfig {
   brief_description: Some(ARG_HELP_BRIEF_DESCRIPTION),
   can_have_value: false,
   default_value_bool: false,
@@ -48,7 +48,7 @@ pub const ARG_OPTION_H: OptionConfig = OptionConfig {
   name_short: Some(ARG_HELP_NAME_SHORT),
 };
 
-pub const ARG_OPTION_I: OptionConfig = OptionConfig {
+pub const OPTION_CONFIG_I: OptionConfig = OptionConfig {
   brief_description: Some(ARG_INTERACTIVE_HELP),
   can_have_value: true,
   default_value_bool: true,
@@ -57,7 +57,7 @@ pub const ARG_OPTION_I: OptionConfig = OptionConfig {
   name_short: Some(ARG_INTERACTIVE_SHORT),
 };
 
-pub const ARG_OPTION_N: OptionConfig = OptionConfig {
+pub const OPTION_CONFIG_N: OptionConfig = OptionConfig {
   brief_description: Some(ARG_NAME_HELP),
   can_have_value: true,
   default_value_bool: false,
@@ -66,13 +66,13 @@ pub const ARG_OPTION_N: OptionConfig = OptionConfig {
   name_short: Some(ARG_NAME_SHORT),
 };
 
-pub const ARG_OPTIONS: [OptionConfig; 3] = [
-  ARG_OPTION_H,
-  ARG_OPTION_I,
-  ARG_OPTION_N,
+pub const OPTION_CONFIGS: [OptionConfig; 3] = [
+  OPTION_CONFIG_H,
+  OPTION_CONFIG_I,
+  OPTION_CONFIG_N,
 ];
 
 pub const HELP_INFO: HelpInfo = HelpInfo {
   app_info: &APP_INFO,
-  arg_options: &ARG_OPTIONS,
+  arg_options: &OPTION_CONFIGS,
 };

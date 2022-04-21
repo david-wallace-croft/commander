@@ -18,6 +18,7 @@ fn test_make_greeting_when_name_none() {
     help_wanted: false,
     interactive: false,
     name_option: None,
+    unrecognized: None,
   };
   let actual_greeting: String = make_greeting(option_values);
   assert_eq!(actual_greeting, "Hello, World!");
@@ -29,6 +30,7 @@ fn test_make_greeting_when_name_some() {
     help_wanted: false,
     interactive: false,
     name_option: Some(String::from("Test")),
+    unrecognized: None,
   };
   let actual_greeting: String = make_greeting(option_values);
   assert_eq!(actual_greeting, "Hello, Test!");

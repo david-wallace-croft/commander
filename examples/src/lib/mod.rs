@@ -23,6 +23,7 @@ pub struct OptionValues {
   pub help_wanted: bool,
   pub interactive: bool,
   pub name_option: Option<String>,
+  pub unrecognized: Option<Vec<String>>,
 }
 
 pub fn ask(

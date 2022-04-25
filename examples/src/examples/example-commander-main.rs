@@ -47,7 +47,7 @@ pub fn parse_option_values_using_commander() -> OptionValues {
     parse_option_type_string_with_required_value(args_slice, &OPTION_CONFIG_N);
   let arg_option_vector: Vec<OptionConfig> = OPTION_CONFIGS.to_vec();
   let unrecognized: Option<Vec<String>> =
-    parse_unrecognized(args_slice, arg_option_vector);
+    parse_unrecognized(args_slice, &arg_option_vector);
   OptionValues {
     help_wanted,
     interactive,

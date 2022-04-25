@@ -14,6 +14,7 @@
 mod test;
 
 use crate::*;
+use std::collections::HashSet;
 
 //------------------------------------------------------------------------------
 /// Parses a boolean option that has no value
@@ -168,9 +169,53 @@ pub fn parse_option_type_string_with_required_value(
 /// Parses unrecognized options from the arguments.
 //------------------------------------------------------------------------------
 pub fn parse_unrecognized(
-  _args_slice: &[String],
-  _recognized_options: Vec<OptionConfig>,
+  args_slice: &[String],
+  recognized_options: &Vec<OptionConfig>,
 ) -> Option<Vec<String>> {
-  // TODO
-  Option::None
+  let mut unrecognized_set: HashSet<String> = HashSet::new();
+  'outer:
+  for arg in args_slice {
+    if !arg.starts_with("-") {
+      continue;
+    }
+    if arg.starts_with("--") {
+      let option_name: &str = arg.strip_prefix("--").unwrap();
+      if option_name.eq("") {
+        unrecognized_set.insert(String::from(""));
+        continue;
+      }
+      for recognized_option in recognized_options {
+        if recognized_option.name_long.is_none() {
+          continue;
+        }
+        let name_long: &str = recognized_option.name_long.unwrap();
+        if option_name.eq(name_long) {
+          continue 'outer;
+        }
+      }
+      unrecognized_set.insert(String::from(option_name));
+      continue;
+    }
+    let option_name: &str = arg.strip_prefix("-").unwrap();
+    if option_name.eq("") {
+      unrecognized_set.insert(String::from(""));
+      continue;
+    }
+    for recognized_option in recognized_options {
+      if recognized_option.name_short.is_none() {
+        continue;
+      }
+      let name_short: char = recognized_option.name_short.unwrap();
+      let name_short_string: String = name_short.to_string();
+      if option_name.eq(&name_short_string) {
+        continue 'outer;
+      }
+    }
+    unrecognized_set.insert(String::from(option_name));
+  }
+  if unrecognized_set.is_empty() {
+    return None;
+  }
+  let unrecognized_vector: Vec<String> = Vec::from_iter(unrecognized_set);
+  return Some(unrecognized_vector);
 }

@@ -241,3 +241,45 @@ fn test_parse_option_type_string_with_required_value() {
     );
   assert_eq!(Some(String::from("")), actual_result);
 }
+
+#[test]
+fn test_parse_unrecognized_long() {
+  const ARG_OPTION_TEST: OptionConfig = OptionConfig {
+    brief_description: None,
+    can_have_value: true,
+    default_value_bool: false,
+    is_type_bool: false,
+    name_long: Some("TEST"),
+    name_short: Some('T'),
+  };
+  let recognized_options: Vec<OptionConfig> = vec![ARG_OPTION_TEST];
+  let test_args_slice: &[String] = &[
+    "--unrecognized".to_string(),
+  ];
+  let actual_result: Option<Vec<String>> =
+    parse_unrecognized(
+      test_args_slice,
+      &recognized_options);
+  assert_eq!(Some(vec![String::from("unrecognized")]), actual_result);
+}
+
+#[test]
+fn test_parse_unrecognized_short() {
+  const ARG_OPTION_TEST: OptionConfig = OptionConfig {
+    brief_description: None,
+    can_have_value: true,
+    default_value_bool: false,
+    is_type_bool: false,
+    name_long: Some("TEST"),
+    name_short: Some('T'),
+  };
+  let recognized_options: Vec<OptionConfig> = vec![ARG_OPTION_TEST];
+  let test_args_slice: &[String] = &[
+    "-u".to_string(),
+  ];
+  let actual_result: Option<Vec<String>> =
+    parse_unrecognized(
+      test_args_slice,
+      &recognized_options);
+  assert_eq!(Some(vec![String::from("u")]), actual_result);
+}

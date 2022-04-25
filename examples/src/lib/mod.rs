@@ -15,6 +15,7 @@ pub mod constants;
 mod test;
 
 use commander::print::print_help;
+use commander::print::print_unrecognized_options;
 use constants::*;
 use std::io::{stdin, stdout, Error, Stdin, Write};
 
@@ -55,6 +56,10 @@ pub fn main(option_values: OptionValues) {
   // println!("{:#?}", option_values);
   if option_values.help_wanted {
     print_help(&HELP_INFO);
+    return;
+  }
+  if option_values.unrecognized.is_some() {
+    print_unrecognized_options(&option_values.unrecognized.unwrap());
     return;
   }
   let greeting: String = make_greeting(option_values);

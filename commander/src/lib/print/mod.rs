@@ -100,3 +100,20 @@ pub fn print_options(arg_options: &[OptionConfig]) {
     print_option(arg_option, prefix_len_max);
   }
 }
+
+//------------------------------------------------------------------------------
+/// Prints a message about an unrecognized option.
+//------------------------------------------------------------------------------
+pub fn print_unrecognized_option(unrecognized_option: &String) {
+  // TODO: Output to standard error?
+  println!("Unrecognized option: \"{}\"", unrecognized_option);
+}
+
+//------------------------------------------------------------------------------
+/// Prints a message about unrecognized options.
+//------------------------------------------------------------------------------
+pub fn print_unrecognized_options(unrecognized_options: &Vec<String>) {
+  for unrecognized_option in unrecognized_options {
+    print_unrecognized_option(unrecognized_option);
+  }
+}

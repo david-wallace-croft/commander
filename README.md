@@ -37,6 +37,10 @@
   - Provide the default name
 - cargo run --example example-commander -- --name=World
   - Provide the default name using the equals sign
+- cargo run --example example-commander -- -u
+  - Show an error message for the unrecognized option
+- cargo run --example example-commander -- --unrecognized
+  - Show an error message for the unrecognized option
 
 ### clap Example
 

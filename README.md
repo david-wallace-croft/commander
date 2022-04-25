@@ -75,6 +75,6 @@
 
 ## TODO
 
-- Report when unknown options are used
+- Parse sub-commands
 - Unit tests for when the default option value is true
 - Use a code coverage tool

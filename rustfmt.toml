@@ -6,6 +6,7 @@ fn_args_layout = "Vertical"
 hard_tabs = false
 # imports_layout = "HorizontalVertical"
 match_block_trailing_comma = true
+# https://www.w3.org/WAI/tutorials/page-structure/styling/#line-length
 max_width = 80
 merge_derives = true
 newline_style = "Unix"

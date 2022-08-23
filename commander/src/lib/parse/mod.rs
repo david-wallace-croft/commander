@@ -6,8 +6,8 @@
 //! - Copyright: &copy; 2022 [`CroftSoft Inc`]
 //! - Since: 2022-04-02
 //!
-//! [`CroftSoft Inc`]: http://www.croftsoft.com/
-//! [`David Wallace Croft`]: http://www.croftsoft.com/people/david/
+//! [`CroftSoft Inc`]: https://www.croftsoft.com/
+//! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
 #[cfg(test)]
@@ -173,8 +173,7 @@ pub fn parse_unrecognized(
   recognized_options: &Vec<OptionConfig>,
 ) -> Option<Vec<String>> {
   let mut unrecognized_set: HashSet<String> = HashSet::new();
-  'outer:
-  for arg in args_slice {
+  'outer: for arg in args_slice {
     if !arg.starts_with("-") {
       continue;
     }

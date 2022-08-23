@@ -6,8 +6,8 @@
 //! - Copyright: &copy; 2022 [`CroftSoft Inc`]
 //! - Since: 2022-04-02
 //!
-//! [`CroftSoft Inc`]: http://www.croftsoft.com/
-//! [`David Wallace Croft`]: http://www.croftsoft.com/people/david/
+//! [`CroftSoft Inc`]: https://www.croftsoft.com/
+//! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
 use super::*;
@@ -253,13 +253,9 @@ fn test_parse_unrecognized_long() {
     name_short: Some('T'),
   };
   let recognized_options: Vec<OptionConfig> = vec![ARG_OPTION_TEST];
-  let test_args_slice: &[String] = &[
-    "--unrecognized".to_string(),
-  ];
+  let test_args_slice: &[String] = &["--unrecognized".to_string()];
   let actual_result: Option<Vec<String>> =
-    parse_unrecognized(
-      test_args_slice,
-      &recognized_options);
+    parse_unrecognized(test_args_slice, &recognized_options);
   assert_eq!(Some(vec![String::from("unrecognized")]), actual_result);
 }
 
@@ -274,12 +270,8 @@ fn test_parse_unrecognized_short() {
     name_short: Some('T'),
   };
   let recognized_options: Vec<OptionConfig> = vec![ARG_OPTION_TEST];
-  let test_args_slice: &[String] = &[
-    "-u".to_string(),
-  ];
+  let test_args_slice: &[String] = &["-u".to_string()];
   let actual_result: Option<Vec<String>> =
-    parse_unrecognized(
-      test_args_slice,
-      &recognized_options);
+    parse_unrecognized(test_args_slice, &recognized_options);
   assert_eq!(Some(vec![String::from("u")]), actual_result);
 }

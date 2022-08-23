@@ -6,15 +6,14 @@
 //! - Copyright: &copy; 2022 [`CroftSoft Inc`]
 //! - Since: 2022-01-15
 //!
-//! [`CroftSoft Inc`]: http://www.croftsoft.com/
-//! [`David Wallace Croft`]: http://www.croftsoft.com/people/david/
+//! [`CroftSoft Inc`]: https://www.croftsoft.com/
+//! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
 use commander::parse::{
   parse_option_type_bool_with_optional_value,
   parse_option_type_bool_without_value,
-  parse_option_type_string_with_required_value,
-  parse_unrecognized,
+  parse_option_type_string_with_required_value, parse_unrecognized,
 };
 use commander::OptionConfig;
 use croftsoft_commander_examples::constants::*;

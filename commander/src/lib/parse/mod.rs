@@ -4,6 +4,7 @@
 //! # Metadata
 //! - Author: [`David Wallace Croft`]
 //! - Copyright: &copy; 2022 [`CroftSoft Inc`]
+//! - Version: 2022-11-18
 //! - Since: 2022-04-02
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
@@ -174,7 +175,7 @@ pub fn parse_unrecognized(
 ) -> Option<Vec<String>> {
   let mut unrecognized_set: HashSet<String> = HashSet::new();
   'outer: for arg in args_slice {
-    if !arg.starts_with("-") {
+    if !arg.starts_with('-') {
       continue;
     }
     if arg.starts_with("--") {
@@ -195,7 +196,7 @@ pub fn parse_unrecognized(
       unrecognized_set.insert(String::from(option_name));
       continue;
     }
-    let option_name: &str = arg.strip_prefix("-").unwrap();
+    let option_name: &str = arg.strip_prefix('-').unwrap();
     if option_name.eq("") {
       unrecognized_set.insert(String::from(""));
       continue;
@@ -216,5 +217,5 @@ pub fn parse_unrecognized(
     return None;
   }
   let unrecognized_vector: Vec<String> = Vec::from_iter(unrecognized_set);
-  return Some(unrecognized_vector);
+  Some(unrecognized_vector)
 }

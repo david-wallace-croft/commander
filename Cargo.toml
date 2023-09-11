@@ -1,9 +1,7 @@
 [workspace]
+resolver = "2"
 
-members = [
-  "commander",
-  "examples",
-]
+members = ["commander", "examples"]
 
 # default-members = [
 #   "commander",

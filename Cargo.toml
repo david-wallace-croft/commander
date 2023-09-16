@@ -2,7 +2,3 @@
 resolver = "2"
 
 members = ["commander", "examples"]
-
-# default-members = [
-#   "commander",
-# ]

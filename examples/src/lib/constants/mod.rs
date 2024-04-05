@@ -3,8 +3,9 @@
 //!
 //! # Metadata
 //! - Author: [`David Wallace Croft`]
-//! - Copyright: &copy; 2022 [`CroftSoft Inc`]
-//! - Since: 2022-01-15
+//! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
+//! - Created: 2022-01-15
+//! - Updated: 2024-04-05
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -14,7 +15,7 @@ use commander::{AppInfo, HelpInfo, OptionConfig};
 
 pub const APP_INFO_ABOUT: &str = "Command-line arguments parser example";
 pub const APP_INFO_CONTACT: &str = "David Wallace Croft <david@CroftSoft.com>";
-pub const APP_INFO_COPYRIGHT: &str = "Copyright © 2022 CroftSoft Inc";
+pub const APP_INFO_COPYRIGHT: &str = "Copyright © 2022-2024 CroftSoft Inc";
 pub const APP_INFO_NAME: &str = "CroftSoft Commander Example";
 pub const ARG_HELP_BRIEF_DESCRIPTION: &str = "Show command-line options";
 pub const ARG_HELP_NAME_LONG: &str = "help";

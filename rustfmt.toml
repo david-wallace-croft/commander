@@ -1,12 +1,4 @@
-# Formatting configuration for CroftSoft Commander
 # https://rust-lang.github.io/rustfmt/
-#
-# Copyright 2023 CroftSoft Inc
-# https://www.CroftSoft.com/
-# Author: David Wallace Croft
-# https://www.CroftSoft.com/people/david/
-# Updated: 2023-07-27
-
 array_width = 1
 # condense_wildcard_suffixes = true
 fn_params_layout = "Vertical"
@@ -21,7 +13,7 @@ newline_style = "Unix"
 # normalize_comments = true
 remove_nested_parens = true
 single_line_if_else_max_width = 0
-# single_line_let_else_max_width = 0
+single_line_let_else_max_width = 0
 struct_lit_width = 0
 struct_variant_width = 0
 tab_spaces = 2

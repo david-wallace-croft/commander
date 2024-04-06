@@ -9,6 +9,7 @@ version = "0.1.1-SNAPSHOT"
 #   https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+assert_cmd = "2.0.14"
 clap = { version = "3", features = ["derive"] }
 croftsoft-commander = { path = "../commander" }
 

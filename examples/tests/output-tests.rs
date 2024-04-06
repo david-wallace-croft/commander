@@ -73,7 +73,17 @@ fn test_output_args_non_interactive_name() {
 }
 
 #[test]
-fn test_output_args_unrecognized() {
+fn test_output_args_unrecognized_long() {
+  make_command()
+    .args(&["--unrecognized"])
+    .assert()
+    .success()
+    // TODO: Should this go to standard error?
+    .stdout("Unrecognized option: \"unrecognized\"\n");
+}
+
+#[test]
+fn test_output_args_unrecognized_short() {
   make_command()
     .args(&["-u"])
     .assert()

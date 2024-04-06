@@ -1,6 +1,7 @@
 use ::assert_cmd::assert::Assert;
 use ::assert_cmd::cargo::CargoError;
 use ::assert_cmd::prelude::*;
+use ::predicates::prelude::*;
 use ::std::process::Command;
 
 fn make_command() -> Command {
@@ -61,6 +62,17 @@ fn test_output_args_non_interactive() {
     .stdout("Hello, World!\n");
 }
 
+// TODO: This test is failing due to a bug in the tested code.
+#[ignore]
+#[test]
+fn test_output_args_non_interactive_equals() {
+  make_command()
+    .args(&["-i=false"])
+    .assert()
+    .success()
+    .stdout("Hello, World!\n");
+}
+
 #[test]
 fn test_output_args_non_interactive_name() {
   make_command()
@@ -73,10 +85,22 @@ fn test_output_args_non_interactive_name() {
 }
 
 #[test]
+fn test_output_args_non_interactive_name_predicate() {
+  make_command()
+    .args(&[
+      "-i", "false", "--name", "David",
+    ])
+    .assert()
+    .success()
+    .stdout(predicate::str::contains("David"));
+}
+
+#[test]
 fn test_output_args_unrecognized_long() {
   make_command()
     .args(&["--unrecognized"])
     .assert()
+    // TODO: Should this be failure?
     .success()
     // TODO: Should this go to standard error?
     .stdout("Unrecognized option: \"unrecognized\"\n");
@@ -87,6 +111,7 @@ fn test_output_args_unrecognized_short() {
   make_command()
     .args(&["-u"])
     .assert()
+    // TODO: Should this be failure?
     .success()
     // TODO: Should this go to standard error?
     .stdout("Unrecognized option: \"u\"\n");

@@ -12,6 +12,7 @@ version = "0.1.1-SNAPSHOT"
 assert_cmd = "2.0.14"
 clap = { version = "3", features = ["derive"] }
 croftsoft-commander = { path = "../commander" }
+predicates = "3.1.0"
 
 [[example]]
 name = "example-clap"

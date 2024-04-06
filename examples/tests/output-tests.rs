@@ -3,12 +3,16 @@ use ::assert_cmd::cargo::CargoError;
 use ::assert_cmd::prelude::*;
 use ::std::process::Command;
 
-#[test]
-fn test_output_no_args() {
+fn make_command() -> Command {
   let result: Result<Command, CargoError> =
     Command::cargo_bin("examples/example_commander");
 
-  let mut command: Command = result.expect("Binary not found");
+  result.expect("Binary not found")
+}
+
+#[test]
+fn test_output_no_args() {
+  let mut command: Command = make_command();
 
   let assert: Assert = command.assert();
 
@@ -20,13 +24,8 @@ fn test_output_no_args() {
 
 #[test]
 fn test_output_args_help() {
-  Command::cargo_bin("examples/example_commander")
-    .expect("Binary not found")
-    .args(&["--help"])
-    .assert()
-    .success()
-    .stdout(
-      r#"
+  make_command().args(&["--help"]).assert().success().stdout(
+    r#"
 CroftSoft Commander Example
 Copyright © 2022-2024 CroftSoft Inc
 David Wallace Croft <david@CroftSoft.com>
@@ -37,17 +36,48 @@ OPTIONS:
   -i, --interactive  true/false, defaults to true
   -n, --name         Any value not starting with a hyphen (-)
 "#,
-    );
+  );
 }
 
 #[test]
 fn test_output_args_name() {
-  Command::cargo_bin("examples/example_commander")
-    .expect("Binary not found")
+  make_command()
     .args(&[
       "--name", "David",
     ])
     .assert()
     .success()
     .stdout("\nWhat is your name? [David]: Hello, David!\n");
+}
+
+#[test]
+fn test_output_args_non_interactive() {
+  make_command()
+    .args(&[
+      "-i", "false",
+    ])
+    .assert()
+    .success()
+    .stdout("Hello, World!\n");
+}
+
+#[test]
+fn test_output_args_non_interactive_name() {
+  make_command()
+    .args(&[
+      "-i", "false", "--name", "David",
+    ])
+    .assert()
+    .success()
+    .stdout("Hello, David!\n");
+}
+
+#[test]
+fn test_output_args_unrecognized() {
+  make_command()
+    .args(&["-u"])
+    .assert()
+    .success()
+    // TODO: Should this go to standard error?
+    .stdout("Unrecognized option: \"u\"\n");
 }

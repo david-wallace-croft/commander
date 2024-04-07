@@ -1,3 +1,16 @@
+//==============================================================================
+//! Integration tests that check the standard output.
+//!
+//! # Metadata
+//! - Author: [`David Wallace Croft`]
+//! - Copyright: &copy; 2024 [`CroftSoft Inc`]
+//! - Created: 2022-04-06
+//! - Updated: 2024-04-07
+//!
+//! [`CroftSoft Inc`]: https://www.croftsoft.com/
+//! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
+//==============================================================================
+
 use ::assert_cmd::assert::Assert;
 use ::assert_cmd::cargo::CargoError;
 use ::assert_cmd::prelude::*;
@@ -62,12 +75,19 @@ fn test_output_args_non_interactive() {
     .stdout("Hello, World!\n");
 }
 
-// TODO: This test is failing due to a bug in the tested code.
-#[ignore]
 #[test]
 fn test_output_args_non_interactive_equals() {
   make_command()
     .args(&["-i=false"])
+    .assert()
+    .success()
+    .stdout("Hello, World!\n");
+}
+
+#[test]
+fn test_output_args_non_interactive_long_equals() {
+  make_command()
+    .args(&["--interactive=false"])
     .assert()
     .success()
     .stdout("Hello, World!\n");

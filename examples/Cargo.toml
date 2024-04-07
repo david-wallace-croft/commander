@@ -3,7 +3,7 @@ authors = ["David Wallace Croft <david@CroftSoft.com>"]
 edition = "2021"
 name = "croftsoft-commander-examples"
 rust-version = "1.56.1"
-version = "0.1.1-SNAPSHOT"
+version = "0.1.1"
 
 # See more keys and their definitions at
 #   https://doc.rust-lang.org/cargo/reference/manifest.html

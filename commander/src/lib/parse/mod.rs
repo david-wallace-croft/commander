@@ -5,7 +5,7 @@
 //! - Author: [`David Wallace Croft`]
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-04-07
+//! - Updated: 2024-04-09
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -246,10 +246,12 @@ pub fn parse_unrecognized(
           continue 'outer;
         }
 
-        let name_long_equals: String = format!("{name_long}=");
+        if recognized_option.can_have_value {
+          let name_long_equals: String = format!("{name_long}=");
 
-        if option_name.starts_with(&name_long_equals) {
-          continue 'outer;
+          if option_name.starts_with(&name_long_equals) {
+            continue 'outer;
+          }
         }
       }
 
@@ -279,10 +281,12 @@ pub fn parse_unrecognized(
         continue 'outer;
       }
 
-      let name_short_string_equals: String = format!("{name_short_string}=");
+      if recognized_option.can_have_value {
+        let name_short_string_equals: String = format!("{name_short_string}=");
 
-      if option_name.starts_with(&name_short_string_equals) {
-        continue 'outer;
+        if option_name.starts_with(&name_short_string_equals) {
+          continue 'outer;
+        }
       }
     }
 

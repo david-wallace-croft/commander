@@ -46,6 +46,8 @@
   - Show an error message for the unrecognized option
 - cargo run --example example-commander -- --unrecognized
   - Show an error message for the unrecognized option
+- cargo run --example example-commander -- --help=true
+  - Show an error message for an invalid option value
 
 ### clap Example
 

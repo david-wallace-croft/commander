@@ -4,8 +4,8 @@
 //! # Metadata
 //! - Author: [`David Wallace Croft`]
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
-//! - Created: 2022-04-06
-//! - Updated: 2024-04-07
+//! - Created: 2024-04-06
+//! - Updated: 2024-04-09
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -135,4 +135,15 @@ fn test_output_args_unrecognized_short() {
     .success()
     // TODO: Should this go to standard error?
     .stdout("Unrecognized option: \"u\"\n");
+}
+
+#[test]
+fn test_output_args_unrecognized_option_value() {
+  make_command()
+    .args(&["-h=true"])
+    .assert()
+    // TODO: Should this be failure?
+    .success()
+    // TODO: Should this go to standard error?
+    .stdout("Unrecognized option: \"h=true\"\n");
 }

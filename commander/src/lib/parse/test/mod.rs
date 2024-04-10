@@ -48,13 +48,35 @@ fn test_parse_option_type_bool_without_value() {
 }
 
 //----------------------------------------------------------------------------
+/// Unit test for parse_option_type_bool_without_value()
+/// where the OptionConfig can have a value.
+//----------------------------------------------------------------------------
+#[test]
+fn test_parse_option_type_bool_without_value_with_can_have_value() {
+  const ARG_OPTION_TEST_CAN_HAVE_VALUE: OptionConfig = OptionConfig {
+    brief_description: None,
+    can_have_value: true,
+    default_value_bool: false,
+    is_type_bool: true,
+    name_long: Some("TEST"),
+    name_short: Some('T'),
+  };
+  let test_args_slice: &[String] = &["--TEST".to_string()];
+  let actual_result: bool = parse_option_type_bool_without_value(
+    test_args_slice,
+    &ARG_OPTION_TEST_CAN_HAVE_VALUE,
+  );
+  assert_eq!(false, actual_result);
+}
+
+//----------------------------------------------------------------------------
 /// Unit test for parse_option_type_bool_with_optional_value()
 //----------------------------------------------------------------------------
 #[test]
 fn test_parse_option_type_bool_with_optional_value() {
   const ARG_OPTION_TEST: OptionConfig = OptionConfig {
     brief_description: None,
-    can_have_value: false,
+    can_have_value: true,
     default_value_bool: false,
     is_type_bool: true,
     name_long: Some("TEST"),
@@ -181,6 +203,28 @@ fn test_parse_option_type_bool_with_optional_value() {
 
 //----------------------------------------------------------------------------
 /// Unit test for parse_option_type_bool_with_optional_value()
+/// where OptionConfig cannot have a value.
+//----------------------------------------------------------------------------
+#[test]
+fn test_parse_option_type_bool_with_optional_value_where_cannot_have_value() {
+  const ARG_OPTION_TEST_CANNOT_HAVE_VALUE: OptionConfig = OptionConfig {
+    brief_description: None,
+    can_have_value: false,
+    default_value_bool: false,
+    is_type_bool: true,
+    name_long: Some("TEST"),
+    name_short: Some('T'),
+  };
+  let test_args_slice: &[String] = &["--TEST=true".to_string()];
+  let actual_result = parse_option_type_bool_with_optional_value(
+    test_args_slice,
+    &ARG_OPTION_TEST_CANNOT_HAVE_VALUE,
+  );
+  assert_eq!(false, actual_result);
+}
+
+//----------------------------------------------------------------------------
+/// Unit test for parse_option_type_bool_with_optional_value()
 //----------------------------------------------------------------------------
 #[test]
 fn test_parse_option_type_string_with_required_value() {
@@ -240,6 +284,28 @@ fn test_parse_option_type_string_with_required_value() {
       &ARG_OPTION_TEST,
     );
   assert_eq!(Some(String::from("")), actual_result);
+}
+
+//----------------------------------------------------------------------------
+/// Unit test for parse_option_type_bool_with_optional_value()
+//----------------------------------------------------------------------------
+#[test]
+fn test_parse_option_type_string_with_required_value_where_cannot_have_value() {
+  const ARG_OPTION_TEST_CANNOT_HAVE_VALUE: OptionConfig = OptionConfig {
+    brief_description: None,
+    can_have_value: false,
+    default_value_bool: false,
+    is_type_bool: false,
+    name_long: Some("TEST"),
+    name_short: Some('T'),
+  };
+  let test_args_slice: &[String] = &["--TEST=abc".to_string()];
+  let actual_result: Option<String> =
+    parse_option_type_string_with_required_value(
+      test_args_slice,
+      &ARG_OPTION_TEST_CANNOT_HAVE_VALUE,
+    );
+  assert_eq!(None, actual_result);
 }
 
 #[test]

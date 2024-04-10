@@ -24,6 +24,12 @@ pub fn parse_option_type_bool_without_value(
   args_slice: &[String],
   option_config: &OptionConfig,
 ) -> bool {
+  if option_config.can_have_value {
+    // TODO: Change function signature such that only an option_config
+    // subtype that cannot have a value is passed in.
+    return false;
+  }
+
   if option_config.name_short.is_some() {
     let hyphenated_name_short: String =
       format!("-{}", option_config.name_short.unwrap());
@@ -52,6 +58,12 @@ pub fn parse_option_type_bool_with_optional_value(
   args_slice: &[String],
   option_config: &OptionConfig,
 ) -> bool {
+  if !option_config.can_have_value {
+    // TODO: Change function signature such that only an option_config
+    // subtype that can have a value is passed in.
+    return false;
+  }
+
   let length: usize = args_slice.len();
 
   if option_config.name_short.is_some() {
@@ -141,6 +153,12 @@ pub fn parse_option_type_string_with_required_value(
   args_slice: &[String],
   option_config: &OptionConfig,
 ) -> Option<String> {
+  if !option_config.can_have_value {
+    // TODO: Change function signature such that only an option_config
+    // subtype that can have a value is passed in.
+    return None;
+  }
+
   let length: usize = args_slice.len();
 
   if option_config.name_short.is_some() {

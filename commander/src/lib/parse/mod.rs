@@ -2,10 +2,10 @@
 //! Functions to parse options from command-line arguments
 //!
 //! # Metadata
-//! - Author: [`David Wallace Croft`]
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
+//! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-04-09
+//! - Updated: 2024-04-11
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -15,7 +15,10 @@
 mod test;
 
 use crate::*;
-use std::collections::HashSet;
+use ::std::collections::HashSet;
+
+#[derive(Debug, PartialEq)]
+pub struct ParseError;
 
 //------------------------------------------------------------------------------
 /// Parses a boolean option that has no value
@@ -57,11 +60,11 @@ pub fn parse_option_type_bool_without_value(
 pub fn parse_option_type_bool_with_optional_value(
   args_slice: &[String],
   option_config: &OptionConfig,
-) -> bool {
+) -> Result<bool, ParseError> {
   if !option_config.can_have_value {
     // TODO: Change function signature such that only an option_config
     // subtype that can have a value is passed in.
-    return false;
+    return Err(ParseError);
   }
 
   let length: usize = args_slice.len();
@@ -81,11 +84,11 @@ pub fn parse_option_type_bool_with_optional_value(
       let arg: &String = &args_slice[index];
 
       if arg.eq(&hyphenated_name_short_equals_false) {
-        return false;
+        return Ok(false);
       }
 
       if arg.eq(&hyphenated_name_short_equals_true) {
-        return true;
+        return Ok(true);
       }
 
       if !arg.eq(&hyphenated_name_short) {
@@ -96,11 +99,11 @@ pub fn parse_option_type_bool_with_optional_value(
         let value: &String = &args_slice[index + 1];
 
         if value.eq("false") {
-          return false;
+          return Ok(false);
         }
       }
 
-      return true;
+      return Ok(true);
     }
   }
 
@@ -119,11 +122,11 @@ pub fn parse_option_type_bool_with_optional_value(
       let arg: &String = &args_slice[index];
 
       if arg.eq(&hyphenated_name_long_equals_false) {
-        return false;
+        return Ok(false);
       }
 
       if arg.eq(&hyphenated_name_long_equals_true) {
-        return true;
+        return Ok(true);
       }
 
       if !arg.eq(&hyphenated_name_long) {
@@ -134,15 +137,15 @@ pub fn parse_option_type_bool_with_optional_value(
         let value: &String = &args_slice[index + 1];
 
         if value.eq("false") {
-          return false;
+          return Ok(false);
         }
       }
 
-      return true;
+      return Ok(true);
     }
   }
 
-  option_config.default_value_bool
+  Ok(option_config.default_value_bool)
 }
 
 //------------------------------------------------------------------------------

@@ -2,9 +2,10 @@
 //! CroftSoft Commander library usage example application
 //!
 //! # Metadata
+//! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
-//! - Copyright: &copy; 2022 [`CroftSoft Inc`]
-//! - Since: 2022-01-15
+//! - Created: 2022-01-15
+//! - Updated: 2024-04-11
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -14,6 +15,7 @@ pub mod constants;
 #[cfg(test)]
 mod test;
 
+use commander::parse::ParseError;
 use commander::print::print_help;
 use commander::print::print_unrecognized_options;
 use constants::*;
@@ -22,7 +24,7 @@ use std::io::{stdin, stdout, Error, Stdin, Write};
 #[derive(Debug)]
 pub struct OptionValues {
   pub help_wanted: bool,
-  pub interactive: bool,
+  pub interactive: Result<bool, ParseError>,
   pub name_option: Option<String>,
   pub unrecognized: Option<Vec<String>>,
 }
@@ -71,14 +73,16 @@ pub fn main(option_values: OptionValues) {
 fn make_greeting(option_values: OptionValues) -> String {
   let name: String = match option_values.name_option {
     Some(arg_name) => {
-      if option_values.interactive {
+      if option_values.interactive.is_ok() && option_values.interactive.unwrap()
+      {
         ask(NAME_PROMPT, &arg_name)
       } else {
         arg_name
       }
     },
     None => {
-      if option_values.interactive {
+      if option_values.interactive.is_ok() && option_values.interactive.unwrap()
+      {
         ask(NAME_PROMPT, NAME_DEFAULT)
       } else {
         NAME_DEFAULT.to_string()

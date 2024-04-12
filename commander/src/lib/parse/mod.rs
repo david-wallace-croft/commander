@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-04-11
+//! - Updated: 2024-04-12
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -74,34 +74,48 @@ pub fn parse_option_type_bool_with_optional_value(
 
     let hyphenated_name_short: String = format!("-{}", arg_option_name_short);
 
-    let hyphenated_name_short_equals_false: String =
-      format!("-{}=false", arg_option_name_short);
-
-    let hyphenated_name_short_equals_true: String =
-      format!("-{}=true", arg_option_name_short);
+    let hyphenated_name_short_equals: String =
+      format!("-{}=", arg_option_name_short);
 
     for index in 0..length {
       let arg: &String = &args_slice[index];
 
-      if arg.eq(&hyphenated_name_short_equals_false) {
-        return Ok(false);
-      }
+      if arg.starts_with(&hyphenated_name_short_equals) {
+        // TODO: duplicate this logic for long
 
-      if arg.eq(&hyphenated_name_short_equals_true) {
-        return Ok(true);
+        let value: &str =
+          arg.strip_prefix(&hyphenated_name_short_equals).unwrap();
+
+        if value.eq("false") {
+          return Ok(false);
+        }
+
+        if value.eq("true") {
+          return Ok(true);
+        }
+
+        return Err(ParseError);
       }
 
       if !arg.eq(&hyphenated_name_short) {
         continue;
       }
 
-      if index < length - 1 {
-        let value: &String = &args_slice[index + 1];
-
-        if value.eq("false") {
-          return Ok(false);
-        }
+      if index == length - 1 {
+        return Ok(true);
       }
+
+      let value: &String = &args_slice[index + 1];
+
+      if value.eq("false") {
+        return Ok(false);
+      }
+
+      if value.eq("true") {
+        return Ok(true);
+      }
+
+      // TODO: What if it is an unrelated argument?
 
       return Ok(true);
     }

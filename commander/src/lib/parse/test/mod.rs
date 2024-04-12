@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-04-11
+//! - Updated: 2024-04-12
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -70,11 +70,8 @@ fn test_parse_option_type_bool_without_value_with_can_have_value() {
   assert_eq!(false, actual_result);
 }
 
-//----------------------------------------------------------------------------
-/// Unit test for parse_option_type_bool_with_optional_value()
-//----------------------------------------------------------------------------
 #[test]
-fn test_parse_option_type_bool_with_optional_value() {
+fn test_parse_option_type_bool_with_optional_value_0() {
   const ARG_OPTION_TEST: OptionConfig = OptionConfig {
     brief_description: None,
     can_have_value: true,
@@ -89,6 +86,18 @@ fn test_parse_option_type_bool_with_optional_value() {
     &ARG_OPTION_TEST,
   );
   assert_eq!(Ok(true), actual_result);
+}
+
+#[test]
+fn test_parse_option_type_bool_with_optional_value_1() {
+  const ARG_OPTION_TEST: OptionConfig = OptionConfig {
+    brief_description: None,
+    can_have_value: true,
+    default_value_bool: false,
+    is_type_bool: true,
+    name_long: Some("TEST"),
+    name_short: Some('T'),
+  };
   let test_args_slice: &[String] = &[
     "-T".to_string(),
     "false".to_string(),
@@ -98,6 +107,18 @@ fn test_parse_option_type_bool_with_optional_value() {
     &ARG_OPTION_TEST,
   );
   assert_eq!(Ok(false), actual_result);
+}
+
+#[test]
+fn test_parse_option_type_bool_with_optional_value_2() {
+  const ARG_OPTION_TEST: OptionConfig = OptionConfig {
+    brief_description: None,
+    can_have_value: true,
+    default_value_bool: false,
+    is_type_bool: true,
+    name_long: Some("TEST"),
+    name_short: Some('T'),
+  };
   let test_args_slice: &[String] = &[
     "-T".to_string(),
     "true".to_string(),
@@ -107,12 +128,36 @@ fn test_parse_option_type_bool_with_optional_value() {
     &ARG_OPTION_TEST,
   );
   assert_eq!(Ok(true), actual_result);
+}
+
+#[test]
+fn test_parse_option_type_bool_with_optional_value_3() {
+  const ARG_OPTION_TEST: OptionConfig = OptionConfig {
+    brief_description: None,
+    can_have_value: true,
+    default_value_bool: false,
+    is_type_bool: true,
+    name_long: Some("TEST"),
+    name_short: Some('T'),
+  };
   let test_args_slice: &[String] = &["-t".to_string()];
   let actual_result = parse_option_type_bool_with_optional_value(
     test_args_slice,
     &ARG_OPTION_TEST,
   );
   assert_eq!(Ok(false), actual_result);
+}
+
+#[test]
+fn test_parse_option_type_bool_with_optional_value_4() {
+  const ARG_OPTION_TEST: OptionConfig = OptionConfig {
+    brief_description: None,
+    can_have_value: true,
+    default_value_bool: false,
+    is_type_bool: true,
+    name_long: Some("TEST"),
+    name_short: Some('T'),
+  };
   let test_args_slice: &[String] = &[
     "-t".to_string(),
     "true".to_string(),
@@ -122,12 +167,36 @@ fn test_parse_option_type_bool_with_optional_value() {
     &ARG_OPTION_TEST,
   );
   assert_eq!(Ok(false), actual_result);
+}
+
+#[test]
+fn test_parse_option_type_bool_with_optional_value_5() {
+  const ARG_OPTION_TEST: OptionConfig = OptionConfig {
+    brief_description: None,
+    can_have_value: true,
+    default_value_bool: false,
+    is_type_bool: true,
+    name_long: Some("TEST"),
+    name_short: Some('T'),
+  };
   let test_args_slice: &[String] = &["--TEST".to_string()];
   let actual_result = parse_option_type_bool_with_optional_value(
     test_args_slice,
     &ARG_OPTION_TEST,
   );
   assert_eq!(Ok(true), actual_result);
+}
+
+#[test]
+fn test_parse_option_type_bool_with_optional_value_6() {
+  const ARG_OPTION_TEST: OptionConfig = OptionConfig {
+    brief_description: None,
+    can_have_value: true,
+    default_value_bool: false,
+    is_type_bool: true,
+    name_long: Some("TEST"),
+    name_short: Some('T'),
+  };
   let test_args_slice: &[String] = &[
     "--TEST".to_string(),
     "false".to_string(),
@@ -137,6 +206,18 @@ fn test_parse_option_type_bool_with_optional_value() {
     &ARG_OPTION_TEST,
   );
   assert_eq!(Ok(false), actual_result);
+}
+
+#[test]
+fn test_parse_option_type_bool_with_optional_value_7() {
+  const ARG_OPTION_TEST: OptionConfig = OptionConfig {
+    brief_description: None,
+    can_have_value: true,
+    default_value_bool: false,
+    is_type_bool: true,
+    name_long: Some("TEST"),
+    name_short: Some('T'),
+  };
   let test_args_slice: &[String] = &[
     "--TEST".to_string(),
     "true".to_string(),
@@ -146,12 +227,36 @@ fn test_parse_option_type_bool_with_optional_value() {
     &ARG_OPTION_TEST,
   );
   assert_eq!(Ok(true), actual_result);
+}
+
+#[test]
+fn test_parse_option_type_bool_with_optional_value_8() {
+  const ARG_OPTION_TEST: OptionConfig = OptionConfig {
+    brief_description: None,
+    can_have_value: true,
+    default_value_bool: false,
+    is_type_bool: true,
+    name_long: Some("TEST"),
+    name_short: Some('T'),
+  };
   let test_args_slice: &[String] = &["--test".to_string()];
   let actual_result = parse_option_type_bool_with_optional_value(
     test_args_slice,
     &ARG_OPTION_TEST,
   );
   assert_eq!(Ok(false), actual_result);
+}
+
+#[test]
+fn test_parse_option_type_bool_with_optional_value_9() {
+  const ARG_OPTION_TEST: OptionConfig = OptionConfig {
+    brief_description: None,
+    can_have_value: true,
+    default_value_bool: false,
+    is_type_bool: true,
+    name_long: Some("TEST"),
+    name_short: Some('T'),
+  };
   let test_args_slice: &[String] = &[
     "--test".to_string(),
     "true".to_string(),
@@ -161,12 +266,38 @@ fn test_parse_option_type_bool_with_optional_value() {
     &ARG_OPTION_TEST,
   );
   assert_eq!(Ok(false), actual_result);
+}
+
+#[test]
+fn test_parse_option_type_bool_with_optional_value_10() {
+  const ARG_OPTION_TEST: OptionConfig = OptionConfig {
+    brief_description: None,
+    can_have_value: true,
+    default_value_bool: false,
+    is_type_bool: true,
+    name_long: Some("TEST"),
+    name_short: Some('T'),
+  };
   let test_args_slice: &[String] = &["-TEST".to_string()];
   let actual_result = parse_option_type_bool_with_optional_value(
     test_args_slice,
     &ARG_OPTION_TEST,
   );
+  // TODO: This should be unrecognized error
   assert_eq!(Ok(false), actual_result);
+}
+
+#[test]
+fn test_parse_option_type_bool_with_optional_value_11() {
+  const ARG_OPTION_TEST: OptionConfig = OptionConfig {
+    brief_description: None,
+    can_have_value: true,
+    default_value_bool: false,
+    is_type_bool: true,
+    name_long: Some("TEST"),
+    name_short: Some('T'),
+  };
+
   let test_args_slice: &[String] = &[
     "-TEST".to_string(),
     "true".to_string(),
@@ -175,31 +306,98 @@ fn test_parse_option_type_bool_with_optional_value() {
     test_args_slice,
     &ARG_OPTION_TEST,
   );
+  // TODO: This should be unrecognized error
   assert_eq!(Ok(false), actual_result);
+}
+
+#[test]
+fn test_parse_option_type_bool_with_optional_value_12() {
+  const ARG_OPTION_TEST: OptionConfig = OptionConfig {
+    brief_description: None,
+    can_have_value: true,
+    default_value_bool: false,
+    is_type_bool: true,
+    name_long: Some("TEST"),
+    name_short: Some('T'),
+  };
   let test_args_slice: &[String] = &["-T=false".to_string()];
   let actual_result = parse_option_type_bool_with_optional_value(
     test_args_slice,
     &ARG_OPTION_TEST,
   );
   assert_eq!(Ok(false), actual_result);
+}
+
+#[test]
+fn test_parse_option_type_bool_with_optional_value_13() {
+  const ARG_OPTION_TEST: OptionConfig = OptionConfig {
+    brief_description: None,
+    can_have_value: true,
+    default_value_bool: false,
+    is_type_bool: true,
+    name_long: Some("TEST"),
+    name_short: Some('T'),
+  };
   let test_args_slice: &[String] = &["-T=true".to_string()];
   let actual_result = parse_option_type_bool_with_optional_value(
     test_args_slice,
     &ARG_OPTION_TEST,
   );
   assert_eq!(Ok(true), actual_result);
+}
+
+#[test]
+fn test_parse_option_type_bool_with_optional_value_14() {
+  const ARG_OPTION_TEST: OptionConfig = OptionConfig {
+    brief_description: None,
+    can_have_value: true,
+    default_value_bool: false,
+    is_type_bool: true,
+    name_long: Some("TEST"),
+    name_short: Some('T'),
+  };
   let test_args_slice: &[String] = &["--TEST=false".to_string()];
   let actual_result = parse_option_type_bool_with_optional_value(
     test_args_slice,
     &ARG_OPTION_TEST,
   );
   assert_eq!(Ok(false), actual_result);
+}
+
+#[test]
+fn test_parse_option_type_bool_with_optional_value_15() {
+  const ARG_OPTION_TEST: OptionConfig = OptionConfig {
+    brief_description: None,
+    can_have_value: true,
+    default_value_bool: false,
+    is_type_bool: true,
+    name_long: Some("TEST"),
+    name_short: Some('T'),
+  };
   let test_args_slice: &[String] = &["--TEST=true".to_string()];
   let actual_result = parse_option_type_bool_with_optional_value(
     test_args_slice,
     &ARG_OPTION_TEST,
   );
   assert_eq!(Ok(true), actual_result);
+}
+
+#[test]
+fn test_parse_option_type_bool_with_optional_value_16() {
+  const ARG_OPTION_TEST: OptionConfig = OptionConfig {
+    brief_description: None,
+    can_have_value: true,
+    default_value_bool: false,
+    is_type_bool: true,
+    name_long: Some("TEST"),
+    name_short: Some('T'),
+  };
+  let test_args_slice: &[String] = &["-T=invalid".to_string()];
+  let actual_result = parse_option_type_bool_with_optional_value(
+    test_args_slice,
+    &ARG_OPTION_TEST,
+  );
+  assert_eq!(Err(ParseError), actual_result);
 }
 
 //----------------------------------------------------------------------------

@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-04-11
+//! - Updated: 2024-04-13
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -14,7 +14,8 @@
 use commander::parse::{
   parse_option_type_bool_with_optional_value,
   parse_option_type_bool_without_value,
-  parse_option_type_string_with_required_value, parse_unrecognized, ParseError,
+  parse_option_type_string_with_required_value, parse_unrecognized,
+  CommanderParseError,
 };
 use commander::OptionConfig;
 use croftsoft_commander_examples::constants::*;
@@ -40,7 +41,7 @@ pub fn parse_option_values_using_commander() -> OptionValues {
   let args_slice: &[String] = &args[1..];
   let help_wanted: bool =
     parse_option_type_bool_without_value(args_slice, &OPTION_CONFIG_H);
-  let interactive: Result<bool, ParseError> =
+  let interactive: Result<bool, CommanderParseError> =
     parse_option_type_bool_with_optional_value(args_slice, &OPTION_CONFIG_I);
   // TODO: parse_option_type_string_with_default_value
   let name_option: Option<String> =

@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-04-12
+//! - Updated: 2024-04-13
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -18,7 +18,62 @@ use crate::*;
 use ::std::collections::HashSet;
 
 #[derive(Debug, PartialEq)]
-pub struct ParseError;
+pub struct CommanderParseError;
+
+fn parse_hyphenated_option_name_with_optional_boolean_value(
+  args_slice: &[String],
+  hyphenated_option_name: &str,
+) -> Option<Result<Option<bool>, CommanderParseError>> {
+  let hyphenated_option_name_equals: String =
+    format!("{}=", hyphenated_option_name);
+
+  let length: usize = args_slice.len();
+
+  for index in 0..length {
+    let arg: &String = &args_slice[index];
+
+    if arg.starts_with(&hyphenated_option_name_equals) {
+      let value: &str =
+        arg.strip_prefix(&hyphenated_option_name_equals).unwrap();
+
+      if value.eq("false") {
+        return Some(Ok(Some(false)));
+      }
+
+      if value.eq("true") {
+        return Some(Ok(Some(true)));
+      }
+
+      return Some(Err(CommanderParseError));
+    }
+
+    if !arg.eq(&hyphenated_option_name) {
+      continue;
+    }
+
+    // TODO: Should we support values without equals?
+
+    if index == length - 1 {
+      return Some(Ok(None));
+    }
+
+    let value: &String = &args_slice[index + 1];
+
+    if value.eq("false") {
+      return Some(Ok(Some(false)));
+    }
+
+    if value.eq("true") {
+      return Some(Ok(Some(true)));
+    }
+
+    // TODO: What if it is an unrelated argument?
+
+    return Some(Ok(None));
+  }
+
+  return None;
+}
 
 //------------------------------------------------------------------------------
 /// Parses a boolean option that has no value
@@ -60,102 +115,44 @@ pub fn parse_option_type_bool_without_value(
 pub fn parse_option_type_bool_with_optional_value(
   args_slice: &[String],
   option_config: &OptionConfig,
-) -> Result<bool, ParseError> {
+) -> Result<bool, CommanderParseError> {
   if !option_config.can_have_value {
     // TODO: Change function signature such that only an option_config
     // subtype that can have a value is passed in.
-    return Err(ParseError);
+    return Err(CommanderParseError);
   }
 
-  let length: usize = args_slice.len();
+  // TODO: What if it is a bunch of short options put together, e.g., -abc?
 
   if option_config.name_short.is_some() {
     let arg_option_name_short: char = option_config.name_short.unwrap();
 
-    let hyphenated_name_short: String = format!("-{}", arg_option_name_short);
+    let hyphenated_option_name: String = format!("-{}", arg_option_name_short);
 
-    let hyphenated_name_short_equals: String =
-      format!("-{}=", arg_option_name_short);
+    let result_option =
+      parse_hyphenated_option_name_with_optional_boolean_value(
+        args_slice,
+        &hyphenated_option_name,
+      );
 
-    for index in 0..length {
-      let arg: &String = &args_slice[index];
-
-      if arg.starts_with(&hyphenated_name_short_equals) {
-        // TODO: duplicate this logic for long
-
-        let value: &str =
-          arg.strip_prefix(&hyphenated_name_short_equals).unwrap();
-
-        if value.eq("false") {
-          return Ok(false);
-        }
-
-        if value.eq("true") {
-          return Ok(true);
-        }
-
-        return Err(ParseError);
-      }
-
-      if !arg.eq(&hyphenated_name_short) {
-        continue;
-      }
-
-      if index == length - 1 {
-        return Ok(true);
-      }
-
-      let value: &String = &args_slice[index + 1];
-
-      if value.eq("false") {
-        return Ok(false);
-      }
-
-      if value.eq("true") {
-        return Ok(true);
-      }
-
-      // TODO: What if it is an unrelated argument?
-
-      return Ok(true);
+    if result_option.is_some() {
+      return to_true_if_not_set(result_option.unwrap());
     }
   }
 
   if option_config.name_long.is_some() {
     let arg_option_name_long: &str = option_config.name_long.unwrap();
 
-    let hyphenated_name_long: String = format!("--{}", arg_option_name_long);
+    let hyphenated_option_name: String = format!("--{}", arg_option_name_long);
 
-    let hyphenated_name_long_equals_false: String =
-      format!("--{}=false", arg_option_name_long);
+    let result_option =
+      parse_hyphenated_option_name_with_optional_boolean_value(
+        args_slice,
+        &hyphenated_option_name,
+      );
 
-    let hyphenated_name_long_equals_true: String =
-      format!("--{}=true", arg_option_name_long);
-
-    for index in 0..length {
-      let arg: &String = &args_slice[index];
-
-      if arg.eq(&hyphenated_name_long_equals_false) {
-        return Ok(false);
-      }
-
-      if arg.eq(&hyphenated_name_long_equals_true) {
-        return Ok(true);
-      }
-
-      if !arg.eq(&hyphenated_name_long) {
-        continue;
-      }
-
-      if index < length - 1 {
-        let value: &String = &args_slice[index + 1];
-
-        if value.eq("false") {
-          return Ok(false);
-        }
-      }
-
-      return Ok(true);
+    if result_option.is_some() {
+      return to_true_if_not_set(result_option.unwrap());
     }
   }
 
@@ -335,4 +332,20 @@ pub fn parse_unrecognized(
   let unrecognized_vector: Vec<String> = Vec::from_iter(unrecognized_set);
 
   Some(unrecognized_vector)
+}
+
+fn to_true_if_not_set(
+  result: Result<Option<bool>, CommanderParseError>
+) -> Result<bool, CommanderParseError> {
+  if result.is_err() {
+    return Err(CommanderParseError);
+  }
+
+  let option_value: Option<bool> = result.unwrap();
+
+  if option_value.is_some() {
+    return Ok(option_value.unwrap());
+  }
+
+  return Ok(true);
 }

@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-04-12
+//! - Updated: 2024-04-13
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -397,7 +397,25 @@ fn test_parse_option_type_bool_with_optional_value_16() {
     test_args_slice,
     &ARG_OPTION_TEST,
   );
-  assert_eq!(Err(ParseError), actual_result);
+  assert_eq!(Err(CommanderParseError), actual_result);
+}
+
+#[test]
+fn test_parse_option_type_bool_with_optional_value_17() {
+  const ARG_OPTION_TEST: OptionConfig = OptionConfig {
+    brief_description: None,
+    can_have_value: true,
+    default_value_bool: false,
+    is_type_bool: true,
+    name_long: Some("TEST"),
+    name_short: Some('T'),
+  };
+  let test_args_slice: &[String] = &["--TEST=invalid".to_string()];
+  let actual_result = parse_option_type_bool_with_optional_value(
+    test_args_slice,
+    &ARG_OPTION_TEST,
+  );
+  assert_eq!(Err(CommanderParseError), actual_result);
 }
 
 //----------------------------------------------------------------------------
@@ -419,7 +437,7 @@ fn test_parse_option_type_bool_with_optional_value_where_cannot_have_value() {
     test_args_slice,
     &ARG_OPTION_TEST_CANNOT_HAVE_VALUE,
   );
-  assert_eq!(Err(ParseError), actual_result);
+  assert_eq!(Err(CommanderParseError), actual_result);
 }
 
 //----------------------------------------------------------------------------

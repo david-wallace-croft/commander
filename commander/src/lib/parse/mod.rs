@@ -24,6 +24,50 @@ fn parse_hyphenated_option_name_with_optional_boolean_value(
   args_slice: &[String],
   hyphenated_option_name: &str,
 ) -> Option<Result<Option<bool>, CommanderParseError>> {
+  let result_option: Option<Result<Option<String>, CommanderParseError>> =
+    parse_hyphenated_option_name_with_optional_string_value(
+      args_slice,
+      hyphenated_option_name,
+    );
+
+  if result_option.is_none() {
+    return None;
+  }
+
+  let result: Result<Option<String>, CommanderParseError> =
+    result_option.unwrap();
+
+  if result.is_err() {
+    let result_error: CommanderParseError = result.unwrap_err();
+
+    return Some(Err(result_error));
+  }
+
+  let value_option: Option<String> = result.unwrap();
+
+  if value_option.is_none() {
+    return Some(Ok(None));
+  }
+
+  let value: String = value_option.unwrap();
+
+  if value.eq("false") {
+    return Some(Ok(Some(false)));
+  }
+
+  if value.eq("true") {
+    return Some(Ok(Some(true)));
+  }
+
+  // TODO: What if it is an unrelated argument?
+
+  return Some(Ok(None));
+}
+
+fn parse_hyphenated_option_name_with_optional_string_value(
+  args_slice: &[String],
+  hyphenated_option_name: &str,
+) -> Option<Result<Option<String>, CommanderParseError>> {
   let hyphenated_option_name_equals: String =
     format!("{}=", hyphenated_option_name);
 
@@ -36,12 +80,10 @@ fn parse_hyphenated_option_name_with_optional_boolean_value(
       let value: &str =
         arg.strip_prefix(&hyphenated_option_name_equals).unwrap();
 
-      if value.eq("false") {
-        return Some(Ok(Some(false)));
-      }
+      if value.eq("false") || value.eq("true") {
+        let value_string = value.to_string();
 
-      if value.eq("true") {
-        return Some(Ok(Some(true)));
+        return Some(Ok(Some(value_string)));
       }
 
       return Some(Err(CommanderParseError));
@@ -59,12 +101,10 @@ fn parse_hyphenated_option_name_with_optional_boolean_value(
 
     let value: &String = &args_slice[index + 1];
 
-    if value.eq("false") {
-      return Some(Ok(Some(false)));
-    }
+    if value.eq("false") || value.eq("true") {
+      let value_string = value.to_string();
 
-    if value.eq("true") {
-      return Some(Ok(Some(true)));
+      return Some(Ok(Some(value_string)));
     }
 
     // TODO: What if it is an unrelated argument?

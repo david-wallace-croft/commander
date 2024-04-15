@@ -61,7 +61,7 @@ fn parse_hyphenated_option_name_with_optional_boolean_value(
 
   // TODO: What if it is an unrelated argument?
 
-  return Some(Ok(None));
+  return Some(Err(CommanderParseError));
 }
 
 fn parse_hyphenated_option_name_with_optional_string_value(
@@ -80,13 +80,11 @@ fn parse_hyphenated_option_name_with_optional_string_value(
       let value: &str =
         arg.strip_prefix(&hyphenated_option_name_equals).unwrap();
 
-      if value.eq("false") || value.eq("true") {
-        let value_string = value.to_string();
-
-        return Some(Ok(Some(value_string)));
+      if value.eq("") {
+        return Some(Err(CommanderParseError));
       }
 
-      return Some(Err(CommanderParseError));
+      return Some(Ok(Some(value.to_string())));
     }
 
     if !arg.eq(&hyphenated_option_name) {
@@ -101,15 +99,9 @@ fn parse_hyphenated_option_name_with_optional_string_value(
 
     let value: &String = &args_slice[index + 1];
 
-    if value.eq("false") || value.eq("true") {
-      let value_string = value.to_string();
-
-      return Some(Ok(Some(value_string)));
-    }
-
     // TODO: What if it is an unrelated argument?
 
-    return Some(Ok(None));
+    return Some(Ok(Some(value.clone())));
   }
 
   return None;
@@ -200,84 +192,48 @@ pub fn parse_option_type_bool_with_optional_value(
 }
 
 //------------------------------------------------------------------------------
-/// Parses an option that requires a string value
+/// Parses an option that has an optional string value
 //------------------------------------------------------------------------------
 // TODO: Can we return a string slice instead of a String?
-pub fn parse_option_type_string_with_required_value(
+pub fn parse_option_type_string_with_optional_value(
   args_slice: &[String],
   option_config: &OptionConfig,
-) -> Option<String> {
+) -> Option<Result<Option<String>, CommanderParseError>> {
   if !option_config.can_have_value {
     // TODO: Change function signature such that only an option_config
     // subtype that can have a value is passed in.
     return None;
   }
 
-  let length: usize = args_slice.len();
-
   if option_config.name_short.is_some() {
     let arg_option_name_short = option_config.name_short.unwrap();
 
-    let hyphenated_name_short: String = format!("-{}", arg_option_name_short);
+    let hyphenated_option_name: String = format!("-{}", arg_option_name_short);
 
-    let hyphenated_name_short_equals: &str =
-      &format!("-{}=", arg_option_name_short);
+    let result_option: Option<Result<Option<String>, CommanderParseError>> =
+      parse_hyphenated_option_name_with_optional_string_value(
+        args_slice,
+        &hyphenated_option_name,
+      );
 
-    for index in 0..length {
-      let arg: &String = &args_slice[index];
-
-      if arg.starts_with(hyphenated_name_short_equals) {
-        let value: &str =
-          arg.strip_prefix(hyphenated_name_short_equals).unwrap();
-
-        return Some(value.to_string());
-      }
-
-      if !arg.eq(&hyphenated_name_short) {
-        continue;
-      }
-
-      if index < length - 1 {
-        let value: &String = &args_slice[index + 1];
-
-        // TODO: What if value starts with a hyphen?
-        return Some(value.to_string());
-      } else {
-        return None;
-      }
+    if result_option.is_some() {
+      return result_option;
     }
   }
 
   if option_config.name_long.is_some() {
     let arg_option_name_long = option_config.name_long.unwrap();
 
-    let hyphenated_name_long: String = format!("--{}", arg_option_name_long);
+    let hyphenated_option_name: String = format!("--{}", arg_option_name_long);
 
-    let hyphenated_name_long_equals: &str =
-      &format!("--{}=", arg_option_name_long);
+    let result_option: Option<Result<Option<String>, CommanderParseError>> =
+      parse_hyphenated_option_name_with_optional_string_value(
+        args_slice,
+        &hyphenated_option_name,
+      );
 
-    for index in 0..length {
-      let arg: &String = &args_slice[index];
-
-      if arg.starts_with(hyphenated_name_long_equals) {
-        let value: &str =
-          arg.strip_prefix(hyphenated_name_long_equals).unwrap();
-
-        return Some(value.to_string());
-      }
-
-      if !arg.eq(&hyphenated_name_long) {
-        continue;
-      }
-
-      if index < length - 1 {
-        let value: &String = &args_slice[index + 1];
-
-        // TODO: What if value starts with a hyphen?
-        return Some(value.to_string());
-      } else {
-        return None;
-      }
+    if result_option.is_some() {
+      return result_option;
     }
   }
 

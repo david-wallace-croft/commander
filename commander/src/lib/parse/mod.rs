@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-04-13
+//! - Updated: 2024-04-16
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -114,7 +114,7 @@ pub fn parse_option_type_bool_without_value(
   args_slice: &[String],
   option_config: &OptionConfig,
 ) -> bool {
-  if option_config.can_have_value {
+  if option_config.option_value != OptionValue::Prohibited {
     // TODO: Change function signature such that only an option_config
     // subtype that cannot have a value is passed in.
     return false;
@@ -148,7 +148,7 @@ pub fn parse_option_type_bool_with_optional_value(
   args_slice: &[String],
   option_config: &OptionConfig,
 ) -> Result<bool, CommanderParseError> {
-  if !option_config.can_have_value {
+  if option_config.option_value == OptionValue::Prohibited {
     // TODO: Change function signature such that only an option_config
     // subtype that can have a value is passed in.
     return Err(CommanderParseError);
@@ -199,7 +199,7 @@ pub fn parse_option_type_string_with_optional_value(
   args_slice: &[String],
   option_config: &OptionConfig,
 ) -> Option<Result<Option<String>, CommanderParseError>> {
-  if !option_config.can_have_value {
+  if option_config.option_value == OptionValue::Prohibited {
     // TODO: Change function signature such that only an option_config
     // subtype that can have a value is passed in.
     return None;
@@ -274,7 +274,7 @@ pub fn parse_unrecognized(
           continue 'outer;
         }
 
-        if recognized_option.can_have_value {
+        if recognized_option.option_value != OptionValue::Prohibited {
           let name_long_equals: String = format!("{name_long}=");
 
           if option_name.starts_with(&name_long_equals) {
@@ -309,7 +309,7 @@ pub fn parse_unrecognized(
         continue 'outer;
       }
 
-      if recognized_option.can_have_value {
+      if recognized_option.option_value != OptionValue::Prohibited {
         let name_short_string_equals: String = format!("{name_short_string}=");
 
         if option_name.starts_with(&name_short_string_equals) {

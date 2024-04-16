@@ -6,9 +6,10 @@
 //! - Run the example using "cargo run -\-example commander -\- -\-help"
 //!
 //! # Metadata
+//! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
-//! - Copyright: &copy; 2022 [`CroftSoft Inc`]
-//! - Since: 2022-01-15
+//! - Created: 2022-01-15
+//! - Updated: 2024-04-16
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -28,17 +29,24 @@ pub struct AppInfo<'a> {
   pub name: Option<&'a str>,
 }
 
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub enum OptionValue {
+  Optional,
+  Prohibited,
+  Required,
+}
+
 //------------------------------------------------------------------------------
 /// Command-line option configuration
 //------------------------------------------------------------------------------
 #[derive(Clone, Copy, Debug)]
 pub struct OptionConfig<'a> {
   pub brief_description: Option<&'a str>,
-  pub can_have_value: bool,
   pub default_value_bool: bool,
   pub is_type_bool: bool,
   pub name_short: Option<char>,
   pub name_long: Option<&'a str>,
+  pub option_value: OptionValue,
 }
 
 //------------------------------------------------------------------------------

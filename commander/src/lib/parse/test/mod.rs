@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-04-16
+//! - Updated: 2024-04-17
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -24,7 +24,7 @@ fn test_parse_option_type_bool_without_value() {
     is_type_bool: true,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    option_value: OptionValue::Prohibited,
+    value_usage: ValueUsage::Prohibited,
   };
   let test_args_slice: &[String] = &["-T".to_string()];
   let actual_result: bool =
@@ -60,7 +60,7 @@ fn test_parse_option_type_bool_without_value_with_can_have_value() {
     is_type_bool: true,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    option_value: OptionValue::Optional,
+    value_usage: ValueUsage::Optional,
   };
   let test_args_slice: &[String] = &["--TEST".to_string()];
   let actual_result: bool = parse_option_type_bool_without_value(
@@ -78,7 +78,7 @@ fn test_parse_option_type_bool_with_optional_value_0() {
     is_type_bool: true,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    option_value: OptionValue::Optional,
+    value_usage: ValueUsage::Optional,
   };
   let test_args_slice: &[String] = &["-T".to_string()];
   let actual_result = parse_option_type_bool_with_optional_value(
@@ -96,7 +96,7 @@ fn test_parse_option_type_bool_with_optional_value_1() {
     is_type_bool: true,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    option_value: OptionValue::Optional,
+    value_usage: ValueUsage::Optional,
   };
   let test_args_slice: &[String] = &[
     "-T".to_string(),
@@ -117,7 +117,7 @@ fn test_parse_option_type_bool_with_optional_value_2() {
     is_type_bool: true,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    option_value: OptionValue::Optional,
+    value_usage: ValueUsage::Optional,
   };
   let test_args_slice: &[String] = &[
     "-T".to_string(),
@@ -138,7 +138,7 @@ fn test_parse_option_type_bool_with_optional_value_3() {
     is_type_bool: true,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    option_value: OptionValue::Optional,
+    value_usage: ValueUsage::Optional,
   };
   let test_args_slice: &[String] = &["-t".to_string()];
   let actual_result = parse_option_type_bool_with_optional_value(
@@ -156,7 +156,7 @@ fn test_parse_option_type_bool_with_optional_value_4() {
     is_type_bool: true,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    option_value: OptionValue::Optional,
+    value_usage: ValueUsage::Optional,
   };
   let test_args_slice: &[String] = &[
     "-t".to_string(),
@@ -177,7 +177,7 @@ fn test_parse_option_type_bool_with_optional_value_5() {
     is_type_bool: true,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    option_value: OptionValue::Optional,
+    value_usage: ValueUsage::Optional,
   };
   let test_args_slice: &[String] = &["--TEST".to_string()];
   let actual_result = parse_option_type_bool_with_optional_value(
@@ -195,7 +195,7 @@ fn test_parse_option_type_bool_with_optional_value_6() {
     is_type_bool: true,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    option_value: OptionValue::Optional,
+    value_usage: ValueUsage::Optional,
   };
   let test_args_slice: &[String] = &[
     "--TEST".to_string(),
@@ -216,7 +216,7 @@ fn test_parse_option_type_bool_with_optional_value_7() {
     is_type_bool: true,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    option_value: OptionValue::Optional,
+    value_usage: ValueUsage::Optional,
   };
   let test_args_slice: &[String] = &[
     "--TEST".to_string(),
@@ -237,7 +237,7 @@ fn test_parse_option_type_bool_with_optional_value_8() {
     is_type_bool: true,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    option_value: OptionValue::Optional,
+    value_usage: ValueUsage::Optional,
   };
   let test_args_slice: &[String] = &["--test".to_string()];
   let actual_result = parse_option_type_bool_with_optional_value(
@@ -255,7 +255,7 @@ fn test_parse_option_type_bool_with_optional_value_9() {
     is_type_bool: true,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    option_value: OptionValue::Optional,
+    value_usage: ValueUsage::Optional,
   };
   let test_args_slice: &[String] = &[
     "--test".to_string(),
@@ -276,7 +276,7 @@ fn test_parse_option_type_bool_with_optional_value_10() {
     is_type_bool: true,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    option_value: OptionValue::Optional,
+    value_usage: ValueUsage::Optional,
   };
   let test_args_slice: &[String] = &["-TEST".to_string()];
   let actual_result = parse_option_type_bool_with_optional_value(
@@ -295,7 +295,7 @@ fn test_parse_option_type_bool_with_optional_value_11() {
     is_type_bool: true,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    option_value: OptionValue::Optional,
+    value_usage: ValueUsage::Optional,
   };
 
   let test_args_slice: &[String] = &[
@@ -318,7 +318,7 @@ fn test_parse_option_type_bool_with_optional_value_12() {
     is_type_bool: true,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    option_value: OptionValue::Optional,
+    value_usage: ValueUsage::Optional,
   };
   let test_args_slice: &[String] = &["-T=false".to_string()];
   let actual_result = parse_option_type_bool_with_optional_value(
@@ -336,7 +336,7 @@ fn test_parse_option_type_bool_with_optional_value_13() {
     is_type_bool: true,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    option_value: OptionValue::Optional,
+    value_usage: ValueUsage::Optional,
   };
   let test_args_slice: &[String] = &["-T=true".to_string()];
   let actual_result = parse_option_type_bool_with_optional_value(
@@ -354,7 +354,7 @@ fn test_parse_option_type_bool_with_optional_value_14() {
     is_type_bool: true,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    option_value: OptionValue::Optional,
+    value_usage: ValueUsage::Optional,
   };
   let test_args_slice: &[String] = &["--TEST=false".to_string()];
   let actual_result = parse_option_type_bool_with_optional_value(
@@ -372,7 +372,7 @@ fn test_parse_option_type_bool_with_optional_value_15() {
     is_type_bool: true,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    option_value: OptionValue::Optional,
+    value_usage: ValueUsage::Optional,
   };
   let test_args_slice: &[String] = &["--TEST=true".to_string()];
   let actual_result = parse_option_type_bool_with_optional_value(
@@ -390,7 +390,7 @@ fn test_parse_option_type_bool_with_optional_value_16() {
     is_type_bool: true,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    option_value: OptionValue::Optional,
+    value_usage: ValueUsage::Optional,
   };
   let test_args_slice: &[String] = &["-T=invalid".to_string()];
   let actual_result = parse_option_type_bool_with_optional_value(
@@ -408,7 +408,7 @@ fn test_parse_option_type_bool_with_optional_value_17() {
     is_type_bool: true,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    option_value: OptionValue::Optional,
+    value_usage: ValueUsage::Optional,
   };
   let test_args_slice: &[String] = &["--TEST=invalid".to_string()];
   let actual_result = parse_option_type_bool_with_optional_value(
@@ -430,7 +430,7 @@ fn test_parse_option_type_bool_with_optional_value_where_cannot_have_value() {
     is_type_bool: true,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    option_value: OptionValue::Prohibited,
+    value_usage: ValueUsage::Prohibited,
   };
   let test_args_slice: &[String] = &["--TEST=true".to_string()];
   let actual_result = parse_option_type_bool_with_optional_value(
@@ -448,7 +448,7 @@ fn test_parse_option_type_string_with_optional_value_0() {
     is_type_bool: false,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    option_value: OptionValue::Optional,
+    value_usage: ValueUsage::Optional,
   };
   let test_args_slice: &[String] = &[
     "-T".to_string(),
@@ -470,7 +470,7 @@ fn test_parse_option_type_string_with_optional_value_1() {
     is_type_bool: false,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    option_value: OptionValue::Optional,
+    value_usage: ValueUsage::Optional,
   };
   let test_args_slice: &[String] = &[
     "--TEST".to_string(),
@@ -492,7 +492,7 @@ fn test_parse_option_type_string_with_optional_value_2() {
     is_type_bool: false,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    option_value: OptionValue::Optional,
+    value_usage: ValueUsage::Optional,
   };
   let test_args_slice: &[String] = &["-T=abc".to_string()];
   let actual_result: Option<Result<Option<String>, CommanderParseError>> =
@@ -511,7 +511,7 @@ fn test_parse_option_type_string_with_optional_value_3() {
     is_type_bool: false,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    option_value: OptionValue::Optional,
+    value_usage: ValueUsage::Optional,
   };
   let test_args_slice: &[String] = &["--TEST=abc".to_string()];
   let actual_result: Option<Result<Option<String>, CommanderParseError>> =
@@ -530,7 +530,7 @@ fn test_parse_option_type_string_with_optional_value_4() {
     is_type_bool: false,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    option_value: OptionValue::Optional,
+    value_usage: ValueUsage::Optional,
   };
   let test_args_slice: &[String] = &["-T=".to_string()];
   let actual_result: Option<Result<Option<String>, CommanderParseError>> =
@@ -549,7 +549,7 @@ fn test_parse_option_type_string_with_optional_value_5() {
     is_type_bool: false,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    option_value: OptionValue::Optional,
+    value_usage: ValueUsage::Optional,
   };
   let test_args_slice: &[String] = &["--TEST=".to_string()];
   let actual_result: Option<Result<Option<String>, CommanderParseError>> =
@@ -571,7 +571,7 @@ fn test_parse_option_type_string_with_required_value_where_cannot_have_value() {
     is_type_bool: false,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    option_value: OptionValue::Prohibited,
+    value_usage: ValueUsage::Prohibited,
   };
   let test_args_slice: &[String] = &["--TEST=abc".to_string()];
   let actual_result: Option<Result<Option<String>, CommanderParseError>> =
@@ -591,7 +591,7 @@ fn test_parse_unrecognized_long() {
     is_type_bool: false,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    option_value: OptionValue::Optional,
+    value_usage: ValueUsage::Optional,
   };
   let recognized_options: Vec<OptionConfig> = vec![ARG_OPTION_TEST];
   let test_args_slice: &[String] = &["--unrecognized".to_string()];
@@ -608,7 +608,7 @@ fn test_parse_unrecognized_short() {
     is_type_bool: false,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    option_value: OptionValue::Optional,
+    value_usage: ValueUsage::Optional,
   };
   let recognized_options: Vec<OptionConfig> = vec![ARG_OPTION_TEST];
   let test_args_slice: &[String] = &["-u".to_string()];

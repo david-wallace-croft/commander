@@ -5,13 +5,13 @@
 //! - Author: [`David Wallace Croft`]
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-04-16
+//! - Updated: 2024-04-17
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
-use commander::{AppInfo, HelpInfo, OptionConfig, OptionValue};
+use commander::{AppInfo, HelpInfo, OptionConfig, ValueUsage};
 
 pub const APP_INFO_ABOUT: &str = "Command-line arguments parser example";
 pub const APP_INFO_CONTACT: &str = "David Wallace Croft <david@CroftSoft.com>";
@@ -46,7 +46,7 @@ pub const OPTION_CONFIG_H: OptionConfig = OptionConfig {
   is_type_bool: true,
   name_long: Some(ARG_HELP_NAME_LONG),
   name_short: Some(ARG_HELP_NAME_SHORT),
-  option_value: OptionValue::Prohibited,
+  value_usage: ValueUsage::Prohibited,
 };
 
 pub const OPTION_CONFIG_I: OptionConfig = OptionConfig {
@@ -55,7 +55,7 @@ pub const OPTION_CONFIG_I: OptionConfig = OptionConfig {
   is_type_bool: true,
   name_long: Some(ARG_INTERACTIVE_NAME),
   name_short: Some(ARG_INTERACTIVE_SHORT),
-  option_value: OptionValue::Optional,
+  value_usage: ValueUsage::Optional,
 };
 
 pub const OPTION_CONFIG_N: OptionConfig = OptionConfig {
@@ -64,7 +64,7 @@ pub const OPTION_CONFIG_N: OptionConfig = OptionConfig {
   is_type_bool: false,
   name_long: Some(ARG_NAME_NAME),
   name_short: Some(ARG_NAME_SHORT),
-  option_value: OptionValue::Optional,
+  value_usage: ValueUsage::Optional,
 };
 
 pub const OPTION_CONFIGS: [OptionConfig; 3] = [

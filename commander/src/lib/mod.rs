@@ -9,7 +9,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-04-16
+//! - Updated: 2024-04-17
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -29,11 +29,13 @@ pub struct AppInfo<'a> {
   pub name: Option<&'a str>,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum OptionValue {
-  Optional,
-  Prohibited,
-  Required,
+//------------------------------------------------------------------------------
+/// Application and option data shown for the -\-help option
+//------------------------------------------------------------------------------
+#[derive(Debug)]
+pub struct HelpInfo<'a> {
+  pub app_info: &'a AppInfo<'a>,
+  pub arg_options: &'a [OptionConfig<'a>],
 }
 
 //------------------------------------------------------------------------------
@@ -46,23 +48,15 @@ pub struct OptionConfig<'a> {
   pub is_type_bool: bool,
   pub name_short: Option<char>,
   pub name_long: Option<&'a str>,
-  pub option_value: OptionValue,
+  pub value_usage: ValueUsage,
 }
 
 //------------------------------------------------------------------------------
-// The boolean value for an option parsed from the command-line arguments
+/// Whether a option value is optional, prohibited, or required
 //------------------------------------------------------------------------------
-// #[derive(Debug)]
-// pub struct OptionValueBool<'a> {
-//   pub arg_option: OptionConfig<'a>,
-//   pub value: Option<bool>,
-// }
-
-//------------------------------------------------------------------------------
-/// Application and option data shown for the -\-help option
-//------------------------------------------------------------------------------
-#[derive(Debug)]
-pub struct HelpInfo<'a> {
-  pub app_info: &'a AppInfo<'a>,
-  pub arg_options: &'a [OptionConfig<'a>],
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub enum ValueUsage {
+  Optional,
+  Prohibited,
+  Required,
 }

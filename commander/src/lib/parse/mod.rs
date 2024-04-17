@@ -64,6 +64,8 @@ fn parse_hyphenated_option_name_with_optional_boolean_value(
   return Some(Err(CommanderParseError));
 }
 
+// TODO: Return data structure with index of option so value can be parsed
+// TODO: What if ValueUsage::Required?
 fn parse_hyphenated_option_name_with_optional_string_value(
   args_slice: &[String],
   hyphenated_option_name: &str,

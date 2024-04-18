@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-04-17
+//! - Updated: 2024-04-18
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -397,7 +397,7 @@ fn test_parse_option_type_bool_with_optional_value_16() {
     test_args_slice,
     &ARG_OPTION_TEST,
   );
-  assert_eq!(Err(CommanderParseError), actual_result);
+  assert_eq!(Err(CommanderParseError::ValueInvalid), actual_result);
 }
 
 #[test]
@@ -415,7 +415,7 @@ fn test_parse_option_type_bool_with_optional_value_17() {
     test_args_slice,
     &ARG_OPTION_TEST,
   );
-  assert_eq!(Err(CommanderParseError), actual_result);
+  assert_eq!(Err(CommanderParseError::ValueInvalid), actual_result);
 }
 
 //----------------------------------------------------------------------------
@@ -437,7 +437,7 @@ fn test_parse_option_type_bool_with_optional_value_where_cannot_have_value() {
     test_args_slice,
     &ARG_OPTION_TEST_CANNOT_HAVE_VALUE,
   );
-  assert_eq!(Err(CommanderParseError), actual_result);
+  assert_eq!(Err(CommanderParseError::FunctionIncorrect), actual_result);
 }
 
 #[test]
@@ -538,7 +538,7 @@ fn test_parse_option_type_string_with_optional_value_4() {
       test_args_slice,
       &ARG_OPTION_TEST,
     );
-  assert_eq!(Some(Err(CommanderParseError)), actual_result);
+  assert_eq!(Some(Err(CommanderParseError::ValueMissing)), actual_result);
 }
 
 #[test]
@@ -557,7 +557,7 @@ fn test_parse_option_type_string_with_optional_value_5() {
       test_args_slice,
       &ARG_OPTION_TEST,
     );
-  assert_eq!(Some(Err(CommanderParseError)), actual_result);
+  assert_eq!(Some(Err(CommanderParseError::ValueMissing)), actual_result);
 }
 
 //----------------------------------------------------------------------------

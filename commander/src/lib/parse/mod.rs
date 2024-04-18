@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-04-17
+//! - Updated: 2024-04-18
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -18,7 +18,11 @@ use crate::*;
 use ::std::collections::HashSet;
 
 #[derive(Debug, PartialEq)]
-pub struct CommanderParseError;
+pub enum CommanderParseError {
+  FunctionIncorrect,
+  ValueInvalid,
+  ValueMissing,
+}
 
 fn parse_hyphenated_option_name_with_optional_boolean_value(
   args_slice: &[String],
@@ -61,7 +65,7 @@ fn parse_hyphenated_option_name_with_optional_boolean_value(
 
   // TODO: What if it is an unrelated argument?
 
-  return Some(Err(CommanderParseError));
+  return Some(Err(CommanderParseError::ValueInvalid));
 }
 
 // TODO: Return data structure with index of option so value can be parsed
@@ -83,7 +87,7 @@ fn parse_hyphenated_option_name_with_optional_string_value(
         arg.strip_prefix(&hyphenated_option_name_equals).unwrap();
 
       if value.eq("") {
-        return Some(Err(CommanderParseError));
+        return Some(Err(CommanderParseError::ValueMissing));
       }
 
       return Some(Ok(Some(value.to_string())));
@@ -119,6 +123,8 @@ pub fn parse_option_type_bool_without_value(
   if option_config.value_usage != ValueUsage::Prohibited {
     // TODO: Change function signature such that only an option_config
     // subtype that cannot have a value is passed in.
+
+    // TODO: return FunctionIncorrect
     return false;
   }
 
@@ -153,7 +159,7 @@ pub fn parse_option_type_bool_with_optional_value(
   if option_config.value_usage == ValueUsage::Prohibited {
     // TODO: Change function signature such that only an option_config
     // subtype that can have a value is passed in.
-    return Err(CommanderParseError);
+    return Err(CommanderParseError::FunctionIncorrect);
   }
 
   // TODO: What if it is a bunch of short options put together, e.g., -abc?
@@ -336,7 +342,7 @@ fn to_true_if_not_set(
   result: Result<Option<bool>, CommanderParseError>
 ) -> Result<bool, CommanderParseError> {
   if result.is_err() {
-    return Err(CommanderParseError);
+    return Err(result.unwrap_err());
   }
 
   let option_value: Option<bool> = result.unwrap();

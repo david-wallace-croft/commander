@@ -5,13 +5,42 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-04-18
+//! - Updated: 2024-04-19
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
 use super::*;
+
+#[test]
+fn test_option_config_required_string_parse_0() {
+  const TEST_SUBJECT: OptionConfigRequiredString = OptionConfigRequiredString {
+    brief_description: None,
+    name_long: Some("TEST"),
+    name_short: Some('T'),
+  };
+  let test_args_slice: &[String] = &[
+    "-T".to_string(),
+    "value".to_string(),
+  ];
+  let actual_result: Option<Result<String, CommanderParseError>> =
+    TEST_SUBJECT.parse(test_args_slice);
+  assert_eq!(Some(Ok("value".into())), actual_result);
+}
+
+#[test]
+fn test_option_config_required_string_parse_1() {
+  const TEST_SUBJECT: OptionConfigRequiredString = OptionConfigRequiredString {
+    brief_description: None,
+    name_long: Some("TEST"),
+    name_short: Some('T'),
+  };
+  let test_args_slice: &[String] = &["-T".to_string()];
+  let actual_result: Option<Result<String, CommanderParseError>> =
+    TEST_SUBJECT.parse(test_args_slice);
+  assert_eq!(Some(Err(CommanderParseError::ValueMissing)), actual_result);
+}
 
 //----------------------------------------------------------------------------
 /// Unit test for parse_option_type_bool_without_value()

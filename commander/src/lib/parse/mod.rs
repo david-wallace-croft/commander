@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-04-19
+//! - Updated: 2024-04-20
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -374,8 +374,21 @@ fn to_true_if_not_set(
   return Ok(true);
 }
 
-impl OptionConfigRequiredString<'_> {
+impl OptionConfigType<'_> {
   pub fn parse(
+    &self,
+    args_slice: &[String],
+  ) -> Option<Result<String, CommanderParseError>> {
+    match self {
+      OptionConfigType::StringRequired(option_config_base) => {
+        return option_config_base.parse_string_required(args_slice);
+      },
+    }
+  }
+}
+
+impl OptionConfigBase<'_> {
+  pub fn parse_string_required(
     &self,
     args_slice: &[String],
   ) -> Option<Result<String, CommanderParseError>> {
@@ -400,7 +413,7 @@ impl OptionConfigRequiredString<'_> {
     }
 
     if self.name_long.is_some() {
-      let arg_option_name_long = self.name_long.unwrap();
+      let arg_option_name_long: &str = self.name_long.unwrap();
 
       let hyphenated_option_name: String =
         format!("--{}", arg_option_name_long);

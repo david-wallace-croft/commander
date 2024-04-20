@@ -9,7 +9,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-04-19
+//! - Updated: 2024-04-20
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -52,17 +52,6 @@ pub struct OptionConfig<'a> {
 }
 
 //------------------------------------------------------------------------------
-/// Configuration for a command-line option that requires a string value
-//------------------------------------------------------------------------------
-#[derive(Clone, Copy, Debug)]
-pub struct OptionConfigRequiredString<'a> {
-  pub brief_description: Option<&'a str>,
-  // TODO: Is there a static compile check to make at least one of these Some?
-  pub name_short: Option<char>,
-  pub name_long: Option<&'a str>,
-}
-
-//------------------------------------------------------------------------------
 /// Whether a option value is optional, prohibited, or required
 //------------------------------------------------------------------------------
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -70,4 +59,15 @@ pub enum ValueUsage {
   Optional,
   Prohibited,
   Required,
+}
+
+pub struct OptionConfigBase<'a> {
+  pub brief_description: Option<&'a str>,
+  // TODO: Is there a static compile check to make at least one of these Some?
+  pub name_short: Option<char>,
+  pub name_long: Option<&'a str>,
+}
+
+pub enum OptionConfigType<'a> {
+  StringRequired(OptionConfigBase<'a>),
 }

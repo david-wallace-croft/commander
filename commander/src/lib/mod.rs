@@ -9,11 +9,13 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-04-20
+//! - Updated: 2024-04-21
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
+
+use std::marker::PhantomData;
 
 pub mod parse;
 pub mod print;
@@ -61,13 +63,11 @@ pub enum ValueUsage {
   Required,
 }
 
-pub struct OptionConfigBase<'a> {
+pub struct OptionConfig2<'a, T> {
   pub brief_description: Option<&'a str>,
   // TODO: Is there a static compile check to make at least one of these Some?
   pub name_short: Option<char>,
   pub name_long: Option<&'a str>,
-}
-
-pub enum OptionConfigType<'a> {
-  StringRequired(OptionConfigBase<'a>),
+  value_type: PhantomData<T>,
+  pub value_usage: ValueUsage,
 }

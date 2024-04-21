@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-04-20
+//! - Updated: 2024-04-21
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -13,33 +13,38 @@
 
 use super::*;
 
-const OPTION_CONFIG_BASE: OptionConfigBase = OptionConfigBase {
+const OPTION_CONFIG_2: OptionConfig2<String> = OptionConfig2 {
   brief_description: None,
   name_long: Some("TEST"),
   name_short: Some('T'),
+  value_type: PhantomData,
+  value_usage: ValueUsage::Required,
 };
 
 #[test]
 fn test_option_config_required_string_parse_0() {
-  const TEST_SUBJECT: OptionConfigType =
-    OptionConfigType::StringRequired(OPTION_CONFIG_BASE);
   let test_args_slice: &[String] = &[
     "-T".to_string(),
     "value".to_string(),
   ];
-  let actual_result: Option<Result<String, CommanderParseError>> =
-    TEST_SUBJECT.parse(test_args_slice);
-  assert_eq!(Some(Ok("value".into())), actual_result);
+
+  let actual_result: Option<Result<Option<String>, CommanderParseError>> =
+    OPTION_CONFIG_2.parse(test_args_slice);
+
+  assert_eq!(Some(Ok(Some("value".into()))), actual_result);
 }
 
 #[test]
 fn test_option_config_required_string_parse_1() {
-  const TEST_SUBJECT: OptionConfigType =
-    OptionConfigType::StringRequired(OPTION_CONFIG_BASE);
   let test_args_slice: &[String] = &["-T".to_string()];
-  let actual_result: Option<Result<String, CommanderParseError>> =
-    TEST_SUBJECT.parse(test_args_slice);
-  assert_eq!(Some(Err(CommanderParseError::ValueMissing)), actual_result);
+
+  let actual_result: Option<Result<Option<String>, CommanderParseError>> =
+    OPTION_CONFIG_2.parse(test_args_slice);
+
+  assert_eq!(
+    Some(Err(CommanderParseError::RequiredValueMissing)),
+    actual_result
+  );
 }
 
 //----------------------------------------------------------------------------
@@ -567,7 +572,10 @@ fn test_parse_option_type_string_with_optional_value_4() {
       test_args_slice,
       &ARG_OPTION_TEST,
     );
-  assert_eq!(Some(Err(CommanderParseError::ValueMissing)), actual_result);
+  assert_eq!(
+    Some(Err(CommanderParseError::RequiredValueMissing)),
+    actual_result
+  );
 }
 
 #[test]
@@ -586,7 +594,10 @@ fn test_parse_option_type_string_with_optional_value_5() {
       test_args_slice,
       &ARG_OPTION_TEST,
     );
-  assert_eq!(Some(Err(CommanderParseError::ValueMissing)), actual_result);
+  assert_eq!(
+    Some(Err(CommanderParseError::RequiredValueMissing)),
+    actual_result
+  );
 }
 
 //----------------------------------------------------------------------------

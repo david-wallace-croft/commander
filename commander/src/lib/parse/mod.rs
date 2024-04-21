@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-04-20
+//! - Updated: 2024-04-21
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -20,8 +20,8 @@ use ::std::collections::HashSet;
 #[derive(Debug, PartialEq)]
 pub enum CommanderParseError {
   FunctionIncorrect,
+  RequiredValueMissing,
   ValueInvalid,
-  ValueMissing,
 }
 
 fn parse_hyphenated_option_name_with_optional_boolean_value(
@@ -87,7 +87,7 @@ fn parse_hyphenated_option_name_with_optional_string_value(
         arg.strip_prefix(&hyphenated_option_name_equals).unwrap();
 
       if value.eq("") {
-        return Some(Err(CommanderParseError::ValueMissing));
+        return Some(Err(CommanderParseError::RequiredValueMissing));
       }
 
       return Some(Ok(Some(value.to_string())));
@@ -111,6 +111,26 @@ fn parse_hyphenated_option_name_with_optional_string_value(
   }
 
   return None;
+}
+
+fn parse_hyphenated_option_name_with_required_string_value(
+  args_slice: &[String],
+  hyphenated_option_name: &str,
+) -> Option<Result<Option<String>, CommanderParseError>> {
+  let result_option: Option<Result<Option<String>, CommanderParseError>> =
+    parse_hyphenated_option_name_with_optional_string_value(
+      args_slice,
+      &hyphenated_option_name,
+    );
+
+  if result_option.is_some() {
+    let result: Result<Option<String>, CommanderParseError> =
+      result_option.unwrap();
+
+    return Some(to_error_if_missing(result));
+  }
+
+  None
 }
 
 //------------------------------------------------------------------------------
@@ -340,22 +360,21 @@ pub fn parse_unrecognized(
 
 fn to_error_if_missing(
   result: Result<Option<String>, CommanderParseError>
-) -> Result<String, CommanderParseError> {
+) -> Result<Option<String>, CommanderParseError> {
   if result.is_err() {
-    let error: CommanderParseError = result.unwrap_err();
-
-    return Err(error);
+    return result;
   }
 
-  let option_value: Option<String> = result.unwrap();
+  let result_ref: Result<&Option<String>, &CommanderParseError> =
+    result.as_ref();
+
+  let option_value: &Option<String> = result_ref.unwrap();
 
   if option_value.is_none() {
-    return Err(CommanderParseError::ValueMissing);
+    return Err(CommanderParseError::RequiredValueMissing);
   }
 
-  let value: String = option_value.unwrap();
-
-  return Ok(value);
+  return result;
 }
 
 fn to_true_if_not_set(
@@ -374,24 +393,42 @@ fn to_true_if_not_set(
   return Ok(true);
 }
 
-impl OptionConfigType<'_> {
+impl OptionConfig2<'_, String> {
   pub fn parse(
     &self,
     args_slice: &[String],
-  ) -> Option<Result<String, CommanderParseError>> {
-    match self {
-      OptionConfigType::StringRequired(option_config_base) => {
-        return option_config_base.parse_string_required(args_slice);
+  ) -> Option<Result<Option<String>, CommanderParseError>> {
+    match self.value_usage {
+      ValueUsage::Optional => {
+        return self.parse_optional(args_slice);
+      },
+      ValueUsage::Prohibited => {
+        return self.parse_prohibited(args_slice);
+      },
+      ValueUsage::Required => {
+        return self.parse_required(args_slice);
       },
     }
   }
-}
 
-impl OptionConfigBase<'_> {
-  pub fn parse_string_required(
+  fn parse_optional(
+    &self,
+    _args_slice: &[String],
+  ) -> Option<Result<Option<String>, CommanderParseError>> {
+    todo!();
+  }
+
+  fn parse_prohibited(
+    &self,
+    _args_slice: &[String],
+  ) -> Option<Result<Option<String>, CommanderParseError>> {
+    todo!();
+  }
+
+  fn parse_required(
     &self,
     args_slice: &[String],
-  ) -> Option<Result<String, CommanderParseError>> {
+  ) -> Option<Result<Option<String>, CommanderParseError>> {
     if self.name_short.is_some() {
       let arg_option_name_short = self.name_short.unwrap();
 
@@ -399,16 +436,13 @@ impl OptionConfigBase<'_> {
         format!("-{}", arg_option_name_short);
 
       let result_option: Option<Result<Option<String>, CommanderParseError>> =
-        parse_hyphenated_option_name_with_optional_string_value(
+        parse_hyphenated_option_name_with_required_string_value(
           args_slice,
           &hyphenated_option_name,
         );
 
       if result_option.is_some() {
-        let result: Result<Option<String>, CommanderParseError> =
-          result_option.unwrap();
-
-        return Some(to_error_if_missing(result));
+        return result_option;
       }
     }
 
@@ -425,10 +459,7 @@ impl OptionConfigBase<'_> {
         );
 
       if result_option.is_some() {
-        let result: Result<Option<String>, CommanderParseError> =
-          result_option.unwrap();
-
-        return Some(to_error_if_missing(result));
+        return result_option;
       }
     }
 

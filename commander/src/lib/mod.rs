@@ -68,6 +68,6 @@ pub struct OptionConfig2<'a, T> {
   // TODO: Is there a static compile check to make at least one of these Some?
   pub name_short: Option<char>,
   pub name_long: Option<&'a str>,
-  value_type: PhantomData<T>,
+  pub value_type: PhantomData<T>,
   pub value_usage: ValueUsage,
 }

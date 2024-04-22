@@ -453,7 +453,7 @@ impl OptionConfig2<'_> {
         format!("--{}", arg_option_name_long);
 
       let result_option: Option<Result<Option<String>, CommanderParseError>> =
-        parse_hyphenated_option_name_with_optional_string_value(
+        parse_hyphenated_option_name_with_required_string_value(
           args_slice,
           &hyphenated_option_name,
         );

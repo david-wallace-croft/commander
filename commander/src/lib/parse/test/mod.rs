@@ -13,7 +13,14 @@
 
 use super::*;
 
-const OPTION_CONFIG_2: OptionConfig2 = OptionConfig2 {
+const OPTION_CONFIG_2_OPTIONAL: OptionConfig2 = OptionConfig2 {
+  brief_description: None,
+  name_long: Some("TEST"),
+  name_short: Some('T'),
+  value_usage: ValueUsage::Optional,
+};
+
+const OPTION_CONFIG_2_REQUIRED: OptionConfig2 = OptionConfig2 {
   brief_description: None,
   name_long: Some("TEST"),
   name_short: Some('T'),
@@ -21,24 +28,47 @@ const OPTION_CONFIG_2: OptionConfig2 = OptionConfig2 {
 };
 
 #[test]
-fn test_option_config_required_string_parse_0() {
+fn test_option_config_2_parse_optional_0() {
   let test_args_slice: &[String] = &[
     "-T".to_string(),
     "value".to_string(),
   ];
 
   let actual_result: Option<Result<Option<String>, CommanderParseError>> =
-    OPTION_CONFIG_2.parse(test_args_slice);
+    OPTION_CONFIG_2_OPTIONAL.parse(test_args_slice);
 
   assert_eq!(Some(Ok(Some("value".into()))), actual_result);
 }
 
 #[test]
-fn test_option_config_required_string_parse_1() {
+fn test_option_config_2_parse_optional_1() {
   let test_args_slice: &[String] = &["-T".to_string()];
 
   let actual_result: Option<Result<Option<String>, CommanderParseError>> =
-    OPTION_CONFIG_2.parse(test_args_slice);
+    OPTION_CONFIG_2_OPTIONAL.parse(test_args_slice);
+
+  assert_eq!(Some(Ok(None)), actual_result);
+}
+
+#[test]
+fn test_option_config_2_parse_required_0() {
+  let test_args_slice: &[String] = &[
+    "-T".to_string(),
+    "value".to_string(),
+  ];
+
+  let actual_result: Option<Result<Option<String>, CommanderParseError>> =
+    OPTION_CONFIG_2_REQUIRED.parse(test_args_slice);
+
+  assert_eq!(Some(Ok(Some("value".into()))), actual_result);
+}
+
+#[test]
+fn test_option_config_2_parse_required_1() {
+  let test_args_slice: &[String] = &["-T".to_string()];
+
+  let actual_result: Option<Result<Option<String>, CommanderParseError>> =
+    OPTION_CONFIG_2_REQUIRED.parse(test_args_slice);
 
   assert_eq!(
     Some(Err(CommanderParseError::RequiredValueMissing)),

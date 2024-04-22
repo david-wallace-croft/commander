@@ -413,9 +413,43 @@ impl OptionConfig2<'_> {
 
   fn parse_optional(
     &self,
-    _args_slice: &[String],
+    args_slice: &[String],
   ) -> Option<Result<Option<String>, CommanderParseError>> {
-    todo!();
+    if self.name_short.is_some() {
+      let arg_option_name_short = self.name_short.unwrap();
+
+      let hyphenated_option_name: String =
+        format!("-{}", arg_option_name_short);
+
+      let result_option: Option<Result<Option<String>, CommanderParseError>> =
+        parse_hyphenated_option_name_with_optional_string_value(
+          args_slice,
+          &hyphenated_option_name,
+        );
+
+      if result_option.is_some() {
+        return result_option;
+      }
+    }
+
+    if self.name_long.is_some() {
+      let arg_option_name_long: &str = self.name_long.unwrap();
+
+      let hyphenated_option_name: String =
+        format!("--{}", arg_option_name_long);
+
+      let result_option: Option<Result<Option<String>, CommanderParseError>> =
+        parse_hyphenated_option_name_with_optional_string_value(
+          args_slice,
+          &hyphenated_option_name,
+        );
+
+      if result_option.is_some() {
+        return result_option;
+      }
+    }
+
+    None
   }
 
   fn parse_prohibited(

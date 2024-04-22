@@ -19,7 +19,10 @@ use ::std::collections::HashSet;
 
 #[derive(Debug, PartialEq)]
 pub enum CommanderParseError {
+  // TODO: Remove this one
   FunctionIncorrect,
+  OptionalValueMissing,
+  ProhibitedValuePresent,
   RequiredValueMissing,
   ValueInvalid,
 }
@@ -29,7 +32,7 @@ fn parse_hyphenated_option_name_with_optional_boolean_value(
   hyphenated_option_name: &str,
 ) -> Option<Result<Option<bool>, CommanderParseError>> {
   let result_option: Option<Result<Option<String>, CommanderParseError>> =
-    parse_hyphenated_option_name_with_optional_string_value(
+    parse_hyphenated_option_name_with_optional_value(
       args_slice,
       hyphenated_option_name,
     );
@@ -69,8 +72,7 @@ fn parse_hyphenated_option_name_with_optional_boolean_value(
 }
 
 // TODO: Return data structure with index of option so value can be parsed
-// TODO: What if ValueUsage::Required?
-fn parse_hyphenated_option_name_with_optional_string_value(
+fn parse_hyphenated_option_name_with_optional_value(
   args_slice: &[String],
   hyphenated_option_name: &str,
 ) -> Option<Result<Option<String>, CommanderParseError>> {
@@ -87,7 +89,7 @@ fn parse_hyphenated_option_name_with_optional_string_value(
         arg.strip_prefix(&hyphenated_option_name_equals).unwrap();
 
       if value.eq("") {
-        return Some(Err(CommanderParseError::RequiredValueMissing));
+        return Some(Err(CommanderParseError::OptionalValueMissing));
       }
 
       return Some(Ok(Some(value.to_string())));
@@ -113,12 +115,37 @@ fn parse_hyphenated_option_name_with_optional_string_value(
   return None;
 }
 
-fn parse_hyphenated_option_name_with_required_string_value(
+// TODO: Return data structure with index of option so value can be parsed
+fn parse_hyphenated_option_name_with_prohibited_value(
+  args_slice: &[String],
+  hyphenated_option_name: &str,
+) -> Option<Result<Option<String>, CommanderParseError>> {
+  let hyphenated_option_name_equals: String =
+    format!("{}=", hyphenated_option_name);
+
+  let length: usize = args_slice.len();
+
+  for index in 0..length {
+    let arg: &String = &args_slice[index];
+
+    if arg.starts_with(&hyphenated_option_name_equals) {
+      return Some(Err(CommanderParseError::ProhibitedValuePresent));
+    }
+
+    if arg.eq(&hyphenated_option_name) {
+      return Some(Ok(None));
+    }
+  }
+
+  return None;
+}
+
+fn parse_hyphenated_option_name_with_required_value(
   args_slice: &[String],
   hyphenated_option_name: &str,
 ) -> Option<Result<Option<String>, CommanderParseError>> {
   let result_option: Option<Result<Option<String>, CommanderParseError>> =
-    parse_hyphenated_option_name_with_optional_string_value(
+    parse_hyphenated_option_name_with_optional_value(
       args_slice,
       &hyphenated_option_name,
     );
@@ -239,7 +266,7 @@ pub fn parse_option_type_string_with_optional_value(
     let hyphenated_option_name: String = format!("-{}", arg_option_name_short);
 
     let result_option: Option<Result<Option<String>, CommanderParseError>> =
-      parse_hyphenated_option_name_with_optional_string_value(
+      parse_hyphenated_option_name_with_optional_value(
         args_slice,
         &hyphenated_option_name,
       );
@@ -255,7 +282,7 @@ pub fn parse_option_type_string_with_optional_value(
     let hyphenated_option_name: String = format!("--{}", arg_option_name_long);
 
     let result_option: Option<Result<Option<String>, CommanderParseError>> =
-      parse_hyphenated_option_name_with_optional_string_value(
+      parse_hyphenated_option_name_with_optional_value(
         args_slice,
         &hyphenated_option_name,
       );
@@ -421,8 +448,10 @@ impl OptionConfig2<'_> {
       let hyphenated_option_name: String =
         format!("-{}", arg_option_name_short);
 
+      // TODO: Since which function is called here is the only difference,
+      //   pass the function in as an argument.
       let result_option: Option<Result<Option<String>, CommanderParseError>> =
-        parse_hyphenated_option_name_with_optional_string_value(
+        parse_hyphenated_option_name_with_optional_value(
           args_slice,
           &hyphenated_option_name,
         );
@@ -439,7 +468,7 @@ impl OptionConfig2<'_> {
         format!("--{}", arg_option_name_long);
 
       let result_option: Option<Result<Option<String>, CommanderParseError>> =
-        parse_hyphenated_option_name_with_optional_string_value(
+        parse_hyphenated_option_name_with_optional_value(
           args_slice,
           &hyphenated_option_name,
         );
@@ -454,13 +483,6 @@ impl OptionConfig2<'_> {
 
   fn parse_prohibited(
     &self,
-    _args_slice: &[String],
-  ) -> Option<Result<Option<String>, CommanderParseError>> {
-    todo!();
-  }
-
-  fn parse_required(
-    &self,
     args_slice: &[String],
   ) -> Option<Result<Option<String>, CommanderParseError>> {
     if self.name_short.is_some() {
@@ -470,7 +492,7 @@ impl OptionConfig2<'_> {
         format!("-{}", arg_option_name_short);
 
       let result_option: Option<Result<Option<String>, CommanderParseError>> =
-        parse_hyphenated_option_name_with_required_string_value(
+        parse_hyphenated_option_name_with_prohibited_value(
           args_slice,
           &hyphenated_option_name,
         );
@@ -487,7 +509,48 @@ impl OptionConfig2<'_> {
         format!("--{}", arg_option_name_long);
 
       let result_option: Option<Result<Option<String>, CommanderParseError>> =
-        parse_hyphenated_option_name_with_required_string_value(
+        parse_hyphenated_option_name_with_prohibited_value(
+          args_slice,
+          &hyphenated_option_name,
+        );
+
+      if result_option.is_some() {
+        return result_option;
+      }
+    }
+
+    None
+  }
+
+  fn parse_required(
+    &self,
+    args_slice: &[String],
+  ) -> Option<Result<Option<String>, CommanderParseError>> {
+    if self.name_short.is_some() {
+      let arg_option_name_short = self.name_short.unwrap();
+
+      let hyphenated_option_name: String =
+        format!("-{}", arg_option_name_short);
+
+      let result_option: Option<Result<Option<String>, CommanderParseError>> =
+        parse_hyphenated_option_name_with_required_value(
+          args_slice,
+          &hyphenated_option_name,
+        );
+
+      if result_option.is_some() {
+        return result_option;
+      }
+    }
+
+    if self.name_long.is_some() {
+      let arg_option_name_long: &str = self.name_long.unwrap();
+
+      let hyphenated_option_name: String =
+        format!("--{}", arg_option_name_long);
+
+      let result_option: Option<Result<Option<String>, CommanderParseError>> =
+        parse_hyphenated_option_name_with_required_value(
           args_slice,
           &hyphenated_option_name,
         );

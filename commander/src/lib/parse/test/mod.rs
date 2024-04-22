@@ -20,6 +20,13 @@ const OPTION_CONFIG_2_OPTIONAL: OptionConfig2 = OptionConfig2 {
   value_usage: ValueUsage::Optional,
 };
 
+const OPTION_CONFIG_2_PROHIBITED: OptionConfig2 = OptionConfig2 {
+  brief_description: None,
+  name_long: Some("TEST"),
+  name_short: Some('T'),
+  value_usage: ValueUsage::Prohibited,
+};
+
 const OPTION_CONFIG_2_REQUIRED: OptionConfig2 = OptionConfig2 {
   brief_description: None,
   name_long: Some("TEST"),
@@ -48,6 +55,42 @@ fn test_option_config_2_parse_optional_1() {
     OPTION_CONFIG_2_OPTIONAL.parse(test_args_slice);
 
   assert_eq!(Some(Ok(None)), actual_result);
+}
+
+#[test]
+fn test_option_config_2_parse_prohibited_0() {
+  let test_args_slice: &[String] = &["-T".to_string()];
+
+  let actual_result: Option<Result<Option<String>, CommanderParseError>> =
+    OPTION_CONFIG_2_PROHIBITED.parse(test_args_slice);
+
+  assert_eq!(Some(Ok(None)), actual_result);
+}
+
+#[test]
+fn test_option_config_2_parse_prohibited_1() {
+  let test_args_slice: &[String] = &[
+    "-T".to_string(),
+    "value".to_string(),
+  ];
+
+  let actual_result: Option<Result<Option<String>, CommanderParseError>> =
+    OPTION_CONFIG_2_PROHIBITED.parse(test_args_slice);
+
+  assert_eq!(Some(Ok(None)), actual_result);
+}
+
+#[test]
+fn test_option_config_2_parse_prohibited_2() {
+  let test_args_slice: &[String] = &["-T=value".to_string()];
+
+  let actual_result: Option<Result<Option<String>, CommanderParseError>> =
+    OPTION_CONFIG_2_PROHIBITED.parse(test_args_slice);
+
+  assert_eq!(
+    Some(Err(CommanderParseError::ProhibitedValuePresent)),
+    actual_result
+  );
 }
 
 #[test]
@@ -602,7 +645,7 @@ fn test_parse_option_type_string_with_optional_value_4() {
       &ARG_OPTION_TEST,
     );
   assert_eq!(
-    Some(Err(CommanderParseError::RequiredValueMissing)),
+    Some(Err(CommanderParseError::OptionalValueMissing)),
     actual_result
   );
 }
@@ -624,7 +667,7 @@ fn test_parse_option_type_string_with_optional_value_5() {
       &ARG_OPTION_TEST,
     );
   assert_eq!(
-    Some(Err(CommanderParseError::RequiredValueMissing)),
+    Some(Err(CommanderParseError::OptionalValueMissing)),
     actual_result
   );
 }

@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-04-21
+//! - Updated: 2024-04-22
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -13,11 +13,10 @@
 
 use super::*;
 
-const OPTION_CONFIG_2: OptionConfig2<String> = OptionConfig2 {
+const OPTION_CONFIG_2: OptionConfig2 = OptionConfig2 {
   brief_description: None,
   name_long: Some("TEST"),
   name_short: Some('T'),
-  value_type: PhantomData,
   value_usage: ValueUsage::Required,
 };
 

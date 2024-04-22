@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-04-21
+//! - Updated: 2024-04-22
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -393,7 +393,7 @@ fn to_true_if_not_set(
   return Ok(true);
 }
 
-impl OptionConfig2<'_, String> {
+impl OptionConfig2<'_> {
   pub fn parse(
     &self,
     args_slice: &[String],

@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-04-22
+//! - Updated: 2024-04-23
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -22,9 +22,9 @@ pub enum CommanderParseError {
   // TODO: Remove this one
   FunctionIncorrect,
   OptionalValueMissing,
-  ProhibitedValuePresent,
   RequiredValueMissing,
   ValueInvalid,
+  VerbotenValuePresent,
 }
 
 fn parse_hyphenated_option_name_with_optional_boolean_value(
@@ -37,9 +37,7 @@ fn parse_hyphenated_option_name_with_optional_boolean_value(
       hyphenated_option_name,
     );
 
-  if result_option.is_none() {
-    return None;
-  }
+  result_option.as_ref()?;
 
   let result: Result<Option<String>, CommanderParseError> =
     result_option.unwrap();
@@ -68,7 +66,7 @@ fn parse_hyphenated_option_name_with_optional_boolean_value(
 
   // TODO: What if it is an unrelated argument?
 
-  return Some(Err(CommanderParseError::ValueInvalid));
+  Some(Err(CommanderParseError::ValueInvalid))
 }
 
 // TODO: Return data structure with index of option so value can be parsed
@@ -112,7 +110,7 @@ fn parse_hyphenated_option_name_with_optional_value(
     return Some(Ok(Some(value.clone())));
   }
 
-  return None;
+  None
 }
 
 // TODO: Return data structure with index of option so value can be parsed
@@ -123,13 +121,9 @@ fn parse_hyphenated_option_name_with_prohibited_value(
   let hyphenated_option_name_equals: String =
     format!("{}=", hyphenated_option_name);
 
-  let length: usize = args_slice.len();
-
-  for index in 0..length {
-    let arg: &String = &args_slice[index];
-
+  for arg in args_slice {
     if arg.starts_with(&hyphenated_option_name_equals) {
-      return Some(Err(CommanderParseError::ProhibitedValuePresent));
+      return Some(Err(CommanderParseError::VerbotenValuePresent));
     }
 
     if arg.eq(&hyphenated_option_name) {
@@ -137,7 +131,7 @@ fn parse_hyphenated_option_name_with_prohibited_value(
     }
   }
 
-  return None;
+  None
 }
 
 fn parse_hyphenated_option_name_with_required_value(
@@ -147,7 +141,7 @@ fn parse_hyphenated_option_name_with_required_value(
   let result_option: Option<Result<Option<String>, CommanderParseError>> =
     parse_hyphenated_option_name_with_optional_value(
       args_slice,
-      &hyphenated_option_name,
+      hyphenated_option_name,
     );
 
   if result_option.is_some() {
@@ -167,7 +161,7 @@ pub fn parse_option_type_bool_without_value(
   args_slice: &[String],
   option_config: &OptionConfig,
 ) -> bool {
-  if option_config.value_usage != ValueUsage::Prohibited {
+  if option_config.value_usage != ValueUsage::Verboten {
     // TODO: Change function signature such that only an option_config
     // subtype that cannot have a value is passed in.
 
@@ -203,7 +197,7 @@ pub fn parse_option_type_bool_with_optional_value(
   args_slice: &[String],
   option_config: &OptionConfig,
 ) -> Result<bool, CommanderParseError> {
-  if option_config.value_usage == ValueUsage::Prohibited {
+  if option_config.value_usage == ValueUsage::Verboten {
     // TODO: Change function signature such that only an option_config
     // subtype that can have a value is passed in.
     return Err(CommanderParseError::FunctionIncorrect);
@@ -222,8 +216,8 @@ pub fn parse_option_type_bool_with_optional_value(
         &hyphenated_option_name,
       );
 
-    if result_option.is_some() {
-      return to_true_if_not_set(result_option.unwrap());
+    if let Some(result) = result_option {
+      return to_true_if_not_set(result);
     }
   }
 
@@ -232,14 +226,14 @@ pub fn parse_option_type_bool_with_optional_value(
 
     let hyphenated_option_name: String = format!("--{}", arg_option_name_long);
 
-    let result_option =
+    let result_option: Option<Result<Option<bool>, CommanderParseError>> =
       parse_hyphenated_option_name_with_optional_boolean_value(
         args_slice,
         &hyphenated_option_name,
       );
 
-    if result_option.is_some() {
-      return to_true_if_not_set(result_option.unwrap());
+    if let Some(result) = result_option {
+      return to_true_if_not_set(result);
     }
   }
 
@@ -254,7 +248,7 @@ pub fn parse_option_type_string_with_optional_value(
   args_slice: &[String],
   option_config: &OptionConfig,
 ) -> Option<Result<Option<String>, CommanderParseError>> {
-  if option_config.value_usage == ValueUsage::Prohibited {
+  if option_config.value_usage == ValueUsage::Verboten {
     // TODO: Change function signature such that only an option_config
     // subtype that can have a value is passed in.
     return None;
@@ -329,7 +323,7 @@ pub fn parse_unrecognized(
           continue 'outer;
         }
 
-        if recognized_option.value_usage != ValueUsage::Prohibited {
+        if recognized_option.value_usage != ValueUsage::Verboten {
           let name_long_equals: String = format!("{name_long}=");
 
           if option_name.starts_with(&name_long_equals) {
@@ -364,7 +358,7 @@ pub fn parse_unrecognized(
         continue 'outer;
       }
 
-      if recognized_option.value_usage != ValueUsage::Prohibited {
+      if recognized_option.value_usage != ValueUsage::Verboten {
         let name_short_string_equals: String = format!("{name_short_string}=");
 
         if option_name.starts_with(&name_short_string_equals) {
@@ -388,36 +382,25 @@ pub fn parse_unrecognized(
 fn to_error_if_missing(
   result: Result<Option<String>, CommanderParseError>
 ) -> Result<Option<String>, CommanderParseError> {
-  if result.is_err() {
-    return result;
+  let option_value_option: Option<String> = result?;
+
+  if option_value_option.is_some() {
+    return Ok(option_value_option);
   }
 
-  let result_ref: Result<&Option<String>, &CommanderParseError> =
-    result.as_ref();
-
-  let option_value: &Option<String> = result_ref.unwrap();
-
-  if option_value.is_none() {
-    return Err(CommanderParseError::RequiredValueMissing);
-  }
-
-  return result;
+  Err(CommanderParseError::RequiredValueMissing)
 }
 
 fn to_true_if_not_set(
   result: Result<Option<bool>, CommanderParseError>
 ) -> Result<bool, CommanderParseError> {
-  if result.is_err() {
-    return Err(result.unwrap_err());
+  let option_value_option: Option<bool> = result?;
+
+  if let Some(option_value) = option_value_option {
+    return Ok(option_value);
   }
 
-  let option_value: Option<bool> = result.unwrap();
-
-  if option_value.is_some() {
-    return Ok(option_value.unwrap());
-  }
-
-  return Ok(true);
+  Ok(true)
 }
 
 impl OptionConfig2<'_> {
@@ -426,15 +409,9 @@ impl OptionConfig2<'_> {
     args_slice: &[String],
   ) -> Option<Result<Option<String>, CommanderParseError>> {
     match self.value_usage {
-      ValueUsage::Optional => {
-        return self.parse_optional(args_slice);
-      },
-      ValueUsage::Prohibited => {
-        return self.parse_prohibited(args_slice);
-      },
-      ValueUsage::Required => {
-        return self.parse_required(args_slice);
-      },
+      ValueUsage::Optional => self.parse_optional(args_slice),
+      ValueUsage::Required => self.parse_required(args_slice),
+      ValueUsage::Verboten => self.parse_verboten(args_slice),
     }
   }
 
@@ -481,47 +458,6 @@ impl OptionConfig2<'_> {
     None
   }
 
-  fn parse_prohibited(
-    &self,
-    args_slice: &[String],
-  ) -> Option<Result<Option<String>, CommanderParseError>> {
-    if self.name_short.is_some() {
-      let arg_option_name_short = self.name_short.unwrap();
-
-      let hyphenated_option_name: String =
-        format!("-{}", arg_option_name_short);
-
-      let result_option: Option<Result<Option<String>, CommanderParseError>> =
-        parse_hyphenated_option_name_with_prohibited_value(
-          args_slice,
-          &hyphenated_option_name,
-        );
-
-      if result_option.is_some() {
-        return result_option;
-      }
-    }
-
-    if self.name_long.is_some() {
-      let arg_option_name_long: &str = self.name_long.unwrap();
-
-      let hyphenated_option_name: String =
-        format!("--{}", arg_option_name_long);
-
-      let result_option: Option<Result<Option<String>, CommanderParseError>> =
-        parse_hyphenated_option_name_with_prohibited_value(
-          args_slice,
-          &hyphenated_option_name,
-        );
-
-      if result_option.is_some() {
-        return result_option;
-      }
-    }
-
-    None
-  }
-
   fn parse_required(
     &self,
     args_slice: &[String],
@@ -551,6 +487,47 @@ impl OptionConfig2<'_> {
 
       let result_option: Option<Result<Option<String>, CommanderParseError>> =
         parse_hyphenated_option_name_with_required_value(
+          args_slice,
+          &hyphenated_option_name,
+        );
+
+      if result_option.is_some() {
+        return result_option;
+      }
+    }
+
+    None
+  }
+
+  fn parse_verboten(
+    &self,
+    args_slice: &[String],
+  ) -> Option<Result<Option<String>, CommanderParseError>> {
+    if self.name_short.is_some() {
+      let arg_option_name_short = self.name_short.unwrap();
+
+      let hyphenated_option_name: String =
+        format!("-{}", arg_option_name_short);
+
+      let result_option: Option<Result<Option<String>, CommanderParseError>> =
+        parse_hyphenated_option_name_with_prohibited_value(
+          args_slice,
+          &hyphenated_option_name,
+        );
+
+      if result_option.is_some() {
+        return result_option;
+      }
+    }
+
+    if self.name_long.is_some() {
+      let arg_option_name_long: &str = self.name_long.unwrap();
+
+      let hyphenated_option_name: String =
+        format!("--{}", arg_option_name_long);
+
+      let result_option: Option<Result<Option<String>, CommanderParseError>> =
+        parse_hyphenated_option_name_with_prohibited_value(
           args_slice,
           &hyphenated_option_name,
         );

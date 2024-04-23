@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-04-22
+//! - Updated: 2024-04-23
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -20,18 +20,18 @@ const OPTION_CONFIG_2_OPTIONAL: OptionConfig2 = OptionConfig2 {
   value_usage: ValueUsage::Optional,
 };
 
-const OPTION_CONFIG_2_PROHIBITED: OptionConfig2 = OptionConfig2 {
-  brief_description: None,
-  name_long: Some("TEST"),
-  name_short: Some('T'),
-  value_usage: ValueUsage::Prohibited,
-};
-
 const OPTION_CONFIG_2_REQUIRED: OptionConfig2 = OptionConfig2 {
   brief_description: None,
   name_long: Some("TEST"),
   name_short: Some('T'),
   value_usage: ValueUsage::Required,
+};
+
+const OPTION_CONFIG_2_VERBOTEN: OptionConfig2 = OptionConfig2 {
+  brief_description: None,
+  name_long: Some("TEST"),
+  name_short: Some('T'),
+  value_usage: ValueUsage::Verboten,
 };
 
 #[test]
@@ -55,42 +55,6 @@ fn test_option_config_2_parse_optional_1() {
     OPTION_CONFIG_2_OPTIONAL.parse(test_args_slice);
 
   assert_eq!(Some(Ok(None)), actual_result);
-}
-
-#[test]
-fn test_option_config_2_parse_prohibited_0() {
-  let test_args_slice: &[String] = &["-T".to_string()];
-
-  let actual_result: Option<Result<Option<String>, CommanderParseError>> =
-    OPTION_CONFIG_2_PROHIBITED.parse(test_args_slice);
-
-  assert_eq!(Some(Ok(None)), actual_result);
-}
-
-#[test]
-fn test_option_config_2_parse_prohibited_1() {
-  let test_args_slice: &[String] = &[
-    "-T".to_string(),
-    "value".to_string(),
-  ];
-
-  let actual_result: Option<Result<Option<String>, CommanderParseError>> =
-    OPTION_CONFIG_2_PROHIBITED.parse(test_args_slice);
-
-  assert_eq!(Some(Ok(None)), actual_result);
-}
-
-#[test]
-fn test_option_config_2_parse_prohibited_2() {
-  let test_args_slice: &[String] = &["-T=value".to_string()];
-
-  let actual_result: Option<Result<Option<String>, CommanderParseError>> =
-    OPTION_CONFIG_2_PROHIBITED.parse(test_args_slice);
-
-  assert_eq!(
-    Some(Err(CommanderParseError::ProhibitedValuePresent)),
-    actual_result
-  );
 }
 
 #[test]
@@ -119,6 +83,42 @@ fn test_option_config_2_parse_required_1() {
   );
 }
 
+#[test]
+fn test_option_config_2_parse_verboten_0() {
+  let test_args_slice: &[String] = &["-T".to_string()];
+
+  let actual_result: Option<Result<Option<String>, CommanderParseError>> =
+    OPTION_CONFIG_2_VERBOTEN.parse(test_args_slice);
+
+  assert_eq!(Some(Ok(None)), actual_result);
+}
+
+#[test]
+fn test_option_config_2_parse_verboten_1() {
+  let test_args_slice: &[String] = &[
+    "-T".to_string(),
+    "value".to_string(),
+  ];
+
+  let actual_result: Option<Result<Option<String>, CommanderParseError>> =
+    OPTION_CONFIG_2_VERBOTEN.parse(test_args_slice);
+
+  assert_eq!(Some(Ok(None)), actual_result);
+}
+
+#[test]
+fn test_option_config_2_parse_verboten_2() {
+  let test_args_slice: &[String] = &["-T=value".to_string()];
+
+  let actual_result: Option<Result<Option<String>, CommanderParseError>> =
+    OPTION_CONFIG_2_VERBOTEN.parse(test_args_slice);
+
+  assert_eq!(
+    Some(Err(CommanderParseError::VerbotenValuePresent)),
+    actual_result
+  );
+}
+
 //----------------------------------------------------------------------------
 /// Unit test for parse_option_type_bool_without_value()
 //----------------------------------------------------------------------------
@@ -130,7 +130,7 @@ fn test_parse_option_type_bool_without_value() {
     is_type_bool: true,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    value_usage: ValueUsage::Prohibited,
+    value_usage: ValueUsage::Verboten,
   };
   let test_args_slice: &[String] = &["-T".to_string()];
   let actual_result: bool =
@@ -536,7 +536,7 @@ fn test_parse_option_type_bool_with_optional_value_where_cannot_have_value() {
     is_type_bool: true,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    value_usage: ValueUsage::Prohibited,
+    value_usage: ValueUsage::Verboten,
   };
   let test_args_slice: &[String] = &["--TEST=true".to_string()];
   let actual_result = parse_option_type_bool_with_optional_value(
@@ -683,7 +683,7 @@ fn test_parse_option_type_string_with_required_value_where_cannot_have_value() {
     is_type_bool: false,
     name_long: Some("TEST"),
     name_short: Some('T'),
-    value_usage: ValueUsage::Prohibited,
+    value_usage: ValueUsage::Verboten,
   };
   let test_args_slice: &[String] = &["--TEST=abc".to_string()];
   let actual_result: Option<Result<Option<String>, CommanderParseError>> =

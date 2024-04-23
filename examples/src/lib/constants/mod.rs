@@ -2,10 +2,10 @@
 //! CroftSoft Commander library usage example constants
 //!
 //! # Metadata
-//! - Author: [`David Wallace Croft`]
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
+//! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-04-17
+//! - Updated: 2024-04-23
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -46,7 +46,7 @@ pub const OPTION_CONFIG_H: OptionConfig = OptionConfig {
   is_type_bool: true,
   name_long: Some(ARG_HELP_NAME_LONG),
   name_short: Some(ARG_HELP_NAME_SHORT),
-  value_usage: ValueUsage::Prohibited,
+  value_usage: ValueUsage::Verboten,
 };
 
 pub const OPTION_CONFIG_I: OptionConfig = OptionConfig {

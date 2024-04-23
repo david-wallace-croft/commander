@@ -9,7 +9,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-04-22
+//! - Updated: 2024-04-23
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -57,8 +57,8 @@ pub struct OptionConfig<'a> {
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub enum ValueUsage {
   Optional,
-  Prohibited,
   Required,
+  Verboten,
 }
 
 pub struct OptionConfig2<'a> {

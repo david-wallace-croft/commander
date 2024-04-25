@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-04-23
+//! - Updated: 2024-04-25
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -117,6 +117,36 @@ fn test_option_config_2_parse_verboten_2() {
     Some(Err(CommanderParseError::VerbotenValuePresent)),
     actual_result
   );
+}
+
+#[test]
+fn test_option_config_2_parse_required_bool_0() {
+  let test_args_slice: &[String] = &["-T=false".to_string()];
+
+  let actual_result: Option<Result<Option<bool>, CommanderParseError>> =
+    OPTION_CONFIG_2_REQUIRED.parse_bool(test_args_slice);
+
+  assert_eq!(Some(Ok(Some(false))), actual_result);
+}
+
+#[test]
+fn test_option_config_2_parse_required_bool_1() {
+  let test_args_slice: &[String] = &["-T=true".to_string()];
+
+  let actual_result: Option<Result<Option<bool>, CommanderParseError>> =
+    OPTION_CONFIG_2_REQUIRED.parse_bool(test_args_slice);
+
+  assert_eq!(Some(Ok(Some(true))), actual_result);
+}
+
+#[test]
+fn test_option_config_2_parse_required_bool_2() {
+  let test_args_slice: &[String] = &["-T=invalid".to_string()];
+
+  let actual_result: Option<Result<Option<bool>, CommanderParseError>> =
+    OPTION_CONFIG_2_REQUIRED.parse_bool(test_args_slice);
+
+  assert_eq!(Some(Err(CommanderParseError::InvalidValue)), actual_result);
 }
 
 //----------------------------------------------------------------------------
@@ -503,7 +533,7 @@ fn test_parse_option_type_bool_with_optional_value_16() {
     test_args_slice,
     &ARG_OPTION_TEST,
   );
-  assert_eq!(Err(CommanderParseError::ValueInvalid), actual_result);
+  assert_eq!(Err(CommanderParseError::InvalidValue), actual_result);
 }
 
 #[test]
@@ -521,7 +551,7 @@ fn test_parse_option_type_bool_with_optional_value_17() {
     test_args_slice,
     &ARG_OPTION_TEST,
   );
-  assert_eq!(Err(CommanderParseError::ValueInvalid), actual_result);
+  assert_eq!(Err(CommanderParseError::InvalidValue), actual_result);
 }
 
 //----------------------------------------------------------------------------

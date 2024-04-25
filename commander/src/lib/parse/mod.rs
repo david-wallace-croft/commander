@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-04-24
+//! - Updated: 2024-04-25
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -21,9 +21,9 @@ use ::std::collections::HashSet;
 pub enum CommanderParseError {
   // TODO: Remove this one
   FunctionIncorrect,
+  InvalidValue,
   OptionalValueMissing,
   RequiredValueMissing,
-  ValueInvalid,
   VerbotenValuePresent,
 }
 
@@ -66,7 +66,7 @@ fn parse_hyphenated_option_name_with_optional_boolean_value(
 
   // TODO: What if it is an unrelated argument?
 
-  Some(Err(CommanderParseError::ValueInvalid))
+  Some(Err(CommanderParseError::InvalidValue))
 }
 
 // TODO: Return data structure with index of option so value can be parsed
@@ -449,5 +449,40 @@ impl OptionConfig2<'_> {
     }
 
     None
+  }
+
+  pub fn parse_bool(
+    &self,
+    args_slice: &[String],
+  ) -> Option<Result<Option<bool>, CommanderParseError>> {
+    let result_option: Option<Result<Option<String>, CommanderParseError>> =
+      self.parse(args_slice);
+
+    if result_option.is_none() {
+      return None;
+    }
+
+    let result: Result<Option<String>, CommanderParseError> =
+      result_option.unwrap();
+
+    if let Err(error) = result {
+      return Some(Err(error));
+    }
+
+    let option_value: Option<String> = result.unwrap();
+
+    if option_value.is_none() {
+      return Some(Ok(None));
+    }
+
+    let value = option_value.unwrap();
+
+    let lowercase_value: String = value.to_lowercase();
+
+    match lowercase_value.as_str() {
+      "0" | "f" | "false" | "n" | "no" | "off" => Some(Ok(Some(false))),
+      "1" | "on" | "t" | "true" | "y" | "yes" => Some(Ok(Some(true))),
+      _ => Some(Err(CommanderParseError::InvalidValue)),
+    }
   }
 }

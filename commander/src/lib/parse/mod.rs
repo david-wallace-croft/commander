@@ -458,12 +458,7 @@ impl OptionConfig2<'_> {
     let result_option: Option<Result<Option<String>, CommanderParseError>> =
       self.parse(args_slice);
 
-    if result_option.is_none() {
-      return None;
-    }
-
-    let result: Result<Option<String>, CommanderParseError> =
-      result_option.unwrap();
+    let result: Result<Option<String>, CommanderParseError> = result_option?;
 
     if let Err(error) = result {
       return Some(Err(error));

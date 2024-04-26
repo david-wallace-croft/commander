@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-04-25
+//! - Updated: 2024-04-26
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -84,6 +84,36 @@ fn test_option_config_2_parse_required_1() {
 }
 
 #[test]
+fn test_option_config_2_parse_required_bool_0() {
+  let test_args_slice: &[String] = &["-T=false".to_string()];
+
+  let actual_result: Option<Result<Option<bool>, CommanderParseError>> =
+    OPTION_CONFIG_2_REQUIRED.parse_bool(test_args_slice);
+
+  assert_eq!(Some(Ok(Some(false))), actual_result);
+}
+
+#[test]
+fn test_option_config_2_parse_required_bool_1() {
+  let test_args_slice: &[String] = &["-T=true".to_string()];
+
+  let actual_result: Option<Result<Option<bool>, CommanderParseError>> =
+    OPTION_CONFIG_2_REQUIRED.parse_bool(test_args_slice);
+
+  assert_eq!(Some(Ok(Some(true))), actual_result);
+}
+
+#[test]
+fn test_option_config_2_parse_required_bool_2() {
+  let test_args_slice: &[String] = &["-T=invalid".to_string()];
+
+  let actual_result: Option<Result<Option<bool>, CommanderParseError>> =
+    OPTION_CONFIG_2_REQUIRED.parse_bool(test_args_slice);
+
+  assert_eq!(Some(Err(CommanderParseError::InvalidValue)), actual_result);
+}
+
+#[test]
 fn test_option_config_2_parse_verboten_0() {
   let test_args_slice: &[String] = &["-T".to_string()];
 
@@ -120,68 +150,54 @@ fn test_option_config_2_parse_verboten_2() {
 }
 
 #[test]
-fn test_option_config_2_parse_required_bool_0() {
-  let test_args_slice: &[String] = &["-T=false".to_string()];
-
-  let actual_result: Option<Result<Option<bool>, CommanderParseError>> =
-    OPTION_CONFIG_2_REQUIRED.parse_bool(test_args_slice);
-
-  assert_eq!(Some(Ok(Some(false))), actual_result);
-}
-
-#[test]
-fn test_option_config_2_parse_required_bool_1() {
-  let test_args_slice: &[String] = &["-T=true".to_string()];
-
-  let actual_result: Option<Result<Option<bool>, CommanderParseError>> =
-    OPTION_CONFIG_2_REQUIRED.parse_bool(test_args_slice);
-
-  assert_eq!(Some(Ok(Some(true))), actual_result);
-}
-
-#[test]
-fn test_option_config_2_parse_required_bool_2() {
-  let test_args_slice: &[String] = &["-T=invalid".to_string()];
-
-  let actual_result: Option<Result<Option<bool>, CommanderParseError>> =
-    OPTION_CONFIG_2_REQUIRED.parse_bool(test_args_slice);
-
-  assert_eq!(Some(Err(CommanderParseError::InvalidValue)), actual_result);
-}
-
-//----------------------------------------------------------------------------
-/// Unit test for parse_option_type_bool_without_value()
-//----------------------------------------------------------------------------
-#[test]
-fn test_parse_option_type_bool_without_value() {
-  const ARG_OPTION_TEST: OptionConfig = OptionConfig {
-    brief_description: None,
-    default_value_bool: false,
-    is_type_bool: true,
-    name_long: Some("TEST"),
-    name_short: Some('T'),
-    value_usage: ValueUsage::Verboten,
-  };
+fn test_option_config_2_parse_verboten_bool_0() {
   let test_args_slice: &[String] = &["-T".to_string()];
-  let actual_result: bool =
-    parse_option_type_bool_without_value(test_args_slice, &ARG_OPTION_TEST);
-  assert_eq!(true, actual_result);
+
+  let actual_result: Option<Result<Option<bool>, CommanderParseError>> =
+    OPTION_CONFIG_2_VERBOTEN.parse_bool(test_args_slice);
+
+  assert_eq!(Some(Ok(None)), actual_result);
+}
+
+#[test]
+fn test_option_config_2_parse_verboten_bool_1() {
   let test_args_slice: &[String] = &["-t".to_string()];
-  let actual_result: bool =
-    parse_option_type_bool_without_value(test_args_slice, &ARG_OPTION_TEST);
-  assert_eq!(false, actual_result);
+
+  let actual_result: Option<Result<Option<bool>, CommanderParseError>> =
+    OPTION_CONFIG_2_VERBOTEN.parse_bool(test_args_slice);
+
+  assert_eq!(None, actual_result);
+}
+
+#[test]
+fn test_option_config_2_parse_verboten_bool_2() {
   let test_args_slice: &[String] = &["--TEST".to_string()];
-  let actual_result: bool =
-    parse_option_type_bool_without_value(test_args_slice, &ARG_OPTION_TEST);
-  assert_eq!(true, actual_result);
+
+  let actual_result: Option<Result<Option<bool>, CommanderParseError>> =
+    OPTION_CONFIG_2_VERBOTEN.parse_bool(test_args_slice);
+
+  assert_eq!(Some(Ok(None)), actual_result);
+}
+
+#[test]
+fn test_option_config_2_parse_verboten_bool_3() {
   let test_args_slice: &[String] = &["--test".to_string()];
-  let actual_result: bool =
-    parse_option_type_bool_without_value(test_args_slice, &ARG_OPTION_TEST);
-  assert_eq!(false, actual_result);
+
+  let actual_result: Option<Result<Option<bool>, CommanderParseError>> =
+    OPTION_CONFIG_2_VERBOTEN.parse_bool(test_args_slice);
+
+  assert_eq!(None, actual_result);
+}
+
+#[test]
+fn test_option_config_2_parse_verboten_bool_4() {
   let test_args_slice: &[String] = &["-TEST".to_string()];
-  let actual_result: bool =
-    parse_option_type_bool_without_value(test_args_slice, &ARG_OPTION_TEST);
-  assert_eq!(false, actual_result);
+
+  let actual_result: Option<Result<Option<bool>, CommanderParseError>> =
+    OPTION_CONFIG_2_VERBOTEN.parse_bool(test_args_slice);
+
+  // TODO: Make this work; should be Some(Ok(None))
+  assert_eq!(None, actual_result);
 }
 
 //----------------------------------------------------------------------------

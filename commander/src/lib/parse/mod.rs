@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-04-25
+//! - Updated: 2024-04-27
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -464,13 +464,13 @@ impl OptionConfig2<'_> {
       return Some(Err(error));
     }
 
-    let option_value: Option<String> = result.unwrap();
+    let value_option: Option<String> = result.unwrap();
 
-    if option_value.is_none() {
+    if value_option.is_none() {
       return Some(Ok(None));
     }
 
-    let value = option_value.unwrap();
+    let value = value_option.unwrap();
 
     let lowercase_value: String = value.to_lowercase();
 

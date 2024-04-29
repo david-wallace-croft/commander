@@ -5,13 +5,13 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-04-23
+//! - Updated: 2024-04-29
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
-use commander::{AppInfo, HelpInfo, OptionConfig, ValueUsage};
+use commander::{AppInfo, HelpInfo, OptionConfig2, ValueUsage};
 
 pub const APP_INFO_ABOUT: &str = "Command-line arguments parser example";
 pub const APP_INFO_CONTACT: &str = "David Wallace Croft <david@CroftSoft.com>";
@@ -40,34 +40,28 @@ pub const APP_INFO: AppInfo = AppInfo {
   name: Some(APP_INFO_NAME),
 };
 
-pub const OPTION_CONFIG_H: OptionConfig = OptionConfig {
+pub const OPTION_CONFIG_H: OptionConfig2 = OptionConfig2 {
   brief_description: Some(ARG_HELP_BRIEF_DESCRIPTION),
-  default_value_bool: false,
-  is_type_bool: true,
   name_long: Some(ARG_HELP_NAME_LONG),
   name_short: Some(ARG_HELP_NAME_SHORT),
   value_usage: ValueUsage::Verboten,
 };
 
-pub const OPTION_CONFIG_I: OptionConfig = OptionConfig {
+pub const OPTION_CONFIG_I: OptionConfig2 = OptionConfig2 {
   brief_description: Some(ARG_INTERACTIVE_HELP),
-  default_value_bool: true,
-  is_type_bool: true,
   name_long: Some(ARG_INTERACTIVE_NAME),
   name_short: Some(ARG_INTERACTIVE_SHORT),
   value_usage: ValueUsage::Optional,
 };
 
-pub const OPTION_CONFIG_N: OptionConfig = OptionConfig {
+pub const OPTION_CONFIG_N: OptionConfig2 = OptionConfig2 {
   brief_description: Some(ARG_NAME_HELP),
-  default_value_bool: false,
-  is_type_bool: false,
   name_long: Some(ARG_NAME_NAME),
   name_short: Some(ARG_NAME_SHORT),
   value_usage: ValueUsage::Optional,
 };
 
-pub const OPTION_CONFIGS: [OptionConfig; 3] = [
+pub const OPTION_CONFIGS: [OptionConfig2; 3] = [
   OPTION_CONFIG_H,
   OPTION_CONFIG_I,
   OPTION_CONFIG_N,

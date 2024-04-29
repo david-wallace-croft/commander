@@ -4,7 +4,7 @@
 //! # Metadata
 //! - Author: [`David Wallace Croft`]
 //! - Copyright: &copy; 2022 [`CroftSoft Inc`]
-//! - Since: 2022-04-02
+//! - Since: 2022-04-29
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -18,7 +18,7 @@ use crate::*;
 //------------------------------------------------------------------------------
 /// String prefix for a command-line option shown for -\-help
 //------------------------------------------------------------------------------
-pub fn make_print_option_prefix(arg_option: &OptionConfig) -> String {
+pub fn make_print_option_prefix(arg_option: &OptionConfig2) -> String {
   let mut prefix: String = "".to_string();
   if arg_option.name_short.is_some() {
     prefix.push_str("  -");
@@ -67,7 +67,7 @@ pub fn print_help(help_info: &HelpInfo) {
 /// Prints a single option description
 //------------------------------------------------------------------------------
 pub fn print_option(
-  arg_option: &OptionConfig,
+  arg_option: &OptionConfig2,
   prefix_len_max: usize,
 ) {
   let mut line: String = "".to_string();
@@ -86,7 +86,7 @@ pub fn print_option(
 //------------------------------------------------------------------------------
 /// Prints multiple option descriptions
 //------------------------------------------------------------------------------
-pub fn print_options(arg_options: &[OptionConfig]) {
+pub fn print_options(arg_options: &[OptionConfig2]) {
   let mut prefix_len_max: usize = 0;
   for arg_option in arg_options {
     // TODO: save generated prefix

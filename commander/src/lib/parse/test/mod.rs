@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-04-27
+//! - Updated: 2024-04-29
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -381,15 +381,13 @@ fn test_option_config_2_parse_verboten_bool_6() {
 
 #[test]
 fn test_parse_unrecognized_long() {
-  const ARG_OPTION_TEST: OptionConfig = OptionConfig {
+  const ARG_OPTION_TEST: OptionConfig2 = OptionConfig2 {
     brief_description: None,
-    default_value_bool: false,
-    is_type_bool: false,
     name_long: Some("TEST"),
     name_short: Some('T'),
     value_usage: ValueUsage::Optional,
   };
-  let recognized_options: Vec<OptionConfig> = vec![ARG_OPTION_TEST];
+  let recognized_options: Vec<OptionConfig2> = vec![ARG_OPTION_TEST];
   let test_args_slice: &[String] = &["--unrecognized".to_string()];
   let actual_result: Option<Vec<String>> =
     parse_unrecognized(test_args_slice, &recognized_options);
@@ -398,15 +396,13 @@ fn test_parse_unrecognized_long() {
 
 #[test]
 fn test_parse_unrecognized_short() {
-  const ARG_OPTION_TEST: OptionConfig = OptionConfig {
+  const ARG_OPTION_TEST: OptionConfig2 = OptionConfig2 {
     brief_description: None,
-    default_value_bool: false,
-    is_type_bool: false,
     name_long: Some("TEST"),
     name_short: Some('T'),
     value_usage: ValueUsage::Optional,
   };
-  let recognized_options: Vec<OptionConfig> = vec![ARG_OPTION_TEST];
+  let recognized_options: Vec<OptionConfig2> = vec![ARG_OPTION_TEST];
   let test_args_slice: &[String] = &["-u".to_string()];
   let actual_result: Option<Vec<String>> =
     parse_unrecognized(test_args_slice, &recognized_options);

@@ -9,7 +9,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-04-23
+//! - Updated: 2024-04-29
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -35,7 +35,7 @@ pub struct AppInfo<'a> {
 #[derive(Debug)]
 pub struct HelpInfo<'a> {
   pub app_info: &'a AppInfo<'a>,
-  pub arg_options: &'a [OptionConfig<'a>],
+  pub arg_options: &'a [OptionConfig2<'a>],
 }
 
 //------------------------------------------------------------------------------
@@ -61,6 +61,7 @@ pub enum ValueUsage {
   Verboten,
 }
 
+#[derive(Clone, Copy, Debug)]
 pub struct OptionConfig2<'a> {
   pub brief_description: Option<&'a str>,
   // TODO: Is there a static compile check to make at least one of these Some?

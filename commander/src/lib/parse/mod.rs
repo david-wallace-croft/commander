@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-04-27
+//! - Updated: 2024-04-29
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -294,7 +294,7 @@ pub fn parse_option_type_string_with_optional_value(
 //------------------------------------------------------------------------------
 pub fn parse_unrecognized(
   args_slice: &[String],
-  recognized_options: &Vec<OptionConfig>,
+  recognized_options: &Vec<OptionConfig2>,
 ) -> Option<Vec<String>> {
   let mut unrecognized_set: HashSet<String> = HashSet::new();
 

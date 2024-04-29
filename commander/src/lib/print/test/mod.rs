@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-04-23
+//! - Updated: 2024-04-29
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -18,10 +18,8 @@ use super::*;
 //-----------------------------------------------------------------------------
 #[test]
 fn test_make_print_option_prefix() {
-  const ARG_OPTION_TEST: OptionConfig = OptionConfig {
+  const ARG_OPTION_TEST: OptionConfig2 = OptionConfig2 {
     brief_description: Some("ARG_HELP_BRIEF_DESCRIPTION"),
-    default_value_bool: false,
-    is_type_bool: true,
     name_long: Some("ARG_HELP_NAME_LONG"),
     name_short: Some('T'),
     value_usage: ValueUsage::Verboten,

@@ -9,7 +9,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-04-29
+//! - Updated: 2024-04-30
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -35,20 +35,7 @@ pub struct AppInfo<'a> {
 #[derive(Debug)]
 pub struct HelpInfo<'a> {
   pub app_info: &'a AppInfo<'a>,
-  pub arg_options: &'a [OptionConfig2<'a>],
-}
-
-//------------------------------------------------------------------------------
-/// Command-line option configuration
-//------------------------------------------------------------------------------
-#[derive(Clone, Copy, Debug)]
-pub struct OptionConfig<'a> {
-  pub brief_description: Option<&'a str>,
-  pub default_value_bool: bool,
-  pub is_type_bool: bool,
-  pub name_short: Option<char>,
-  pub name_long: Option<&'a str>,
-  pub value_usage: ValueUsage,
+  pub arg_options: &'a [OptionConfig<'a>],
 }
 
 //------------------------------------------------------------------------------
@@ -62,7 +49,7 @@ pub enum ValueUsage {
 }
 
 #[derive(Clone, Copy, Debug)]
-pub struct OptionConfig2<'a> {
+pub struct OptionConfig<'a> {
   pub brief_description: Option<&'a str>,
   // TODO: Is there a static compile check to make at least one of these Some?
   pub name_short: Option<char>,

@@ -5,14 +5,14 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-04-29
+//! - Updated: 2024-04-30
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
 use commander::parse::{parse_unrecognized, CommanderParseError};
-use commander::OptionConfig2;
+use commander::OptionConfig;
 use croftsoft_commander_examples::constants::*;
 use croftsoft_commander_examples::OptionValues;
 use std::env;
@@ -106,7 +106,7 @@ pub fn parse_option_values_using_commander() -> OptionValues {
     None
   };
 
-  let arg_option_vector: Vec<OptionConfig2> = OPTION_CONFIGS.to_vec();
+  let arg_option_vector: Vec<OptionConfig> = OPTION_CONFIGS.to_vec();
 
   let unrecognized: Option<Vec<String>> =
     parse_unrecognized(args_slice, &arg_option_vector);

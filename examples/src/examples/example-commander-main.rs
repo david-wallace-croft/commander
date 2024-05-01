@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-04-30
+//! - Updated: 2024-05-01
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -38,54 +38,17 @@ pub fn parse_option_values_using_commander() -> OptionValues {
 
   let args_slice: &[String] = &args[1..];
 
-  let help_wanted_result_option: Option<
-    Result<Option<bool>, CommanderParseError>,
-  > = OPTION_CONFIG_H.parse_bool(args_slice);
+  let help_wanted_result: Result<bool, CommanderParseError> =
+    OPTION_CONFIG_H.parse_bool_default(args_slice, false);
 
-  // TODO: move this logic to the parser lib
-  let help_wanted: bool = if help_wanted_result_option.is_some() {
-    let help_wanted_result: Result<Option<bool>, CommanderParseError> =
-      help_wanted_result_option.unwrap();
-
-    if help_wanted_result.is_err() {
-      false
-    } else {
-      let help_wanted_option: Option<bool> = help_wanted_result.unwrap();
-
-      if help_wanted_option.is_some() {
-        help_wanted_option.unwrap()
-      } else {
-        true
-      }
-    }
-  } else {
-    false
+  let help_wanted: bool = match help_wanted_result {
+    Ok(value) => value,
+    // TODO: Show the user the parse error
+    Err(_error) => false,
   };
 
-  let interactive_result_option: Option<
-    Result<Option<bool>, CommanderParseError>,
-  > = OPTION_CONFIG_I.parse_bool(args_slice);
-
-  // TODO: move this logic to the parser lib
   let interactive: Result<bool, CommanderParseError> =
-    if interactive_result_option.is_some() {
-      let interactive_result: Result<Option<bool>, CommanderParseError> =
-        interactive_result_option.unwrap();
-
-      if interactive_result.is_err() {
-        Err(interactive_result.unwrap_err())
-      } else {
-        let interactive_option: Option<bool> = interactive_result.unwrap();
-
-        if interactive_option.is_some() {
-          Ok(interactive_option.unwrap())
-        } else {
-          Ok(true)
-        }
-      }
-    } else {
-      Ok(true)
-    };
+    OPTION_CONFIG_I.parse_bool_default(args_slice, true);
 
   // TODO: parse_option_type_string_with_default_value
 

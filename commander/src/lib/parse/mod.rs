@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-04-30
+//! - Updated: 2024-05-01
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -288,5 +288,30 @@ impl OptionConfig<'_> {
       "1" | "on" | "t" | "true" | "y" | "yes" => Some(Ok(Some(true))),
       _ => Some(Err(CommanderParseError::InvalidValue)),
     }
+  }
+
+  pub fn parse_bool_default(
+    &self,
+    args_slice: &[String],
+    default: bool,
+  ) -> Result<bool, CommanderParseError> {
+    let value_option_result_option: Option<
+      Result<Option<bool>, CommanderParseError>,
+    > = self.parse_bool(args_slice);
+
+    if value_option_result_option.is_none() {
+      return Ok(default);
+    }
+
+    let value_option_result: Result<Option<bool>, CommanderParseError> =
+      value_option_result_option.unwrap();
+
+    let value_option: Option<bool> = value_option_result?;
+
+    if let Some(value) = value_option {
+      return Ok(value);
+    }
+
+    Ok(true)
   }
 }

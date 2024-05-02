@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-05-01
+//! - Updated: 2024-05-02
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -20,7 +20,7 @@ use ::std::collections::HashSet;
 #[derive(Debug, PartialEq)]
 pub enum CommanderParseError {
   InvalidValue,
-  OptionalValueMissing,
+  OptionalValueMissingAfterEquals,
   RequiredValueMissing,
   VerbotenValuePresent,
 }
@@ -43,27 +43,15 @@ fn parse_hyphenated_option_name_with_optional_value(
         arg.strip_prefix(&hyphenated_option_name_equals).unwrap();
 
       if value.eq("") {
-        return Some(Err(CommanderParseError::OptionalValueMissing));
+        return Some(Err(CommanderParseError::OptionalValueMissingAfterEquals));
       }
 
       return Some(Ok(Some(value.to_string())));
     }
 
-    if !arg.eq(&hyphenated_option_name) {
-      continue;
-    }
-
-    // TODO: Should we support values without equals?
-
-    if index == length - 1 {
+    if arg.eq(&hyphenated_option_name) {
       return Some(Ok(None));
     }
-
-    let value: &String = &args_slice[index + 1];
-
-    // TODO: What if it is an unrelated argument?
-
-    return Some(Ok(Some(value.clone())));
   }
 
   None
@@ -73,17 +61,38 @@ fn parse_hyphenated_option_name_with_required_value(
   args_slice: &[String],
   hyphenated_option_name: &str,
 ) -> Option<Result<Option<String>, CommanderParseError>> {
-  let result_option: Option<Result<Option<String>, CommanderParseError>> =
-    parse_hyphenated_option_name_with_optional_value(
-      args_slice,
-      hyphenated_option_name,
-    );
+  let hyphenated_option_name_equals: String =
+    format!("{}=", hyphenated_option_name);
 
-  if result_option.is_some() {
-    let result: Result<Option<String>, CommanderParseError> =
-      result_option.unwrap();
+  let length: usize = args_slice.len();
 
-    return Some(to_error_if_missing(result));
+  for index in 0..length {
+    let arg: &String = &args_slice[index];
+
+    if arg.starts_with(&hyphenated_option_name_equals) {
+      let value: &str =
+        arg.strip_prefix(&hyphenated_option_name_equals).unwrap();
+
+      if value.eq("") {
+        return Some(Err(CommanderParseError::OptionalValueMissingAfterEquals));
+      }
+
+      return Some(Ok(Some(value.to_string())));
+    }
+
+    if !arg.eq(&hyphenated_option_name) {
+      continue;
+    }
+
+    if index == length - 1 {
+      return Some(Err(CommanderParseError::RequiredValueMissing));
+    }
+
+    let value: &String = &args_slice[index + 1];
+
+    // TODO: What if it is an option starting with - or --?
+
+    return Some(Ok(Some(value.clone())));
   }
 
   None
@@ -198,18 +207,6 @@ pub fn parse_unrecognized(
   let unrecognized_vector: Vec<String> = Vec::from_iter(unrecognized_set);
 
   Some(unrecognized_vector)
-}
-
-fn to_error_if_missing(
-  result: Result<Option<String>, CommanderParseError>
-) -> Result<Option<String>, CommanderParseError> {
-  let option_value_option: Option<String> = result?;
-
-  if option_value_option.is_some() {
-    return Ok(option_value_option);
-  }
-
-  Err(CommanderParseError::RequiredValueMissing)
 }
 
 impl OptionConfig<'_> {

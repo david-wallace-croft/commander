@@ -5,7 +5,7 @@
 //! - Author: [`David Wallace Croft`]
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Created: 2024-04-06
-//! - Updated: 2024-04-09
+//! - Updated: 2024-05-02
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -54,25 +54,21 @@ OPTIONS:
 }
 
 #[test]
-fn test_output_args_name() {
+fn test_output_args_name_long() {
   make_command()
-    .args(&[
-      "--name", "David",
-    ])
+    .args(&["--name=David"])
     .assert()
     .success()
     .stdout("\nWhat is your name? [David]: Hello, David!\n");
 }
 
 #[test]
-fn test_output_args_non_interactive() {
+fn test_output_args_name_short() {
   make_command()
-    .args(&[
-      "-i", "false",
-    ])
+    .args(&["-n=David"])
     .assert()
     .success()
-    .stdout("Hello, World!\n");
+    .stdout("\nWhat is your name? [David]: Hello, David!\n");
 }
 
 #[test]
@@ -97,7 +93,7 @@ fn test_output_args_non_interactive_long_equals() {
 fn test_output_args_non_interactive_name() {
   make_command()
     .args(&[
-      "-i", "false", "--name", "David",
+      "-i=false", "-n=David",
     ])
     .assert()
     .success()
@@ -108,7 +104,8 @@ fn test_output_args_non_interactive_name() {
 fn test_output_args_non_interactive_name_predicate() {
   make_command()
     .args(&[
-      "-i", "false", "--name", "David",
+      "--interactive=false",
+      "--name=David",
     ])
     .assert()
     .success()

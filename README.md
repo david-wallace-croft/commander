@@ -28,20 +28,16 @@
   - Prints the help information for the examples that uses the library
 - cargo run --example example-commander
   - Runs the example that uses the library
-- cargo run --example example-commander -- -i false
-  - Disable interactive mode
 - cargo run --example example-commander -- -i=false
-  - Disable interactive mode using the equals sign
-- cargo run --example example-commander -- -n World
-  - Provide the default name
-- cargo run --example example-commander -- -i false -n World
-  - Disable interactive mode and use the specified name
-- cargo run --example example-commander -- --interactive false
   - Disable interactive mode
-- cargo run --example example-commander -- --name World
+- cargo run --example example-commander -- -n=World
   - Provide the default name
+- cargo run --example example-commander -- -i=false -n=World
+  - Disable interactive mode and use the specified name
+- cargo run --example example-commander -- --interactive=false
+  - Disable interactive mode
 - cargo run --example example-commander -- --name=World
-  - Provide the default name using the equals sign
+  - Provide the default name
 - cargo run --example example-commander -- -u
   - Show an error message for the unrecognized option
 - cargo run --example example-commander -- --unrecognized

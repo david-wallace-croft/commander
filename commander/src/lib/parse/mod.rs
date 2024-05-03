@@ -30,17 +30,13 @@ fn parse_hyphenated_option_name_with_optional_value(
   args_slice: &[String],
   hyphenated_option_name: &str,
 ) -> Option<Result<Option<String>, CommanderParseError>> {
-  let hyphenated_option_name_equals: String =
-    format!("{}=", hyphenated_option_name);
+  let hyphenated_option_name_equals: &String =
+    &format!("{}=", hyphenated_option_name);
 
-  let length: usize = args_slice.len();
-
-  for index in 0..length {
-    let arg: &String = &args_slice[index];
-
-    if arg.starts_with(&hyphenated_option_name_equals) {
+  for arg in args_slice.iter() {
+    if arg.starts_with(hyphenated_option_name_equals) {
       let value: &str =
-        arg.strip_prefix(&hyphenated_option_name_equals).unwrap();
+        arg.strip_prefix(hyphenated_option_name_equals).unwrap();
 
       if value.eq("") {
         return Some(Err(CommanderParseError::OptionalValueMissingAfterEquals));
@@ -49,7 +45,7 @@ fn parse_hyphenated_option_name_with_optional_value(
       return Some(Ok(Some(value.to_string())));
     }
 
-    if arg.eq(&hyphenated_option_name) {
+    if arg.eq(hyphenated_option_name) {
       return Some(Ok(None));
     }
   }

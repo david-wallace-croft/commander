@@ -34,14 +34,6 @@ pub struct ParseInput {
 }
 
 impl ParseInput {
-  pub fn new() -> Self {
-    let args: Vec<String> = env::args().collect();
-    Self {
-      args,
-      skip: 1,
-    }
-  }
-
   pub fn from_slice(args_slice: &[&str]) -> Self {
     let args: Vec<String> =
       args_slice.iter().map(|arg| arg.to_string()).collect();
@@ -49,6 +41,14 @@ impl ParseInput {
     Self {
       args,
       skip: 0,
+    }
+  }
+
+  pub fn new() -> Self {
+    let args: Vec<String> = env::args().collect();
+    Self {
+      args,
+      skip: 1,
     }
   }
 }

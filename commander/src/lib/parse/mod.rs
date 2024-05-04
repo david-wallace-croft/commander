@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-05-02
+//! - Updated: 2024-05-04
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -16,6 +16,9 @@ mod test;
 
 use crate::*;
 use ::std::collections::HashSet;
+use ::std::env;
+use std::iter::Skip;
+use std::slice::Iter;
 
 #[derive(Debug, PartialEq)]
 pub enum CommanderParseError {
@@ -25,15 +28,40 @@ pub enum CommanderParseError {
   VerbotenValuePresent,
 }
 
+pub struct ParseInput {
+  pub args: Vec<String>,
+  pub skip: usize,
+}
+
+impl ParseInput {
+  pub fn new() -> Self {
+    let args: Vec<String> = env::args().collect();
+    Self {
+      args,
+      skip: 1,
+    }
+  }
+
+  pub fn from_slice(args_slice: &[&str]) -> Self {
+    let args: Vec<String> =
+      args_slice.iter().map(|arg| arg.to_string()).collect();
+
+    Self {
+      args,
+      skip: 0,
+    }
+  }
+}
+
 // TODO: Return data structure with index of option so value can be parsed
 fn parse_hyphenated_option_name_with_optional_value(
-  args_slice: &[String],
+  parse_input: &ParseInput,
   hyphenated_option_name: &str,
 ) -> Option<Result<Option<String>, CommanderParseError>> {
   let hyphenated_option_name_equals: &String =
     &format!("{}=", hyphenated_option_name);
 
-  for arg in args_slice.iter() {
+  for arg in parse_input.args.iter().skip(parse_input.skip) {
     if arg.starts_with(hyphenated_option_name_equals) {
       let value: &str =
         arg.strip_prefix(hyphenated_option_name_equals).unwrap();
@@ -54,17 +82,16 @@ fn parse_hyphenated_option_name_with_optional_value(
 }
 
 fn parse_hyphenated_option_name_with_required_value(
-  args_slice: &[String],
+  parse_input: &ParseInput,
   hyphenated_option_name: &str,
 ) -> Option<Result<Option<String>, CommanderParseError>> {
   let hyphenated_option_name_equals: String =
     format!("{}=", hyphenated_option_name);
 
-  let length: usize = args_slice.len();
+  let mut args_iter: Skip<Iter<String>> =
+    parse_input.args.iter().skip(parse_input.skip);
 
-  for index in 0..length {
-    let arg: &String = &args_slice[index];
-
+  while let Some(arg) = args_iter.next() {
     if arg.starts_with(&hyphenated_option_name_equals) {
       let value: &str =
         arg.strip_prefix(&hyphenated_option_name_equals).unwrap();
@@ -80,15 +107,17 @@ fn parse_hyphenated_option_name_with_required_value(
       continue;
     }
 
-    if index == length - 1 {
+    let next_option: Option<&String> = args_iter.next();
+
+    if next_option.is_none() {
       return Some(Err(CommanderParseError::RequiredValueMissing));
     }
 
-    let value: &String = &args_slice[index + 1];
-
     // TODO: What if it is an option starting with - or --?
 
-    return Some(Ok(Some(value.clone())));
+    let value: String = next_option.unwrap().clone();
+
+    return Some(Ok(Some(value)));
   }
 
   None
@@ -96,13 +125,13 @@ fn parse_hyphenated_option_name_with_required_value(
 
 // TODO: Return data structure with index of option so value can be parsed
 fn parse_hyphenated_option_name_with_verboten_value(
-  args_slice: &[String],
+  parse_input: &ParseInput,
   hyphenated_option_name: &str,
 ) -> Option<Result<Option<String>, CommanderParseError>> {
   let hyphenated_option_name_equals: String =
     format!("{}=", hyphenated_option_name);
 
-  for arg in args_slice {
+  for arg in parse_input.args.iter().skip(parse_input.skip) {
     if arg.starts_with(&hyphenated_option_name_equals) {
       return Some(Err(CommanderParseError::VerbotenValuePresent));
     }
@@ -119,12 +148,12 @@ fn parse_hyphenated_option_name_with_verboten_value(
 /// Parses unrecognized options from the arguments.
 //------------------------------------------------------------------------------
 pub fn parse_unrecognized(
-  args_slice: &[String],
+  parse_input: &ParseInput,
   recognized_options: &Vec<OptionConfig>,
 ) -> Option<Vec<String>> {
   let mut unrecognized_set: HashSet<String> = HashSet::new();
 
-  'outer: for arg in args_slice {
+  'outer: for arg in parse_input.args.iter().skip(parse_input.skip) {
     if !arg.starts_with('-') {
       continue;
     }
@@ -208,7 +237,7 @@ pub fn parse_unrecognized(
 impl OptionConfig<'_> {
   pub fn parse(
     &self,
-    args_slice: &[String],
+    parse_input: &ParseInput,
   ) -> Option<Result<Option<String>, CommanderParseError>> {
     let parse_hyphenated_option_name_function = match self.value_usage {
       ValueUsage::Optional => parse_hyphenated_option_name_with_optional_value,
@@ -224,7 +253,7 @@ impl OptionConfig<'_> {
 
       let result_option: Option<Result<Option<String>, CommanderParseError>> =
         parse_hyphenated_option_name_function(
-          args_slice,
+          parse_input,
           &hyphenated_option_name,
         );
 
@@ -241,7 +270,7 @@ impl OptionConfig<'_> {
 
       let result_option: Option<Result<Option<String>, CommanderParseError>> =
         parse_hyphenated_option_name_function(
-          args_slice,
+          parse_input,
           &hyphenated_option_name,
         );
 
@@ -255,10 +284,10 @@ impl OptionConfig<'_> {
 
   pub fn parse_bool(
     &self,
-    args_slice: &[String],
+    parse_input: &ParseInput,
   ) -> Option<Result<Option<bool>, CommanderParseError>> {
     let result_option: Option<Result<Option<String>, CommanderParseError>> =
-      self.parse(args_slice);
+      self.parse(parse_input);
 
     let result: Result<Option<String>, CommanderParseError> = result_option?;
 
@@ -285,12 +314,12 @@ impl OptionConfig<'_> {
 
   pub fn parse_bool_default(
     &self,
-    args_slice: &[String],
+    parse_input: &ParseInput,
     default: bool,
   ) -> Result<bool, CommanderParseError> {
     let value_option_result_option: Option<
       Result<Option<bool>, CommanderParseError>,
-    > = self.parse_bool(args_slice);
+    > = self.parse_bool(parse_input);
 
     if value_option_result_option.is_none() {
       return Ok(default);

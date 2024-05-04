@@ -5,17 +5,16 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-05-01
+//! - Updated: 2024-05-04
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
-use commander::parse::{parse_unrecognized, CommanderParseError};
+use commander::parse::{self, CommanderParseError, ParseInput};
 use commander::OptionConfig;
 use croftsoft_commander_examples::constants::*;
 use croftsoft_commander_examples::OptionValues;
-use std::env;
 
 //------------------------------------------------------------------------------
 /// Parses the options using Commander and then runs the example application.
@@ -31,15 +30,10 @@ fn main() {
 //------------------------------------------------------------------------------
 // https://doc.rust-lang.org/book/ch12-01-accepting-command-line-arguments.html
 pub fn parse_option_values_using_commander() -> OptionValues {
-  let args: Vec<String> = env::args().collect();
-
-  // println!("{:?}", args);
-  // println!("Args length = {}", length);
-
-  let args_slice: &[String] = &args[1..];
+  let parse_input = &ParseInput::new();
 
   let help_wanted_result: Result<bool, CommanderParseError> =
-    OPTION_CONFIG_H.parse_bool_default(args_slice, false);
+    OPTION_CONFIG_H.parse_bool_default(parse_input, false);
 
   let help_wanted: bool = match help_wanted_result {
     Ok(value) => value,
@@ -48,13 +42,13 @@ pub fn parse_option_values_using_commander() -> OptionValues {
   };
 
   let interactive: Result<bool, CommanderParseError> =
-    OPTION_CONFIG_I.parse_bool_default(args_slice, true);
+    OPTION_CONFIG_I.parse_bool_default(parse_input, true);
 
   // TODO: parse_option_type_string_with_default_value
 
   let name_option_result_option: Option<
     Result<Option<String>, CommanderParseError>,
-  > = OPTION_CONFIG_N.parse(args_slice);
+  > = OPTION_CONFIG_N.parse(parse_input);
 
   let name_option: Option<String> = if name_option_result_option.is_some() {
     let name_option_result: Result<Option<String>, CommanderParseError> =
@@ -72,7 +66,7 @@ pub fn parse_option_values_using_commander() -> OptionValues {
   let arg_option_vector: Vec<OptionConfig> = OPTION_CONFIGS.to_vec();
 
   let unrecognized: Option<Vec<String>> =
-    parse_unrecognized(args_slice, &arg_option_vector);
+    parse::parse_unrecognized(parse_input, &arg_option_vector);
 
   OptionValues {
     help_wanted,

@@ -53,6 +53,23 @@ impl ParseInput {
   }
 }
 
+// TODO: return this from parse functions
+pub struct ParseOutput {
+  pub error: Option<CommanderParseError>,
+  pub index: Option<usize>,
+  pub value: Option<String>,
+}
+
+impl ParseOutput {
+  pub fn error(error: CommanderParseError) -> Self {
+    Self {
+      error: Some(error),
+      index: None,
+      value: None,
+    }
+  }
+}
+
 // TODO: Return data structure with index of option so value can be parsed
 fn parse_hyphenated_option_name_with_optional_value(
   parse_input: &ParseInput,

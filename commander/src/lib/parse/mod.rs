@@ -78,6 +78,7 @@ fn parse_hyphenated_option_name_with_optional_value(
   let hyphenated_option_name_equals: &String =
     &format!("{}=", hyphenated_option_name);
 
+  // TODO: use enum to get the index to return
   for arg in parse_input.args.iter().skip(parse_input.skip) {
     if arg.starts_with(hyphenated_option_name_equals) {
       let value: &str =

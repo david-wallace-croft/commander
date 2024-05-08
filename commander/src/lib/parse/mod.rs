@@ -56,7 +56,9 @@ impl ParseInput {
 // TODO: return this from parse functions
 pub struct ParseOutput {
   pub error: Option<CommanderParseError>,
+  // TODO: Might use a 2nd index for multiple short names in a single argument
   pub index: Option<usize>,
+  // TODO: Does this need to be OsString?
   pub value: Option<String>,
 }
 

@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-05-04
+//! - Updated: 2024-05-09
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -17,8 +17,6 @@ mod test;
 use crate::*;
 use ::std::collections::HashSet;
 use ::std::env;
-use std::iter::Skip;
-use std::slice::Iter;
 
 #[derive(Debug, PartialEq)]
 pub enum CommanderParseError {
@@ -54,6 +52,7 @@ impl ParseInput {
 }
 
 // TODO: return this from parse functions
+#[derive(Debug, Default, PartialEq)]
 pub struct ParseOutput {
   pub error: Option<CommanderParseError>,
   // TODO: Might use a 2nd index for multiple short names in a single argument
@@ -76,92 +75,123 @@ impl ParseOutput {
 fn parse_hyphenated_option_name_with_optional_value(
   parse_input: &ParseInput,
   hyphenated_option_name: &str,
-) -> Option<Result<Option<String>, CommanderParseError>> {
+) -> ParseOutput {
   let hyphenated_option_name_equals: &String =
     &format!("{}=", hyphenated_option_name);
 
   // TODO: use enum to get the index to return
-  for arg in parse_input.args.iter().skip(parse_input.skip) {
+  for (arg_index, arg) in
+    parse_input.args.iter().enumerate().skip(parse_input.skip)
+  {
     if arg.starts_with(hyphenated_option_name_equals) {
       let value: &str =
         arg.strip_prefix(hyphenated_option_name_equals).unwrap();
 
       if value.eq("") {
-        return Some(Err(CommanderParseError::OptionalValueMissingAfterEquals));
+        return ParseOutput::error(
+          CommanderParseError::OptionalValueMissingAfterEquals,
+        );
       }
 
-      return Some(Ok(Some(value.to_string())));
+      return ParseOutput {
+        error: None,
+        index: Some(arg_index),
+        value: Some(value.to_string()),
+      };
     }
 
     if arg.eq(hyphenated_option_name) {
-      return Some(Ok(None));
+      return ParseOutput {
+        error: None,
+        index: Some(arg_index),
+        value: None,
+      };
     }
   }
 
-  None
+  ParseOutput::default()
 }
 
 fn parse_hyphenated_option_name_with_required_value(
   parse_input: &ParseInput,
   hyphenated_option_name: &str,
-) -> Option<Result<Option<String>, CommanderParseError>> {
+) -> ParseOutput {
   let hyphenated_option_name_equals: String =
     format!("{}=", hyphenated_option_name);
 
-  let mut args_iter: Skip<Iter<String>> =
-    parse_input.args.iter().skip(parse_input.skip);
+  let length = parse_input.args.len();
 
-  while let Some(arg) = args_iter.next() {
+  let mut arg_index = 0;
+
+  while arg_index < length {
+    let arg = parse_input.args[arg_index].clone();
+
     if arg.starts_with(&hyphenated_option_name_equals) {
       let value: &str =
         arg.strip_prefix(&hyphenated_option_name_equals).unwrap();
 
       if value.eq("") {
-        return Some(Err(CommanderParseError::OptionalValueMissingAfterEquals));
+        return ParseOutput::error(
+          CommanderParseError::OptionalValueMissingAfterEquals,
+        );
       }
 
-      return Some(Ok(Some(value.to_string())));
+      return ParseOutput {
+        error: None,
+        index: Some(arg_index),
+        value: Some(value.to_string()),
+      };
     }
 
     if !arg.eq(&hyphenated_option_name) {
+      arg_index += 1;
+
       continue;
     }
 
-    let next_option: Option<&String> = args_iter.next();
-
-    if next_option.is_none() {
-      return Some(Err(CommanderParseError::RequiredValueMissing));
+    if arg_index + 1 >= length {
+      return ParseOutput::error(CommanderParseError::RequiredValueMissing);
     }
 
     // TODO: What if it is an option starting with - or --?
 
-    let value: String = next_option.unwrap().clone();
+    let value = parse_input.args[arg_index + 1].clone();
 
-    return Some(Ok(Some(value)));
+    return ParseOutput {
+      error: None,
+      index: Some(arg_index),
+      value: Some(value),
+    };
   }
 
-  None
+  ParseOutput::default()
 }
 
 // TODO: Return data structure with index of option so value can be parsed
 fn parse_hyphenated_option_name_with_verboten_value(
   parse_input: &ParseInput,
   hyphenated_option_name: &str,
-) -> Option<Result<Option<String>, CommanderParseError>> {
+) -> ParseOutput {
   let hyphenated_option_name_equals: String =
     format!("{}=", hyphenated_option_name);
 
-  for arg in parse_input.args.iter().skip(parse_input.skip) {
+  for (arg_index, arg) in
+    parse_input.args.iter().enumerate().skip(parse_input.skip)
+  {
     if arg.starts_with(&hyphenated_option_name_equals) {
-      return Some(Err(CommanderParseError::VerbotenValuePresent));
+      return ParseOutput::error(CommanderParseError::VerbotenValuePresent);
     }
 
     if arg.eq(&hyphenated_option_name) {
-      return Some(Ok(None));
+      return ParseOutput {
+        error: None,
+        index: Some(arg_index),
+        value: None,
+      };
     }
   }
 
-  None
+  ParseOutput::default()
 }
 
 //------------------------------------------------------------------------------
@@ -258,7 +288,7 @@ impl OptionConfig<'_> {
   pub fn parse(
     &self,
     parse_input: &ParseInput,
-  ) -> Option<Result<Option<String>, CommanderParseError>> {
+  ) -> ParseOutput {
     let parse_hyphenated_option_name_function = match self.value_usage {
       ValueUsage::Optional => parse_hyphenated_option_name_with_optional_value,
       ValueUsage::Required => parse_hyphenated_option_name_with_required_value,
@@ -271,14 +301,13 @@ impl OptionConfig<'_> {
       let hyphenated_option_name: String =
         format!("-{}", arg_option_name_short);
 
-      let result_option: Option<Result<Option<String>, CommanderParseError>> =
-        parse_hyphenated_option_name_function(
-          parse_input,
-          &hyphenated_option_name,
-        );
+      let parse_output: ParseOutput = parse_hyphenated_option_name_function(
+        parse_input,
+        &hyphenated_option_name,
+      );
 
-      if result_option.is_some() {
-        return result_option;
+      if parse_output.index.is_some() {
+        return parse_output;
       }
     }
 
@@ -288,34 +317,34 @@ impl OptionConfig<'_> {
       let hyphenated_option_name: String =
         format!("--{}", arg_option_name_long);
 
-      let result_option: Option<Result<Option<String>, CommanderParseError>> =
-        parse_hyphenated_option_name_function(
-          parse_input,
-          &hyphenated_option_name,
-        );
+      let parse_output: ParseOutput = parse_hyphenated_option_name_function(
+        parse_input,
+        &hyphenated_option_name,
+      );
 
-      if result_option.is_some() {
-        return result_option;
+      if parse_output.index.is_some() {
+        return parse_output;
       }
     }
 
-    None
+    ParseOutput::default()
   }
 
   pub fn parse_bool(
     &self,
     parse_input: &ParseInput,
   ) -> Option<Result<Option<bool>, CommanderParseError>> {
-    let result_option: Option<Result<Option<String>, CommanderParseError>> =
-      self.parse(parse_input);
+    let parse_output: ParseOutput = self.parse(parse_input);
 
-    let result: Result<Option<String>, CommanderParseError> = result_option?;
-
-    if let Err(error) = result {
-      return Some(Err(error));
+    if parse_output.index.is_none() {
+      return None;
     }
 
-    let value_option: Option<String> = result.unwrap();
+    if parse_output.error.is_some() {
+      return Some(Err(parse_output.error.unwrap()));
+    }
+
+    let value_option: Option<String> = parse_output.value;
 
     if value_option.is_none() {
       return Some(Ok(None));
@@ -355,5 +384,37 @@ impl OptionConfig<'_> {
     }
 
     Ok(true)
+  }
+}
+
+pub fn to_parse_output(
+  arg_index: usize,
+  result_option: Option<Result<Option<String>, CommanderParseError>>,
+) -> ParseOutput {
+  if result_option.is_none() {
+    return ParseOutput {
+      error: None,
+      index: None,
+      value: None,
+    };
+  }
+
+  let result: Result<Option<String>, CommanderParseError> =
+    result_option.unwrap();
+
+  if let Err(error) = result {
+    return ParseOutput {
+      error: Some(error),
+      index: Some(arg_index),
+      value: None,
+    };
+  }
+
+  let value_option: Option<String> = result.unwrap();
+
+  ParseOutput {
+    error: None,
+    index: Some(arg_index),
+    value: value_option,
   }
 }

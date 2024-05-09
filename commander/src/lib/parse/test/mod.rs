@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-05-04
+//! - Updated: 2024-05-09
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -172,10 +172,15 @@ fn test_option_config_parse_required_0() {
     "-T", "value",
   ]);
 
-  let actual_result: Option<Result<Option<String>, CommanderParseError>> =
-    OPTION_CONFIG_REQUIRED.parse(test_parse_input);
+  let expected = ParseOutput {
+    error: None,
+    index: Some(0),
+    value: Some("value".to_string()),
+  };
 
-  assert_eq!(Some(Ok(Some("value".to_string()))), actual_result);
+  let actual: ParseOutput = OPTION_CONFIG_REQUIRED.parse(test_parse_input);
+
+  assert_eq!(expected, actual);
 }
 
 #[test]

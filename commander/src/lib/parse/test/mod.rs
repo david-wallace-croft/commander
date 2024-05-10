@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-05-09
+//! - Updated: 2024-05-10
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -40,43 +40,60 @@ fn test_option_config_parse_optional_0() {
     "-T", "value",
   ]);
 
-  let actual_result: Option<Result<Option<String>, CommanderParseError>> =
-    OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
+  let expected: ParseOutput = ParseOutput {
+    error: None,
+    index: Some(0),
+    value: None,
+  };
 
-  assert_eq!(Some(Ok(None)), actual_result);
+  let actual: ParseOutput = OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
+
+  assert_eq!(expected, actual);
 }
 
 #[test]
 fn test_option_config_parse_optional_1() {
   let test_parse_input = &ParseInput::from_slice(&["-T=value"]);
 
-  let actual_result: Option<Result<Option<String>, CommanderParseError>> =
-    OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
+  let expected: ParseOutput = ParseOutput {
+    error: None,
+    index: Some(0),
+    value: Some("value".to_string()),
+  };
 
-  assert_eq!(Some(Ok(Some("value".into()))), actual_result);
+  let actual: ParseOutput = OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
+
+  assert_eq!(expected, actual);
 }
 
 #[test]
 fn test_option_config_parse_optional_2() {
   let test_parse_input = &ParseInput::from_slice(&["-T"]);
 
-  let actual_result: Option<Result<Option<String>, CommanderParseError>> =
-    OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
+  let expected: ParseOutput = ParseOutput {
+    error: None,
+    index: Some(0),
+    value: None,
+  };
 
-  assert_eq!(Some(Ok(None)), actual_result);
+  let actual: ParseOutput = OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
+
+  assert_eq!(expected, actual);
 }
 
 #[test]
 fn test_option_config_parse_optional_3() {
   let test_parse_input = &ParseInput::from_slice(&["-T="]);
 
-  let actual_result: Option<Result<Option<String>, CommanderParseError>> =
-    OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
+  let expected: ParseOutput = ParseOutput {
+    error: Some(CommanderParseError::OptionalValueMissingAfterEquals),
+    index: Some(0),
+    value: None,
+  };
 
-  assert_eq!(
-    Some(Err(CommanderParseError::OptionalValueMissingAfterEquals)),
-    actual_result
-  );
+  let actual: ParseOutput = OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
+
+  assert_eq!(expected, actual);
 }
 
 #[test]
@@ -85,43 +102,60 @@ fn test_option_config_parse_optional_4() {
     "--TEST", "value",
   ]);
 
-  let actual_result: Option<Result<Option<String>, CommanderParseError>> =
-    OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
+  let expected: ParseOutput = ParseOutput {
+    error: None,
+    index: Some(0),
+    value: None,
+  };
 
-  assert_eq!(Some(Ok(None)), actual_result);
+  let actual: ParseOutput = OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
+
+  assert_eq!(expected, actual);
 }
 
 #[test]
 fn test_option_config_parse_optional_5() {
   let test_parse_input = &ParseInput::from_slice(&["--TEST=value"]);
 
-  let actual_result: Option<Result<Option<String>, CommanderParseError>> =
-    OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
+  let expected: ParseOutput = ParseOutput {
+    error: None,
+    index: Some(0),
+    value: Some("value".to_string()),
+  };
 
-  assert_eq!(Some(Ok(Some("value".into()))), actual_result);
+  let actual: ParseOutput = OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
+
+  assert_eq!(expected, actual);
 }
 
 #[test]
 fn test_option_config_parse_optional_6() {
   let test_parse_input = &ParseInput::from_slice(&["--TEST"]);
 
-  let actual_result: Option<Result<Option<String>, CommanderParseError>> =
-    OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
+  let expected: ParseOutput = ParseOutput {
+    error: None,
+    index: Some(0),
+    value: None,
+  };
 
-  assert_eq!(Some(Ok(None)), actual_result);
+  let actual: ParseOutput = OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
+
+  assert_eq!(expected, actual);
 }
 
 #[test]
 fn test_option_config_parse_optional_7() {
   let test_parse_input = &ParseInput::from_slice(&["--TEST="]);
 
-  let actual_result: Option<Result<Option<String>, CommanderParseError>> =
-    OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
+  let expected: ParseOutput = ParseOutput {
+    error: Some(CommanderParseError::OptionalValueMissingAfterEquals),
+    index: Some(0),
+    value: None,
+  };
 
-  assert_eq!(
-    Some(Err(CommanderParseError::OptionalValueMissingAfterEquals)),
-    actual_result
-  );
+  let actual: ParseOutput = OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
+
+  assert_eq!(expected, actual);
 }
 
 #[test]
@@ -187,13 +221,15 @@ fn test_option_config_parse_required_0() {
 fn test_option_config_parse_required_1() {
   let test_parse_input = &ParseInput::from_slice(&["-T"]);
 
-  let actual_result: Option<Result<Option<String>, CommanderParseError>> =
-    OPTION_CONFIG_REQUIRED.parse(test_parse_input);
+  let expected = ParseOutput {
+    error: Some(CommanderParseError::RequiredValueMissing),
+    index: Some(0),
+    value: None,
+  };
 
-  assert_eq!(
-    Some(Err(CommanderParseError::RequiredValueMissing)),
-    actual_result
-  );
+  let actual: ParseOutput = OPTION_CONFIG_REQUIRED.parse(test_parse_input);
+
+  assert_eq!(expected, actual);
 }
 
 #[test]
@@ -230,10 +266,15 @@ fn test_option_config_parse_required_bool_2() {
 fn test_option_config_parse_verboten_0() {
   let test_parse_input = &ParseInput::from_slice(&["-T"]);
 
-  let actual_result: Option<Result<Option<String>, CommanderParseError>> =
-    OPTION_CONFIG_VERBOTEN.parse(test_parse_input);
+  let expected = ParseOutput {
+    error: None,
+    index: Some(0),
+    value: None,
+  };
 
-  assert_eq!(Some(Ok(None)), actual_result);
+  let actual: ParseOutput = OPTION_CONFIG_VERBOTEN.parse(test_parse_input);
+
+  assert_eq!(expected, actual);
 }
 
 #[test]
@@ -242,33 +283,45 @@ fn test_option_config_parse_verboten_1() {
     "-T", "value",
   ]);
 
-  let actual_result: Option<Result<Option<String>, CommanderParseError>> =
-    OPTION_CONFIG_VERBOTEN.parse(test_parse_input);
+  let expected = ParseOutput {
+    error: None,
+    index: Some(0),
+    value: None,
+  };
 
-  assert_eq!(Some(Ok(None)), actual_result);
+  let actual: ParseOutput = OPTION_CONFIG_VERBOTEN.parse(test_parse_input);
+
+  assert_eq!(expected, actual);
 }
 
 #[test]
 fn test_option_config_parse_verboten_2() {
   let test_parse_input = &ParseInput::from_slice(&["-T=value"]);
 
-  let actual_result: Option<Result<Option<String>, CommanderParseError>> =
-    OPTION_CONFIG_VERBOTEN.parse(test_parse_input);
+  let expected = ParseOutput {
+    error: Some(CommanderParseError::VerbotenValuePresent),
+    index: Some(0),
+    value: None,
+  };
 
-  assert_eq!(
-    Some(Err(CommanderParseError::VerbotenValuePresent)),
-    actual_result
-  );
+  let actual: ParseOutput = OPTION_CONFIG_VERBOTEN.parse(test_parse_input);
+
+  assert_eq!(expected, actual);
 }
 
 #[test]
 fn test_option_config_parse_verboten_3() {
   let test_parse_input = &ParseInput::from_slice(&["--TEST"]);
 
-  let actual_result: Option<Result<Option<String>, CommanderParseError>> =
-    OPTION_CONFIG_VERBOTEN.parse(test_parse_input);
+  let expected = ParseOutput {
+    error: None,
+    index: Some(0),
+    value: None,
+  };
 
-  assert_eq!(Some(Ok(None)), actual_result);
+  let actual: ParseOutput = OPTION_CONFIG_VERBOTEN.parse(test_parse_input);
+
+  assert_eq!(expected, actual);
 }
 
 #[test]
@@ -277,23 +330,30 @@ fn test_option_config_parse_verboten_4() {
     "--TEST", "value",
   ]);
 
-  let actual_result: Option<Result<Option<String>, CommanderParseError>> =
-    OPTION_CONFIG_VERBOTEN.parse(test_parse_input);
+  let expected = ParseOutput {
+    error: None,
+    index: Some(0),
+    value: None,
+  };
 
-  assert_eq!(Some(Ok(None)), actual_result);
+  let actual: ParseOutput = OPTION_CONFIG_VERBOTEN.parse(test_parse_input);
+
+  assert_eq!(expected, actual);
 }
 
 #[test]
 fn test_option_config_parse_verboten_5() {
   let test_parse_input = &ParseInput::from_slice(&["--TEST=value"]);
 
-  let actual_result: Option<Result<Option<String>, CommanderParseError>> =
-    OPTION_CONFIG_VERBOTEN.parse(test_parse_input);
+  let expected: ParseOutput = ParseOutput {
+    error: Some(CommanderParseError::VerbotenValuePresent),
+    index: Some(0),
+    value: None,
+  };
 
-  assert_eq!(
-    Some(Err(CommanderParseError::VerbotenValuePresent)),
-    actual_result
-  );
+  let actual: ParseOutput = OPTION_CONFIG_VERBOTEN.parse(test_parse_input);
+
+  assert_eq!(expected, actual);
 }
 
 #[test]

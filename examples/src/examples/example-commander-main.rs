@@ -5,13 +5,13 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-05-04
+//! - Updated: 2024-05-10
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
-use commander::parse::{self, CommanderParseError, ParseInput};
+use commander::parse::{self, CommanderParseError, ParseInput, ParseOutput};
 use commander::OptionConfig;
 use croftsoft_commander_examples::constants::*;
 use croftsoft_commander_examples::OptionValues;
@@ -46,19 +46,10 @@ pub fn parse_option_values_using_commander() -> OptionValues {
 
   // TODO: parse_option_type_string_with_default_value
 
-  let name_option_result_option: Option<
-    Result<Option<String>, CommanderParseError>,
-  > = OPTION_CONFIG_N.parse(parse_input);
+  let parse_output: ParseOutput = OPTION_CONFIG_N.parse(parse_input);
 
-  let name_option: Option<String> = if name_option_result_option.is_some() {
-    let name_option_result: Result<Option<String>, CommanderParseError> =
-      name_option_result_option.unwrap();
-
-    if name_option_result.is_err() {
-      None
-    } else {
-      name_option_result.unwrap()
-    }
+  let name_option: Option<String> = if parse_output.value.is_some() {
+    parse_output.value
   } else {
     None
   };

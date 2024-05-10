@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-05-09
+//! - Updated: 2024-05-10
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -61,16 +61,6 @@ pub struct ParseOutput {
   pub value: Option<String>,
 }
 
-impl ParseOutput {
-  pub fn error(error: CommanderParseError) -> Self {
-    Self {
-      error: Some(error),
-      index: None,
-      value: None,
-    }
-  }
-}
-
 // TODO: Return data structure with index of option so value can be parsed
 fn parse_hyphenated_option_name_with_optional_value(
   parse_input: &ParseInput,
@@ -88,9 +78,11 @@ fn parse_hyphenated_option_name_with_optional_value(
         arg.strip_prefix(hyphenated_option_name_equals).unwrap();
 
       if value.eq("") {
-        return ParseOutput::error(
-          CommanderParseError::OptionalValueMissingAfterEquals,
-        );
+        return ParseOutput {
+          error: Some(CommanderParseError::OptionalValueMissingAfterEquals),
+          index: Some(arg_index),
+          value: None,
+        };
       }
 
       return ParseOutput {
@@ -131,9 +123,11 @@ fn parse_hyphenated_option_name_with_required_value(
         arg.strip_prefix(&hyphenated_option_name_equals).unwrap();
 
       if value.eq("") {
-        return ParseOutput::error(
-          CommanderParseError::OptionalValueMissingAfterEquals,
-        );
+        return ParseOutput {
+          error: Some(CommanderParseError::OptionalValueMissingAfterEquals),
+          index: Some(arg_index),
+          value: None,
+        };
       }
 
       return ParseOutput {
@@ -150,7 +144,11 @@ fn parse_hyphenated_option_name_with_required_value(
     }
 
     if arg_index + 1 >= length {
-      return ParseOutput::error(CommanderParseError::RequiredValueMissing);
+      return ParseOutput {
+        error: Some(CommanderParseError::RequiredValueMissing),
+        index: Some(arg_index),
+        value: None,
+      };
     }
 
     // TODO: What if it is an option starting with - or --?
@@ -179,7 +177,12 @@ fn parse_hyphenated_option_name_with_verboten_value(
     parse_input.args.iter().enumerate().skip(parse_input.skip)
   {
     if arg.starts_with(&hyphenated_option_name_equals) {
-      return ParseOutput::error(CommanderParseError::VerbotenValuePresent);
+      return ParseOutput {
+        // TODO: Maybe rename error to VerbotenEquals or somesuch
+        error: Some(CommanderParseError::VerbotenValuePresent),
+        index: Some(arg_index),
+        value: None,
+      };
     }
 
     if arg.eq(&hyphenated_option_name) {

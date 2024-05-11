@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-05-10
+//! - Updated: 2024-05-11
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -30,7 +30,7 @@ fn main() {
 //------------------------------------------------------------------------------
 // https://doc.rust-lang.org/book/ch12-01-accepting-command-line-arguments.html
 pub fn parse_option_values_using_commander() -> OptionValues {
-  let parse_input = &ParseInput::new();
+  let parse_input = &ParseInput::default();
 
   let help_wanted_result: Result<bool, CommanderParseError> =
     OPTION_CONFIG_H.parse_bool_default(parse_input, false);

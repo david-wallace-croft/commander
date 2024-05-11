@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-05-10
+//! - Updated: 2024-05-11
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -41,11 +41,12 @@ impl ParseInput {
       skip: 0,
     }
   }
+}
 
-  pub fn new() -> Self {
-    let args: Vec<String> = env::args().collect();
+impl Default for ParseInput {
+  fn default() -> Self {
     Self {
-      args,
+      args: env::args().collect(),
       skip: 1,
     }
   }

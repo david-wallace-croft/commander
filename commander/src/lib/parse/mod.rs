@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-05-11
+//! - Updated: 2024-05-12
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -333,92 +333,31 @@ impl OptionConfig<'_> {
 
     ParseOutput::default()
   }
+}
 
-  pub fn parse_bool(
-    &self,
-    parse_input: &ParseInput,
-  ) -> Option<Result<Option<bool>, CommanderParseError>> {
-    let parse_output: ParseOutput = self.parse(parse_input);
-
-    if parse_output.index.is_none() {
-      return None;
-    }
-
-    if parse_output.error.is_some() {
-      return Some(Err(parse_output.error.unwrap()));
-    }
-
-    let value_option: Option<String> = parse_output.value;
-
-    if value_option.is_none() {
-      return Some(Ok(None));
-    }
-
-    let value = value_option.unwrap();
-
-    let lowercase_value: String = value.to_lowercase();
-
-    match lowercase_value.as_str() {
-      "0" | "f" | "false" | "n" | "no" | "off" => Some(Ok(Some(false))),
-      "1" | "on" | "t" | "true" | "y" | "yes" => Some(Ok(Some(true))),
-      _ => Some(Err(CommanderParseError::InvalidValue)),
-    }
-  }
-
-  pub fn parse_bool_default(
-    &self,
-    parse_input: &ParseInput,
+impl ParseOutput {
+  pub fn to_bool_result(
+    self,
     default: bool,
   ) -> Result<bool, CommanderParseError> {
-    let value_option_result_option: Option<
-      Result<Option<bool>, CommanderParseError>,
-    > = self.parse_bool(parse_input);
+    if let Some(error) = self.error {
+      return Err(error);
+    }
 
-    if value_option_result_option.is_none() {
+    if self.index.is_none() {
       return Ok(default);
     }
 
-    let value_option_result: Result<Option<bool>, CommanderParseError> =
-      value_option_result_option.unwrap();
-
-    let value_option: Option<bool> = value_option_result?;
-
-    if let Some(value) = value_option {
-      return Ok(value);
+    if self.value.is_none() {
+      return Ok(true);
     }
 
-    Ok(true)
-  }
-}
+    let lowercase_value: String = self.value.unwrap().to_lowercase();
 
-pub fn to_parse_output(
-  arg_index: usize,
-  result_option: Option<Result<Option<String>, CommanderParseError>>,
-) -> ParseOutput {
-  if result_option.is_none() {
-    return ParseOutput {
-      error: None,
-      index: None,
-      value: None,
-    };
-  }
-
-  let result: Result<Option<String>, CommanderParseError> =
-    result_option.unwrap();
-
-  if let Err(error) = result {
-    return ParseOutput {
-      error: Some(error),
-      index: Some(arg_index),
-      value: None,
-    };
-  }
-
-  let value_option: Option<String> = result.unwrap();
-
-  ParseOutput {
-    error: None,
-    index: Some(arg_index),
-    value: value_option,
+    match lowercase_value.as_str() {
+      "0" | "f" | "false" | "n" | "no" | "off" => Ok(false),
+      "1" | "on" | "t" | "true" | "y" | "yes" => Ok(true),
+      _ => Err(CommanderParseError::InvalidValue),
+    }
   }
 }

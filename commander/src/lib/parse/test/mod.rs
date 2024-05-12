@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-05-10
+//! - Updated: 2024-05-12
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -162,10 +162,13 @@ fn test_option_config_parse_optional_7() {
 fn test_option_config_parse_optional_bool_0() {
   let test_parse_input = &ParseInput::from_slice(&["-T=false"]);
 
-  let actual_result: Option<Result<Option<bool>, CommanderParseError>> =
-    OPTION_CONFIG_OPTIONAL.parse_bool(test_parse_input);
+  let expected: Result<bool, CommanderParseError> = Ok(false);
 
-  assert_eq!(Some(Ok(Some(false))), actual_result);
+  let actual: Result<bool, CommanderParseError> = OPTION_CONFIG_OPTIONAL
+    .parse(test_parse_input)
+    .to_bool_result(true);
+
+  assert_eq!(expected, actual);
 }
 
 #[test]
@@ -174,30 +177,41 @@ fn test_option_config_parse_optional_bool_1() {
     "-T", "false",
   ]);
 
-  let actual_result: Option<Result<Option<bool>, CommanderParseError>> =
-    OPTION_CONFIG_OPTIONAL.parse_bool(test_parse_input);
+  let expected: Result<bool, CommanderParseError> = Ok(true);
 
-  assert_eq!(Some(Ok(None)), actual_result);
+  let actual: Result<bool, CommanderParseError> = OPTION_CONFIG_OPTIONAL
+    .parse(test_parse_input)
+    .to_bool_result(false);
+
+  assert_eq!(expected, actual);
 }
 
 #[test]
 fn test_option_config_parse_optional_bool_2() {
   let test_parse_input = &ParseInput::from_slice(&["-T=invalid"]);
 
-  let actual_result: Option<Result<Option<bool>, CommanderParseError>> =
-    OPTION_CONFIG_OPTIONAL.parse_bool(test_parse_input);
+  let expected: Result<bool, CommanderParseError> =
+    Err(CommanderParseError::InvalidValue);
 
-  assert_eq!(Some(Err(CommanderParseError::InvalidValue)), actual_result);
+  let actual: Result<bool, CommanderParseError> = OPTION_CONFIG_OPTIONAL
+    .parse(test_parse_input)
+    .to_bool_result(true);
+
+  assert_eq!(expected, actual);
 }
 
 #[test]
 fn test_option_config_parse_optional_bool_3() {
   let test_parse_input = &ParseInput::from_slice(&["--TEST=invalid"]);
 
-  let actual_result: Option<Result<Option<bool>, CommanderParseError>> =
-    OPTION_CONFIG_OPTIONAL.parse_bool(test_parse_input);
+  let expected: Result<bool, CommanderParseError> =
+    Err(CommanderParseError::InvalidValue);
 
-  assert_eq!(Some(Err(CommanderParseError::InvalidValue)), actual_result);
+  let actual: Result<bool, CommanderParseError> = OPTION_CONFIG_OPTIONAL
+    .parse(test_parse_input)
+    .to_bool_result(true);
+
+  assert_eq!(expected, actual);
 }
 
 #[test]
@@ -236,30 +250,40 @@ fn test_option_config_parse_required_1() {
 fn test_option_config_parse_required_bool_0() {
   let test_parse_input = &ParseInput::from_slice(&["-T=false"]);
 
-  let actual_result: Option<Result<Option<bool>, CommanderParseError>> =
-    OPTION_CONFIG_REQUIRED.parse_bool(test_parse_input);
+  let expected: Result<bool, CommanderParseError> = Ok(false);
 
-  assert_eq!(Some(Ok(Some(false))), actual_result);
+  let actual: Result<bool, CommanderParseError> = OPTION_CONFIG_REQUIRED
+    .parse(test_parse_input)
+    .to_bool_result(true);
+
+  assert_eq!(expected, actual);
 }
 
 #[test]
 fn test_option_config_parse_required_bool_1() {
   let test_parse_input = &ParseInput::from_slice(&["-T=true"]);
 
-  let actual_result: Option<Result<Option<bool>, CommanderParseError>> =
-    OPTION_CONFIG_REQUIRED.parse_bool(test_parse_input);
+  let expected: Result<bool, CommanderParseError> = Ok(true);
 
-  assert_eq!(Some(Ok(Some(true))), actual_result);
+  let actual: Result<bool, CommanderParseError> = OPTION_CONFIG_REQUIRED
+    .parse(test_parse_input)
+    .to_bool_result(false);
+
+  assert_eq!(expected, actual);
 }
 
 #[test]
 fn test_option_config_parse_required_bool_2() {
   let test_parse_input = &ParseInput::from_slice(&["-T=invalid"]);
 
-  let actual_result: Option<Result<Option<bool>, CommanderParseError>> =
-    OPTION_CONFIG_REQUIRED.parse_bool(test_parse_input);
+  let expected: Result<bool, CommanderParseError> =
+    Err(CommanderParseError::InvalidValue);
 
-  assert_eq!(Some(Err(CommanderParseError::InvalidValue)), actual_result);
+  let actual: Result<bool, CommanderParseError> = OPTION_CONFIG_REQUIRED
+    .parse(test_parse_input)
+    .to_bool_result(true);
+
+  assert_eq!(expected, actual);
 }
 
 #[test]
@@ -360,77 +384,94 @@ fn test_option_config_parse_verboten_5() {
 fn test_option_config_parse_verboten_bool_0() {
   let test_parse_input = &ParseInput::from_slice(&["-T"]);
 
-  let actual_result: Option<Result<Option<bool>, CommanderParseError>> =
-    OPTION_CONFIG_VERBOTEN.parse_bool(test_parse_input);
+  let expected: Result<bool, CommanderParseError> = Ok(true);
 
-  assert_eq!(Some(Ok(None)), actual_result);
+  let actual: Result<bool, CommanderParseError> = OPTION_CONFIG_VERBOTEN
+    .parse(test_parse_input)
+    .to_bool_result(true);
+
+  assert_eq!(expected, actual);
 }
 
 #[test]
 fn test_option_config_parse_verboten_bool_1() {
   let test_parse_input = &ParseInput::from_slice(&["-t"]);
 
-  let actual_result: Option<Result<Option<bool>, CommanderParseError>> =
-    OPTION_CONFIG_VERBOTEN.parse_bool(test_parse_input);
+  let expected: Result<bool, CommanderParseError> = Ok(false);
 
-  assert_eq!(None, actual_result);
+  let actual: Result<bool, CommanderParseError> = OPTION_CONFIG_VERBOTEN
+    .parse(test_parse_input)
+    .to_bool_result(false);
+
+  assert_eq!(expected, actual);
 }
 
 #[test]
 fn test_option_config_parse_verboten_bool_2() {
   let test_parse_input = &ParseInput::from_slice(&["--TEST"]);
 
-  let actual_result: Option<Result<Option<bool>, CommanderParseError>> =
-    OPTION_CONFIG_VERBOTEN.parse_bool(test_parse_input);
+  let expected: Result<bool, CommanderParseError> = Ok(true);
 
-  assert_eq!(Some(Ok(None)), actual_result);
+  let actual: Result<bool, CommanderParseError> = OPTION_CONFIG_VERBOTEN
+    .parse(test_parse_input)
+    .to_bool_result(false);
+
+  assert_eq!(expected, actual);
 }
 
 #[test]
 fn test_option_config_parse_verboten_bool_3() {
   let test_parse_input = &ParseInput::from_slice(&["--test"]);
 
-  let actual_result: Option<Result<Option<bool>, CommanderParseError>> =
-    OPTION_CONFIG_VERBOTEN.parse_bool(test_parse_input);
+  let expected: Result<bool, CommanderParseError> = Ok(false);
 
-  assert_eq!(None, actual_result);
+  let actual: Result<bool, CommanderParseError> = OPTION_CONFIG_VERBOTEN
+    .parse(test_parse_input)
+    .to_bool_result(false);
+
+  assert_eq!(expected, actual);
 }
 
 #[test]
 fn test_option_config_parse_verboten_bool_4() {
   let test_parse_input = &ParseInput::from_slice(&["-TEST"]);
 
-  let actual_result: Option<Result<Option<bool>, CommanderParseError>> =
-    OPTION_CONFIG_VERBOTEN.parse_bool(test_parse_input);
+  let expected: Result<bool, CommanderParseError> = Ok(false);
 
-  // TODO: Make this work; should be Some(Ok(None))
-  assert_eq!(None, actual_result);
+  let actual: Result<bool, CommanderParseError> = OPTION_CONFIG_VERBOTEN
+    .parse(test_parse_input)
+    .to_bool_result(false);
+
+  // TODO: Make this work; should be Ok(true)
+  assert_eq!(expected, actual);
 }
 
 #[test]
 fn test_option_config_parse_verboten_bool_5() {
   let test_parse_input = &ParseInput::from_slice(&["-T=true"]);
 
-  let actual_result: Option<Result<Option<bool>, CommanderParseError>> =
-    OPTION_CONFIG_VERBOTEN.parse_bool(test_parse_input);
+  let expected: Result<bool, CommanderParseError> =
+    Err(CommanderParseError::VerbotenValuePresent);
 
-  assert_eq!(
-    Some(Err(CommanderParseError::VerbotenValuePresent)),
-    actual_result
-  );
+  let actual: Result<bool, CommanderParseError> = OPTION_CONFIG_VERBOTEN
+    .parse(test_parse_input)
+    .to_bool_result(false);
+
+  assert_eq!(expected, actual);
 }
 
 #[test]
 fn test_option_config_parse_verboten_bool_6() {
   let test_parse_input = &ParseInput::from_slice(&["--TEST=true"]);
 
-  let actual_result: Option<Result<Option<bool>, CommanderParseError>> =
-    OPTION_CONFIG_VERBOTEN.parse_bool(test_parse_input);
+  let expected: Result<bool, CommanderParseError> =
+    Err(CommanderParseError::VerbotenValuePresent);
 
-  assert_eq!(
-    Some(Err(CommanderParseError::VerbotenValuePresent)),
-    actual_result
-  );
+  let actual: Result<bool, CommanderParseError> = OPTION_CONFIG_VERBOTEN
+    .parse(test_parse_input)
+    .to_bool_result(false);
+
+  assert_eq!(expected, actual);
 }
 
 #[test]

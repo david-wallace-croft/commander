@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-05-12
+//! - Updated: 2024-05-13
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -21,8 +21,8 @@ use ::std::env;
 #[derive(Debug, PartialEq)]
 pub enum CommanderParseError {
   InvalidValue,
-  OptionalValueMissingAfterEquals,
   RequiredValueMissing,
+  ValueMissingAfterEquals,
   VerbotenValuePresent,
 }
 
@@ -52,7 +52,6 @@ impl Default for ParseInput {
   }
 }
 
-// TODO: return this from parse functions
 #[derive(Debug, Default, PartialEq)]
 pub struct ParseOutput {
   pub error: Option<CommanderParseError>,
@@ -62,7 +61,6 @@ pub struct ParseOutput {
   pub value: Option<String>,
 }
 
-// TODO: Return data structure with index of option so value can be parsed
 fn parse_hyphenated_option_name_with_optional_value(
   parse_input: &ParseInput,
   hyphenated_option_name: &str,
@@ -70,7 +68,6 @@ fn parse_hyphenated_option_name_with_optional_value(
   let hyphenated_option_name_equals: &String =
     &format!("{}=", hyphenated_option_name);
 
-  // TODO: use enum to get the index to return
   for (arg_index, arg) in
     parse_input.args.iter().enumerate().skip(parse_input.skip)
   {
@@ -80,7 +77,7 @@ fn parse_hyphenated_option_name_with_optional_value(
 
       if value.eq("") {
         return ParseOutput {
-          error: Some(CommanderParseError::OptionalValueMissingAfterEquals),
+          error: Some(CommanderParseError::ValueMissingAfterEquals),
           index: Some(arg_index),
           value: None,
         };
@@ -125,7 +122,7 @@ fn parse_hyphenated_option_name_with_required_value(
 
       if value.eq("") {
         return ParseOutput {
-          error: Some(CommanderParseError::OptionalValueMissingAfterEquals),
+          error: Some(CommanderParseError::ValueMissingAfterEquals),
           index: Some(arg_index),
           value: None,
         };
@@ -178,11 +175,21 @@ fn parse_hyphenated_option_name_with_verboten_value(
     parse_input.args.iter().enumerate().skip(parse_input.skip)
   {
     if arg.starts_with(&hyphenated_option_name_equals) {
+      let value: &str =
+        arg.strip_prefix(&hyphenated_option_name_equals).unwrap();
+
+      if value.eq("") {
+        return ParseOutput {
+          error: Some(CommanderParseError::ValueMissingAfterEquals),
+          index: Some(arg_index),
+          value: None,
+        };
+      }
+
       return ParseOutput {
-        // TODO: Maybe rename error to VerbotenEquals or somesuch
         error: Some(CommanderParseError::VerbotenValuePresent),
         index: Some(arg_index),
-        value: None,
+        value: Some(value.to_string()),
       };
     }
 

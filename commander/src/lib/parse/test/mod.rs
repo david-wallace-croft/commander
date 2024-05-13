@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-05-12
+//! - Updated: 2024-05-13
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -86,7 +86,7 @@ fn test_option_config_parse_optional_3() {
   let test_parse_input = &ParseInput::from_slice(&["-T="]);
 
   let expected: ParseOutput = ParseOutput {
-    error: Some(CommanderParseError::OptionalValueMissingAfterEquals),
+    error: Some(CommanderParseError::ValueMissingAfterEquals),
     index: Some(0),
     value: None,
   };
@@ -148,7 +148,7 @@ fn test_option_config_parse_optional_7() {
   let test_parse_input = &ParseInput::from_slice(&["--TEST="]);
 
   let expected: ParseOutput = ParseOutput {
-    error: Some(CommanderParseError::OptionalValueMissingAfterEquals),
+    error: Some(CommanderParseError::ValueMissingAfterEquals),
     index: Some(0),
     value: None,
   };
@@ -325,7 +325,7 @@ fn test_option_config_parse_verboten_2() {
   let expected = ParseOutput {
     error: Some(CommanderParseError::VerbotenValuePresent),
     index: Some(0),
-    value: None,
+    value: Some("value".to_string()),
   };
 
   let actual: ParseOutput = OPTION_CONFIG_VERBOTEN.parse(test_parse_input);
@@ -371,6 +371,36 @@ fn test_option_config_parse_verboten_5() {
 
   let expected: ParseOutput = ParseOutput {
     error: Some(CommanderParseError::VerbotenValuePresent),
+    index: Some(0),
+    value: Some("value".to_string()),
+  };
+
+  let actual: ParseOutput = OPTION_CONFIG_VERBOTEN.parse(test_parse_input);
+
+  assert_eq!(expected, actual);
+}
+
+#[test]
+fn test_option_config_parse_verboten_6() {
+  let test_parse_input = &ParseInput::from_slice(&["-T="]);
+
+  let expected: ParseOutput = ParseOutput {
+    error: Some(CommanderParseError::ValueMissingAfterEquals),
+    index: Some(0),
+    value: None,
+  };
+
+  let actual: ParseOutput = OPTION_CONFIG_VERBOTEN.parse(test_parse_input);
+
+  assert_eq!(expected, actual);
+}
+
+#[test]
+fn test_option_config_parse_verboten_7() {
+  let test_parse_input = &ParseInput::from_slice(&["--TEST="]);
+
+  let expected: ParseOutput = ParseOutput {
+    error: Some(CommanderParseError::ValueMissingAfterEquals),
     index: Some(0),
     value: None,
   };

@@ -221,9 +221,9 @@ fn test_option_config_parse_required_0() {
   ]);
 
   let expected = ParseOutput {
-    error: None,
+    error: Some(CommanderParseError::RequiredValueMissing),
     index: Some(0),
-    value: Some("value".to_string()),
+    value: None,
   };
 
   let actual: ParseOutput = OPTION_CONFIG_REQUIRED.parse(test_parse_input);

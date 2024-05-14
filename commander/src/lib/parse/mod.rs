@@ -106,61 +106,28 @@ fn parse_hyphenated_option_name_with_required_value(
   parse_input: &ParseInput,
   hyphenated_option_name: &str,
 ) -> ParseOutput {
-  let hyphenated_option_name_equals: String =
-    format!("{}=", hyphenated_option_name);
+  let ParseOutput {
+    error,
+    index,
+    value,
+  } = parse_hyphenated_option_name_with_optional_value(
+    parse_input,
+    hyphenated_option_name,
+  );
 
-  let length = parse_input.args.len();
-
-  let mut arg_index = 0;
-
-  while arg_index < length {
-    let arg = parse_input.args[arg_index].clone();
-
-    if arg.starts_with(&hyphenated_option_name_equals) {
-      let value: &str =
-        arg.strip_prefix(&hyphenated_option_name_equals).unwrap();
-
-      if value.eq("") {
-        return ParseOutput {
-          error: Some(CommanderParseError::ValueMissingAfterEquals),
-          index: Some(arg_index),
-          value: None,
-        };
-      }
-
-      return ParseOutput {
-        error: None,
-        index: Some(arg_index),
-        value: Some(value.to_string()),
-      };
-    }
-
-    if !arg.eq(&hyphenated_option_name) {
-      arg_index += 1;
-
-      continue;
-    }
-
-    if arg_index + 1 >= length {
-      return ParseOutput {
-        error: Some(CommanderParseError::RequiredValueMissing),
-        index: Some(arg_index),
-        value: None,
-      };
-    }
-
-    // TODO: What if it is an option starting with - or --?
-
-    let value = parse_input.args[arg_index + 1].clone();
-
+  if error.is_some() || index.is_none() || value.is_some() {
     return ParseOutput {
-      error: None,
-      index: Some(arg_index),
-      value: Some(value),
+      error,
+      index,
+      value,
     };
   }
 
-  ParseOutput::default()
+  ParseOutput {
+    error: Some(CommanderParseError::RequiredValueMissing),
+    index,
+    value,
+  }
 }
 
 // TODO: Return data structure with index of option so value can be parsed

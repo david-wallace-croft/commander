@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-05-13
+//! - Updated: 2024-05-14
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -130,46 +130,32 @@ fn parse_hyphenated_option_name_with_required_value(
   }
 }
 
-// TODO: Return data structure with index of option so value can be parsed
 fn parse_hyphenated_option_name_with_verboten_value(
   parse_input: &ParseInput,
   hyphenated_option_name: &str,
 ) -> ParseOutput {
-  let hyphenated_option_name_equals: String =
-    format!("{}=", hyphenated_option_name);
+  let ParseOutput {
+    error,
+    index,
+    value,
+  } = parse_hyphenated_option_name_with_optional_value(
+    parse_input,
+    hyphenated_option_name,
+  );
 
-  for (arg_index, arg) in
-    parse_input.args.iter().enumerate().skip(parse_input.skip)
-  {
-    if arg.starts_with(&hyphenated_option_name_equals) {
-      let value: &str =
-        arg.strip_prefix(&hyphenated_option_name_equals).unwrap();
-
-      if value.eq("") {
-        return ParseOutput {
-          error: Some(CommanderParseError::ValueMissingAfterEquals),
-          index: Some(arg_index),
-          value: None,
-        };
-      }
-
-      return ParseOutput {
-        error: Some(CommanderParseError::VerbotenValuePresent),
-        index: Some(arg_index),
-        value: Some(value.to_string()),
-      };
-    }
-
-    if arg.eq(&hyphenated_option_name) {
-      return ParseOutput {
-        error: None,
-        index: Some(arg_index),
-        value: None,
-      };
-    }
+  if error.is_some() || index.is_none() || value.is_none() {
+    return ParseOutput {
+      error,
+      index,
+      value,
+    };
   }
 
-  ParseOutput::default()
+  ParseOutput {
+    error: Some(CommanderParseError::VerbotenValuePresent),
+    index,
+    value,
+  }
 }
 
 //------------------------------------------------------------------------------

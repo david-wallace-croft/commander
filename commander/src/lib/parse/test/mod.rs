@@ -287,6 +287,69 @@ fn test_option_config_parse_required_bool_2() {
 }
 
 #[test]
+fn test_option_config_parse_required_multiple_0() {
+  let test_parse_input = &ParseInput {
+    args: vec![
+      "-T=0".to_string(),
+      "-T=1".to_string(),
+    ],
+    skip: 0,
+  };
+
+  let expected = ParseOutput {
+    error: None,
+    index: Some(0),
+    value: Some("0".to_string()),
+  };
+
+  let actual: ParseOutput = OPTION_CONFIG_REQUIRED.parse(test_parse_input);
+
+  assert_eq!(expected, actual);
+}
+
+#[test]
+fn test_option_config_parse_required_multiple_1() {
+  let test_parse_input = &ParseInput {
+    args: vec![
+      "-T=0".to_string(),
+      "-T=1".to_string(),
+    ],
+    skip: 1,
+  };
+
+  let expected = ParseOutput {
+    error: None,
+    index: Some(1),
+    value: Some("1".to_string()),
+  };
+
+  let actual: ParseOutput = OPTION_CONFIG_REQUIRED.parse(test_parse_input);
+
+  assert_eq!(expected, actual);
+}
+
+#[test]
+fn test_option_config_parse_required_multiple_2() {
+  let test_parse_input = &ParseInput {
+    args: vec![
+      "-T=0".to_string(),
+      "-T=1".to_string(),
+    ],
+    skip: usize::MAX,
+  };
+
+  let expected = ParseOutput {
+    error: None,
+    index: None,
+    value: None,
+  };
+
+  let actual: ParseOutput = OPTION_CONFIG_REQUIRED.parse(test_parse_input);
+
+  assert_eq!(expected, actual);
+}
+
+#[test]
 fn test_option_config_parse_verboten_0() {
   let test_parse_input = &ParseInput::from_slice(&["-T"]);
 

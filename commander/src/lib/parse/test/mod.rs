@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-05-14
+//! - Updated: 2024-05-15
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -535,7 +535,7 @@ fn test_option_config_parse_verboten_bool_4() {
     .parse(test_parse_input)
     .to_bool_result(false);
 
-  // TODO: Make this work; should be Ok(true)
+  // TODO: Make this work; should be true
   assert_eq!(expected, actual);
 }
 
@@ -575,11 +575,17 @@ fn test_parse_unrecognized_long() {
     name_short: Some('T'),
     value_usage: ValueUsage::Optional,
   };
+
   let recognized_options: Vec<OptionConfig> = vec![ARG_OPTION_TEST];
+
   let test_parse_input = &ParseInput::from_slice(&["--unrecognized"]);
-  let actual_result: Option<Vec<String>> =
+
+  let expected: Option<Vec<String>> = Some(vec![String::from("unrecognized")]);
+
+  let actual: Option<Vec<String>> =
     parse_unrecognized(test_parse_input, &recognized_options);
-  assert_eq!(Some(vec![String::from("unrecognized")]), actual_result);
+
+  assert_eq!(expected, actual);
 }
 
 #[test]
@@ -590,9 +596,15 @@ fn test_parse_unrecognized_short() {
     name_short: Some('T'),
     value_usage: ValueUsage::Optional,
   };
+
   let recognized_options: Vec<OptionConfig> = vec![ARG_OPTION_TEST];
+
   let test_parse_input = &ParseInput::from_slice(&["-u"]);
-  let actual_result: Option<Vec<String>> =
+
+  let expected: Option<Vec<String>> = Some(vec![String::from("u")]);
+
+  let actual: Option<Vec<String>> =
     parse_unrecognized(test_parse_input, &recognized_options);
-  assert_eq!(Some(vec![String::from("u")]), actual_result);
+
+  assert_eq!(expected, actual);
 }

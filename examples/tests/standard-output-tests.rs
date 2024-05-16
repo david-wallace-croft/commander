@@ -5,7 +5,7 @@
 //! - Author: [`David Wallace Croft`]
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Created: 2024-04-06
-//! - Updated: 2024-05-02
+//! - Updated: 2024-05-16
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -137,10 +137,10 @@ fn test_output_args_unrecognized_short() {
 #[test]
 fn test_output_args_unrecognized_option_value() {
   make_command()
-    .args(&["-h=true"])
+    .args(&["--unrecognized=true"])
     .assert()
     // TODO: Should this be failure?
     .success()
     // TODO: Should this go to standard error?
-    .stdout("Unrecognized option: \"h=true\"\n");
+    .stdout("Unrecognized option: \"unrecognized=true\"\n");
 }

@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-05-14
+//! - Updated: 2024-05-16
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -172,6 +172,7 @@ pub fn parse_unrecognized(
       continue;
     }
 
+    // TODO: maybe refactor common code between long and short name handling
     if arg.starts_with("--") {
       let option_name: &str = arg.strip_prefix("--").unwrap();
 
@@ -192,12 +193,10 @@ pub fn parse_unrecognized(
           continue 'outer;
         }
 
-        if recognized_option.value_usage != ValueUsage::Verboten {
-          let name_long_equals: String = format!("{name_long}=");
+        let name_long_equals: String = format!("{name_long}=");
 
-          if option_name.starts_with(&name_long_equals) {
-            continue 'outer;
-          }
+        if option_name.starts_with(&name_long_equals) {
+          continue 'outer;
         }
       }
 
@@ -227,12 +226,10 @@ pub fn parse_unrecognized(
         continue 'outer;
       }
 
-      if recognized_option.value_usage != ValueUsage::Verboten {
-        let name_short_string_equals: String = format!("{name_short_string}=");
+      let name_short_string_equals: String = format!("{name_short_string}=");
 
-        if option_name.starts_with(&name_short_string_equals) {
-          continue 'outer;
-        }
+      if option_name.starts_with(&name_short_string_equals) {
+        continue 'outer;
       }
     }
 

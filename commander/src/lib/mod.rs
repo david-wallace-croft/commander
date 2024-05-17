@@ -9,7 +9,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-04-30
+//! - Updated: 2024-05-17
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -39,7 +39,7 @@ pub struct HelpInfo<'a> {
 }
 
 //------------------------------------------------------------------------------
-/// Whether a option value is optional, prohibited, or required
+/// Whether a option value is optional, required, or verboten (forbidden)
 //------------------------------------------------------------------------------
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub enum ValueUsage {
@@ -48,6 +48,9 @@ pub enum ValueUsage {
   Verboten,
 }
 
+//------------------------------------------------------------------------------
+/// Option configuration metadata for parsing and printing
+//------------------------------------------------------------------------------
 #[derive(Clone, Copy, Debug)]
 pub struct OptionConfig<'a> {
   pub brief_description: Option<&'a str>,

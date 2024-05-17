@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-05-16
+//! - Updated: 2024-05-17
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -18,6 +18,9 @@ use crate::*;
 use ::std::collections::HashSet;
 use ::std::env;
 
+//------------------------------------------------------------------------------
+/// Errors that can occur when parsing an option from the command-line arguments
+//------------------------------------------------------------------------------
 #[derive(Debug, PartialEq)]
 pub enum CommanderParseError {
   InvalidValue,
@@ -26,12 +29,18 @@ pub enum CommanderParseError {
   VerbotenValuePresent,
 }
 
+//------------------------------------------------------------------------------
+/// The input to parsing an option from the command-line arguments
+//------------------------------------------------------------------------------
 pub struct ParseInput {
+  /// The command-line arguments
   pub args: Vec<String>,
+  /// How many command-line arguments to skip before searching for an option
   pub skip: usize,
 }
 
 impl ParseInput {
+  /// A slice of the command-line arguments with a skip of zero
   pub fn from_slice(args_slice: &[&str]) -> Self {
     let args: Vec<String> =
       args_slice.iter().map(|arg| arg.to_string()).collect();
@@ -44,6 +53,7 @@ impl ParseInput {
 }
 
 impl Default for ParseInput {
+  /// The command-line arguments with a skip of one
   fn default() -> Self {
     Self {
       args: env::args().collect(),
@@ -52,6 +62,9 @@ impl Default for ParseInput {
   }
 }
 
+//------------------------------------------------------------------------------
+/// The output of parsing an option from the command-line arguments
+//------------------------------------------------------------------------------
 #[derive(Debug, Default, PartialEq)]
 pub struct ParseOutput {
   pub error: Option<CommanderParseError>,
@@ -159,11 +172,12 @@ fn parse_hyphenated_option_name_with_verboten_value(
 }
 
 //------------------------------------------------------------------------------
-/// Parses unrecognized options from the arguments.
+/// Returns a list of unrecognized options from the command-line arguments
 //------------------------------------------------------------------------------
 pub fn parse_unrecognized(
   parse_input: &ParseInput,
   recognized_options: &Vec<OptionConfig>,
+  // TODO: Maybe just return an empty Vec instead of None
 ) -> Option<Vec<String>> {
   let mut unrecognized_set: HashSet<String> = HashSet::new();
 
@@ -293,6 +307,16 @@ impl OptionConfig<'_> {
 }
 
 impl ParseOutput {
+  //----------------------------------------------------------------------------
+  /// Converts the ParseOutput to a boolean value
+  ///
+  /// - Returns the error if the error is Some
+  /// - Returns the default boolean value if the option index is None
+  /// - Returns true if the option value is None
+  /// - Returns false if the option value is 0, f, false, n, no, or off
+  /// - Returns true if the option value is 1, on, t, true, y, or yes
+  /// - Returns an InvalidValue error if the option value is anything else
+  //----------------------------------------------------------------------------
   pub fn to_bool_result(
     self,
     default: bool,

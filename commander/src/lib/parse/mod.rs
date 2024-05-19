@@ -280,6 +280,8 @@ impl OptionConfig<'_> {
       ValueUsage::Verboten => parse_hyphenated_option_name_with_verboten_value,
     };
 
+    // TODO: should check for both short and long name simultaneously
+
     if self.name_short.is_some() {
       let arg_option_name_short = self.name_short.unwrap();
 

@@ -68,6 +68,7 @@ impl Default for ParseInput {
 //------------------------------------------------------------------------------
 #[derive(Debug, Default, PartialEq)]
 pub struct ParseOutput {
+  // TODO: pub arg: Option<String> The arg that the option was found in
   pub error: Option<CommanderParseError>,
   // TODO: Might use a 2nd index for multiple short names in a single argument
   pub index: Option<usize>,

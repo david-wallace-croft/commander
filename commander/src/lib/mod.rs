@@ -9,7 +9,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-05-17
+//! - Updated: 2024-05-18
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -54,7 +54,7 @@ pub enum ValueUsage {
 #[derive(Clone, Copy, Debug)]
 pub struct OptionConfig<'a> {
   pub brief_description: Option<&'a str>,
-  // TODO: Is there a static compile check to make at least one of these Some?
+  // TODO: Static compile check to make sure at least one of the names is Some
   pub name_short: Option<char>,
   pub name_long: Option<&'a str>,
   pub value_usage: ValueUsage,

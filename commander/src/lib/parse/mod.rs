@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-05-18
+//! - Updated: 2024-05-19
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -179,8 +179,7 @@ fn parse_hyphenated_option_name_with_verboten_value(
 pub fn parse_unrecognized(
   parse_input: &ParseInput,
   recognized_options: &Vec<OptionConfig>,
-  // TODO: Maybe just return an empty Vec instead of None
-) -> Option<Vec<String>> {
+) -> Vec<String> {
   let mut unrecognized_set: HashSet<String> = HashSet::new();
 
   'outer: for arg in parse_input.args.iter().skip(parse_input.skip) {
@@ -253,12 +252,10 @@ pub fn parse_unrecognized(
   }
 
   if unrecognized_set.is_empty() {
-    return None;
+    return Vec::new();
   }
 
-  let unrecognized_vector: Vec<String> = Vec::from_iter(unrecognized_set);
-
-  Some(unrecognized_vector)
+  Vec::from_iter(unrecognized_set)
 }
 
 impl OptionConfig<'_> {

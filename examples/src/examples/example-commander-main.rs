@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-05-12
+//! - Updated: 2024-05-19
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -56,7 +56,7 @@ pub fn parse_option_values_using_commander() -> OptionValues {
 
   let arg_option_vector: Vec<OptionConfig> = OPTION_CONFIGS.to_vec();
 
-  let unrecognized: Option<Vec<String>> =
+  let unrecognized: Vec<String> =
     parse::parse_unrecognized(parse_input, &arg_option_vector);
 
   OptionValues {

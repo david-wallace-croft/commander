@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-04-13
+//! - Updated: 2024-05-19
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -26,7 +26,7 @@ pub struct OptionValues {
   pub help_wanted: bool,
   pub interactive: Result<bool, CommanderParseError>,
   pub name_option: Option<String>,
-  pub unrecognized: Option<Vec<String>>,
+  pub unrecognized: Vec<String>,
 }
 
 pub fn ask(
@@ -35,17 +35,25 @@ pub fn ask(
 ) -> String {
   loop {
     println!();
+
     print!("{} [{}]: ", prompt, default);
+
     stdout().flush().unwrap();
+
     let mut buffer: String = String::new();
+
     let stdin: Stdin = stdin();
+
     let result: Result<usize, Error> = stdin.read_line(&mut buffer);
+
     match result {
       Ok(_) => {
         let trimmed_buffer: &str = buffer.trim();
+
         if trimmed_buffer.is_empty() {
           return default.to_string();
         }
+
         return trimmed_buffer.to_string();
       },
       Err(error) => println!("ERROR: {}", error),
@@ -55,16 +63,23 @@ pub fn ask(
 
 pub fn main(option_values: OptionValues) {
   // println!("{:?}", option_values);
+
   // println!("{:#?}", option_values);
+
   if option_values.help_wanted {
     print_help(&HELP_INFO);
+
     return;
   }
-  if option_values.unrecognized.is_some() {
-    print_unrecognized_options(&option_values.unrecognized.unwrap());
+
+  if option_values.unrecognized.len() > 0 {
+    print_unrecognized_options(&option_values.unrecognized);
+
     return;
   }
+
   let greeting: String = make_greeting(option_values);
+
   println!("{}", greeting);
 }
 
@@ -89,5 +104,6 @@ fn make_greeting(option_values: OptionValues) -> String {
       }
     },
   };
+
   format!("Hello, {}!", name)
 }

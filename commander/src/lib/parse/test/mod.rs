@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-05-18
+//! - Updated: 2024-05-19
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -602,9 +602,9 @@ fn test_parse_unrecognized_long() {
 
   let test_parse_input = &ParseInput::from_slice(&["--unrecognized"]);
 
-  let expected: Option<Vec<String>> = Some(vec![String::from("unrecognized")]);
+  let expected: Vec<String> = vec![String::from("unrecognized")];
 
-  let actual: Option<Vec<String>> =
+  let actual: Vec<String> =
     parse_unrecognized(test_parse_input, &recognized_options);
 
   assert_eq!(expected, actual);
@@ -623,9 +623,9 @@ fn test_parse_unrecognized_short() {
 
   let test_parse_input = &ParseInput::from_slice(&["-u"]);
 
-  let expected: Option<Vec<String>> = Some(vec![String::from("u")]);
+  let expected: Vec<String> = vec![String::from("u")];
 
-  let actual: Option<Vec<String>> =
+  let actual: Vec<String> =
     parse_unrecognized(test_parse_input, &recognized_options);
 
   assert_eq!(expected, actual);

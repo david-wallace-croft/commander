@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-05-17
+//! - Updated: 2024-05-18
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -24,6 +24,7 @@ use ::std::env;
 #[derive(Debug, PartialEq)]
 pub enum CommanderParseError {
   InvalidValue,
+  OptionConfigNameless,
   RequiredValueMissing,
   ValueMissingAfterEquals,
   VerbotenValuePresent,
@@ -264,6 +265,14 @@ impl OptionConfig<'_> {
     &self,
     parse_input: &ParseInput,
   ) -> ParseOutput {
+    if self.name_short.is_none() && self.name_long.is_none() {
+      return ParseOutput {
+        error: Some(CommanderParseError::OptionConfigNameless),
+        index: None,
+        value: None,
+      };
+    }
+
     let parse_hyphenated_option_name_function = match self.value_usage {
       ValueUsage::Optional => parse_hyphenated_option_name_with_optional_value,
       ValueUsage::Required => parse_hyphenated_option_name_with_required_value,

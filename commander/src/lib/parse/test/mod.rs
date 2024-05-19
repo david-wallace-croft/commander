@@ -5,13 +5,20 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-05-15
+//! - Updated: 2024-05-18
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
 use super::*;
+
+const OPTION_CONFIG_NAMELESS: OptionConfig = OptionConfig {
+  brief_description: None,
+  name_long: None,
+  name_short: None,
+  value_usage: ValueUsage::Optional,
+};
 
 const OPTION_CONFIG_OPTIONAL: OptionConfig = OptionConfig {
   brief_description: None,
@@ -154,6 +161,21 @@ fn test_option_config_parse_optional_7() {
   };
 
   let actual: ParseOutput = OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
+
+  assert_eq!(expected, actual);
+}
+
+#[test]
+fn test_option_config_parse_optional_8() {
+  let test_parse_input = &ParseInput::from_slice(&["-T"]);
+
+  let expected: ParseOutput = ParseOutput {
+    error: Some(CommanderParseError::OptionConfigNameless),
+    index: None,
+    value: None,
+  };
+
+  let actual: ParseOutput = OPTION_CONFIG_NAMELESS.parse(test_parse_input);
 
   assert_eq!(expected, actual);
 }

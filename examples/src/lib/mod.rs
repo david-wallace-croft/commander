@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-05-19
+//! - Updated: 2024-05-20
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -72,7 +72,7 @@ pub fn main(option_values: OptionValues) {
     return;
   }
 
-  if option_values.unrecognized.len() > 0 {
+  if !option_values.unrecognized.is_empty() {
     print_unrecognized_options(&option_values.unrecognized);
 
     return;

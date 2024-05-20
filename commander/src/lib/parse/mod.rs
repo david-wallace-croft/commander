@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-05-19
+//! - Updated: 2024-05-20
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -68,7 +68,6 @@ impl Default for ParseInput {
 //------------------------------------------------------------------------------
 #[derive(Debug, Default, PartialEq)]
 pub struct ParseOutput {
-  // TODO: pub arg: Option<String> The arg that the option was found in
   pub error: Option<CommanderParseError>,
   // TODO: Might use a 2nd index for multiple short names in a single argument
   pub index: Option<usize>,
@@ -183,76 +182,50 @@ pub fn parse_unrecognized(
   let mut unrecognized_set: HashSet<String> = HashSet::new();
 
   'outer: for arg in parse_input.args.iter().skip(parse_input.skip) {
-    if !arg.starts_with('-') {
+    let (prefix, using_long_name) = if arg.starts_with("--") {
+      ("--", true)
+    } else if arg.starts_with('-') {
+      ("-", false)
+    } else {
       continue;
-    }
+    };
 
-    // TODO: maybe refactor common code between long and short name handling
-    if arg.starts_with("--") {
-      let option_name: &str = arg.strip_prefix("--").unwrap();
+    let arg_option_name: &str = arg.strip_prefix(prefix).unwrap();
 
-      if option_name.eq("") {
-        unrecognized_set.insert(String::from(""));
-
-        continue;
-      }
-
-      for recognized_option in recognized_options {
-        if recognized_option.name_long.is_none() {
-          continue;
-        }
-
-        let name_long: &str = recognized_option.name_long.unwrap();
-
-        if option_name.eq(name_long) {
-          continue 'outer;
-        }
-
-        let name_long_equals: String = format!("{name_long}=");
-
-        if option_name.starts_with(&name_long_equals) {
-          continue 'outer;
-        }
-      }
-
-      unrecognized_set.insert(String::from(option_name));
-
-      continue;
-    }
-
-    let option_name: &str = arg.strip_prefix('-').unwrap();
-
-    if option_name.eq("") {
+    if arg_option_name.eq("") {
       unrecognized_set.insert(String::from(""));
 
       continue;
     }
 
     for recognized_option in recognized_options {
-      if recognized_option.name_short.is_none() {
-        continue;
-      }
+      let recognized_option_name: String = if using_long_name {
+        if recognized_option.name_long.is_none() {
+          continue;
+        }
 
-      let name_short: char = recognized_option.name_short.unwrap();
+        recognized_option.name_long.unwrap().to_string()
+      } else {
+        if recognized_option.name_short.is_none() {
+          continue;
+        }
 
-      let name_short_string: String = name_short.to_string();
+        recognized_option.name_short.unwrap().to_string()
+      };
 
-      if option_name.eq(&name_short_string) {
+      if arg_option_name.eq(&recognized_option_name) {
         continue 'outer;
       }
 
-      let name_short_string_equals: String = format!("{name_short_string}=");
+      let recognized_option_name_equals: String =
+        format!("{recognized_option_name}=");
 
-      if option_name.starts_with(&name_short_string_equals) {
+      if arg_option_name.starts_with(&recognized_option_name_equals) {
         continue 'outer;
       }
     }
 
-    unrecognized_set.insert(String::from(option_name));
-  }
-
-  if unrecognized_set.is_empty() {
-    return Vec::new();
+    unrecognized_set.insert(String::from(arg_option_name));
   }
 
   Vec::from_iter(unrecognized_set)

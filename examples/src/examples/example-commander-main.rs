@@ -48,11 +48,7 @@ pub fn parse_option_values_using_commander() -> OptionValues {
 
   let parse_output: ParseOutput = OPTION_CONFIG_N.parse(parse_input);
 
-  let name_option: Option<String> = if parse_output.value.is_some() {
-    parse_output.value
-  } else {
-    None
-  };
+  let name_option: Option<String> = parse_output.value;
 
   let arg_option_vector: Vec<OptionConfig> = OPTION_CONFIGS.to_vec();
 

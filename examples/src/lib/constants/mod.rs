@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-04-30
+//! - Updated: 2024-05-21
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -58,7 +58,7 @@ pub const OPTION_CONFIG_N: OptionConfig = OptionConfig {
   brief_description: Some(ARG_NAME_HELP),
   name_long: Some(ARG_NAME_NAME),
   name_short: Some(ARG_NAME_SHORT),
-  value_usage: ValueUsage::Optional,
+  value_usage: ValueUsage::Required,
 };
 
 pub const OPTION_CONFIGS: [OptionConfig; 3] = [

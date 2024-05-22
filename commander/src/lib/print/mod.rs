@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-29
-//! - Updated: 2024-04-30
+//! - Updated: 2024-05-22
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -21,17 +21,29 @@ use crate::*;
 //------------------------------------------------------------------------------
 pub fn make_print_option_prefix(arg_option: &OptionConfig) -> String {
   let mut prefix: String = "".to_string();
-  if arg_option.name_short.is_some() {
+
+  let parse_config: &ParseConfig = &arg_option.parse_config;
+
+  let name_short: &Option<char> = &parse_config.name_short;
+
+  let name_long = &parse_config.name_long;
+
+  if name_short.is_some() {
     prefix.push_str("  -");
-    prefix.push(arg_option.name_short.unwrap());
-    if arg_option.name_long.is_some() {
+
+    prefix.push(name_short.unwrap());
+
+    if name_long.is_some() {
       prefix.push_str(", --");
-      prefix.push_str(arg_option.name_long.unwrap());
+
+      prefix.push_str(name_long.unwrap());
     }
   } else {
     prefix.push_str("  --");
-    prefix.push_str(arg_option.name_long.unwrap());
+
+    prefix.push_str(name_long.unwrap());
   }
+
   prefix
 }
 

@@ -5,14 +5,15 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-05-21
+//! - Updated: 2024-05-22
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
-use commander::parse::{self, CommanderParseError, ParseInput, ParseOutput};
-use commander::OptionConfig;
+use commander::parse::{
+  self, CommanderParseError, ParseConfig, ParseInput, ParseOutput,
+};
 use croftsoft_commander_examples::constants::*;
 use croftsoft_commander_examples::OptionValues;
 
@@ -50,7 +51,8 @@ pub fn parse_option_values_using_commander() -> OptionValues {
 
   let name_option: Option<String> = parse_output.value;
 
-  let arg_option_vector: Vec<OptionConfig> = OPTION_CONFIGS.to_vec();
+  let arg_option_vector: Vec<ParseConfig> =
+    OPTION_CONFIGS.map(|config| config.parse_config).to_vec();
 
   let unrecognized: Vec<String> =
     parse::parse_unrecognized(parse_input, &arg_option_vector);

@@ -9,11 +9,13 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-05-18
+//! - Updated: 2024-05-22
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
+
+use self::parse::{ParseConfig, ParseInput, ParseOutput};
 
 pub mod parse;
 pub mod print;
@@ -39,23 +41,20 @@ pub struct HelpInfo<'a> {
 }
 
 //------------------------------------------------------------------------------
-/// Whether a option value is optional, required, or verboten (forbidden)
-//------------------------------------------------------------------------------
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum ValueUsage {
-  Optional,
-  Required,
-  Verboten,
-}
-
-//------------------------------------------------------------------------------
 /// Option configuration metadata for parsing and printing
 //------------------------------------------------------------------------------
 #[derive(Clone, Copy, Debug)]
 pub struct OptionConfig<'a> {
+  // TODO: Maybe move this to a PrintConfig
   pub brief_description: Option<&'a str>,
-  // TODO: Static compile check to make sure at least one of the names is Some
-  pub name_short: Option<char>,
-  pub name_long: Option<&'a str>,
-  pub value_usage: ValueUsage,
+  pub parse_config: ParseConfig<'a>,
+}
+
+impl OptionConfig<'_> {
+  pub fn parse(
+    &self,
+    parse_input: &ParseInput,
+  ) -> ParseOutput {
+    self.parse_config.parse(parse_input)
+  }
 }

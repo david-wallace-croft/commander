@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-05-20
+//! - Updated: 2024-05-22
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -14,9 +14,18 @@
 #[cfg(test)]
 mod test;
 
-use crate::*;
 use ::std::collections::HashSet;
 use ::std::env;
+
+//------------------------------------------------------------------------------
+/// Whether a option value is optional, required, or verboten (forbidden)
+//------------------------------------------------------------------------------
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub enum ValueUsage {
+  Optional,
+  Required,
+  Verboten,
+}
 
 //------------------------------------------------------------------------------
 /// Errors that can occur when parsing an option from the command-line arguments
@@ -24,10 +33,21 @@ use ::std::env;
 #[derive(Debug, PartialEq)]
 pub enum CommanderParseError {
   InvalidValue,
-  OptionConfigNameless,
+  ParseConfigNameless,
   RequiredValueMissing,
   ValueMissingAfterEquals,
   VerbotenValuePresent,
+}
+
+//------------------------------------------------------------------------------
+/// Option configuration metadata for parsing
+//------------------------------------------------------------------------------
+#[derive(Clone, Copy, Debug)]
+pub struct ParseConfig<'a> {
+  // TODO: Static compile check to make sure at least one of the names is Some
+  pub name_short: Option<char>,
+  pub name_long: Option<&'a str>,
+  pub value_usage: ValueUsage,
 }
 
 //------------------------------------------------------------------------------
@@ -177,7 +197,7 @@ fn parse_hyphenated_option_name_with_verboten_value(
 //------------------------------------------------------------------------------
 pub fn parse_unrecognized(
   parse_input: &ParseInput,
-  recognized_options: &Vec<OptionConfig>,
+  recognized_options: &Vec<ParseConfig>,
 ) -> Vec<String> {
   let mut unrecognized_set: HashSet<String> = HashSet::new();
 
@@ -231,14 +251,14 @@ pub fn parse_unrecognized(
   Vec::from_iter(unrecognized_set)
 }
 
-impl OptionConfig<'_> {
+impl ParseConfig<'_> {
   pub fn parse(
     &self,
     parse_input: &ParseInput,
   ) -> ParseOutput {
     if self.name_short.is_none() && self.name_long.is_none() {
       return ParseOutput {
-        error: Some(CommanderParseError::OptionConfigNameless),
+        error: Some(CommanderParseError::ParseConfigNameless),
         index: None,
         value: None,
       };

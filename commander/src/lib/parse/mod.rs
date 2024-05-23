@@ -129,9 +129,7 @@ fn parse_hyphenated_option_name_with_required_value(
       hyphenated_option_name,
     );
 
-  if result_option.is_none() {
-    return None;
-  }
+  result_option.as_ref()?;
 
   let result: &Result<Option<String>, CommanderParseError> =
     result_option.as_ref().unwrap();
@@ -146,7 +144,7 @@ fn parse_hyphenated_option_name_with_required_value(
     return result_option;
   }
 
-  return Some(Err(CommanderParseError::RequiredValueMissing));
+  Some(Err(CommanderParseError::RequiredValueMissing))
 }
 
 fn parse_hyphenated_option_name_with_verboten_value(
@@ -159,9 +157,7 @@ fn parse_hyphenated_option_name_with_verboten_value(
       hyphenated_option_name,
     );
 
-  if result_option.is_none() {
-    return None;
-  }
+  result_option.as_ref()?;
 
   let result: &Result<Option<String>, CommanderParseError> =
     result_option.as_ref().unwrap();
@@ -178,7 +174,7 @@ fn parse_hyphenated_option_name_with_verboten_value(
 
   // TODO: Should the verboten value be returned along with the error?
 
-  return Some(Err(CommanderParseError::VerbotenValuePresent));
+  Some(Err(CommanderParseError::VerbotenValuePresent))
 }
 
 //------------------------------------------------------------------------------
@@ -315,11 +311,11 @@ impl ParseConfig<'_> {
       };
     }
 
-    return ParseOutput {
+    ParseOutput {
       error: None,
       index,
       value: result.unwrap(),
-    };
+    }
   }
 }
 

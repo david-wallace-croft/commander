@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-05-22
+//! - Updated: 2024-05-23
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -96,100 +96,89 @@ pub struct ParseOutput {
 }
 
 fn parse_hyphenated_option_name_with_optional_value(
-  parse_input: &ParseInput,
+  arg: &str,
   hyphenated_option_name: &str,
-) -> ParseOutput {
+) -> Option<Result<Option<String>, CommanderParseError>> {
   let hyphenated_option_name_equals: &String =
     &format!("{}=", hyphenated_option_name);
 
-  for (arg_index, arg) in
-    parse_input.args.iter().enumerate().skip(parse_input.skip)
-  {
-    if arg.starts_with(hyphenated_option_name_equals) {
-      let value: &str =
-        arg.strip_prefix(hyphenated_option_name_equals).unwrap();
+  if arg.starts_with(hyphenated_option_name_equals) {
+    let value: &str = arg.strip_prefix(hyphenated_option_name_equals).unwrap();
 
-      if value.eq("") {
-        return ParseOutput {
-          error: Some(CommanderParseError::ValueMissingAfterEquals),
-          index: Some(arg_index),
-          value: None,
-        };
-      }
-
-      return ParseOutput {
-        error: None,
-        index: Some(arg_index),
-        value: Some(value.to_string()),
-      };
+    if value.eq("") {
+      return Some(Err(CommanderParseError::ValueMissingAfterEquals));
     }
 
-    if arg.eq(hyphenated_option_name) {
-      return ParseOutput {
-        error: None,
-        index: Some(arg_index),
-        value: None,
-      };
-    }
+    return Some(Ok(Some(value.to_string())));
   }
 
-  ParseOutput::default()
+  if arg.eq(hyphenated_option_name) {
+    return Some(Ok(None));
+  }
+
+  None
 }
 
 fn parse_hyphenated_option_name_with_required_value(
-  parse_input: &ParseInput,
+  arg: &str,
   hyphenated_option_name: &str,
-) -> ParseOutput {
-  let ParseOutput {
-    error,
-    index,
-    value,
-  } = parse_hyphenated_option_name_with_optional_value(
-    parse_input,
-    hyphenated_option_name,
-  );
+) -> Option<Result<Option<String>, CommanderParseError>> {
+  let result_option: Option<Result<Option<String>, CommanderParseError>> =
+    parse_hyphenated_option_name_with_optional_value(
+      arg,
+      hyphenated_option_name,
+    );
 
-  if error.is_some() || index.is_none() || value.is_some() {
-    return ParseOutput {
-      error,
-      index,
-      value,
-    };
+  if result_option.is_none() {
+    return None;
   }
 
-  ParseOutput {
-    error: Some(CommanderParseError::RequiredValueMissing),
-    index,
-    value,
+  let result: &Result<Option<String>, CommanderParseError> =
+    result_option.as_ref().unwrap();
+
+  if result.is_err() {
+    return result_option;
   }
+
+  let value_option: &Option<String> = result.as_ref().unwrap();
+
+  if value_option.is_some() {
+    return result_option;
+  }
+
+  return Some(Err(CommanderParseError::RequiredValueMissing));
 }
 
 fn parse_hyphenated_option_name_with_verboten_value(
-  parse_input: &ParseInput,
+  arg: &str,
   hyphenated_option_name: &str,
-) -> ParseOutput {
-  let ParseOutput {
-    error,
-    index,
-    value,
-  } = parse_hyphenated_option_name_with_optional_value(
-    parse_input,
-    hyphenated_option_name,
-  );
+) -> Option<Result<Option<String>, CommanderParseError>> {
+  let result_option: Option<Result<Option<String>, CommanderParseError>> =
+    parse_hyphenated_option_name_with_optional_value(
+      arg,
+      hyphenated_option_name,
+    );
 
-  if error.is_some() || index.is_none() || value.is_none() {
-    return ParseOutput {
-      error,
-      index,
-      value,
-    };
+  if result_option.is_none() {
+    return None;
   }
 
-  ParseOutput {
-    error: Some(CommanderParseError::VerbotenValuePresent),
-    index,
-    value,
+  let result: &Result<Option<String>, CommanderParseError> =
+    result_option.as_ref().unwrap();
+
+  if result.is_err() {
+    return result_option;
   }
+
+  let value_option: &Option<String> = result.as_ref().unwrap();
+
+  if value_option.is_none() {
+    return result_option;
+  }
+
+  // TODO: Should the verboten value be returned along with the error?
+
+  return Some(Err(CommanderParseError::VerbotenValuePresent));
 }
 
 //------------------------------------------------------------------------------
@@ -270,41 +259,67 @@ impl ParseConfig<'_> {
       ValueUsage::Verboten => parse_hyphenated_option_name_with_verboten_value,
     };
 
-    // TODO: should check for both short and long name simultaneously
+    for (arg_index, arg) in
+      parse_input.args.iter().enumerate().skip(parse_input.skip)
+    {
+      if self.name_short.is_some() {
+        let arg_option_name_short = self.name_short.unwrap();
 
-    if self.name_short.is_some() {
-      let arg_option_name_short = self.name_short.unwrap();
+        let hyphenated_option_name: String =
+          format!("-{}", arg_option_name_short);
 
-      let hyphenated_option_name: String =
-        format!("-{}", arg_option_name_short);
+        let result_option: Option<Result<Option<String>, CommanderParseError>> =
+          parse_hyphenated_option_name_function(arg, &hyphenated_option_name);
 
-      let parse_output: ParseOutput = parse_hyphenated_option_name_function(
-        parse_input,
-        &hyphenated_option_name,
-      );
-
-      if parse_output.index.is_some() {
-        return parse_output;
+        if result_option.is_some() {
+          return Self::to_parse_output(arg_index, result_option);
+        }
       }
-    }
 
-    if self.name_long.is_some() {
-      let arg_option_name_long: &str = self.name_long.unwrap();
+      if self.name_long.is_some() {
+        let arg_option_name_long: &str = self.name_long.unwrap();
 
-      let hyphenated_option_name: String =
-        format!("--{}", arg_option_name_long);
+        let hyphenated_option_name: String =
+          format!("--{}", arg_option_name_long);
 
-      let parse_output: ParseOutput = parse_hyphenated_option_name_function(
-        parse_input,
-        &hyphenated_option_name,
-      );
+        let result_option: Option<Result<Option<String>, CommanderParseError>> =
+          parse_hyphenated_option_name_function(arg, &hyphenated_option_name);
 
-      if parse_output.index.is_some() {
-        return parse_output;
+        if result_option.is_some() {
+          return Self::to_parse_output(arg_index, result_option);
+        }
       }
     }
 
     ParseOutput::default()
+  }
+
+  fn to_parse_output(
+    arg_index: usize,
+    result_option: Option<Result<Option<String>, CommanderParseError>>,
+  ) -> ParseOutput {
+    if result_option.is_none() {
+      return ParseOutput::default();
+    }
+
+    let result: Result<Option<String>, CommanderParseError> =
+      result_option.unwrap();
+
+    let index: Option<usize> = Some(arg_index);
+
+    if let Err(error) = result {
+      return ParseOutput {
+        error: Some(error),
+        index,
+        value: None,
+      };
+    }
+
+    return ParseOutput {
+      error: None,
+      index,
+      value: result.unwrap(),
+    };
   }
 }
 

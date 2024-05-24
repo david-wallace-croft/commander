@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-05-23
+//! - Updated: 2024-05-24
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -406,7 +406,7 @@ fn test_option_config_parse_verboten_2() {
   let expected = ParseOutput {
     error: Some(CommanderParseError::VerbotenValuePresent),
     index: Some(0),
-    value: None,
+    value: Some("value".to_string()),
   };
 
   let actual: ParseOutput = PARSE_CONFIG_VERBOTEN.parse(test_parse_input);
@@ -453,7 +453,7 @@ fn test_option_config_parse_verboten_5() {
   let expected: ParseOutput = ParseOutput {
     error: Some(CommanderParseError::VerbotenValuePresent),
     index: Some(0),
-    value: None,
+    value: Some("value".to_string()),
   };
 
   let actual: ParseOutput = PARSE_CONFIG_VERBOTEN.parse(test_parse_input);

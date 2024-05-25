@@ -203,6 +203,7 @@ impl ParseConfig<'_> {
     &self,
     parse_input: &ParseInput,
   ) -> ParseOutput {
+    // TODO: This can go away if we make the Option<name> function
     if self.name_short.is_none() && self.name_long.is_none() {
       return ParseOutput {
         error: Some(CommanderParseError::ParseConfigNameless),

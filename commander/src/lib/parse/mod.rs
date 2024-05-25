@@ -214,6 +214,8 @@ impl ParseConfig<'_> {
     for (arg_index, arg) in
       parse_input.args.iter().enumerate().skip(parse_input.skip)
     {
+      // TODO: make a function that returns Option<name> to remove common bits
+
       if self.name_short.is_some() {
         let arg_option_name_short = self.name_short.unwrap();
 

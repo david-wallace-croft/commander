@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-05-24
+//! - Updated: 2024-05-25
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -95,92 +95,47 @@ pub struct ParseOutput {
   pub value: Option<String>,
 }
 
-fn parse_hyphenated_option_name_with_optional_value(
+fn parse_hyphenated_option_name(
   arg: &str,
   arg_index: usize,
   hyphenated_option_name: &str,
+  value_usage: ValueUsage,
 ) -> ParseOutput {
   let hyphenated_option_name_equals: &String =
     &format!("{}=", hyphenated_option_name);
 
+  let mut index_option: Option<usize> = None;
+
+  let mut error_option: Option<CommanderParseError> = None;
+
+  let mut value_option: Option<String> = None;
+
   if arg.starts_with(hyphenated_option_name_equals) {
+    index_option = Some(arg_index);
+
     let value: &str = arg.strip_prefix(hyphenated_option_name_equals).unwrap();
 
     if value.eq("") {
-      return ParseOutput {
-        error: Some(CommanderParseError::ValueMissingAfterEquals),
-        index: Some(arg_index),
-        value: None,
-      };
+      error_option = Some(CommanderParseError::ValueMissingAfterEquals);
+    } else {
+      value_option = Some(value.to_string());
+
+      if value_usage == ValueUsage::Verboten {
+        error_option = Some(CommanderParseError::VerbotenValuePresent);
+      }
     }
+  } else if arg.eq(hyphenated_option_name) {
+    index_option = Some(arg_index);
 
-    return ParseOutput {
-      error: None,
-      index: Some(arg_index),
-      value: Some(value.to_string()),
-    };
-  }
-
-  if arg.eq(hyphenated_option_name) {
-    return ParseOutput {
-      error: None,
-      index: Some(arg_index),
-      value: None,
-    };
-  }
-
-  ParseOutput::default()
-}
-
-fn parse_hyphenated_option_name_with_required_value(
-  arg: &str,
-  arg_index: usize,
-  hyphenated_option_name: &str,
-) -> ParseOutput {
-  let parse_output: ParseOutput =
-    parse_hyphenated_option_name_with_optional_value(
-      arg,
-      arg_index,
-      hyphenated_option_name,
-    );
-
-  if parse_output.index.is_none()
-    || parse_output.error.is_some()
-    || parse_output.value.is_some()
-  {
-    return parse_output;
+    if value_usage == ValueUsage::Required {
+      error_option = Some(CommanderParseError::RequiredValueMissing);
+    }
   }
 
   ParseOutput {
-    error: Some(CommanderParseError::RequiredValueMissing),
-    index: parse_output.index,
-    value: None,
-  }
-}
-
-fn parse_hyphenated_option_name_with_verboten_value(
-  arg: &str,
-  arg_index: usize,
-  hyphenated_option_name: &str,
-) -> ParseOutput {
-  let parse_output: ParseOutput =
-    parse_hyphenated_option_name_with_optional_value(
-      arg,
-      arg_index,
-      hyphenated_option_name,
-    );
-
-  if parse_output.index.is_none()
-    || parse_output.error.is_some()
-    || parse_output.value.is_none()
-  {
-    return parse_output;
-  }
-
-  ParseOutput {
-    error: Some(CommanderParseError::VerbotenValuePresent),
-    index: parse_output.index,
-    value: parse_output.value,
+    error: error_option,
+    index: index_option,
+    value: value_option,
   }
 }
 
@@ -256,12 +211,6 @@ impl ParseConfig<'_> {
       };
     }
 
-    let parse_hyphenated_option_name_function = match self.value_usage {
-      ValueUsage::Optional => parse_hyphenated_option_name_with_optional_value,
-      ValueUsage::Required => parse_hyphenated_option_name_with_required_value,
-      ValueUsage::Verboten => parse_hyphenated_option_name_with_verboten_value,
-    };
-
     for (arg_index, arg) in
       parse_input.args.iter().enumerate().skip(parse_input.skip)
     {
@@ -271,10 +220,11 @@ impl ParseConfig<'_> {
         let hyphenated_option_name: String =
           format!("-{}", arg_option_name_short);
 
-        let parse_output: ParseOutput = parse_hyphenated_option_name_function(
+        let parse_output: ParseOutput = parse_hyphenated_option_name(
           arg,
           arg_index,
           &hyphenated_option_name,
+          self.value_usage,
         );
 
         if parse_output.index.is_some() {
@@ -288,10 +238,11 @@ impl ParseConfig<'_> {
         let hyphenated_option_name: String =
           format!("--{}", arg_option_name_long);
 
-        let parse_output: ParseOutput = parse_hyphenated_option_name_function(
+        let parse_output: ParseOutput = parse_hyphenated_option_name(
           arg,
           arg_index,
           &hyphenated_option_name,
+          self.value_usage,
         );
 
         if parse_output.index.is_some() {

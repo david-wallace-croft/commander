@@ -17,6 +17,23 @@ mod test;
 use ::std::collections::HashSet;
 use ::std::env;
 
+enum HyphenationType {
+  Long,
+  Short,
+}
+
+impl HyphenationType {
+  fn determine_hyphenation_type(arg: &str) -> Option<Self> {
+    if arg.starts_with("--") {
+      Some(Self::Long)
+    } else if arg.starts_with('-') {
+      Some(Self::Short)
+    } else {
+      None
+    }
+  }
+}
+
 //------------------------------------------------------------------------------
 /// Whether a option value is optional, required, or verboten (forbidden)
 //------------------------------------------------------------------------------
@@ -155,6 +172,30 @@ pub struct ParseOutput {
 }
 
 impl ParseOptionConfig<'_> {
+  fn make_hyphenated_option_name(
+    &self,
+    hyphenation_type: HyphenationType,
+  ) -> Option<String> {
+    match hyphenation_type {
+      HyphenationType::Long => {
+        let arg_option_name_long = self.name_long?;
+
+        let hyphenated_option_name: String =
+          format!("--{}", arg_option_name_long);
+
+        Some(hyphenated_option_name)
+      },
+      HyphenationType::Short => {
+        let arg_option_name_short = self.name_short?;
+
+        let hyphenated_option_name: String =
+          format!("-{}", arg_option_name_short);
+
+        Some(hyphenated_option_name)
+      },
+    }
+  }
+
   pub fn parse(
     &self,
     parse_input: &ParseInput,
@@ -170,8 +211,15 @@ impl ParseOptionConfig<'_> {
     for (arg_index, arg) in
       parse_input.args.iter().enumerate().skip(parse_input.skip)
     {
-      let hyphenated_option_name_option =
-        self.to_hyphenated_option_name_option(arg);
+      let hyphenation_type_option: Option<HyphenationType> =
+        HyphenationType::determine_hyphenation_type(arg);
+
+      let Some(hyphenation_type) = hyphenation_type_option else {
+        continue;
+      };
+
+      let hyphenated_option_name_option: Option<String> =
+        self.make_hyphenated_option_name(hyphenation_type);
 
       let Some(hyphenated_option_name) = hyphenated_option_name_option else {
         continue;
@@ -236,31 +284,6 @@ impl ParseOptionConfig<'_> {
       index: index_option,
       value: value_option,
     }
-  }
-
-  fn to_hyphenated_option_name_option(
-    &self,
-    arg: &str,
-  ) -> Option<String> {
-    if arg.starts_with("--") {
-      let arg_option_name_long = self.name_long?;
-
-      let hyphenated_option_name: String =
-        format!("--{}", arg_option_name_long);
-
-      return Some(hyphenated_option_name);
-    }
-
-    if arg.starts_with('-') {
-      let arg_option_name_short = self.name_short?;
-
-      let hyphenated_option_name: String =
-        format!("-{}", arg_option_name_short);
-
-      return Some(hyphenated_option_name);
-    }
-
-    None
   }
 }
 

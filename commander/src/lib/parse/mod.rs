@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-05-25
+//! - Updated: 2024-05-26
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -43,7 +43,7 @@ pub enum CommanderParseError {
 /// Option configuration metadata for parsing
 //------------------------------------------------------------------------------
 #[derive(Clone, Copy, Debug)]
-pub struct ParseConfig<'a> {
+pub struct ParseOptionConfig<'a> {
   // TODO: Static compile check to make sure at least one of the names is Some
   pub name_short: Option<char>,
   pub name_long: Option<&'a str>,
@@ -71,6 +71,65 @@ impl ParseInput {
       skip: 0,
     }
   }
+
+  //------------------------------------------------------------------------------
+  /// Returns a list of unrecognized options from the command-line arguments
+  //------------------------------------------------------------------------------
+  pub fn parse_unrecognized(
+    &self,
+    recognized_options: &Vec<ParseOptionConfig>,
+  ) -> Vec<String> {
+    let mut unrecognized_set: HashSet<String> = HashSet::new();
+
+    'outer: for arg in self.args.iter().skip(self.skip) {
+      let (prefix, using_long_name) = if arg.starts_with("--") {
+        ("--", true)
+      } else if arg.starts_with('-') {
+        ("-", false)
+      } else {
+        continue;
+      };
+
+      let arg_option_name: &str = arg.strip_prefix(prefix).unwrap();
+
+      if arg_option_name.eq("") {
+        unrecognized_set.insert(String::from(""));
+
+        continue;
+      }
+
+      for recognized_option in recognized_options {
+        let recognized_option_name: String = if using_long_name {
+          if recognized_option.name_long.is_none() {
+            continue;
+          }
+
+          recognized_option.name_long.unwrap().to_string()
+        } else {
+          if recognized_option.name_short.is_none() {
+            continue;
+          }
+
+          recognized_option.name_short.unwrap().to_string()
+        };
+
+        if arg_option_name.eq(&recognized_option_name) {
+          continue 'outer;
+        }
+
+        let recognized_option_name_equals: String =
+          format!("{recognized_option_name}=");
+
+        if arg_option_name.starts_with(&recognized_option_name_equals) {
+          continue 'outer;
+        }
+      }
+
+      unrecognized_set.insert(String::from(arg_option_name));
+    }
+
+    Vec::from_iter(unrecognized_set)
+  }
 }
 
 impl Default for ParseInput {
@@ -95,116 +154,12 @@ pub struct ParseOutput {
   pub value: Option<String>,
 }
 
-fn parse_hyphenated_option_name(
-  arg: &str,
-  arg_index: usize,
-  hyphenated_option_name: &str,
-  value_usage: ValueUsage,
-) -> ParseOutput {
-  let hyphenated_option_name_equals: &String =
-    &format!("{}=", hyphenated_option_name);
-
-  let mut index_option: Option<usize> = None;
-
-  let mut error_option: Option<CommanderParseError> = None;
-
-  let mut value_option: Option<String> = None;
-
-  if arg.starts_with(hyphenated_option_name_equals) {
-    index_option = Some(arg_index);
-
-    let value: &str = arg.strip_prefix(hyphenated_option_name_equals).unwrap();
-
-    if value.eq("") {
-      error_option = Some(CommanderParseError::ValueMissingAfterEquals);
-    } else {
-      value_option = Some(value.to_string());
-
-      if value_usage == ValueUsage::Verboten {
-        error_option = Some(CommanderParseError::VerbotenValuePresent);
-      }
-    }
-  } else if arg.eq(hyphenated_option_name) {
-    index_option = Some(arg_index);
-
-    if value_usage == ValueUsage::Required {
-      error_option = Some(CommanderParseError::RequiredValueMissing);
-    }
-  }
-
-  ParseOutput {
-    error: error_option,
-    index: index_option,
-    value: value_option,
-  }
-}
-
-//------------------------------------------------------------------------------
-/// Returns a list of unrecognized options from the command-line arguments
-//------------------------------------------------------------------------------
-pub fn parse_unrecognized(
-  parse_input: &ParseInput,
-  recognized_options: &Vec<ParseConfig>,
-) -> Vec<String> {
-  let mut unrecognized_set: HashSet<String> = HashSet::new();
-
-  'outer: for arg in parse_input.args.iter().skip(parse_input.skip) {
-    let (prefix, using_long_name) = if arg.starts_with("--") {
-      ("--", true)
-    } else if arg.starts_with('-') {
-      ("-", false)
-    } else {
-      continue;
-    };
-
-    let arg_option_name: &str = arg.strip_prefix(prefix).unwrap();
-
-    if arg_option_name.eq("") {
-      unrecognized_set.insert(String::from(""));
-
-      continue;
-    }
-
-    for recognized_option in recognized_options {
-      let recognized_option_name: String = if using_long_name {
-        if recognized_option.name_long.is_none() {
-          continue;
-        }
-
-        recognized_option.name_long.unwrap().to_string()
-      } else {
-        if recognized_option.name_short.is_none() {
-          continue;
-        }
-
-        recognized_option.name_short.unwrap().to_string()
-      };
-
-      if arg_option_name.eq(&recognized_option_name) {
-        continue 'outer;
-      }
-
-      let recognized_option_name_equals: String =
-        format!("{recognized_option_name}=");
-
-      if arg_option_name.starts_with(&recognized_option_name_equals) {
-        continue 'outer;
-      }
-    }
-
-    unrecognized_set.insert(String::from(arg_option_name));
-  }
-
-  Vec::from_iter(unrecognized_set)
-}
-
-impl ParseConfig<'_> {
+impl ParseOptionConfig<'_> {
   pub fn parse(
     &self,
     parse_input: &ParseInput,
   ) -> ParseOutput {
-    // TODO: This can go away if we make the Option<name> function
-    if self.name_short.is_none() && self.name_long.is_none() {
+    if self.name_long.is_none() && self.name_short.is_none() {
       return ParseOutput {
         error: Some(CommanderParseError::ParseConfigNameless),
         index: None,
@@ -215,46 +170,97 @@ impl ParseConfig<'_> {
     for (arg_index, arg) in
       parse_input.args.iter().enumerate().skip(parse_input.skip)
     {
-      // TODO: make a function that returns Option<name> to remove common bits
+      let hyphenated_option_name_option =
+        self.to_hyphenated_option_name_option(arg);
 
-      if self.name_short.is_some() {
-        let arg_option_name_short = self.name_short.unwrap();
+      let Some(hyphenated_option_name) = hyphenated_option_name_option else {
+        continue;
+      };
 
-        let hyphenated_option_name: String =
-          format!("-{}", arg_option_name_short);
-
-        let parse_output: ParseOutput = parse_hyphenated_option_name(
+      let parse_output: ParseOutput =
+        ParseOptionConfig::parse_hyphenated_option_name(
           arg,
           arg_index,
           &hyphenated_option_name,
           self.value_usage,
         );
 
-        if parse_output.index.is_some() {
-          return parse_output;
-        }
-      }
-
-      if self.name_long.is_some() {
-        let arg_option_name_long: &str = self.name_long.unwrap();
-
-        let hyphenated_option_name: String =
-          format!("--{}", arg_option_name_long);
-
-        let parse_output: ParseOutput = parse_hyphenated_option_name(
-          arg,
-          arg_index,
-          &hyphenated_option_name,
-          self.value_usage,
-        );
-
-        if parse_output.index.is_some() {
-          return parse_output;
-        }
+      if parse_output.index.is_some() {
+        return parse_output;
       }
     }
 
     ParseOutput::default()
+  }
+
+  fn parse_hyphenated_option_name(
+    arg: &str,
+    arg_index: usize,
+    hyphenated_option_name: &str,
+    value_usage: ValueUsage,
+  ) -> ParseOutput {
+    let hyphenated_option_name_equals: &String =
+      &format!("{}=", hyphenated_option_name);
+
+    let mut index_option: Option<usize> = None;
+
+    let mut error_option: Option<CommanderParseError> = None;
+
+    let mut value_option: Option<String> = None;
+
+    if arg.starts_with(hyphenated_option_name_equals) {
+      index_option = Some(arg_index);
+
+      let value: &str =
+        arg.strip_prefix(hyphenated_option_name_equals).unwrap();
+
+      if value.eq("") {
+        error_option = Some(CommanderParseError::ValueMissingAfterEquals);
+      } else {
+        value_option = Some(value.to_string());
+
+        if value_usage == ValueUsage::Verboten {
+          error_option = Some(CommanderParseError::VerbotenValuePresent);
+        }
+      }
+    } else if arg.eq(hyphenated_option_name) {
+      index_option = Some(arg_index);
+
+      if value_usage == ValueUsage::Required {
+        error_option = Some(CommanderParseError::RequiredValueMissing);
+      }
+    }
+
+    ParseOutput {
+      error: error_option,
+      index: index_option,
+      value: value_option,
+    }
+  }
+
+  fn to_hyphenated_option_name_option(
+    &self,
+    arg: &str,
+  ) -> Option<String> {
+    if arg.starts_with("--") {
+      let arg_option_name_long = self.name_long?;
+
+      let hyphenated_option_name: String =
+        format!("--{}", arg_option_name_long);
+
+      return Some(hyphenated_option_name);
+    }
+
+    if arg.starts_with('-') {
+      let arg_option_name_short = self.name_short?;
+
+      let hyphenated_option_name: String =
+        format!("-{}", arg_option_name_short);
+
+      return Some(hyphenated_option_name);
+    }
+
+    None
   }
 }
 

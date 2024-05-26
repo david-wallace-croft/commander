@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-05-24
+//! - Updated: 2024-05-26
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -13,25 +13,25 @@
 
 use super::*;
 
-const PARSE_CONFIG_NAMELESS: ParseConfig = ParseConfig {
+const PARSE_OPTION_CONFIG_NAMELESS: ParseOptionConfig = ParseOptionConfig {
   name_long: None,
   name_short: None,
   value_usage: ValueUsage::Optional,
 };
 
-const PARSE_CONFIG_OPTIONAL: ParseConfig = ParseConfig {
+const PARSE_OPTION_CONFIG_OPTIONAL: ParseOptionConfig = ParseOptionConfig {
   name_long: Some("TEST"),
   name_short: Some('T'),
   value_usage: ValueUsage::Optional,
 };
 
-const PARSE_CONFIG_REQUIRED: ParseConfig = ParseConfig {
+const PARSE_OPTION_CONFIG_REQUIRED: ParseOptionConfig = ParseOptionConfig {
   name_long: Some("TEST"),
   name_short: Some('T'),
   value_usage: ValueUsage::Required,
 };
 
-const PARSE_CONFIG_VERBOTEN: ParseConfig = ParseConfig {
+const PARSE_OPTION_CONFIG_VERBOTEN: ParseOptionConfig = ParseOptionConfig {
   name_long: Some("TEST"),
   name_short: Some('T'),
   value_usage: ValueUsage::Verboten,
@@ -49,7 +49,8 @@ fn test_option_config_parse_optional_0() {
     value: None,
   };
 
-  let actual: ParseOutput = PARSE_CONFIG_OPTIONAL.parse(test_parse_input);
+  let actual: ParseOutput =
+    PARSE_OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -64,7 +65,8 @@ fn test_option_config_parse_optional_1() {
     value: Some("value".to_string()),
   };
 
-  let actual: ParseOutput = PARSE_CONFIG_OPTIONAL.parse(test_parse_input);
+  let actual: ParseOutput =
+    PARSE_OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -79,7 +81,8 @@ fn test_option_config_parse_optional_2() {
     value: None,
   };
 
-  let actual: ParseOutput = PARSE_CONFIG_OPTIONAL.parse(test_parse_input);
+  let actual: ParseOutput =
+    PARSE_OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -94,7 +97,8 @@ fn test_option_config_parse_optional_3() {
     value: None,
   };
 
-  let actual: ParseOutput = PARSE_CONFIG_OPTIONAL.parse(test_parse_input);
+  let actual: ParseOutput =
+    PARSE_OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -111,7 +115,8 @@ fn test_option_config_parse_optional_4() {
     value: None,
   };
 
-  let actual: ParseOutput = PARSE_CONFIG_OPTIONAL.parse(test_parse_input);
+  let actual: ParseOutput =
+    PARSE_OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -126,7 +131,8 @@ fn test_option_config_parse_optional_5() {
     value: Some("value".to_string()),
   };
 
-  let actual: ParseOutput = PARSE_CONFIG_OPTIONAL.parse(test_parse_input);
+  let actual: ParseOutput =
+    PARSE_OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -141,7 +147,8 @@ fn test_option_config_parse_optional_6() {
     value: None,
   };
 
-  let actual: ParseOutput = PARSE_CONFIG_OPTIONAL.parse(test_parse_input);
+  let actual: ParseOutput =
+    PARSE_OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -156,7 +163,8 @@ fn test_option_config_parse_optional_7() {
     value: None,
   };
 
-  let actual: ParseOutput = PARSE_CONFIG_OPTIONAL.parse(test_parse_input);
+  let actual: ParseOutput =
+    PARSE_OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -171,7 +179,8 @@ fn test_option_config_parse_optional_8() {
     value: None,
   };
 
-  let actual: ParseOutput = PARSE_CONFIG_NAMELESS.parse(test_parse_input);
+  let actual: ParseOutput =
+    PARSE_OPTION_CONFIG_NAMELESS.parse(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -182,7 +191,7 @@ fn test_option_config_parse_optional_bool_0() {
 
   let expected: Result<bool, CommanderParseError> = Ok(false);
 
-  let actual: Result<bool, CommanderParseError> = PARSE_CONFIG_OPTIONAL
+  let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_OPTIONAL
     .parse(test_parse_input)
     .to_bool_result(true);
 
@@ -197,7 +206,7 @@ fn test_option_config_parse_optional_bool_1() {
 
   let expected: Result<bool, CommanderParseError> = Ok(true);
 
-  let actual: Result<bool, CommanderParseError> = PARSE_CONFIG_OPTIONAL
+  let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_OPTIONAL
     .parse(test_parse_input)
     .to_bool_result(false);
 
@@ -211,7 +220,7 @@ fn test_option_config_parse_optional_bool_2() {
   let expected: Result<bool, CommanderParseError> =
     Err(CommanderParseError::InvalidValue);
 
-  let actual: Result<bool, CommanderParseError> = PARSE_CONFIG_OPTIONAL
+  let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_OPTIONAL
     .parse(test_parse_input)
     .to_bool_result(true);
 
@@ -225,7 +234,7 @@ fn test_option_config_parse_optional_bool_3() {
   let expected: Result<bool, CommanderParseError> =
     Err(CommanderParseError::InvalidValue);
 
-  let actual: Result<bool, CommanderParseError> = PARSE_CONFIG_OPTIONAL
+  let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_OPTIONAL
     .parse(test_parse_input)
     .to_bool_result(true);
 
@@ -244,7 +253,8 @@ fn test_option_config_parse_required_0() {
     value: None,
   };
 
-  let actual: ParseOutput = PARSE_CONFIG_REQUIRED.parse(test_parse_input);
+  let actual: ParseOutput =
+    PARSE_OPTION_CONFIG_REQUIRED.parse(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -259,7 +269,8 @@ fn test_option_config_parse_required_1() {
     value: None,
   };
 
-  let actual: ParseOutput = PARSE_CONFIG_REQUIRED.parse(test_parse_input);
+  let actual: ParseOutput =
+    PARSE_OPTION_CONFIG_REQUIRED.parse(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -270,7 +281,7 @@ fn test_option_config_parse_required_bool_0() {
 
   let expected: Result<bool, CommanderParseError> = Ok(false);
 
-  let actual: Result<bool, CommanderParseError> = PARSE_CONFIG_REQUIRED
+  let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_REQUIRED
     .parse(test_parse_input)
     .to_bool_result(true);
 
@@ -283,7 +294,7 @@ fn test_option_config_parse_required_bool_1() {
 
   let expected: Result<bool, CommanderParseError> = Ok(true);
 
-  let actual: Result<bool, CommanderParseError> = PARSE_CONFIG_REQUIRED
+  let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_REQUIRED
     .parse(test_parse_input)
     .to_bool_result(false);
 
@@ -297,7 +308,7 @@ fn test_option_config_parse_required_bool_2() {
   let expected: Result<bool, CommanderParseError> =
     Err(CommanderParseError::InvalidValue);
 
-  let actual: Result<bool, CommanderParseError> = PARSE_CONFIG_REQUIRED
+  let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_REQUIRED
     .parse(test_parse_input)
     .to_bool_result(true);
 
@@ -320,7 +331,8 @@ fn test_option_config_parse_required_multiple_0() {
     value: Some("0".to_string()),
   };
 
-  let actual: ParseOutput = PARSE_CONFIG_REQUIRED.parse(test_parse_input);
+  let actual: ParseOutput =
+    PARSE_OPTION_CONFIG_REQUIRED.parse(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -341,7 +353,8 @@ fn test_option_config_parse_required_multiple_1() {
     value: Some("1".to_string()),
   };
 
-  let actual: ParseOutput = PARSE_CONFIG_REQUIRED.parse(test_parse_input);
+  let actual: ParseOutput =
+    PARSE_OPTION_CONFIG_REQUIRED.parse(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -362,7 +375,8 @@ fn test_option_config_parse_required_multiple_2() {
     value: None,
   };
 
-  let actual: ParseOutput = PARSE_CONFIG_REQUIRED.parse(test_parse_input);
+  let actual: ParseOutput =
+    PARSE_OPTION_CONFIG_REQUIRED.parse(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -377,7 +391,8 @@ fn test_option_config_parse_verboten_0() {
     value: None,
   };
 
-  let actual: ParseOutput = PARSE_CONFIG_VERBOTEN.parse(test_parse_input);
+  let actual: ParseOutput =
+    PARSE_OPTION_CONFIG_VERBOTEN.parse(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -394,7 +409,8 @@ fn test_option_config_parse_verboten_1() {
     value: None,
   };
 
-  let actual: ParseOutput = PARSE_CONFIG_VERBOTEN.parse(test_parse_input);
+  let actual: ParseOutput =
+    PARSE_OPTION_CONFIG_VERBOTEN.parse(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -409,7 +425,8 @@ fn test_option_config_parse_verboten_2() {
     value: Some("value".to_string()),
   };
 
-  let actual: ParseOutput = PARSE_CONFIG_VERBOTEN.parse(test_parse_input);
+  let actual: ParseOutput =
+    PARSE_OPTION_CONFIG_VERBOTEN.parse(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -424,7 +441,8 @@ fn test_option_config_parse_verboten_3() {
     value: None,
   };
 
-  let actual: ParseOutput = PARSE_CONFIG_VERBOTEN.parse(test_parse_input);
+  let actual: ParseOutput =
+    PARSE_OPTION_CONFIG_VERBOTEN.parse(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -441,7 +459,8 @@ fn test_option_config_parse_verboten_4() {
     value: None,
   };
 
-  let actual: ParseOutput = PARSE_CONFIG_VERBOTEN.parse(test_parse_input);
+  let actual: ParseOutput =
+    PARSE_OPTION_CONFIG_VERBOTEN.parse(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -456,7 +475,8 @@ fn test_option_config_parse_verboten_5() {
     value: Some("value".to_string()),
   };
 
-  let actual: ParseOutput = PARSE_CONFIG_VERBOTEN.parse(test_parse_input);
+  let actual: ParseOutput =
+    PARSE_OPTION_CONFIG_VERBOTEN.parse(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -471,7 +491,8 @@ fn test_option_config_parse_verboten_6() {
     value: None,
   };
 
-  let actual: ParseOutput = PARSE_CONFIG_VERBOTEN.parse(test_parse_input);
+  let actual: ParseOutput =
+    PARSE_OPTION_CONFIG_VERBOTEN.parse(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -486,7 +507,8 @@ fn test_option_config_parse_verboten_7() {
     value: None,
   };
 
-  let actual: ParseOutput = PARSE_CONFIG_VERBOTEN.parse(test_parse_input);
+  let actual: ParseOutput =
+    PARSE_OPTION_CONFIG_VERBOTEN.parse(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -497,7 +519,7 @@ fn test_option_config_parse_verboten_bool_0() {
 
   let expected: Result<bool, CommanderParseError> = Ok(true);
 
-  let actual: Result<bool, CommanderParseError> = PARSE_CONFIG_VERBOTEN
+  let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_VERBOTEN
     .parse(test_parse_input)
     .to_bool_result(true);
 
@@ -510,7 +532,7 @@ fn test_option_config_parse_verboten_bool_1() {
 
   let expected: Result<bool, CommanderParseError> = Ok(false);
 
-  let actual: Result<bool, CommanderParseError> = PARSE_CONFIG_VERBOTEN
+  let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_VERBOTEN
     .parse(test_parse_input)
     .to_bool_result(false);
 
@@ -523,7 +545,7 @@ fn test_option_config_parse_verboten_bool_2() {
 
   let expected: Result<bool, CommanderParseError> = Ok(true);
 
-  let actual: Result<bool, CommanderParseError> = PARSE_CONFIG_VERBOTEN
+  let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_VERBOTEN
     .parse(test_parse_input)
     .to_bool_result(false);
 
@@ -536,7 +558,7 @@ fn test_option_config_parse_verboten_bool_3() {
 
   let expected: Result<bool, CommanderParseError> = Ok(false);
 
-  let actual: Result<bool, CommanderParseError> = PARSE_CONFIG_VERBOTEN
+  let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_VERBOTEN
     .parse(test_parse_input)
     .to_bool_result(false);
 
@@ -549,7 +571,7 @@ fn test_option_config_parse_verboten_bool_4() {
 
   let expected: Result<bool, CommanderParseError> = Ok(false);
 
-  let actual: Result<bool, CommanderParseError> = PARSE_CONFIG_VERBOTEN
+  let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_VERBOTEN
     .parse(test_parse_input)
     .to_bool_result(false);
 
@@ -564,7 +586,7 @@ fn test_option_config_parse_verboten_bool_5() {
   let expected: Result<bool, CommanderParseError> =
     Err(CommanderParseError::VerbotenValuePresent);
 
-  let actual: Result<bool, CommanderParseError> = PARSE_CONFIG_VERBOTEN
+  let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_VERBOTEN
     .parse(test_parse_input)
     .to_bool_result(false);
 
@@ -578,7 +600,7 @@ fn test_option_config_parse_verboten_bool_6() {
   let expected: Result<bool, CommanderParseError> =
     Err(CommanderParseError::VerbotenValuePresent);
 
-  let actual: Result<bool, CommanderParseError> = PARSE_CONFIG_VERBOTEN
+  let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_VERBOTEN
     .parse(test_parse_input)
     .to_bool_result(false);
 
@@ -587,40 +609,40 @@ fn test_option_config_parse_verboten_bool_6() {
 
 #[test]
 fn test_parse_unrecognized_long() {
-  const ARG_OPTION_TEST: ParseConfig = ParseConfig {
+  const ARG_OPTION_TEST: ParseOptionConfig = ParseOptionConfig {
     name_long: Some("TEST"),
     name_short: Some('T'),
     value_usage: ValueUsage::Optional,
   };
 
-  let recognized_options: Vec<ParseConfig> = vec![ARG_OPTION_TEST];
+  let recognized_options: Vec<ParseOptionConfig> = vec![ARG_OPTION_TEST];
 
   let test_parse_input = &ParseInput::from_slice(&["--unrecognized"]);
 
   let expected: Vec<String> = vec![String::from("unrecognized")];
 
   let actual: Vec<String> =
-    parse_unrecognized(test_parse_input, &recognized_options);
+    test_parse_input.parse_unrecognized(&recognized_options);
 
   assert_eq!(expected, actual);
 }
 
 #[test]
 fn test_parse_unrecognized_short() {
-  const ARG_OPTION_TEST: ParseConfig = ParseConfig {
+  const ARG_OPTION_TEST: ParseOptionConfig = ParseOptionConfig {
     name_long: Some("TEST"),
     name_short: Some('T'),
     value_usage: ValueUsage::Optional,
   };
 
-  let recognized_options: Vec<ParseConfig> = vec![ARG_OPTION_TEST];
+  let recognized_options: Vec<ParseOptionConfig> = vec![ARG_OPTION_TEST];
 
   let test_parse_input = &ParseInput::from_slice(&["-u"]);
 
   let expected: Vec<String> = vec![String::from("u")];
 
   let actual: Vec<String> =
-    parse_unrecognized(test_parse_input, &recognized_options);
+    test_parse_input.parse_unrecognized(&recognized_options);
 
   assert_eq!(expected, actual);
 }

@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-29
-//! - Updated: 2024-05-22
+//! - Updated: 2024-05-26
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -22,11 +22,11 @@ use crate::*;
 pub fn make_print_option_prefix(arg_option: &OptionConfig) -> String {
   let mut prefix: String = "".to_string();
 
-  let parse_config: &ParseConfig = &arg_option.parse_config;
+  let parse_option_config: &ParseOptionConfig = &arg_option.parse_option_config;
 
-  let name_short: &Option<char> = &parse_config.name_short;
+  let name_short: &Option<char> = &parse_option_config.name_short;
 
-  let name_long = &parse_config.name_long;
+  let name_long = &parse_option_config.name_long;
 
   if name_short.is_some() {
     prefix.push_str("  -");

@@ -9,13 +9,13 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-05-22
+//! - Updated: 2024-05-26
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
-use self::parse::{ParseConfig, ParseInput, ParseOutput};
+use self::parse::{ParseInput, ParseOptionConfig, ParseOutput};
 
 pub mod parse;
 pub mod print;
@@ -47,7 +47,7 @@ pub struct HelpInfo<'a> {
 pub struct OptionConfig<'a> {
   // TODO: Maybe move this to a PrintConfig
   pub brief_description: Option<&'a str>,
-  pub parse_config: ParseConfig<'a>,
+  pub parse_option_config: ParseOptionConfig<'a>,
 }
 
 impl OptionConfig<'_> {
@@ -55,6 +55,6 @@ impl OptionConfig<'_> {
     &self,
     parse_input: &ParseInput,
   ) -> ParseOutput {
-    self.parse_config.parse(parse_input)
+    self.parse_option_config.parse(parse_input)
   }
 }

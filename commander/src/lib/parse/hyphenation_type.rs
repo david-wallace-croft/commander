@@ -1,22 +1,27 @@
 //==============================================================================
-//! Modules to parse options from command-line arguments
-//!
 //! # Metadata
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
-//! - Created: 2022-04-02
+//! - Created: 2022-01-15
 //! - Updated: 2024-05-27
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
-pub mod commander_parse_error;
-pub mod hyphenation_type;
-pub mod parse_input;
-pub mod parse_option_config;
-pub mod parse_output;
-pub mod value_usage;
+pub enum HyphenationType {
+  Long,
+  Short,
+}
 
-#[cfg(test)]
-mod test;
+impl HyphenationType {
+  pub fn determine_hyphenation_type(arg: &str) -> Option<Self> {
+    if arg.starts_with("--") {
+      Some(Self::Long)
+    } else if arg.starts_with('-') {
+      Some(Self::Short)
+    } else {
+      None
+    }
+  }
+}

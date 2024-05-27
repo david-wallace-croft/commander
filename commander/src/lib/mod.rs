@@ -9,13 +9,15 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-05-26
+//! - Updated: 2024-05-27
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
-use self::parse::{ParseInput, ParseOptionConfig, ParseOutput};
+use self::parse::parse_option_config::ParseOptionConfig;
+use crate::parse::parse_input::ParseInput;
+use crate::parse::parse_output::ParseOutput;
 
 pub mod parse;
 pub mod print;

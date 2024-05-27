@@ -5,14 +5,14 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-05-26
+//! - Updated: 2024-05-27
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
+use self::parse::value_usage::ValueUsage;
 use super::*;
-use crate::parse::ValueUsage;
 
 //-----------------------------------------------------------------------------
 /// Unit test for make_print_option_prefix()

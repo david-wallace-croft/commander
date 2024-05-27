@@ -5,15 +5,16 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-05-26
+//! - Updated: 2024-05-27
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
-use commander::parse::{
-  CommanderParseError, ParseInput, ParseOptionConfig, ParseOutput,
-};
+use commander::parse::commander_parse_error::CommanderParseError;
+use commander::parse::parse_input::ParseInput;
+use commander::parse::parse_option_config::ParseOptionConfig;
+use commander::parse::parse_output::ParseOutput;
 use croftsoft_commander_examples::constants::*;
 use croftsoft_commander_examples::OptionValues;
 

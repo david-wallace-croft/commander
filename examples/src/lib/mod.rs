@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-05-20
+//! - Updated: 2024-05-27
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -15,7 +15,7 @@ pub mod constants;
 #[cfg(test)]
 mod test;
 
-use commander::parse::CommanderParseError;
+use commander::parse::commander_parse_error::CommanderParseError;
 use commander::print::print_help;
 use commander::print::print_unrecognized_options;
 use constants::*;

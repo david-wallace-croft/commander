@@ -1,4 +1,6 @@
 //==============================================================================
+//! ParseOptionConfig module
+//!
 //! # Metadata
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]

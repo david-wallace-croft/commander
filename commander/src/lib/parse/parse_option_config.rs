@@ -51,6 +51,9 @@ impl ParseOptionConfig<'_> {
     }
   }
 
+  //----------------------------------------------------------------------------
+  /// Returns the next location of the option in the command-line arguments
+  //----------------------------------------------------------------------------
   pub fn parse(
     &self,
     parse_input: &ParseInput,

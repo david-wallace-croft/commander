@@ -27,30 +27,6 @@ pub struct ParseOptionConfig<'a> {
 }
 
 impl ParseOptionConfig<'_> {
-  fn make_hyphenated_option_name(
-    &self,
-    hyphenation_type: HyphenationType,
-  ) -> Option<String> {
-    match hyphenation_type {
-      HyphenationType::Long => {
-        let arg_option_name_long = self.name_long?;
-
-        let hyphenated_option_name: String =
-          format!("--{}", arg_option_name_long);
-
-        Some(hyphenated_option_name)
-      },
-      HyphenationType::Short => {
-        let arg_option_name_short = self.name_short?;
-
-        let hyphenated_option_name: String =
-          format!("-{}", arg_option_name_short);
-
-        Some(hyphenated_option_name)
-      },
-    }
-  }
-
   //----------------------------------------------------------------------------
   /// Returns the next location of the option in the command-line arguments
   //----------------------------------------------------------------------------
@@ -97,6 +73,32 @@ impl ParseOptionConfig<'_> {
     }
 
     ParseOutput::default()
+  }
+
+  // private functions and methods
+
+  fn make_hyphenated_option_name(
+    &self,
+    hyphenation_type: HyphenationType,
+  ) -> Option<String> {
+    match hyphenation_type {
+      HyphenationType::Long => {
+        let arg_option_name_long = self.name_long?;
+
+        let hyphenated_option_name: String =
+          format!("--{}", arg_option_name_long);
+
+        Some(hyphenated_option_name)
+      },
+      HyphenationType::Short => {
+        let arg_option_name_short = self.name_short?;
+
+        let hyphenated_option_name: String =
+          format!("-{}", arg_option_name_short);
+
+        Some(hyphenated_option_name)
+      },
+    }
   }
 
   fn parse_hyphenated_option_name(

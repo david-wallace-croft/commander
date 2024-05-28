@@ -9,9 +9,10 @@
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
-use super::parse_option_config::ParseOptionConfig;
 use ::std::collections::HashSet;
 use ::std::env;
+
+use super::parse_option_config::ParseOptionConfig;
 
 //------------------------------------------------------------------------------
 /// The input to parsing an option from the command-line arguments
@@ -35,9 +36,9 @@ impl ParseInput {
     }
   }
 
-  //------------------------------------------------------------------------------
+  //----------------------------------------------------------------------------
   /// Returns a list of unrecognized options from the command-line arguments
-  //------------------------------------------------------------------------------
+  //----------------------------------------------------------------------------
   pub fn parse_unrecognized(
     &self,
     recognized_options: &Vec<ParseOptionConfig>,
@@ -96,7 +97,9 @@ impl ParseInput {
 }
 
 impl Default for ParseInput {
+  //----------------------------------------------------------------------------
   /// The command-line arguments with a skip of one
+  //----------------------------------------------------------------------------
   fn default() -> Self {
     Self {
       args: env::args().collect(),

@@ -5,18 +5,19 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-05-27
+//! - Updated: 2024-05-28
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
+
+use super::*;
 
 use self::commander_parse_error::CommanderParseError;
 use self::parse_input::ParseInput;
 use self::parse_option_config::ParseOptionConfig;
 use self::parse_output::ParseOutput;
 use self::value_usage::ValueUsage;
-use super::*;
 
 const PARSE_OPTION_CONFIG_NAMELESS: ParseOptionConfig = ParseOptionConfig {
   name_long: None,
@@ -45,12 +46,12 @@ const PARSE_OPTION_CONFIG_VERBOTEN: ParseOptionConfig = ParseOptionConfig {
 #[test]
 fn test_option_config_parse_optional_0() {
   let test_parse_input = &ParseInput::from_slice(&[
-    "-T", "value",
+    "-X", "-T", "value",
   ]);
 
   let expected: ParseOutput = ParseOutput {
     error: None,
-    index: Some(0),
+    index: Some(1),
     value: None,
   };
 
@@ -111,12 +112,15 @@ fn test_option_config_parse_optional_3() {
 #[test]
 fn test_option_config_parse_optional_4() {
   let test_parse_input = &ParseInput::from_slice(&[
-    "--TEST", "value",
+    "--EXCLUDE0",
+    "--TEST",
+    "value",
+    "--EXCLUDE1",
   ]);
 
   let expected: ParseOutput = ParseOutput {
     error: None,
-    index: Some(0),
+    index: Some(1),
     value: None,
   };
 

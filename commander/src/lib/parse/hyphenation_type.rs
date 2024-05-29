@@ -1,8 +1,8 @@
 //==============================================================================
 //! # Metadata
-//! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
+//! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
-//! - Created: 2022-01-15
+//! - Created: 2024-05-27
 //! - Updated: 2024-05-27
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/

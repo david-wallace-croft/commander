@@ -1,15 +1,20 @@
 //==============================================================================
+//! ParseOutput module
+//!
 //! # Metadata
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-05-27
+//! - Updated: 2024-05-29
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
 use super::commander_parse_error::CommanderParseError;
+
+#[cfg(test)]
+mod test;
 
 //------------------------------------------------------------------------------
 /// The output of parsing an option from the command-line arguments

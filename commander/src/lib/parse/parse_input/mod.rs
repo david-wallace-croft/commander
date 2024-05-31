@@ -3,7 +3,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-05-27
+//! - Updated: 2024-05-31
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -14,9 +14,13 @@ use ::std::env;
 
 use super::parse_option_config::ParseOptionConfig;
 
+#[cfg(test)]
+mod test;
+
 //------------------------------------------------------------------------------
 /// The input to parsing an option from the command-line arguments
 //------------------------------------------------------------------------------
+#[derive(Debug, PartialEq)]
 pub struct ParseInput {
   /// The command-line arguments
   pub args: Vec<String>,

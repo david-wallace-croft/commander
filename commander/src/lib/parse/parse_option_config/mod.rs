@@ -1,11 +1,11 @@
 //==============================================================================
-//! ParseOptionConfig module
+//! Module parse_option_config
 //!
 //! # Metadata
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-05-27
+//! - Updated: 2024-06-02
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -16,6 +16,9 @@ use super::hyphenation_type::HyphenationType;
 use super::parse_input::ParseInput;
 use super::parse_output::ParseOutput;
 use super::value_usage::ValueUsage;
+
+#[cfg(test)]
+mod test;
 
 //------------------------------------------------------------------------------
 /// Option configuration metadata for parsing

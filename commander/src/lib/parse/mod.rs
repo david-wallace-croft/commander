@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-05-27
+//! - Updated: 2024-06-04
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -17,6 +17,3 @@ pub mod parse_input;
 pub mod parse_option_config;
 pub mod parse_output;
 pub mod value_usage;
-
-#[cfg(test)]
-mod test;

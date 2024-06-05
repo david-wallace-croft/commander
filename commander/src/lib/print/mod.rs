@@ -5,16 +5,18 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-29
-//! - Updated: 2024-05-26
+//! - Updated: 2024-06-05
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
+use crate::*;
+
+pub mod option_config;
+
 #[cfg(test)]
 mod test;
-
-use crate::*;
 
 //------------------------------------------------------------------------------
 /// String prefix for a command-line option shown for -\-help

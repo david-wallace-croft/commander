@@ -11,9 +11,10 @@
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
+use commander::{AppInfo, HelpInfo};
 use commander::parse::parse_option_config::ParseOptionConfig;
 use commander::parse::value_usage::ValueUsage;
-use commander::{AppInfo, HelpInfo, OptionConfig};
+use commander::print::option_config::OptionConfig;
 
 pub const APP_INFO_ABOUT: &str = "Command-line arguments parser example";
 pub const APP_INFO_CONTACT: &str = "David Wallace Croft <david@CroftSoft.com>";

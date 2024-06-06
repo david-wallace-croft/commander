@@ -5,13 +5,14 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-05-27
+//! - Updated: 2024-06-06
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
-use self::parse::value_usage::ValueUsage;
+use crate::parse::value_usage::ValueUsage;
+
 use super::*;
 
 //-----------------------------------------------------------------------------
@@ -27,6 +28,8 @@ fn test_make_print_option_prefix() {
       value_usage: ValueUsage::Verboten,
     },
   };
-  let actual_prefix: String = make_print_option_prefix(&ARG_OPTION_TEST);
+
+  let actual_prefix: String = ARG_OPTION_TEST.make_print_option_prefix();
+
   assert_eq!("  -T, --ARG_HELP_NAME_LONG", actual_prefix);
 }

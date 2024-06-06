@@ -9,15 +9,13 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-06-05
+//! - Updated: 2024-06-06
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
 use crate::print::option_config::OptionConfig;
-
-use self::parse::parse_option_config::ParseOptionConfig;
 
 pub mod parse;
 pub mod print;

@@ -9,27 +9,17 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-06-06
+//! - Updated: 2024-06-07
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
+use crate::print::app_info::AppInfo;
 use crate::print::option_config::OptionConfig;
 
 pub mod parse;
 pub mod print;
-
-//------------------------------------------------------------------------------
-/// Application data shown for the -\-help option
-//------------------------------------------------------------------------------
-#[derive(Debug)]
-pub struct AppInfo<'a> {
-  pub about: Option<&'a str>,
-  pub contact: Option<&'a str>,
-  pub copyright: Option<&'a str>,
-  pub name: Option<&'a str>,
-}
 
 //------------------------------------------------------------------------------
 /// Application and option data shown for the -\-help option

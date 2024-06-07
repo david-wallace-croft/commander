@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-29
-//! - Updated: 2024-06-06
+//! - Updated: 2024-06-07
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -13,28 +13,8 @@
 
 use crate::*;
 
+pub mod app_info;
 pub mod option_config;
-
-//------------------------------------------------------------------------------
-/// Prints the application description
-//------------------------------------------------------------------------------
-pub fn print_app_info(app_info: &AppInfo) {
-  if app_info.name.is_some() {
-    println!("{}", app_info.name.unwrap());
-  }
-
-  if app_info.copyright.is_some() {
-    println!("{}", app_info.copyright.unwrap());
-  }
-
-  if app_info.contact.is_some() {
-    println!("{}", app_info.contact.unwrap());
-  }
-
-  if app_info.about.is_some() {
-    println!("{}", app_info.about.unwrap());
-  }
-}
 
 //------------------------------------------------------------------------------
 /// Prints the application and options descriptions
@@ -42,7 +22,7 @@ pub fn print_app_info(app_info: &AppInfo) {
 pub fn print_help(help_info: &HelpInfo) {
   println!();
 
-  print_app_info(help_info.app_info);
+  help_info.app_info.print_app_info();
 
   println!();
 

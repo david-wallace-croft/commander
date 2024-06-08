@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-07
-//! - Updated: 2024-06-07
+//! - Updated: 2024-06-08
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -15,7 +15,7 @@
 mod test;
 
 //------------------------------------------------------------------------------
-/// Application data shown for the --help option
+/// Application data shown for the -\-help option
 //------------------------------------------------------------------------------
 #[derive(Debug)]
 pub struct AppInfo<'a> {
@@ -26,7 +26,7 @@ pub struct AppInfo<'a> {
 }
 
 impl AppInfo<'_> {
-  pub fn make_app_info(&self) -> String {
+  pub fn make_print_string(&self) -> String {
     let mut app_info = String::new();
 
     if self.name.is_some() {
@@ -57,9 +57,9 @@ impl AppInfo<'_> {
   }
 
   //----------------------------------------------------------------------------
-  /// Prints the application description
+  /// Prints the application information
   //----------------------------------------------------------------------------
-  pub fn print_app_info(&self) {
-    print!("{}", self.make_app_info());
+  pub fn print(&self) {
+    print!("{}", self.make_print_string());
   }
 }

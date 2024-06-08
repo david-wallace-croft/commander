@@ -67,7 +67,7 @@ pub fn main(option_values: OptionValues) {
   // println!("{:#?}", option_values);
 
   if option_values.help_wanted {
-    HELP_INFO.print_help();
+    HELP_INFO.print();
 
     return;
   }

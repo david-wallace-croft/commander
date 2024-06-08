@@ -28,10 +28,10 @@ impl HelpInfo<'_> {
   //----------------------------------------------------------------------------
   /// Prints the application and options descriptions
   //----------------------------------------------------------------------------
-  pub fn print_help(&self) {
+  pub fn print(&self) {
     println!();
 
-    self.app_info.print_app_info();
+    self.app_info.print();
 
     println!();
 

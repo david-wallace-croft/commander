@@ -13,7 +13,9 @@
 
 use super::app_info::AppInfo;
 use super::option_config::OptionConfig;
-use super::print_options;
+
+#[cfg(test)]
+mod test;
 
 //------------------------------------------------------------------------------
 /// Application and option data shown for the -\-help option
@@ -25,18 +27,23 @@ pub struct HelpInfo<'a> {
 }
 
 impl HelpInfo<'_> {
+  pub fn make_print_string(&self) -> String {
+    let mut print_string = String::from("\n");
+
+    print_string.push_str(&self.app_info.make_print_string());
+
+    print_string.push_str("\nOPTIONS:\n");
+
+    print_string
+      .push_str(&OptionConfig::make_print_string_for_slice(self.arg_options));
+
+    print_string
+  }
+
   //----------------------------------------------------------------------------
   /// Prints the application and options descriptions
   //----------------------------------------------------------------------------
   pub fn print(&self) {
-    println!();
-
-    self.app_info.print();
-
-    println!();
-
-    println!("OPTIONS:");
-
-    print_options(self.arg_options);
+    print!("{}", self.make_print_string());
   }
 }

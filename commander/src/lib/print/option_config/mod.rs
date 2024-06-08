@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-05
-//! - Updated: 2024-06-06
+//! - Updated: 2024-06-08
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -65,5 +65,70 @@ impl OptionConfig<'_> {
     }
 
     prefix
+  }
+
+  pub fn make_print_string(
+    &self,
+    prefix_len_max: usize,
+  ) -> String {
+    let mut line: String = "".to_string();
+
+    let prefix: String = self.make_print_option_prefix();
+
+    line.push_str(&prefix);
+
+    let spaces_count: usize = 2 + prefix_len_max - prefix.len();
+
+    for _ in 0..spaces_count {
+      line.push(' ');
+    }
+
+    if self.brief_description.is_some() {
+      line.push_str(self.brief_description.unwrap());
+    }
+
+    line
+  }
+
+  pub fn make_print_string_for_slice(arg_options: &[OptionConfig]) -> String {
+    let mut prefix_len_max: usize = 0;
+
+    for arg_option in arg_options {
+      // TODO: save generated prefix
+      let prefix: String = arg_option.make_print_option_prefix();
+
+      let prefix_len: usize = prefix.len();
+
+      if prefix_len > prefix_len_max {
+        prefix_len_max = prefix_len;
+      }
+    }
+
+    let mut print_string = String::new();
+
+    for arg_option in arg_options {
+      print_string.push_str(&arg_option.make_print_string(prefix_len_max));
+
+      print_string.push('\n');
+    }
+
+    print_string
+  }
+
+  //----------------------------------------------------------------------------
+  /// Prints a single option description
+  //----------------------------------------------------------------------------
+  pub fn print_option(
+    &self,
+    prefix_len_max: usize,
+  ) {
+    println!("{}", self.make_print_string(prefix_len_max));
+  }
+
+  //----------------------------------------------------------------------------
+  /// Prints multiple option descriptions
+  //----------------------------------------------------------------------------
+  pub fn print_options(arg_options: &[OptionConfig]) {
+    print!("{}", Self::make_print_string_for_slice(arg_options));
   }
 }

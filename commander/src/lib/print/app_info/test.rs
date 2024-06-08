@@ -22,7 +22,7 @@ const TEST_COPYRIGHT: &str = "TEST_COPYRIGHT";
 const TEST_NAME: &str = "TEST_NAME";
 
 #[test]
-fn test_make_app_info_string_0() {
+fn test_make_print_string_0() {
   let test_app_info = AppInfo {
     about: Some(TEST_ABOUT),
     contact: Some(TEST_CONTACT),

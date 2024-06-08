@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-06-02
+//! - Updated: 2024-06-08
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -32,6 +32,8 @@ pub struct ParseOptionConfig<'a> {
 }
 
 impl ParseOptionConfig<'_> {
+  // TODO: rename parse() to parse_next(); then parse() -> Vec<ParseOutput>;
+
   //----------------------------------------------------------------------------
   /// Returns the next location of the option in the command-line arguments
   //----------------------------------------------------------------------------

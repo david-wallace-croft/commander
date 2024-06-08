@@ -15,9 +15,8 @@ use crate::parse::value_usage::ValueUsage;
 
 use super::*;
 
-//-----------------------------------------------------------------------------
-/// Unit test for make_print_option_prefix()
-//-----------------------------------------------------------------------------
+// TODO: Unit tests for the other methods
+
 #[test]
 fn test_make_print_option_prefix() {
   const ARG_OPTION_TEST: OptionConfig = OptionConfig {

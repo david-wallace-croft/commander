@@ -5,16 +5,16 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-06-07
+//! - Updated: 2024-06-08
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
-use commander::HelpInfo;
 use commander::parse::parse_option_config::ParseOptionConfig;
 use commander::parse::value_usage::ValueUsage;
 use commander::print::app_info::AppInfo;
+use commander::print::help_info::HelpInfo;
 use commander::print::option_config::OptionConfig;
 
 pub const APP_INFO_ABOUT: &str = "Command-line arguments parser example";

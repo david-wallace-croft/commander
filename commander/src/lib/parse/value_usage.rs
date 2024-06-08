@@ -1,9 +1,11 @@
 //==============================================================================
+//! Module for ValueUsage
+//!
 //! # Metadata
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-05-27
+//! - Updated: 2024-06-08
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/

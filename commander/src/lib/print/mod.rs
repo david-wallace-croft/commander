@@ -1,35 +1,21 @@
 //==============================================================================
-//! Print module: functions to print application and option descriptions
+//! Functions to print application and option descriptions
 //!
 //! # Metadata
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-29
-//! - Updated: 2024-06-07
+//! - Updated: 2024-06-08
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
-use crate::*;
+use crate::print::option_config::OptionConfig;
 
 pub mod app_info;
+pub mod help_info;
 pub mod option_config;
-
-//------------------------------------------------------------------------------
-/// Prints the application and options descriptions
-//------------------------------------------------------------------------------
-pub fn print_help(help_info: &HelpInfo) {
-  println!();
-
-  help_info.app_info.print_app_info();
-
-  println!();
-
-  println!("OPTIONS:");
-
-  print_options(help_info.arg_options);
-}
 
 //------------------------------------------------------------------------------
 /// Prints a single option description

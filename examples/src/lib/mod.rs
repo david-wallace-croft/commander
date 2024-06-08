@@ -5,21 +5,21 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-05-27
+//! - Updated: 2024-06-08
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
+use std::io::{Error, stdin, Stdin, stdout, Write};
+
+use commander::parse::commander_parse_error::CommanderParseError;
+use commander::print::print_unrecognized_options;
+use constants::*;
+
 pub mod constants;
 #[cfg(test)]
 mod test;
-
-use commander::parse::commander_parse_error::CommanderParseError;
-use commander::print::print_help;
-use commander::print::print_unrecognized_options;
-use constants::*;
-use std::io::{stdin, stdout, Error, Stdin, Write};
 
 #[derive(Debug)]
 pub struct OptionValues {
@@ -67,7 +67,7 @@ pub fn main(option_values: OptionValues) {
   // println!("{:#?}", option_values);
 
   if option_values.help_wanted {
-    print_help(&HELP_INFO);
+    HELP_INFO.print_help();
 
     return;
   }

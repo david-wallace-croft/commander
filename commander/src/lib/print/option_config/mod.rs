@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-05
-//! - Updated: 2024-06-08
+//! - Updated: 2024-06-09
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -29,13 +29,6 @@ pub struct OptionConfig<'a> {
 }
 
 impl OptionConfig<'_> {
-  pub fn parse(
-    &self,
-    parse_input: &ParseInput,
-  ) -> ParseOutput {
-    self.parse_option_config.parse(parse_input)
-  }
-
   //------------------------------------------------------------------------------
   /// String prefix for a command-line option shown for -\-help
   //------------------------------------------------------------------------------
@@ -113,6 +106,13 @@ impl OptionConfig<'_> {
     }
 
     print_string
+  }
+
+  pub fn parse(
+    &self,
+    parse_input: &ParseInput,
+  ) -> ParseOutput {
+    self.parse_option_config.parse(parse_input)
   }
 
   //----------------------------------------------------------------------------

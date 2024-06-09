@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-06-06
+//! - Updated: 2024-06-09
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -15,20 +15,75 @@ use crate::parse::value_usage::ValueUsage;
 
 use super::*;
 
-// TODO: Unit tests for the other methods
+const TEST_OPTION_CONFIG_0: OptionConfig = OptionConfig {
+  brief_description: Some("TEST_BRIEF_DESCRIPTION_0"),
+  parse_option_config: ParseOptionConfig {
+    name_long: Some("TEST_NAME_LONG_0"),
+    name_short: Some('0'),
+    value_usage: ValueUsage::Required,
+  },
+};
+
+const TEST_OPTION_CONFIG_1: OptionConfig = OptionConfig {
+  brief_description: Some("TEST_BRIEF_DESCRIPTION_1"),
+  parse_option_config: ParseOptionConfig {
+    name_long: Some("TEST_NAME_LONG_ABC_1"),
+    name_short: Some('1'),
+    value_usage: ValueUsage::Verboten,
+  },
+};
 
 #[test]
-fn test_make_print_option_prefix() {
-  const ARG_OPTION_TEST: OptionConfig = OptionConfig {
-    brief_description: Some("ARG_HELP_BRIEF_DESCRIPTION"),
-    parse_option_config: ParseOptionConfig {
-      name_long: Some("ARG_HELP_NAME_LONG"),
-      name_short: Some('T'),
-      value_usage: ValueUsage::Verboten,
-    },
+fn test_make_print_option_prefix_0() {
+  const EXPECTED: &str = "  -T, --TEST_NAME_LONG";
+
+  let actual: String = TEST_OPTION_CONFIG_0.make_print_option_prefix();
+
+  assert_eq!(EXPECTED, actual);
+}
+
+#[test]
+fn test_make_print_string_0() {
+  const EXPECTED: &str = "  -T, --TEST_NAME_LONG  TEST_BRIEF_DESCRIPTION";
+
+  let prefix_len: usize = TEST_OPTION_CONFIG_0.make_print_option_prefix().len();
+
+  let actual: String = TEST_OPTION_CONFIG_0.make_print_string(prefix_len);
+
+  assert_eq!(EXPECTED, actual);
+}
+
+#[test]
+fn test_make_print_string_for_slice_0() {
+  const EXPECTED: &str =
+    "  -0, --TEST_NAME_LONG_0      TEST_BRIEF_DESCRIPTION_0\n  \
+       -1, --TEST_NAME_LONG_ABC_1  TEST_BRIEF_DESCRIPTION_1\n";
+
+  let actual: String = OptionConfig::make_print_string_for_slice(&[
+    TEST_OPTION_CONFIG_0,
+    TEST_OPTION_CONFIG_1,
+  ]);
+
+  assert_eq!(EXPECTED, actual);
+}
+
+#[test]
+fn test_parse_0() {
+  let test_parse_input = ParseInput {
+    args: vec![
+      "-0=A".to_string(),
+      "-0=B".to_string(),
+    ],
+    skip: 1,
   };
 
-  let actual_prefix: String = ARG_OPTION_TEST.make_print_option_prefix();
+  let expected = ParseOutput {
+    error: None,
+    index: Some(1),
+    value: Some("B".to_string()),
+  };
 
-  assert_eq!("  -T, --ARG_HELP_NAME_LONG", actual_prefix);
+  let actual: ParseOutput = TEST_OPTION_CONFIG_0.parse(&test_parse_input);
+
+  assert_eq!(expected, actual);
 }

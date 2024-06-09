@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-08
-//! - Updated: 2024-06-08
+//! - Updated: 2024-06-09
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -51,20 +51,17 @@ fn test_make_print_string_0() {
     ],
   };
 
-  let expected: String = String::from(
-    r#"
-TEST_NAME_0
-TEST_COPYRIGHT_0
-TEST_CONTACT_0
-TEST_ABOUT_0
-
-OPTIONS:
-  -0, --TEST_NAME_LONG_0  TEST_BRIEF_DESCRIPTION_0
-  -1, --TEST_NAME_LONG_1  TEST_BRIEF_DESCRIPTION_1
-"#,
-  );
+  const EXPECTED: &str = "\n\
+    TEST_NAME_0\n\
+    TEST_COPYRIGHT_0\n\
+    TEST_CONTACT_0\n\
+    TEST_ABOUT_0\n\
+    \n\
+    OPTIONS:\n  \
+      -0, --TEST_NAME_LONG_0  TEST_BRIEF_DESCRIPTION_0\n  \
+      -1, --TEST_NAME_LONG_1  TEST_BRIEF_DESCRIPTION_1\n";
 
   let actual: String = test_help_info.make_print_string();
 
-  assert_eq!(expected, actual);
+  assert_eq!(EXPECTED, actual);
 }

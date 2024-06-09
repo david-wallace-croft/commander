@@ -35,7 +35,7 @@ const TEST_OPTION_CONFIG_1: OptionConfig = OptionConfig {
 
 #[test]
 fn test_make_print_option_prefix_0() {
-  const EXPECTED: &str = "  -T, --TEST_NAME_LONG";
+  const EXPECTED: &str = "  -0, --TEST_NAME_LONG_0";
 
   let actual: String = TEST_OPTION_CONFIG_0.make_print_option_prefix();
 
@@ -44,7 +44,7 @@ fn test_make_print_option_prefix_0() {
 
 #[test]
 fn test_make_print_string_0() {
-  const EXPECTED: &str = "  -T, --TEST_NAME_LONG  TEST_BRIEF_DESCRIPTION";
+  const EXPECTED: &str = "  -0, --TEST_NAME_LONG_0  TEST_BRIEF_DESCRIPTION_0";
 
   let prefix_len: usize = TEST_OPTION_CONFIG_0.make_print_option_prefix().len();
 

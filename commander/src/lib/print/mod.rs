@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-29
-//! - Updated: 2024-06-08
+//! - Updated: 2024-06-10
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -18,7 +18,7 @@ pub mod option_config;
 //------------------------------------------------------------------------------
 /// Prints a message about an unrecognized option.
 //------------------------------------------------------------------------------
-pub fn print_unrecognized_option(unrecognized_option: &String) {
+pub fn print_unrecognized_option(unrecognized_option: &str) {
   // TODO: Output to standard error?
   println!("Unrecognized option: \"{}\"", unrecognized_option);
 }

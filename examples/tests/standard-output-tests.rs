@@ -5,17 +5,18 @@
 //! - Author: [`David Wallace Croft`]
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Created: 2024-04-06
-//! - Updated: 2024-05-16
+//! - Updated: 2024-06-10
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
+use ::std::process::Command;
+
 use ::assert_cmd::assert::Assert;
 use ::assert_cmd::cargo::CargoError;
 use ::assert_cmd::prelude::*;
 use ::predicates::prelude::*;
-use ::std::process::Command;
 
 fn make_command() -> Command {
   let result: Result<Command, CargoError> =
@@ -38,7 +39,7 @@ fn test_output_no_args() {
 
 #[test]
 fn test_output_args_help() {
-  make_command().args(&["--help"]).assert().success().stdout(
+  make_command().args(["--help"]).assert().success().stdout(
     r#"
 CroftSoft Commander Example
 Copyright © 2022-2024 CroftSoft Inc
@@ -56,7 +57,7 @@ OPTIONS:
 #[test]
 fn test_output_args_name_long() {
   make_command()
-    .args(&["--name=David"])
+    .args(["--name=David"])
     .assert()
     .success()
     .stdout("\nWhat is your name? [David]: Hello, David!\n");
@@ -65,7 +66,7 @@ fn test_output_args_name_long() {
 #[test]
 fn test_output_args_name_short() {
   make_command()
-    .args(&["-n=David"])
+    .args(["-n=David"])
     .assert()
     .success()
     .stdout("\nWhat is your name? [David]: Hello, David!\n");
@@ -74,7 +75,7 @@ fn test_output_args_name_short() {
 #[test]
 fn test_output_args_non_interactive_equals() {
   make_command()
-    .args(&["-i=false"])
+    .args(["-i=false"])
     .assert()
     .success()
     .stdout("Hello, World!\n");
@@ -83,7 +84,7 @@ fn test_output_args_non_interactive_equals() {
 #[test]
 fn test_output_args_non_interactive_long_equals() {
   make_command()
-    .args(&["--interactive=false"])
+    .args(["--interactive=false"])
     .assert()
     .success()
     .stdout("Hello, World!\n");
@@ -92,7 +93,7 @@ fn test_output_args_non_interactive_long_equals() {
 #[test]
 fn test_output_args_non_interactive_name() {
   make_command()
-    .args(&[
+    .args([
       "-i=false", "-n=David",
     ])
     .assert()
@@ -103,7 +104,7 @@ fn test_output_args_non_interactive_name() {
 #[test]
 fn test_output_args_non_interactive_name_predicate() {
   make_command()
-    .args(&[
+    .args([
       "--interactive=false",
       "--name=David",
     ])
@@ -115,7 +116,7 @@ fn test_output_args_non_interactive_name_predicate() {
 #[test]
 fn test_output_args_unrecognized_long() {
   make_command()
-    .args(&["--unrecognized"])
+    .args(["--unrecognized"])
     .assert()
     // TODO: Should this be failure?
     .success()
@@ -126,7 +127,7 @@ fn test_output_args_unrecognized_long() {
 #[test]
 fn test_output_args_unrecognized_short() {
   make_command()
-    .args(&["-u"])
+    .args(["-u"])
     .assert()
     // TODO: Should this be failure?
     .success()
@@ -137,7 +138,7 @@ fn test_output_args_unrecognized_short() {
 #[test]
 fn test_output_args_unrecognized_option_value() {
   make_command()
-    .args(&["--unrecognized=true"])
+    .args(["--unrecognized=true"])
     .assert()
     // TODO: Should this be failure?
     .success()

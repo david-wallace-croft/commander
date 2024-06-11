@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-06-08
+//! - Updated: 2024-06-11
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -18,6 +18,7 @@ use commander::print::print_unrecognized_options;
 use constants::*;
 
 pub mod constants;
+
 #[cfg(test)]
 mod test;
 
@@ -62,10 +63,6 @@ pub fn ask(
 }
 
 pub fn main(option_values: OptionValues) {
-  // println!("{:?}", option_values);
-
-  // println!("{:#?}", option_values);
-
   if option_values.help_wanted {
     HELP_INFO.print();
 

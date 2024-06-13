@@ -108,7 +108,7 @@ impl OptionConfig<'_> {
     print_string
   }
 
-  pub fn parse(
+  pub fn parse_next(
     &self,
     parse_input: &ParseInput,
   ) -> ParseOutput {

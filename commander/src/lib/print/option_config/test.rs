@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-06-09
+//! - Updated: 2024-06-13
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -83,7 +83,7 @@ fn test_parse_0() {
     value: Some("B".to_string()),
   };
 
-  let actual: ParseOutput = TEST_OPTION_CONFIG_0.parse(&test_parse_input);
+  let actual: ParseOutput = TEST_OPTION_CONFIG_0.parse_next(&test_parse_input);
 
   assert_eq!(expected, actual);
 }

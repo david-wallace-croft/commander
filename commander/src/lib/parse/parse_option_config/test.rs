@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-02
-//! - Updated: 2024-06-04
+//! - Updated: 2024-06-13
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -110,7 +110,7 @@ fn test_parse_optional_0() {
   };
 
   let actual: ParseOutput =
-    PARSE_OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
+    PARSE_OPTION_CONFIG_OPTIONAL.parse_next(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -126,7 +126,7 @@ fn test_parse_optional_1() {
   };
 
   let actual: ParseOutput =
-    PARSE_OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
+    PARSE_OPTION_CONFIG_OPTIONAL.parse_next(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -142,7 +142,7 @@ fn test_parse_optional_2() {
   };
 
   let actual: ParseOutput =
-    PARSE_OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
+    PARSE_OPTION_CONFIG_OPTIONAL.parse_next(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -158,7 +158,7 @@ fn test_parse_optional_3() {
   };
 
   let actual: ParseOutput =
-    PARSE_OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
+    PARSE_OPTION_CONFIG_OPTIONAL.parse_next(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -179,7 +179,7 @@ fn test_parse_optional_4() {
   };
 
   let actual: ParseOutput =
-    PARSE_OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
+    PARSE_OPTION_CONFIG_OPTIONAL.parse_next(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -195,7 +195,7 @@ fn test_parse_optional_5() {
   };
 
   let actual: ParseOutput =
-    PARSE_OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
+    PARSE_OPTION_CONFIG_OPTIONAL.parse_next(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -211,7 +211,7 @@ fn test_parse_optional_6() {
   };
 
   let actual: ParseOutput =
-    PARSE_OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
+    PARSE_OPTION_CONFIG_OPTIONAL.parse_next(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -227,7 +227,7 @@ fn test_parse_optional_7() {
   };
 
   let actual: ParseOutput =
-    PARSE_OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
+    PARSE_OPTION_CONFIG_OPTIONAL.parse_next(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -243,7 +243,7 @@ fn test_parse_optional_8() {
   };
 
   let actual: ParseOutput =
-    PARSE_OPTION_CONFIG_NAMELESS.parse(test_parse_input);
+    PARSE_OPTION_CONFIG_NAMELESS.parse_next(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -255,7 +255,7 @@ fn test_parse_optional_bool_0() {
   let expected: Result<bool, CommanderParseError> = Ok(false);
 
   let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_OPTIONAL
-    .parse(test_parse_input)
+    .parse_next(test_parse_input)
     .to_bool_result(true);
 
   assert_eq!(expected, actual);
@@ -270,7 +270,7 @@ fn test_parse_optional_bool_1() {
   let expected: Result<bool, CommanderParseError> = Ok(true);
 
   let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_OPTIONAL
-    .parse(test_parse_input)
+    .parse_next(test_parse_input)
     .to_bool_result(false);
 
   assert_eq!(expected, actual);
@@ -284,7 +284,7 @@ fn test_parse_optional_bool_2() {
     Err(CommanderParseError::InvalidValue);
 
   let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_OPTIONAL
-    .parse(test_parse_input)
+    .parse_next(test_parse_input)
     .to_bool_result(true);
 
   assert_eq!(expected, actual);
@@ -298,7 +298,7 @@ fn test_parse_optional_bool_3() {
     Err(CommanderParseError::InvalidValue);
 
   let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_OPTIONAL
-    .parse(test_parse_input)
+    .parse_next(test_parse_input)
     .to_bool_result(true);
 
   assert_eq!(expected, actual);
@@ -317,7 +317,7 @@ fn test_parse_required_0() {
   };
 
   let actual: ParseOutput =
-    PARSE_OPTION_CONFIG_REQUIRED.parse(test_parse_input);
+    PARSE_OPTION_CONFIG_REQUIRED.parse_next(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -333,7 +333,7 @@ fn test_parse_required_1() {
   };
 
   let actual: ParseOutput =
-    PARSE_OPTION_CONFIG_REQUIRED.parse(test_parse_input);
+    PARSE_OPTION_CONFIG_REQUIRED.parse_next(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -345,7 +345,7 @@ fn test_parse_required_bool_0() {
   let expected: Result<bool, CommanderParseError> = Ok(false);
 
   let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_REQUIRED
-    .parse(test_parse_input)
+    .parse_next(test_parse_input)
     .to_bool_result(true);
 
   assert_eq!(expected, actual);
@@ -358,7 +358,7 @@ fn test_parse_required_bool_1() {
   let expected: Result<bool, CommanderParseError> = Ok(true);
 
   let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_REQUIRED
-    .parse(test_parse_input)
+    .parse_next(test_parse_input)
     .to_bool_result(false);
 
   assert_eq!(expected, actual);
@@ -372,7 +372,7 @@ fn test_parse_required_bool_2() {
     Err(CommanderParseError::InvalidValue);
 
   let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_REQUIRED
-    .parse(test_parse_input)
+    .parse_next(test_parse_input)
     .to_bool_result(true);
 
   assert_eq!(expected, actual);
@@ -395,7 +395,7 @@ fn test_parse_required_multiple_0() {
   };
 
   let actual: ParseOutput =
-    PARSE_OPTION_CONFIG_REQUIRED.parse(test_parse_input);
+    PARSE_OPTION_CONFIG_REQUIRED.parse_next(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -417,7 +417,7 @@ fn test_parse_required_multiple_1() {
   };
 
   let actual: ParseOutput =
-    PARSE_OPTION_CONFIG_REQUIRED.parse(test_parse_input);
+    PARSE_OPTION_CONFIG_REQUIRED.parse_next(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -439,7 +439,7 @@ fn test_parse_required_multiple_2() {
   };
 
   let actual: ParseOutput =
-    PARSE_OPTION_CONFIG_REQUIRED.parse(test_parse_input);
+    PARSE_OPTION_CONFIG_REQUIRED.parse_next(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -495,7 +495,7 @@ fn test_parse_verboten_0() {
   };
 
   let actual: ParseOutput =
-    PARSE_OPTION_CONFIG_VERBOTEN.parse(test_parse_input);
+    PARSE_OPTION_CONFIG_VERBOTEN.parse_next(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -513,7 +513,7 @@ fn test_parse_verboten_1() {
   };
 
   let actual: ParseOutput =
-    PARSE_OPTION_CONFIG_VERBOTEN.parse(test_parse_input);
+    PARSE_OPTION_CONFIG_VERBOTEN.parse_next(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -529,7 +529,7 @@ fn test_parse_verboten_2() {
   };
 
   let actual: ParseOutput =
-    PARSE_OPTION_CONFIG_VERBOTEN.parse(test_parse_input);
+    PARSE_OPTION_CONFIG_VERBOTEN.parse_next(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -545,7 +545,7 @@ fn test_parse_verboten_3() {
   };
 
   let actual: ParseOutput =
-    PARSE_OPTION_CONFIG_VERBOTEN.parse(test_parse_input);
+    PARSE_OPTION_CONFIG_VERBOTEN.parse_next(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -563,7 +563,7 @@ fn test_parse_verboten_4() {
   };
 
   let actual: ParseOutput =
-    PARSE_OPTION_CONFIG_VERBOTEN.parse(test_parse_input);
+    PARSE_OPTION_CONFIG_VERBOTEN.parse_next(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -579,7 +579,7 @@ fn test_parse_verboten_5() {
   };
 
   let actual: ParseOutput =
-    PARSE_OPTION_CONFIG_VERBOTEN.parse(test_parse_input);
+    PARSE_OPTION_CONFIG_VERBOTEN.parse_next(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -595,7 +595,7 @@ fn test_parse_verboten_6() {
   };
 
   let actual: ParseOutput =
-    PARSE_OPTION_CONFIG_VERBOTEN.parse(test_parse_input);
+    PARSE_OPTION_CONFIG_VERBOTEN.parse_next(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -611,7 +611,7 @@ fn test_parse_verboten_7() {
   };
 
   let actual: ParseOutput =
-    PARSE_OPTION_CONFIG_VERBOTEN.parse(test_parse_input);
+    PARSE_OPTION_CONFIG_VERBOTEN.parse_next(test_parse_input);
 
   assert_eq!(expected, actual);
 }
@@ -623,7 +623,7 @@ fn test_parse_verboten_bool_0() {
   let expected: Result<bool, CommanderParseError> = Ok(true);
 
   let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_VERBOTEN
-    .parse(test_parse_input)
+    .parse_next(test_parse_input)
     .to_bool_result(true);
 
   assert_eq!(expected, actual);
@@ -636,7 +636,7 @@ fn test_parse_verboten_bool_1() {
   let expected: Result<bool, CommanderParseError> = Ok(false);
 
   let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_VERBOTEN
-    .parse(test_parse_input)
+    .parse_next(test_parse_input)
     .to_bool_result(false);
 
   assert_eq!(expected, actual);
@@ -649,7 +649,7 @@ fn test_parse_verboten_bool_2() {
   let expected: Result<bool, CommanderParseError> = Ok(true);
 
   let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_VERBOTEN
-    .parse(test_parse_input)
+    .parse_next(test_parse_input)
     .to_bool_result(false);
 
   assert_eq!(expected, actual);
@@ -662,7 +662,7 @@ fn test_parse_verboten_bool_3() {
   let expected: Result<bool, CommanderParseError> = Ok(false);
 
   let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_VERBOTEN
-    .parse(test_parse_input)
+    .parse_next(test_parse_input)
     .to_bool_result(false);
 
   assert_eq!(expected, actual);
@@ -675,7 +675,7 @@ fn test_parse_verboten_bool_4() {
   let expected: Result<bool, CommanderParseError> = Ok(false);
 
   let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_VERBOTEN
-    .parse(test_parse_input)
+    .parse_next(test_parse_input)
     .to_bool_result(false);
 
   // TODO: Make this work; should be true
@@ -690,7 +690,7 @@ fn test_parse_verboten_bool_5() {
     Err(CommanderParseError::VerbotenValuePresent);
 
   let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_VERBOTEN
-    .parse(test_parse_input)
+    .parse_next(test_parse_input)
     .to_bool_result(false);
 
   assert_eq!(expected, actual);
@@ -704,7 +704,7 @@ fn test_parse_verboten_bool_6() {
     Err(CommanderParseError::VerbotenValuePresent);
 
   let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_VERBOTEN
-    .parse(test_parse_input)
+    .parse_next(test_parse_input)
     .to_bool_result(false);
 
   assert_eq!(expected, actual);

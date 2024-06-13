@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-06-08
+//! - Updated: 2024-06-13
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -37,7 +37,7 @@ impl ParseOptionConfig<'_> {
   //----------------------------------------------------------------------------
   /// Returns the next location of the option in the command-line arguments
   //----------------------------------------------------------------------------
-  pub fn parse(
+  pub fn parse_next(
     &self,
     parse_input: &ParseInput,
   ) -> ParseOutput {

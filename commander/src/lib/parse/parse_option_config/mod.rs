@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-06-13
+//! - Updated: 2024-06-14
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -32,7 +32,34 @@ pub struct ParseOptionConfig<'a> {
 }
 
 impl ParseOptionConfig<'_> {
-  // TODO: rename parse() to parse_next(); then parse() -> Vec<ParseOutput>;
+  // TODO: unit tests
+  pub fn parse(
+    &self,
+    parse_input: &ParseInput,
+  ) -> Vec<ParseOutput> {
+    let mut parse_output_vec = Vec::<ParseOutput>::new();
+
+    let mut parse_input_next: ParseInput = parse_input.clone();
+
+    loop {
+      let parse_output = self.parse_next(&parse_input_next);
+
+      if parse_output.index.is_none() {
+        return parse_output_vec;
+      }
+
+      parse_input_next = ParseInput {
+        args: parse_input.args.clone(),
+        skip: parse_output.index.unwrap() + 1,
+      };
+
+      parse_output_vec.push(parse_output);
+    }
+  }
+
+  // TODO: parse_first()
+
+  // TODO: parse_last()
 
   //----------------------------------------------------------------------------
   /// Returns the next location of the option in the command-line arguments

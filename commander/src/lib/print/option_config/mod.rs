@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-05
-//! - Updated: 2024-06-13
+//! - Updated: 2024-06-14
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -106,6 +106,14 @@ impl OptionConfig<'_> {
     }
 
     print_string
+  }
+
+  // TODO: unit tests
+  pub fn parse(
+    &self,
+    parse_input: &ParseInput,
+  ) -> Vec<ParseOutput> {
+    self.parse_option_config.parse(parse_input)
   }
 
   pub fn parse_next(

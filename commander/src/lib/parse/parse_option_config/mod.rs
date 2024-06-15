@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-06-14
+//! - Updated: 2024-06-15
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -57,9 +57,25 @@ impl ParseOptionConfig<'_> {
     }
   }
 
-  // TODO: parse_first()
+  // TODO: unit tests
+  pub fn parse_last(
+    &self,
+    parse_input: &ParseInput,
+  ) -> ParseOutput {
+    let mut parse_output_vec: Vec<ParseOutput> = self.parse(parse_input);
 
-  // TODO: parse_last()
+    let parse_output_option: Option<ParseOutput> = parse_output_vec.pop();
+
+    if let Some(parse_output) = parse_output_option {
+      return parse_output;
+    }
+
+    ParseOutput {
+      error: None,
+      index: None,
+      value: None,
+    }
+  }
 
   //----------------------------------------------------------------------------
   /// Returns the next location of the option in the command-line arguments

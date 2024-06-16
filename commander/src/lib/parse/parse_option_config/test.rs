@@ -98,6 +98,62 @@ fn test_make_hyphenated_option_name_3() {
 //------------------------------------------------------------------------------
 
 #[test]
+fn test_parse_0() {
+  let test_parse_input = &ParseInput::from_slice(&[
+    "-W", "-T", "-X", "-T=A", "-Y", "-T=B", "-Z",
+  ]);
+
+  let expected: Vec<ParseOutput> = vec![
+    ParseOutput {
+      error: None,
+      index: Some(1),
+      value: None,
+    },
+    ParseOutput {
+      error: None,
+      index: Some(3),
+      value: Some("A".to_string()),
+    },
+    ParseOutput {
+      error: None,
+      index: Some(5),
+      value: Some("B".to_string()),
+    },
+  ];
+
+  let actual: Vec<ParseOutput> =
+    PARSE_OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
+
+  assert_eq!(expected, actual);
+}
+
+//------------------------------------------------------------------------------
+// parse_last() unit tests
+//------------------------------------------------------------------------------
+
+#[test]
+fn test_parse_last_0() {
+  let test_parse_input = &ParseInput::from_slice(&[
+    "-W", "-T", "-X", "-T=A", "-Y", "-T=B", "-Z",
+  ]);
+
+  let expected = ParseOutput {
+    error: None,
+    index: Some(5),
+    value: Some("B".to_string()),
+  };
+
+  let actual: ParseOutput =
+    PARSE_OPTION_CONFIG_OPTIONAL.parse_last(test_parse_input);
+
+  assert_eq!(expected, actual);
+}
+
+//------------------------------------------------------------------------------
+// parse_next() unit tests
+//------------------------------------------------------------------------------
+
+#[test]
 fn test_parse_next_optional_0() {
   let test_parse_input = &ParseInput::from_slice(&[
     "-X", "-T", "value",

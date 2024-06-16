@@ -32,7 +32,6 @@ pub struct ParseOptionConfig<'a> {
 }
 
 impl ParseOptionConfig<'_> {
-  // TODO: unit tests
   pub fn parse(
     &self,
     parse_input: &ParseInput,
@@ -57,7 +56,6 @@ impl ParseOptionConfig<'_> {
     }
   }
 
-  // TODO: unit tests
   pub fn parse_last(
     &self,
     parse_input: &ParseInput,

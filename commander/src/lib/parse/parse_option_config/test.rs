@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-02
-//! - Updated: 2024-06-14
+//! - Updated: 2024-06-17
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -127,6 +127,128 @@ fn test_parse_0() {
   assert_eq!(expected, actual);
 }
 
+#[test]
+fn test_parse_1() {
+  let test_parse_input = &ParseInput::from_slice(&[
+    "-W", "-X", "-Y", "-Z",
+  ]);
+
+  let expected: Vec<ParseOutput> = vec![];
+
+  let actual: Vec<ParseOutput> =
+    PARSE_OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
+
+  assert_eq!(expected, actual);
+}
+
+//------------------------------------------------------------------------------
+// parse_hyphenated_option_name() unit tests
+//------------------------------------------------------------------------------
+
+#[test]
+fn test_parse_hyphenated_option_name_0() {
+  let expected: ParseOutput = ParseOutput::default();
+
+  let actual: ParseOutput = ParseOptionConfig::parse_hyphenated_option_name(
+    "--UNRECOGNIZED",
+    0,
+    "--TEST",
+    ValueUsage::Optional,
+  );
+
+  assert_eq!(expected, actual);
+}
+
+#[test]
+fn test_parse_hyphenated_option_name_1() {
+  let expected: ParseOutput = ParseOutput {
+    error: None,
+    index: Some(0),
+    value: None,
+  };
+
+  let actual: ParseOutput = ParseOptionConfig::parse_hyphenated_option_name(
+    "--TEST",
+    0,
+    "--TEST",
+    ValueUsage::Optional,
+  );
+
+  assert_eq!(expected, actual);
+}
+
+#[test]
+fn test_parse_hyphenated_option_name_2() {
+  let expected: ParseOutput = ParseOutput {
+    error: Some(CommanderParseError::ValueMissingAfterEquals),
+    index: Some(0),
+    value: None,
+  };
+
+  let actual: ParseOutput = ParseOptionConfig::parse_hyphenated_option_name(
+    "--TEST=",
+    0,
+    "--TEST",
+    ValueUsage::Optional,
+  );
+
+  assert_eq!(expected, actual);
+}
+
+#[test]
+fn test_parse_hyphenated_option_name_3() {
+  let expected: ParseOutput = ParseOutput {
+    error: None,
+    index: Some(0),
+    value: Some("VALUE".to_string()),
+  };
+
+  let actual: ParseOutput = ParseOptionConfig::parse_hyphenated_option_name(
+    "--TEST=VALUE",
+    0,
+    "--TEST",
+    ValueUsage::Optional,
+  );
+
+  assert_eq!(expected, actual);
+}
+
+#[test]
+fn test_parse_hyphenated_option_name_4() {
+  let expected: ParseOutput = ParseOutput {
+    error: Some(CommanderParseError::VerbotenValuePresent),
+    index: Some(0),
+    value: Some("VALUE".to_string()),
+  };
+
+  let actual: ParseOutput = ParseOptionConfig::parse_hyphenated_option_name(
+    "--TEST=VALUE",
+    0,
+    "--TEST",
+    ValueUsage::Verboten,
+  );
+
+  assert_eq!(expected, actual);
+}
+
+#[test]
+fn test_parse_hyphenated_option_name_5() {
+  let expected: ParseOutput = ParseOutput {
+    error: Some(CommanderParseError::RequiredValueMissing),
+    index: Some(0),
+    value: None,
+  };
+
+  let actual: ParseOutput = ParseOptionConfig::parse_hyphenated_option_name(
+    "--TEST",
+    0,
+    "--TEST",
+    ValueUsage::Required,
+  );
+
+  assert_eq!(expected, actual);
+}
+
 //------------------------------------------------------------------------------
 // parse_last() unit tests
 //------------------------------------------------------------------------------
@@ -141,6 +263,24 @@ fn test_parse_last_0() {
     error: None,
     index: Some(5),
     value: Some("B".to_string()),
+  };
+
+  let actual: ParseOutput =
+    PARSE_OPTION_CONFIG_OPTIONAL.parse_last(test_parse_input);
+
+  assert_eq!(expected, actual);
+}
+
+#[test]
+fn test_parse_last_1() {
+  let test_parse_input = &ParseInput::from_slice(&[
+    "-W", "-X", "-Y", "-Z",
+  ]);
+
+  let expected = ParseOutput {
+    error: None,
+    index: None,
+    value: None,
   };
 
   let actual: ParseOutput =
@@ -572,114 +712,6 @@ fn test_parse_next_verboten_7() {
 
   let actual: ParseOutput =
     PARSE_OPTION_CONFIG_VERBOTEN.parse_next(test_parse_input);
-
-  assert_eq!(expected, actual);
-}
-
-//------------------------------------------------------------------------------
-// parse_hyphenated_option_name() unit tests
-//------------------------------------------------------------------------------
-
-#[test]
-fn test_parse_hyphenated_option_name_0() {
-  let expected: ParseOutput = ParseOutput::default();
-
-  let actual: ParseOutput = ParseOptionConfig::parse_hyphenated_option_name(
-    "--UNRECOGNIZED",
-    0,
-    "--TEST",
-    ValueUsage::Optional,
-  );
-
-  assert_eq!(expected, actual);
-}
-
-#[test]
-fn test_parse_hyphenated_option_name_1() {
-  let expected: ParseOutput = ParseOutput {
-    error: None,
-    index: Some(0),
-    value: None,
-  };
-
-  let actual: ParseOutput = ParseOptionConfig::parse_hyphenated_option_name(
-    "--TEST",
-    0,
-    "--TEST",
-    ValueUsage::Optional,
-  );
-
-  assert_eq!(expected, actual);
-}
-
-#[test]
-fn test_parse_hyphenated_option_name_2() {
-  let expected: ParseOutput = ParseOutput {
-    error: Some(CommanderParseError::ValueMissingAfterEquals),
-    index: Some(0),
-    value: None,
-  };
-
-  let actual: ParseOutput = ParseOptionConfig::parse_hyphenated_option_name(
-    "--TEST=",
-    0,
-    "--TEST",
-    ValueUsage::Optional,
-  );
-
-  assert_eq!(expected, actual);
-}
-
-#[test]
-fn test_parse_hyphenated_option_name_3() {
-  let expected: ParseOutput = ParseOutput {
-    error: None,
-    index: Some(0),
-    value: Some("VALUE".to_string()),
-  };
-
-  let actual: ParseOutput = ParseOptionConfig::parse_hyphenated_option_name(
-    "--TEST=VALUE",
-    0,
-    "--TEST",
-    ValueUsage::Optional,
-  );
-
-  assert_eq!(expected, actual);
-}
-
-#[test]
-fn test_parse_hyphenated_option_name_4() {
-  let expected: ParseOutput = ParseOutput {
-    error: Some(CommanderParseError::VerbotenValuePresent),
-    index: Some(0),
-    value: Some("VALUE".to_string()),
-  };
-
-  let actual: ParseOutput = ParseOptionConfig::parse_hyphenated_option_name(
-    "--TEST=VALUE",
-    0,
-    "--TEST",
-    ValueUsage::Verboten,
-  );
-
-  assert_eq!(expected, actual);
-}
-
-#[test]
-fn test_parse_hyphenated_option_name_5() {
-  let expected: ParseOutput = ParseOutput {
-    error: Some(CommanderParseError::RequiredValueMissing),
-    index: Some(0),
-    value: None,
-  };
-
-  let actual: ParseOutput = ParseOptionConfig::parse_hyphenated_option_name(
-    "--TEST",
-    0,
-    "--TEST",
-    ValueUsage::Required,
-  );
 
   assert_eq!(expected, actual);
 }

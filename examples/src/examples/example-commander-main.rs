@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-06-13
+//! - Updated: 2024-06-18
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -35,18 +35,18 @@ pub fn parse_option_values_using_commander() -> OptionValues {
   let parse_input = &ParseInput::default();
 
   let help_wanted_result: Result<bool, CommanderParseError> = OPTION_CONFIG_H
-    .parse_next(parse_input)
+    .parse_last(parse_input)
     .to_bool_result(false);
 
   // TODO: Show the user the parse error
   let help_wanted: bool = help_wanted_result.unwrap_or(false);
 
   let interactive: Result<bool, CommanderParseError> =
-    OPTION_CONFIG_I.parse_next(parse_input).to_bool_result(true);
+    OPTION_CONFIG_I.parse_last(parse_input).to_bool_result(true);
 
   // TODO: parse_option_type_string_with_default_value
 
-  let parse_output: ParseOutput = OPTION_CONFIG_N.parse_next(parse_input);
+  let parse_output: ParseOutput = OPTION_CONFIG_N.parse_last(parse_input);
 
   let name_option: Option<String> = parse_output.value;
 

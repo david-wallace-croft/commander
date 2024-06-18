@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-05
-//! - Updated: 2024-06-14
+//! - Updated: 2024-06-18
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -114,6 +114,13 @@ impl OptionConfig<'_> {
     parse_input: &ParseInput,
   ) -> Vec<ParseOutput> {
     self.parse_option_config.parse(parse_input)
+  }
+
+  pub fn parse_last(
+    &self,
+    parse_input: &ParseInput,
+  ) -> ParseOutput {
+    self.parse_option_config.parse_last(parse_input)
   }
 
   pub fn parse_next(

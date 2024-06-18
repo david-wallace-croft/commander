@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-06-13
+//! - Updated: 2024-06-18
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -69,6 +69,55 @@ fn test_make_print_string_for_slice_0() {
 
 #[test]
 fn test_parse_0() {
+  let test_parse_input = ParseInput {
+    args: vec![
+      "-0=A".to_string(),
+      "-0=B".to_string(),
+    ],
+    skip: 0,
+  };
+
+  let expected = vec![
+    ParseOutput {
+      error: None,
+      index: Some(0),
+      value: Some("A".to_string()),
+    },
+    ParseOutput {
+      error: None,
+      index: Some(1),
+      value: Some("B".to_string()),
+    },
+  ];
+
+  let actual: Vec<ParseOutput> = TEST_OPTION_CONFIG_0.parse(&test_parse_input);
+
+  assert_eq!(expected, actual);
+}
+
+#[test]
+fn test_parse_last_0() {
+  let test_parse_input = ParseInput {
+    args: vec![
+      "-0=A".to_string(),
+      "-0=B".to_string(),
+    ],
+    skip: 0,
+  };
+
+  let expected = ParseOutput {
+    error: None,
+    index: Some(1),
+    value: Some("B".to_string()),
+  };
+
+  let actual: ParseOutput = TEST_OPTION_CONFIG_0.parse_last(&test_parse_input);
+
+  assert_eq!(expected, actual);
+}
+
+#[test]
+fn test_parse_next_0() {
   let test_parse_input = ParseInput {
     args: vec![
       "-0=A".to_string(),

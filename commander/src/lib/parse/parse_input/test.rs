@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-31
-//! - Updated: 2024-05-31
+//! - Updated: 2024-06-19
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -13,13 +13,16 @@
 
 use std::string::ToString;
 
+use crate::parse::parse_option_name::ParseOptionName;
 use crate::parse::value_usage::ValueUsage;
 
 use super::*;
 
 const TEST_PARSE_OPTION_CONFIG_0: ParseOptionConfig = ParseOptionConfig {
-  name_long: Some("TEST"),
-  name_short: Some('T'),
+  name: ParseOptionName::Both {
+    name_long: "TEST",
+    name_short: 'T',
+  },
   value_usage: ValueUsage::Optional,
 };
 

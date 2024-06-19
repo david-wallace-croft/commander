@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-06-15
+//! - Updated: 2024-06-19
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -14,6 +14,7 @@
 use super::commander_parse_error::CommanderParseError;
 use super::hyphenation_type::HyphenationType;
 use super::parse_input::ParseInput;
+use super::parse_option_name::ParseOptionName;
 use super::parse_output::ParseOutput;
 use super::value_usage::ValueUsage;
 
@@ -25,9 +26,7 @@ mod test;
 //------------------------------------------------------------------------------
 #[derive(Clone, Copy, Debug)]
 pub struct ParseOptionConfig<'a> {
-  // TODO: Static compile check to make sure at least one of the names is Some
-  pub name_short: Option<char>,
-  pub name_long: Option<&'a str>,
+  pub name: ParseOptionName<'a>,
   pub value_usage: ValueUsage,
 }
 
@@ -82,14 +81,6 @@ impl ParseOptionConfig<'_> {
     &self,
     parse_input: &ParseInput,
   ) -> ParseOutput {
-    if self.name_long.is_none() && self.name_short.is_none() {
-      return ParseOutput {
-        error: Some(CommanderParseError::ParseConfigNameless),
-        index: None,
-        value: None,
-      };
-    }
-
     for (arg_index, arg) in
       parse_input.args.iter().enumerate().skip(parse_input.skip)
     {
@@ -131,7 +122,7 @@ impl ParseOptionConfig<'_> {
   ) -> Option<String> {
     match hyphenation_type {
       HyphenationType::Long => {
-        let arg_option_name_long = self.name_long?;
+        let arg_option_name_long: &str = self.name.get_name_long()?;
 
         let hyphenated_option_name: String =
           format!("--{}", arg_option_name_long);
@@ -139,7 +130,7 @@ impl ParseOptionConfig<'_> {
         Some(hyphenated_option_name)
       },
       HyphenationType::Short => {
-        let arg_option_name_short = self.name_short?;
+        let arg_option_name_short: char = self.name.get_name_short()?;
 
         let hyphenated_option_name: String =
           format!("-{}", arg_option_name_short);

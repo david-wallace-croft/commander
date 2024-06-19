@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-02
-//! - Updated: 2024-06-17
+//! - Updated: 2024-06-19
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -14,38 +14,36 @@
 use super::*;
 
 const TEST_PARSE_OPTION_CONFIG_LONG: ParseOptionConfig = ParseOptionConfig {
-  name_long: Some("TEST"),
-  name_short: None,
-  value_usage: ValueUsage::Optional,
-};
-
-const PARSE_OPTION_CONFIG_NAMELESS: ParseOptionConfig = ParseOptionConfig {
-  name_long: None,
-  name_short: None,
+  name: ParseOptionName::Long("TEST"),
   value_usage: ValueUsage::Optional,
 };
 
 const PARSE_OPTION_CONFIG_OPTIONAL: ParseOptionConfig = ParseOptionConfig {
-  name_long: Some("TEST"),
-  name_short: Some('T'),
+  name: ParseOptionName::Both {
+    name_long: "TEST",
+    name_short: 'T',
+  },
   value_usage: ValueUsage::Optional,
 };
 
 const PARSE_OPTION_CONFIG_REQUIRED: ParseOptionConfig = ParseOptionConfig {
-  name_long: Some("TEST"),
-  name_short: Some('T'),
+  name: ParseOptionName::Both {
+    name_long: "TEST",
+    name_short: 'T',
+  },
   value_usage: ValueUsage::Required,
 };
 
 const TEST_PARSE_OPTION_CONFIG_SHORT: ParseOptionConfig = ParseOptionConfig {
-  name_long: None,
-  name_short: Some('T'),
+  name: ParseOptionName::Short('T'),
   value_usage: ValueUsage::Optional,
 };
 
 const PARSE_OPTION_CONFIG_VERBOTEN: ParseOptionConfig = ParseOptionConfig {
-  name_long: Some("TEST"),
-  name_short: Some('T'),
+  name: ParseOptionName::Both {
+    name_long: "TEST",
+    name_short: 'T',
+  },
   value_usage: ValueUsage::Verboten,
 };
 
@@ -429,22 +427,6 @@ fn test_parse_next_optional_7() {
 }
 
 #[test]
-fn test_parse_next_optional_8() {
-  let test_parse_input = &ParseInput::from_slice(&["-T"]);
-
-  let expected: ParseOutput = ParseOutput {
-    error: Some(CommanderParseError::ParseConfigNameless),
-    index: None,
-    value: None,
-  };
-
-  let actual: ParseOutput =
-    PARSE_OPTION_CONFIG_NAMELESS.parse_next(test_parse_input);
-
-  assert_eq!(expected, actual);
-}
-
-#[test]
 fn test_parse_next_required_0() {
   let test_parse_input = &ParseInput::from_slice(&[
     "-T", "value",
@@ -547,8 +529,10 @@ fn test_parse_next_required_multiple_2() {
 #[test]
 fn test_parse_unrecognized_long() {
   const ARG_OPTION_TEST: ParseOptionConfig = ParseOptionConfig {
-    name_long: Some("TEST"),
-    name_short: Some('T'),
+    name: ParseOptionName::Both {
+      name_long: "TEST",
+      name_short: 'T',
+    },
     value_usage: ValueUsage::Optional,
   };
 
@@ -567,8 +551,10 @@ fn test_parse_unrecognized_long() {
 #[test]
 fn test_parse_unrecognized_short() {
   const ARG_OPTION_TEST: ParseOptionConfig = ParseOptionConfig {
-    name_long: Some("TEST"),
-    name_short: Some('T'),
+    name: ParseOptionName::Both {
+      name_long: "TEST",
+      name_short: 'T',
+    },
     value_usage: ValueUsage::Optional,
   };
 

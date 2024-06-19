@@ -5,12 +5,13 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-06-18
+//! - Updated: 2024-06-19
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
+use crate::parse::parse_option_name::ParseOptionName;
 use crate::parse::value_usage::ValueUsage;
 
 use super::*;
@@ -18,8 +19,10 @@ use super::*;
 const TEST_OPTION_CONFIG_0: OptionConfig = OptionConfig {
   brief_description: Some("TEST_BRIEF_DESCRIPTION_0"),
   parse_option_config: ParseOptionConfig {
-    name_long: Some("TEST_NAME_LONG_0"),
-    name_short: Some('0'),
+    name: ParseOptionName::Both {
+      name_long: "TEST_NAME_LONG_0",
+      name_short: '0',
+    },
     value_usage: ValueUsage::Required,
   },
 };
@@ -27,8 +30,10 @@ const TEST_OPTION_CONFIG_0: OptionConfig = OptionConfig {
 const TEST_OPTION_CONFIG_1: OptionConfig = OptionConfig {
   brief_description: Some("TEST_BRIEF_DESCRIPTION_1"),
   parse_option_config: ParseOptionConfig {
-    name_long: Some("TEST_NAME_LONG_ABC_1"),
-    name_short: Some('1'),
+    name: ParseOptionName::Both {
+      name_long: "TEST_NAME_LONG_ABC_1",
+      name_short: '1',
+    },
     value_usage: ValueUsage::Verboten,
   },
 };

@@ -3,7 +3,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-06-14
+//! - Updated: 2024-06-19
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -22,7 +22,6 @@ mod test;
 //------------------------------------------------------------------------------
 #[derive(Clone, Debug, PartialEq)]
 pub struct ParseInput {
-  // TODO: Can this be &Vec<String>?
   /// The command-line arguments
   pub args: Vec<String>,
   /// How many command-line arguments to skip before searching for an option
@@ -69,17 +68,21 @@ impl ParseInput {
 
       for recognized_option in recognized_options {
         let recognized_option_name: String = if using_long_name {
-          if recognized_option.name_long.is_none() {
+          let name_long_option = recognized_option.name.get_name_long();
+
+          if name_long_option.is_none() {
             continue;
           }
 
-          recognized_option.name_long.unwrap().to_string()
+          name_long_option.unwrap().to_string()
         } else {
-          if recognized_option.name_short.is_none() {
+          let name_short_option = recognized_option.name.get_name_short();
+
+          if name_short_option.is_none() {
             continue;
           }
 
-          recognized_option.name_short.unwrap().to_string()
+          name_short_option.unwrap().to_string()
         };
 
         if arg_option_name.eq(&recognized_option_name) {

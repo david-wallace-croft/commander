@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-05
-//! - Updated: 2024-06-18
+//! - Updated: 2024-06-19
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -37,9 +37,9 @@ impl OptionConfig<'_> {
 
     let parse_option_config: &ParseOptionConfig = &self.parse_option_config;
 
-    let name_short: &Option<char> = &parse_option_config.name_short;
+    let name_short: &Option<char> = &parse_option_config.name.get_name_short();
 
-    let name_long = &parse_option_config.name_long;
+    let name_long = &parse_option_config.name.get_name_long();
 
     if name_short.is_some() {
       prefix.push_str("  -");

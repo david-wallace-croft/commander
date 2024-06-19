@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-29
-//! - Updated: 2024-05-30
+//! - Updated: 2024-06-19
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -33,23 +33,6 @@ fn test_to_bool_result_1() {
 
   let actual: Result<bool, CommanderParseError> =
     test_parse_output.to_bool_result(true);
-
-  assert_eq!(expected, actual);
-}
-
-#[test]
-fn test_to_bool_result_2() {
-  let test_parse_output = ParseOutput {
-    error: Some(CommanderParseError::ParseConfigNameless),
-    index: None,
-    value: None,
-  };
-
-  let expected: Result<bool, CommanderParseError> =
-    Err(CommanderParseError::ParseConfigNameless);
-
-  let actual: Result<bool, CommanderParseError> =
-    test_parse_output.to_bool_result(false);
 
   assert_eq!(expected, actual);
 }

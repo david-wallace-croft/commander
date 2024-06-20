@@ -5,15 +5,14 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-19
-//! - Updated: 2024-06-19
+//! - Updated: 2024-06-20
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
-// TODO: unit tests
-// #[cfg(test)]
-// mod test;
+#[cfg(test)]
+mod test;
 
 #[derive(Clone, Copy, Debug)]
 pub enum ParseOptionName<'a> {

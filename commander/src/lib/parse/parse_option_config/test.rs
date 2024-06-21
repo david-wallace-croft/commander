@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-02
-//! - Updated: 2024-06-19
+//! - Updated: 2024-06-21
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -58,7 +58,7 @@ fn test_make_hyphenated_option_name_0() {
   let actual: Option<String> = TEST_PARSE_OPTION_CONFIG_LONG
     .make_hyphenated_option_name(HyphenationType::Long);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -68,7 +68,7 @@ fn test_make_hyphenated_option_name_1() {
   let actual: Option<String> = TEST_PARSE_OPTION_CONFIG_LONG
     .make_hyphenated_option_name(HyphenationType::Short);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -78,7 +78,7 @@ fn test_make_hyphenated_option_name_2() {
   let actual: Option<String> = TEST_PARSE_OPTION_CONFIG_SHORT
     .make_hyphenated_option_name(HyphenationType::Long);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -88,7 +88,7 @@ fn test_make_hyphenated_option_name_3() {
   let actual: Option<String> = TEST_PARSE_OPTION_CONFIG_SHORT
     .make_hyphenated_option_name(HyphenationType::Short);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 //------------------------------------------------------------------------------
@@ -122,7 +122,7 @@ fn test_parse_0() {
   let actual: Vec<ParseOutput> =
     PARSE_OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -136,7 +136,7 @@ fn test_parse_1() {
   let actual: Vec<ParseOutput> =
     PARSE_OPTION_CONFIG_OPTIONAL.parse(test_parse_input);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 //------------------------------------------------------------------------------
@@ -154,7 +154,7 @@ fn test_parse_hyphenated_option_name_0() {
     ValueUsage::Optional,
   );
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -172,7 +172,7 @@ fn test_parse_hyphenated_option_name_1() {
     ValueUsage::Optional,
   );
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -190,7 +190,7 @@ fn test_parse_hyphenated_option_name_2() {
     ValueUsage::Optional,
   );
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -208,7 +208,7 @@ fn test_parse_hyphenated_option_name_3() {
     ValueUsage::Optional,
   );
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -226,7 +226,7 @@ fn test_parse_hyphenated_option_name_4() {
     ValueUsage::Verboten,
   );
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -244,7 +244,7 @@ fn test_parse_hyphenated_option_name_5() {
     ValueUsage::Required,
   );
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 //------------------------------------------------------------------------------
@@ -266,7 +266,7 @@ fn test_parse_last_0() {
   let actual: ParseOutput =
     PARSE_OPTION_CONFIG_OPTIONAL.parse_last(test_parse_input);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -284,7 +284,7 @@ fn test_parse_last_1() {
   let actual: ParseOutput =
     PARSE_OPTION_CONFIG_OPTIONAL.parse_last(test_parse_input);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 //------------------------------------------------------------------------------
@@ -306,7 +306,7 @@ fn test_parse_next_optional_0() {
   let actual: ParseOutput =
     PARSE_OPTION_CONFIG_OPTIONAL.parse_next(test_parse_input);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -322,7 +322,7 @@ fn test_parse_next_optional_1() {
   let actual: ParseOutput =
     PARSE_OPTION_CONFIG_OPTIONAL.parse_next(test_parse_input);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -338,7 +338,7 @@ fn test_parse_next_optional_2() {
   let actual: ParseOutput =
     PARSE_OPTION_CONFIG_OPTIONAL.parse_next(test_parse_input);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -354,7 +354,7 @@ fn test_parse_next_optional_3() {
   let actual: ParseOutput =
     PARSE_OPTION_CONFIG_OPTIONAL.parse_next(test_parse_input);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -375,7 +375,7 @@ fn test_parse_next_optional_4() {
   let actual: ParseOutput =
     PARSE_OPTION_CONFIG_OPTIONAL.parse_next(test_parse_input);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -391,7 +391,7 @@ fn test_parse_next_optional_5() {
   let actual: ParseOutput =
     PARSE_OPTION_CONFIG_OPTIONAL.parse_next(test_parse_input);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -407,7 +407,7 @@ fn test_parse_next_optional_6() {
   let actual: ParseOutput =
     PARSE_OPTION_CONFIG_OPTIONAL.parse_next(test_parse_input);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -423,7 +423,7 @@ fn test_parse_next_optional_7() {
   let actual: ParseOutput =
     PARSE_OPTION_CONFIG_OPTIONAL.parse_next(test_parse_input);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -441,7 +441,7 @@ fn test_parse_next_required_0() {
   let actual: ParseOutput =
     PARSE_OPTION_CONFIG_REQUIRED.parse_next(test_parse_input);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -457,7 +457,7 @@ fn test_parse_next_required_1() {
   let actual: ParseOutput =
     PARSE_OPTION_CONFIG_REQUIRED.parse_next(test_parse_input);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -479,7 +479,7 @@ fn test_parse_next_required_multiple_0() {
   let actual: ParseOutput =
     PARSE_OPTION_CONFIG_REQUIRED.parse_next(test_parse_input);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -501,7 +501,7 @@ fn test_parse_next_required_multiple_1() {
   let actual: ParseOutput =
     PARSE_OPTION_CONFIG_REQUIRED.parse_next(test_parse_input);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -523,7 +523,7 @@ fn test_parse_next_required_multiple_2() {
   let actual: ParseOutput =
     PARSE_OPTION_CONFIG_REQUIRED.parse_next(test_parse_input);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -545,7 +545,7 @@ fn test_parse_unrecognized_long() {
   let actual: Vec<String> =
     test_parse_input.parse_unrecognized(&recognized_options);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -567,7 +567,7 @@ fn test_parse_unrecognized_short() {
   let actual: Vec<String> =
     test_parse_input.parse_unrecognized(&recognized_options);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -583,7 +583,7 @@ fn test_parse_next_verboten_0() {
   let actual: ParseOutput =
     PARSE_OPTION_CONFIG_VERBOTEN.parse_next(test_parse_input);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -601,7 +601,7 @@ fn test_parse_next_verboten_1() {
   let actual: ParseOutput =
     PARSE_OPTION_CONFIG_VERBOTEN.parse_next(test_parse_input);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -617,7 +617,7 @@ fn test_parse_next_verboten_2() {
   let actual: ParseOutput =
     PARSE_OPTION_CONFIG_VERBOTEN.parse_next(test_parse_input);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -633,7 +633,7 @@ fn test_parse_next_verboten_3() {
   let actual: ParseOutput =
     PARSE_OPTION_CONFIG_VERBOTEN.parse_next(test_parse_input);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -651,7 +651,7 @@ fn test_parse_next_verboten_4() {
   let actual: ParseOutput =
     PARSE_OPTION_CONFIG_VERBOTEN.parse_next(test_parse_input);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -667,7 +667,7 @@ fn test_parse_next_verboten_5() {
   let actual: ParseOutput =
     PARSE_OPTION_CONFIG_VERBOTEN.parse_next(test_parse_input);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -683,7 +683,7 @@ fn test_parse_next_verboten_6() {
   let actual: ParseOutput =
     PARSE_OPTION_CONFIG_VERBOTEN.parse_next(test_parse_input);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -699,7 +699,7 @@ fn test_parse_next_verboten_7() {
   let actual: ParseOutput =
     PARSE_OPTION_CONFIG_VERBOTEN.parse_next(test_parse_input);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 //------------------------------------------------------------------------------
@@ -716,7 +716,7 @@ fn test_to_bool_result_optional_0() {
     .parse_next(test_parse_input)
     .to_bool_result(true);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -731,7 +731,7 @@ fn test_to_bool_result_optional_1() {
     .parse_next(test_parse_input)
     .to_bool_result(false);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -745,7 +745,7 @@ fn test_to_bool_result_optional_2() {
     .parse_next(test_parse_input)
     .to_bool_result(true);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -759,7 +759,7 @@ fn test_to_bool_result_optional_3() {
     .parse_next(test_parse_input)
     .to_bool_result(true);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -772,7 +772,7 @@ fn test_to_bool_result_required_0() {
     .parse_next(test_parse_input)
     .to_bool_result(true);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -785,7 +785,7 @@ fn test_to_bool_result_required_1() {
     .parse_next(test_parse_input)
     .to_bool_result(false);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -799,7 +799,7 @@ fn test_to_bool_result_required_2() {
     .parse_next(test_parse_input)
     .to_bool_result(true);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -812,7 +812,7 @@ fn test_to_bool_result_verboten_0() {
     .parse_next(test_parse_input)
     .to_bool_result(true);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -825,7 +825,7 @@ fn test_to_bool_result_verboten_1() {
     .parse_next(test_parse_input)
     .to_bool_result(false);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -838,7 +838,7 @@ fn test_to_bool_result_verboten_2() {
     .parse_next(test_parse_input)
     .to_bool_result(false);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -851,7 +851,7 @@ fn test_to_bool_result_verboten_3() {
     .parse_next(test_parse_input)
     .to_bool_result(false);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -865,7 +865,7 @@ fn test_to_bool_result_verboten_4() {
     .to_bool_result(false);
 
   // TODO: Make this work; should be true
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -879,7 +879,7 @@ fn test_to_bool_result_verboten_5() {
     .parse_next(test_parse_input)
     .to_bool_result(false);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -893,5 +893,5 @@ fn test_to_bool_result_verboten_6() {
     .parse_next(test_parse_input)
     .to_bool_result(false);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }

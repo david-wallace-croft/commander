@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-31
-//! - Updated: 2024-06-19
+//! - Updated: 2024-06-21
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -32,7 +32,7 @@ fn test_default_0() {
 
   let actual: usize = ParseInput::default().skip;
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -46,7 +46,7 @@ fn test_from_slice_0() {
 
   let actual: ParseInput = ParseInput::from_slice(test_args_slice);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -67,5 +67,5 @@ fn test_parse_unrecognized_0() {
   let actual: Vec<String> =
     test_parse_input.parse_unrecognized(test_recognized_options);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }

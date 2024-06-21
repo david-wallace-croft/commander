@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-06-19
+//! - Updated: 2024-06-21
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -44,7 +44,7 @@ fn test_make_print_option_prefix_0() {
 
   let actual: String = TEST_OPTION_CONFIG_0.make_print_option_prefix();
 
-  assert_eq!(EXPECTED, actual);
+  assert_eq!(actual, EXPECTED);
 }
 
 #[test]
@@ -55,7 +55,7 @@ fn test_make_print_string_0() {
 
   let actual: String = TEST_OPTION_CONFIG_0.make_print_string(prefix_len);
 
-  assert_eq!(EXPECTED, actual);
+  assert_eq!(actual, EXPECTED);
 }
 
 #[test]
@@ -69,7 +69,7 @@ fn test_make_print_string_for_slice_0() {
     TEST_OPTION_CONFIG_1,
   ]);
 
-  assert_eq!(EXPECTED, actual);
+  assert_eq!(actual, EXPECTED);
 }
 
 #[test]
@@ -97,7 +97,7 @@ fn test_parse_0() {
 
   let actual: Vec<ParseOutput> = TEST_OPTION_CONFIG_0.parse(&test_parse_input);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -118,7 +118,7 @@ fn test_parse_last_0() {
 
   let actual: ParseOutput = TEST_OPTION_CONFIG_0.parse_last(&test_parse_input);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -139,5 +139,5 @@ fn test_parse_next_0() {
 
   let actual: ParseOutput = TEST_OPTION_CONFIG_0.parse_next(&test_parse_input);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }

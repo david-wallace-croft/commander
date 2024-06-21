@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-01
-//! - Updated: 2024-06-01
+//! - Updated: 2024-06-21
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -22,7 +22,7 @@ fn test_determine_hyphenation_type_0() {
   let actual: Option<HyphenationType> =
     HyphenationType::determine_hyphenation_type(test_arg);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -34,7 +34,7 @@ fn test_determine_hyphenation_type_1() {
   let actual: Option<HyphenationType> =
     HyphenationType::determine_hyphenation_type(test_arg);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -46,5 +46,5 @@ fn test_determine_hyphenation_type_2() {
   let actual: Option<HyphenationType> =
     HyphenationType::determine_hyphenation_type(test_arg);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }

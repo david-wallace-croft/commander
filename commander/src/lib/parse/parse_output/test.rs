@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-29
-//! - Updated: 2024-06-19
+//! - Updated: 2024-06-21
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -22,7 +22,7 @@ fn test_to_bool_result_0() {
   let actual: Result<bool, CommanderParseError> =
     test_parse_output.to_bool_result(false);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -34,7 +34,7 @@ fn test_to_bool_result_1() {
   let actual: Result<bool, CommanderParseError> =
     test_parse_output.to_bool_result(true);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -50,7 +50,7 @@ fn test_to_bool_result_3() {
   let actual: Result<bool, CommanderParseError> =
     test_parse_output.to_bool_result(false);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -66,7 +66,7 @@ fn test_to_bool_result_4() {
   let actual: Result<bool, CommanderParseError> =
     test_parse_output.to_bool_result(true);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -82,5 +82,5 @@ fn test_to_bool_result_5() {
   let actual: Result<bool, CommanderParseError> =
     test_parse_output.to_bool_result(false);
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }

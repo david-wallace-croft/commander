@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-07
-//! - Updated: 2024-06-10
+//! - Updated: 2024-06-21
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -37,5 +37,5 @@ fn test_make_print_string_0() {
 
   let actual: String = TEST_APP_INFO.make_print_string();
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }

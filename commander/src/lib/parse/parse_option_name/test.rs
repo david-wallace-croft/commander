@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-20
-//! - Updated: 2024-06-20
+//! - Updated: 2024-06-21
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -34,7 +34,7 @@ fn test_get_name_long_0() {
 
   let actual: Option<&str> = TEST_PARSE_OPTION_NAME_BOTH.get_name_long();
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -43,7 +43,7 @@ fn test_get_name_long_1() {
 
   let actual: Option<&str> = TEST_PARSE_OPTION_NAME_LONG.get_name_long();
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -52,7 +52,7 @@ fn test_get_name_long_2() {
 
   let actual: Option<&str> = TEST_PARSE_OPTION_NAME_SHORT.get_name_long();
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -61,7 +61,7 @@ fn test_get_name_short_0() {
 
   let actual: Option<char> = TEST_PARSE_OPTION_NAME_BOTH.get_name_short();
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -70,7 +70,7 @@ fn test_get_name_short_1() {
 
   let actual: Option<char> = TEST_PARSE_OPTION_NAME_LONG.get_name_short();
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }
 
 #[test]
@@ -79,5 +79,5 @@ fn test_get_name_short_2() {
 
   let actual: Option<char> = TEST_PARSE_OPTION_NAME_SHORT.get_name_short();
 
-  assert_eq!(expected, actual);
+  assert_eq!(actual, expected);
 }

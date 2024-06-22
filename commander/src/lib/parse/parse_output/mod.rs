@@ -5,13 +5,13 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-06-08
+//! - Updated: 2024-06-22
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
-use super::commander_parse_error::CommanderParseError;
+use super::parse_error::ParseError;
 
 #[cfg(test)]
 mod test;
@@ -21,7 +21,7 @@ mod test;
 //------------------------------------------------------------------------------
 #[derive(Debug, Default, PartialEq)]
 pub struct ParseOutput {
-  pub error: Option<CommanderParseError>,
+  pub error: Option<ParseError>,
   // TODO: Might use a 2nd index for multiple short names in a single argument
   pub index: Option<usize>,
   // TODO: Does this need to be OsString?
@@ -44,7 +44,7 @@ impl ParseOutput {
   pub fn to_bool_result(
     self,
     default: bool,
-  ) -> Result<bool, CommanderParseError> {
+  ) -> Result<bool, ParseError> {
     if let Some(error) = self.error {
       return Err(error);
     }
@@ -62,7 +62,7 @@ impl ParseOutput {
     match lowercase_value.as_str() {
       "0" | "f" | "false" | "n" | "no" | "off" => Ok(false),
       "1" | "on" | "t" | "true" | "y" | "yes" => Ok(true),
-      _ => Err(CommanderParseError::InvalidValue),
+      _ => Err(ParseError::InvalidValue),
     }
   }
 }

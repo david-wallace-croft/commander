@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-29
-//! - Updated: 2024-06-21
+//! - Updated: 2024-06-22
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -17,9 +17,9 @@ use super::*;
 fn test_to_bool_result_0() {
   let test_parse_output = ParseOutput::default();
 
-  let expected: Result<bool, CommanderParseError> = Ok(false);
+  let expected: Result<bool, ParseError> = Ok(false);
 
-  let actual: Result<bool, CommanderParseError> =
+  let actual: Result<bool, ParseError> =
     test_parse_output.to_bool_result(false);
 
   assert_eq!(actual, expected);
@@ -29,10 +29,9 @@ fn test_to_bool_result_0() {
 fn test_to_bool_result_1() {
   let test_parse_output = ParseOutput::default();
 
-  let expected: Result<bool, CommanderParseError> = Ok(true);
+  let expected: Result<bool, ParseError> = Ok(true);
 
-  let actual: Result<bool, CommanderParseError> =
-    test_parse_output.to_bool_result(true);
+  let actual: Result<bool, ParseError> = test_parse_output.to_bool_result(true);
 
   assert_eq!(actual, expected);
 }
@@ -45,9 +44,9 @@ fn test_to_bool_result_3() {
     value: None,
   };
 
-  let expected: Result<bool, CommanderParseError> = Ok(true);
+  let expected: Result<bool, ParseError> = Ok(true);
 
-  let actual: Result<bool, CommanderParseError> =
+  let actual: Result<bool, ParseError> =
     test_parse_output.to_bool_result(false);
 
   assert_eq!(actual, expected);
@@ -61,10 +60,9 @@ fn test_to_bool_result_4() {
     value: Some("0".to_string()),
   };
 
-  let expected: Result<bool, CommanderParseError> = Ok(false);
+  let expected: Result<bool, ParseError> = Ok(false);
 
-  let actual: Result<bool, CommanderParseError> =
-    test_parse_output.to_bool_result(true);
+  let actual: Result<bool, ParseError> = test_parse_output.to_bool_result(true);
 
   assert_eq!(actual, expected);
 }
@@ -77,9 +75,9 @@ fn test_to_bool_result_5() {
     value: Some("1".to_string()),
   };
 
-  let expected: Result<bool, CommanderParseError> = Ok(true);
+  let expected: Result<bool, ParseError> = Ok(true);
 
-  let actual: Result<bool, CommanderParseError> =
+  let actual: Result<bool, ParseError> =
     test_parse_output.to_bool_result(false);
 
   assert_eq!(actual, expected);

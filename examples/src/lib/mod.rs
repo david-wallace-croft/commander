@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-06-11
+//! - Updated: 2024-06-22
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -13,7 +13,7 @@
 
 use std::io::{Error, stdin, Stdin, stdout, Write};
 
-use commander::parse::commander_parse_error::CommanderParseError;
+use commander::parse::parse_error::ParseError;
 use commander::print::print_unrecognized_options;
 use constants::*;
 
@@ -25,7 +25,7 @@ mod test;
 #[derive(Debug)]
 pub struct OptionValues {
   pub help_wanted: bool,
-  pub interactive: Result<bool, CommanderParseError>,
+  pub interactive: Result<bool, ParseError>,
   pub name_option: Option<String>,
   pub unrecognized: Vec<String>,
 }

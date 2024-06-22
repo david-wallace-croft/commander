@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-02
-//! - Updated: 2024-06-21
+//! - Updated: 2024-06-22
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -178,7 +178,7 @@ fn test_parse_hyphenated_option_name_1() {
 #[test]
 fn test_parse_hyphenated_option_name_2() {
   let expected: ParseOutput = ParseOutput {
-    error: Some(CommanderParseError::ValueMissingAfterEquals),
+    error: Some(ParseError::ValueMissingAfterEquals),
     index: Some(0),
     value: None,
   };
@@ -214,7 +214,7 @@ fn test_parse_hyphenated_option_name_3() {
 #[test]
 fn test_parse_hyphenated_option_name_4() {
   let expected: ParseOutput = ParseOutput {
-    error: Some(CommanderParseError::VerbotenValuePresent),
+    error: Some(ParseError::VerbotenValuePresent),
     index: Some(0),
     value: Some("VALUE".to_string()),
   };
@@ -232,7 +232,7 @@ fn test_parse_hyphenated_option_name_4() {
 #[test]
 fn test_parse_hyphenated_option_name_5() {
   let expected: ParseOutput = ParseOutput {
-    error: Some(CommanderParseError::RequiredValueMissing),
+    error: Some(ParseError::RequiredValueMissing),
     index: Some(0),
     value: None,
   };
@@ -346,7 +346,7 @@ fn test_parse_next_optional_3() {
   let test_parse_input = &ParseInput::from_slice(&["-T="]);
 
   let expected: ParseOutput = ParseOutput {
-    error: Some(CommanderParseError::ValueMissingAfterEquals),
+    error: Some(ParseError::ValueMissingAfterEquals),
     index: Some(0),
     value: None,
   };
@@ -415,7 +415,7 @@ fn test_parse_next_optional_7() {
   let test_parse_input = &ParseInput::from_slice(&["--TEST="]);
 
   let expected: ParseOutput = ParseOutput {
-    error: Some(CommanderParseError::ValueMissingAfterEquals),
+    error: Some(ParseError::ValueMissingAfterEquals),
     index: Some(0),
     value: None,
   };
@@ -433,7 +433,7 @@ fn test_parse_next_required_0() {
   ]);
 
   let expected = ParseOutput {
-    error: Some(CommanderParseError::RequiredValueMissing),
+    error: Some(ParseError::RequiredValueMissing),
     index: Some(0),
     value: None,
   };
@@ -449,7 +449,7 @@ fn test_parse_next_required_1() {
   let test_parse_input = &ParseInput::from_slice(&["-T"]);
 
   let expected = ParseOutput {
-    error: Some(CommanderParseError::RequiredValueMissing),
+    error: Some(ParseError::RequiredValueMissing),
     index: Some(0),
     value: None,
   };
@@ -609,7 +609,7 @@ fn test_parse_next_verboten_2() {
   let test_parse_input = &ParseInput::from_slice(&["-T=value"]);
 
   let expected = ParseOutput {
-    error: Some(CommanderParseError::VerbotenValuePresent),
+    error: Some(ParseError::VerbotenValuePresent),
     index: Some(0),
     value: Some("value".to_string()),
   };
@@ -659,7 +659,7 @@ fn test_parse_next_verboten_5() {
   let test_parse_input = &ParseInput::from_slice(&["--TEST=value"]);
 
   let expected: ParseOutput = ParseOutput {
-    error: Some(CommanderParseError::VerbotenValuePresent),
+    error: Some(ParseError::VerbotenValuePresent),
     index: Some(0),
     value: Some("value".to_string()),
   };
@@ -675,7 +675,7 @@ fn test_parse_next_verboten_6() {
   let test_parse_input = &ParseInput::from_slice(&["-T="]);
 
   let expected: ParseOutput = ParseOutput {
-    error: Some(CommanderParseError::ValueMissingAfterEquals),
+    error: Some(ParseError::ValueMissingAfterEquals),
     index: Some(0),
     value: None,
   };
@@ -691,7 +691,7 @@ fn test_parse_next_verboten_7() {
   let test_parse_input = &ParseInput::from_slice(&["--TEST="]);
 
   let expected: ParseOutput = ParseOutput {
-    error: Some(CommanderParseError::ValueMissingAfterEquals),
+    error: Some(ParseError::ValueMissingAfterEquals),
     index: Some(0),
     value: None,
   };
@@ -710,9 +710,9 @@ fn test_parse_next_verboten_7() {
 fn test_to_bool_result_optional_0() {
   let test_parse_input = &ParseInput::from_slice(&["-T=false"]);
 
-  let expected: Result<bool, CommanderParseError> = Ok(false);
+  let expected: Result<bool, ParseError> = Ok(false);
 
-  let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_OPTIONAL
+  let actual: Result<bool, ParseError> = PARSE_OPTION_CONFIG_OPTIONAL
     .parse_next(test_parse_input)
     .to_bool_result(true);
 
@@ -725,9 +725,9 @@ fn test_to_bool_result_optional_1() {
     "-T", "false",
   ]);
 
-  let expected: Result<bool, CommanderParseError> = Ok(true);
+  let expected: Result<bool, ParseError> = Ok(true);
 
-  let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_OPTIONAL
+  let actual: Result<bool, ParseError> = PARSE_OPTION_CONFIG_OPTIONAL
     .parse_next(test_parse_input)
     .to_bool_result(false);
 
@@ -738,10 +738,9 @@ fn test_to_bool_result_optional_1() {
 fn test_to_bool_result_optional_2() {
   let test_parse_input = &ParseInput::from_slice(&["-T=invalid"]);
 
-  let expected: Result<bool, CommanderParseError> =
-    Err(CommanderParseError::InvalidValue);
+  let expected: Result<bool, ParseError> = Err(ParseError::InvalidValue);
 
-  let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_OPTIONAL
+  let actual: Result<bool, ParseError> = PARSE_OPTION_CONFIG_OPTIONAL
     .parse_next(test_parse_input)
     .to_bool_result(true);
 
@@ -752,10 +751,9 @@ fn test_to_bool_result_optional_2() {
 fn test_to_bool_result_optional_3() {
   let test_parse_input = &ParseInput::from_slice(&["--TEST=invalid"]);
 
-  let expected: Result<bool, CommanderParseError> =
-    Err(CommanderParseError::InvalidValue);
+  let expected: Result<bool, ParseError> = Err(ParseError::InvalidValue);
 
-  let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_OPTIONAL
+  let actual: Result<bool, ParseError> = PARSE_OPTION_CONFIG_OPTIONAL
     .parse_next(test_parse_input)
     .to_bool_result(true);
 
@@ -766,9 +764,9 @@ fn test_to_bool_result_optional_3() {
 fn test_to_bool_result_required_0() {
   let test_parse_input = &ParseInput::from_slice(&["-T=false"]);
 
-  let expected: Result<bool, CommanderParseError> = Ok(false);
+  let expected: Result<bool, ParseError> = Ok(false);
 
-  let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_REQUIRED
+  let actual: Result<bool, ParseError> = PARSE_OPTION_CONFIG_REQUIRED
     .parse_next(test_parse_input)
     .to_bool_result(true);
 
@@ -779,9 +777,9 @@ fn test_to_bool_result_required_0() {
 fn test_to_bool_result_required_1() {
   let test_parse_input = &ParseInput::from_slice(&["-T=true"]);
 
-  let expected: Result<bool, CommanderParseError> = Ok(true);
+  let expected: Result<bool, ParseError> = Ok(true);
 
-  let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_REQUIRED
+  let actual: Result<bool, ParseError> = PARSE_OPTION_CONFIG_REQUIRED
     .parse_next(test_parse_input)
     .to_bool_result(false);
 
@@ -792,10 +790,9 @@ fn test_to_bool_result_required_1() {
 fn test_to_bool_result_required_2() {
   let test_parse_input = &ParseInput::from_slice(&["-T=invalid"]);
 
-  let expected: Result<bool, CommanderParseError> =
-    Err(CommanderParseError::InvalidValue);
+  let expected: Result<bool, ParseError> = Err(ParseError::InvalidValue);
 
-  let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_REQUIRED
+  let actual: Result<bool, ParseError> = PARSE_OPTION_CONFIG_REQUIRED
     .parse_next(test_parse_input)
     .to_bool_result(true);
 
@@ -806,9 +803,9 @@ fn test_to_bool_result_required_2() {
 fn test_to_bool_result_verboten_0() {
   let test_parse_input = &ParseInput::from_slice(&["-T"]);
 
-  let expected: Result<bool, CommanderParseError> = Ok(true);
+  let expected: Result<bool, ParseError> = Ok(true);
 
-  let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_VERBOTEN
+  let actual: Result<bool, ParseError> = PARSE_OPTION_CONFIG_VERBOTEN
     .parse_next(test_parse_input)
     .to_bool_result(true);
 
@@ -819,9 +816,9 @@ fn test_to_bool_result_verboten_0() {
 fn test_to_bool_result_verboten_1() {
   let test_parse_input = &ParseInput::from_slice(&["-t"]);
 
-  let expected: Result<bool, CommanderParseError> = Ok(false);
+  let expected: Result<bool, ParseError> = Ok(false);
 
-  let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_VERBOTEN
+  let actual: Result<bool, ParseError> = PARSE_OPTION_CONFIG_VERBOTEN
     .parse_next(test_parse_input)
     .to_bool_result(false);
 
@@ -832,9 +829,9 @@ fn test_to_bool_result_verboten_1() {
 fn test_to_bool_result_verboten_2() {
   let test_parse_input = &ParseInput::from_slice(&["--TEST"]);
 
-  let expected: Result<bool, CommanderParseError> = Ok(true);
+  let expected: Result<bool, ParseError> = Ok(true);
 
-  let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_VERBOTEN
+  let actual: Result<bool, ParseError> = PARSE_OPTION_CONFIG_VERBOTEN
     .parse_next(test_parse_input)
     .to_bool_result(false);
 
@@ -845,9 +842,9 @@ fn test_to_bool_result_verboten_2() {
 fn test_to_bool_result_verboten_3() {
   let test_parse_input = &ParseInput::from_slice(&["--test"]);
 
-  let expected: Result<bool, CommanderParseError> = Ok(false);
+  let expected: Result<bool, ParseError> = Ok(false);
 
-  let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_VERBOTEN
+  let actual: Result<bool, ParseError> = PARSE_OPTION_CONFIG_VERBOTEN
     .parse_next(test_parse_input)
     .to_bool_result(false);
 
@@ -858,9 +855,9 @@ fn test_to_bool_result_verboten_3() {
 fn test_to_bool_result_verboten_4() {
   let test_parse_input = &ParseInput::from_slice(&["-TEST"]);
 
-  let expected: Result<bool, CommanderParseError> = Ok(false);
+  let expected: Result<bool, ParseError> = Ok(false);
 
-  let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_VERBOTEN
+  let actual: Result<bool, ParseError> = PARSE_OPTION_CONFIG_VERBOTEN
     .parse_next(test_parse_input)
     .to_bool_result(false);
 
@@ -872,10 +869,10 @@ fn test_to_bool_result_verboten_4() {
 fn test_to_bool_result_verboten_5() {
   let test_parse_input = &ParseInput::from_slice(&["-T=true"]);
 
-  let expected: Result<bool, CommanderParseError> =
-    Err(CommanderParseError::VerbotenValuePresent);
+  let expected: Result<bool, ParseError> =
+    Err(ParseError::VerbotenValuePresent);
 
-  let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_VERBOTEN
+  let actual: Result<bool, ParseError> = PARSE_OPTION_CONFIG_VERBOTEN
     .parse_next(test_parse_input)
     .to_bool_result(false);
 
@@ -886,10 +883,10 @@ fn test_to_bool_result_verboten_5() {
 fn test_to_bool_result_verboten_6() {
   let test_parse_input = &ParseInput::from_slice(&["--TEST=true"]);
 
-  let expected: Result<bool, CommanderParseError> =
-    Err(CommanderParseError::VerbotenValuePresent);
+  let expected: Result<bool, ParseError> =
+    Err(ParseError::VerbotenValuePresent);
 
-  let actual: Result<bool, CommanderParseError> = PARSE_OPTION_CONFIG_VERBOTEN
+  let actual: Result<bool, ParseError> = PARSE_OPTION_CONFIG_VERBOTEN
     .parse_next(test_parse_input)
     .to_bool_result(false);
 

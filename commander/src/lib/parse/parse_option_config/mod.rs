@@ -5,14 +5,14 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-06-19
+//! - Updated: 2024-06-22
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
-use super::commander_parse_error::CommanderParseError;
 use super::hyphenation_type::HyphenationType;
+use super::parse_error::ParseError;
 use super::parse_input::ParseInput;
 use super::parse_option_name::ParseOptionName;
 use super::parse_output::ParseOutput;
@@ -151,7 +151,7 @@ impl ParseOptionConfig<'_> {
 
     let mut index_option: Option<usize> = None;
 
-    let mut error_option: Option<CommanderParseError> = None;
+    let mut error_option: Option<ParseError> = None;
 
     let mut value_option: Option<String> = None;
 
@@ -162,19 +162,19 @@ impl ParseOptionConfig<'_> {
         arg.strip_prefix(hyphenated_option_name_equals).unwrap();
 
       if value.eq("") {
-        error_option = Some(CommanderParseError::ValueMissingAfterEquals);
+        error_option = Some(ParseError::ValueMissingAfterEquals);
       } else {
         value_option = Some(value.to_string());
 
         if value_usage == ValueUsage::Verboten {
-          error_option = Some(CommanderParseError::VerbotenValuePresent);
+          error_option = Some(ParseError::VerbotenValuePresent);
         }
       }
     } else if arg.eq(hyphenated_option_name) {
       index_option = Some(arg_index);
 
       if value_usage == ValueUsage::Required {
-        error_option = Some(CommanderParseError::RequiredValueMissing);
+        error_option = Some(ParseError::RequiredValueMissing);
       }
     }
 

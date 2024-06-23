@@ -5,11 +5,13 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-02
-//! - Updated: 2024-06-22
+//! - Updated: 2024-06-23
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
+
+use crate::parse::parse_error::ParseError;
 
 use super::*;
 
@@ -427,6 +429,38 @@ fn test_parse_next_optional_7() {
 }
 
 #[test]
+fn test_parse_next_optional_8() {
+  let test_parse_input = &ParseInput::from_slice(&["-XT=value"]);
+
+  let expected: ParseOutput = ParseOutput {
+    error: None,
+    index: Some(0),
+    value: Some("value".to_string()),
+  };
+
+  let actual: ParseOutput =
+    PARSE_OPTION_CONFIG_OPTIONAL.parse_next(test_parse_input);
+
+  assert_eq!(actual, expected);
+}
+
+#[test]
+fn test_parse_next_optional_9() {
+  let test_parse_input = &ParseInput::from_slice(&["-XTX=value"]);
+
+  let expected: ParseOutput = ParseOutput {
+    error: None,
+    index: Some(0),
+    value: None,
+  };
+
+  let actual: ParseOutput =
+    PARSE_OPTION_CONFIG_OPTIONAL.parse_next(test_parse_input);
+
+  assert_eq!(actual, expected);
+}
+
+#[test]
 fn test_parse_next_required_0() {
   let test_parse_input = &ParseInput::from_slice(&[
     "-T", "value",
@@ -449,6 +483,38 @@ fn test_parse_next_required_1() {
   let test_parse_input = &ParseInput::from_slice(&["-T"]);
 
   let expected = ParseOutput {
+    error: Some(ParseError::RequiredValueMissing),
+    index: Some(0),
+    value: None,
+  };
+
+  let actual: ParseOutput =
+    PARSE_OPTION_CONFIG_REQUIRED.parse_next(test_parse_input);
+
+  assert_eq!(actual, expected);
+}
+
+#[test]
+fn test_parse_next_required_2() {
+  let test_parse_input = &ParseInput::from_slice(&["-XT=value"]);
+
+  let expected: ParseOutput = ParseOutput {
+    error: None,
+    index: Some(0),
+    value: Some("value".to_string()),
+  };
+
+  let actual: ParseOutput =
+    PARSE_OPTION_CONFIG_REQUIRED.parse_next(test_parse_input);
+
+  assert_eq!(actual, expected);
+}
+
+#[test]
+fn test_parse_next_required_3() {
+  let test_parse_input = &ParseInput::from_slice(&["-XTX=value"]);
+
+  let expected: ParseOutput = ParseOutput {
     error: Some(ParseError::RequiredValueMissing),
     index: Some(0),
     value: None,
@@ -522,50 +588,6 @@ fn test_parse_next_required_multiple_2() {
 
   let actual: ParseOutput =
     PARSE_OPTION_CONFIG_REQUIRED.parse_next(test_parse_input);
-
-  assert_eq!(actual, expected);
-}
-
-#[test]
-fn test_parse_unrecognized_long() {
-  const ARG_OPTION_TEST: ParseOptionConfig = ParseOptionConfig {
-    name: ParseOptionName::Both {
-      name_long: "TEST",
-      name_short: 'T',
-    },
-    value_usage: ValueUsage::Optional,
-  };
-
-  let recognized_options: Vec<ParseOptionConfig> = vec![ARG_OPTION_TEST];
-
-  let test_parse_input = &ParseInput::from_slice(&["--unrecognized"]);
-
-  let expected: Vec<String> = vec![String::from("unrecognized")];
-
-  let actual: Vec<String> =
-    test_parse_input.parse_unrecognized(&recognized_options);
-
-  assert_eq!(actual, expected);
-}
-
-#[test]
-fn test_parse_unrecognized_short() {
-  const ARG_OPTION_TEST: ParseOptionConfig = ParseOptionConfig {
-    name: ParseOptionName::Both {
-      name_long: "TEST",
-      name_short: 'T',
-    },
-    value_usage: ValueUsage::Optional,
-  };
-
-  let recognized_options: Vec<ParseOptionConfig> = vec![ARG_OPTION_TEST];
-
-  let test_parse_input = &ParseInput::from_slice(&["-u"]);
-
-  let expected: Vec<String> = vec![String::from("u")];
-
-  let actual: Vec<String> =
-    test_parse_input.parse_unrecognized(&recognized_options);
 
   assert_eq!(actual, expected);
 }
@@ -698,6 +720,86 @@ fn test_parse_next_verboten_7() {
 
   let actual: ParseOutput =
     PARSE_OPTION_CONFIG_VERBOTEN.parse_next(test_parse_input);
+
+  assert_eq!(actual, expected);
+}
+
+#[test]
+fn test_parse_next_verboten_8() {
+  let test_parse_input = &ParseInput::from_slice(&["-XT=value"]);
+
+  let expected: ParseOutput = ParseOutput {
+    error: Some(ParseError::VerbotenValuePresent),
+    index: Some(0),
+    value: Some("value".to_string()),
+  };
+
+  let actual: ParseOutput =
+    PARSE_OPTION_CONFIG_VERBOTEN.parse_next(test_parse_input);
+
+  assert_eq!(actual, expected);
+}
+
+#[test]
+fn test_parse_next_verboten_9() {
+  let test_parse_input = &ParseInput::from_slice(&["-XTX=value"]);
+
+  let expected: ParseOutput = ParseOutput {
+    error: None,
+    index: Some(0),
+    value: None,
+  };
+
+  let actual: ParseOutput =
+    PARSE_OPTION_CONFIG_VERBOTEN.parse_next(test_parse_input);
+
+  assert_eq!(actual, expected);
+}
+
+//------------------------------------------------------------------------------
+// parse_unrecognized() unit tests
+//------------------------------------------------------------------------------
+
+#[test]
+fn test_parse_unrecognized_long() {
+  const ARG_OPTION_TEST: ParseOptionConfig = ParseOptionConfig {
+    name: ParseOptionName::Both {
+      name_long: "TEST",
+      name_short: 'T',
+    },
+    value_usage: ValueUsage::Optional,
+  };
+
+  let recognized_options: Vec<ParseOptionConfig> = vec![ARG_OPTION_TEST];
+
+  let test_parse_input = &ParseInput::from_slice(&["--unrecognized"]);
+
+  let expected: Vec<String> = vec![String::from("unrecognized")];
+
+  let actual: Vec<String> =
+    test_parse_input.parse_unrecognized(&recognized_options);
+
+  assert_eq!(actual, expected);
+}
+
+#[test]
+fn test_parse_unrecognized_short() {
+  const ARG_OPTION_TEST: ParseOptionConfig = ParseOptionConfig {
+    name: ParseOptionName::Both {
+      name_long: "TEST",
+      name_short: 'T',
+    },
+    value_usage: ValueUsage::Optional,
+  };
+
+  let recognized_options: Vec<ParseOptionConfig> = vec![ARG_OPTION_TEST];
+
+  let test_parse_input = &ParseInput::from_slice(&["-u"]);
+
+  let expected: Vec<String> = vec![String::from("u")];
+
+  let actual: Vec<String> =
+    test_parse_input.parse_unrecognized(&recognized_options);
 
   assert_eq!(actual, expected);
 }
@@ -855,13 +957,12 @@ fn test_to_bool_result_verboten_3() {
 fn test_to_bool_result_verboten_4() {
   let test_parse_input = &ParseInput::from_slice(&["-TEST"]);
 
-  let expected: Result<bool, ParseError> = Ok(false);
+  let expected: Result<bool, ParseError> = Ok(true);
 
   let actual: Result<bool, ParseError> = PARSE_OPTION_CONFIG_VERBOTEN
     .parse_next(test_parse_input)
     .to_bool_result(false);
 
-  // TODO: Make this work; should be true
   assert_eq!(actual, expected);
 }
 

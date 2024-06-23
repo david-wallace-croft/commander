@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-06-22
+//! - Updated: 2024-06-23
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -81,6 +81,8 @@ impl ParseOptionConfig<'_> {
     &self,
     parse_input: &ParseInput,
   ) -> ParseOutput {
+    let name_short_option = self.name.get_name_short();
+
     for (arg_index, arg) in
       parse_input.args.iter().enumerate().skip(parse_input.skip)
     {
@@ -90,6 +92,24 @@ impl ParseOptionConfig<'_> {
       let Some(hyphenation_type) = hyphenation_type_option else {
         continue;
       };
+
+      if hyphenation_type == HyphenationType::Short {
+        if name_short_option.is_none() {
+          continue;
+        }
+
+        let parse_output: ParseOutput = self.parse_short(arg, arg_index);
+
+        if parse_output.index.is_some() {
+          return parse_output;
+        }
+
+        continue;
+      }
+
+      // TODO: Move everything that follows to a parse_long()
+      //   and use a match statement on the hyphenation_type to
+      //   determine which parse function to call
 
       let hyphenated_option_name_option: Option<String> =
         self.make_hyphenated_option_name(hyphenation_type);
@@ -182,6 +202,89 @@ impl ParseOptionConfig<'_> {
       error: error_option,
       index: index_option,
       value: value_option,
+    }
+  }
+
+  // TODO: Update README.md to show examples then update the standard output
+  //   integration tests to test the examples
+  fn parse_short(
+    &self,
+    arg: &str,
+    arg_index: usize,
+  ) -> ParseOutput {
+    // TODO: What if there are multiple short names within one argument?
+    //   Might need to return the sub_index in the ParseOutput.
+
+    let name_short: char = self.name.get_name_short().unwrap();
+
+    let equals_index_option = arg.find('=');
+
+    if equals_index_option.is_none() {
+      if arg.find(name_short).is_none() {
+        return ParseOutput::default();
+      };
+
+      if self.value_usage == ValueUsage::Required {
+        return ParseOutput {
+          error: Some(ParseError::RequiredValueMissing),
+          index: Some(arg_index),
+          value: None,
+        };
+      }
+
+      return ParseOutput {
+        error: None,
+        index: Some(arg_index),
+        value: None,
+      };
+    }
+
+    let equals_index: usize = equals_index_option.unwrap();
+
+    let arg_prefix: &str = &arg[0..equals_index];
+
+    let Some(sub_index) = arg_prefix.find(name_short) else {
+      return ParseOutput::default();
+    };
+
+    if sub_index != arg_prefix.len() - 1 {
+      if self.value_usage == ValueUsage::Required {
+        return ParseOutput {
+          error: Some(ParseError::RequiredValueMissing),
+          index: Some(arg_index),
+          value: None,
+        };
+      }
+
+      return ParseOutput {
+        error: None,
+        index: Some(arg_index),
+        value: None,
+      };
+    }
+
+    let value: &str = &arg[equals_index + 1..];
+
+    if value.eq("") {
+      return ParseOutput {
+        error: Some(ParseError::ValueMissingAfterEquals),
+        index: Some(arg_index),
+        value: None,
+      };
+    }
+
+    if self.value_usage == ValueUsage::Verboten {
+      return ParseOutput {
+        error: Some(ParseError::VerbotenValuePresent),
+        index: Some(arg_index),
+        value: Some(value.to_string()),
+      };
+    }
+
+    ParseOutput {
+      error: None,
+      index: Some(arg_index),
+      value: Some(value.to_string()),
     }
   }
 }

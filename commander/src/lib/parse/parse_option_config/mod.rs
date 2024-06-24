@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-06-23
+//! - Updated: 2024-06-24
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -248,16 +248,15 @@ impl ParseOptionConfig<'_> {
     };
 
     if sub_index != arg_prefix.len() - 1 {
-      if self.value_usage == ValueUsage::Required {
-        return ParseOutput {
-          error: Some(ParseError::RequiredValueMissing),
-          index: Some(arg_index),
-          value: None,
+      let error: Option<ParseError> =
+        if self.value_usage == ValueUsage::Required {
+          Some(ParseError::RequiredValueMissing)
+        } else {
+          None
         };
-      }
 
       return ParseOutput {
-        error: None,
+        error,
         index: Some(arg_index),
         value: None,
       };
@@ -273,16 +272,15 @@ impl ParseOptionConfig<'_> {
       };
     }
 
-    if self.value_usage == ValueUsage::Verboten {
-      return ParseOutput {
-        error: Some(ParseError::VerbotenValuePresent),
-        index: Some(arg_index),
-        value: Some(value.to_string()),
-      };
-    }
+    let error: Option<ParseError> = if self.value_usage == ValueUsage::Verboten
+    {
+      Some(ParseError::VerbotenValuePresent)
+    } else {
+      None
+    };
 
     ParseOutput {
-      error: None,
+      error,
       index: Some(arg_index),
       value: Some(value.to_string()),
     }

@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-06-11
+//! - Updated: 2024-06-25
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -19,6 +19,7 @@ fn test_make_greeting_when_name_none() {
     help_wanted: false,
     interactive: Ok(false),
     name_option: None,
+    quiet: false,
     unrecognized: Vec::new(),
   };
 
@@ -33,6 +34,7 @@ fn test_make_greeting_when_name_some() {
     help_wanted: false,
     interactive: Ok(false),
     name_option: Some(String::from("Test")),
+    quiet: false,
     unrecognized: Vec::new(),
   };
 

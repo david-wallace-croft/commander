@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-05-19
+//! - Updated: 2024-06-25
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -67,6 +67,8 @@ pub fn parse_option_values_using_clap() -> OptionValues {
     help_wanted: false,
     interactive: Ok(interactive),
     name_option,
+    // TODO: parse quiet
+    quiet: false,
     unrecognized,
   }
 }

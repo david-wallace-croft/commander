@@ -54,7 +54,11 @@ pub fn parse_option_values_using_commander() -> OptionValues {
     .map(|config| config.parse_option_config)
     .to_vec();
 
-  let quiet = OPTION_CONFIG_Q.parse_next(parse_input).index.is_some();
+  // TODO: Show the user the parse error
+  let quiet = OPTION_CONFIG_Q
+    .parse_next(parse_input)
+    .to_bool_result(false)
+    .unwrap_or(false);
 
   let unrecognized: Vec<String> =
     parse_input.parse_unrecognized(&arg_option_vector);

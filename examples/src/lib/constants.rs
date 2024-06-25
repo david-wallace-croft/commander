@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-06-19
+//! - Updated: 2024-06-25
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -35,6 +35,10 @@ pub const ARG_NAME_NAME: &str = "name";
 pub const ARG_NAME_SHORT: char = 'n';
 // TODO: This one is clap-only.
 pub const ARG_NAME_TAKES_VALUE: bool = true;
+// TODO: Add this one to the clap example.
+pub const ARG_QUIET_DESCRIPTION: &str = "Suppress the exclamation mark";
+pub const ARG_QUIET_NAME_LONG: &str = "quiet";
+pub const ARG_QUIET_NAME_SHORT: char = 'q';
 pub const NAME_DEFAULT: &str = "World";
 pub const NAME_PROMPT: &str = "What is your name?";
 
@@ -78,10 +82,22 @@ pub const OPTION_CONFIG_N: OptionConfig = OptionConfig {
   },
 };
 
-pub const OPTION_CONFIGS: [OptionConfig; 3] = [
+pub const OPTION_CONFIG_Q: OptionConfig = OptionConfig {
+  brief_description: Some(ARG_QUIET_DESCRIPTION),
+  parse_option_config: ParseOptionConfig {
+    name: ParseOptionName::Both {
+      name_long: ARG_QUIET_NAME_LONG,
+      name_short: ARG_QUIET_NAME_SHORT,
+    },
+    value_usage: ValueUsage::Verboten,
+  },
+};
+
+pub const OPTION_CONFIGS: [OptionConfig; 4] = [
   OPTION_CONFIG_H,
   OPTION_CONFIG_I,
   OPTION_CONFIG_N,
+  OPTION_CONFIG_Q,
 ];
 
 pub const HELP_INFO: HelpInfo = HelpInfo {

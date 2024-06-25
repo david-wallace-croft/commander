@@ -5,7 +5,7 @@
 //! - Author: [`David Wallace Croft`]
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Created: 2024-04-06
-//! - Updated: 2024-06-10
+//! - Updated: 2024-06-25
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -50,6 +50,7 @@ OPTIONS:
   -h, --help         Show command-line options
   -i, --interactive  true/false, defaults to true
   -n, --name         Any value not starting with a hyphen (-)
+  -q, --quiet        Suppress the exclamation mark
 "#,
   );
 }

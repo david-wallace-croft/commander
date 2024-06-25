@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-06-22
+//! - Updated: 2024-06-25
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -27,6 +27,7 @@ pub struct OptionValues {
   pub help_wanted: bool,
   pub interactive: Result<bool, ParseError>,
   pub name_option: Option<String>,
+  pub quiet: bool,
   pub unrecognized: Vec<String>,
 }
 
@@ -102,5 +103,11 @@ fn make_greeting(option_values: OptionValues) -> String {
     },
   };
 
-  format!("Hello, {}!", name)
+  let terminal_punctuation: char = if option_values.quiet {
+    '.'
+  } else {
+    '!'
+  };
+
+  format!("Hello, {name}{terminal_punctuation}")
 }

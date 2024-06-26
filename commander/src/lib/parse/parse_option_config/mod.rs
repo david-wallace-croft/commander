@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-06-24
+//! - Updated: 2024-06-26
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -81,8 +81,6 @@ impl ParseOptionConfig<'_> {
     &self,
     parse_input: &ParseInput,
   ) -> ParseOutput {
-    let name_short_option = self.name.get_name_short();
-
     for (arg_index, arg) in
       parse_input.args.iter().enumerate().skip(parse_input.skip)
     {
@@ -94,10 +92,6 @@ impl ParseOptionConfig<'_> {
       };
 
       if hyphenation_type == HyphenationType::Short {
-        if name_short_option.is_none() {
-          continue;
-        }
-
         let parse_output: ParseOutput = self.parse_short(arg, arg_index);
 
         if parse_output.index.is_some() {
@@ -214,6 +208,10 @@ impl ParseOptionConfig<'_> {
   ) -> ParseOutput {
     // TODO: What if there are multiple short names within one argument?
     //   Might need to return the sub_index in the ParseOutput.
+
+    if self.name.get_name_short().is_none() {
+      return ParseOutput::default();
+    }
 
     let name_short: char = self.name.get_name_short().unwrap();
 

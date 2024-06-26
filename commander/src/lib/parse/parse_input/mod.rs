@@ -3,7 +3,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-06-19
+//! - Updated: 2024-06-26
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -58,46 +58,71 @@ impl ParseInput {
         continue;
       };
 
-      let arg_option_name: &str = arg.strip_prefix(prefix).unwrap();
+      if using_long_name {
+        let arg_option_name: &str = arg.strip_prefix(prefix).unwrap();
 
-      if arg_option_name.eq("") {
-        unrecognized_set.insert(String::from(""));
+        if arg_option_name.eq("") {
+          unrecognized_set.insert(String::from(""));
 
-        continue;
-      }
+          continue;
+        }
 
-      for recognized_option in recognized_options {
-        let recognized_option_name: String = if using_long_name {
+        for recognized_option in recognized_options {
           let name_long_option = recognized_option.name.get_name_long();
 
           if name_long_option.is_none() {
             continue;
           }
 
-          name_long_option.unwrap().to_string()
-        } else {
+          let recognized_option_name: String =
+            name_long_option.unwrap().to_string();
+
+          if arg_option_name.eq(&recognized_option_name) {
+            continue 'outer;
+          }
+
+          let recognized_option_name_equals: String =
+            format!("{recognized_option_name}=");
+
+          if arg_option_name.starts_with(&recognized_option_name_equals) {
+            continue 'outer;
+          }
+        }
+
+        unrecognized_set.insert(String::from(arg_option_name));
+
+        continue;
+      }
+
+      let arg_option_names_with_equals: String =
+        arg.strip_prefix(prefix).unwrap().to_string();
+
+      let equals_index_option = arg_option_names_with_equals.find('=');
+
+      let arg_option_names: String = if equals_index_option.is_some() {
+        arg_option_names_with_equals[0..equals_index_option.unwrap()]
+          .to_string()
+      } else {
+        arg_option_names_with_equals
+      };
+
+      'middle: for arg_option_name in arg_option_names.chars() {
+        for recognized_option in recognized_options {
           let name_short_option = recognized_option.name.get_name_short();
 
           if name_short_option.is_none() {
             continue;
           }
 
-          name_short_option.unwrap().to_string()
-        };
+          let recognized_option_name: char = name_short_option.unwrap();
 
-        if arg_option_name.eq(&recognized_option_name) {
-          continue 'outer;
+          if arg_option_name == recognized_option_name {
+            continue 'middle;
+          }
         }
 
-        let recognized_option_name_equals: String =
-          format!("{recognized_option_name}=");
-
-        if arg_option_name.starts_with(&recognized_option_name_equals) {
-          continue 'outer;
-        }
+        unrecognized_set.insert(String::from(arg_option_name));
       }
-
-      unrecognized_set.insert(String::from(arg_option_name));
     }
 
     Vec::from_iter(unrecognized_set)

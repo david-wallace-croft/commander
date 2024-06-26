@@ -3,6 +3,7 @@
 [![MIT licensed][mit-badge]][mit-url]
 
 [mit-badge]: https://img.shields.io/badge/license-MIT-blue.svg
+
 [mit-url]: https://github.com/david-wallace-croft/commander/blob/main/LICENSE.txt
 
 ## Purpose
@@ -32,6 +33,10 @@
   - Disable interactive mode
 - cargo run --example example-commander -- -n=World
   - Provide the default name
+- cargo run --example example-commander -- -q
+  - Quiet mode suppress the exclamation mark in the response
+- cargo run --example example-commander -- -qi=false
+  - Use quiet mode and disable interactive mode
 - cargo run --example example-commander -- -i=false -n=World
   - Disable interactive mode and use the specified name
 - cargo run --example example-commander -- --interactive=false

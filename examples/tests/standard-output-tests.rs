@@ -5,7 +5,7 @@
 //! - Author: [`David Wallace Croft`]
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Created: 2024-04-06
-//! - Updated: 2024-06-25
+//! - Updated: 2024-06-27
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -80,6 +80,15 @@ fn test_output_args_non_interactive_equals() {
     .assert()
     .success()
     .stdout("Hello, World!\n");
+}
+
+#[test]
+fn test_output_args_non_interactive_quiet() {
+  make_command()
+    .args(["-qi=false"])
+    .assert()
+    .success()
+    .stdout("Hello, World.\n");
 }
 
 #[test]

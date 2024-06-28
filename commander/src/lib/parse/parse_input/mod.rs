@@ -61,6 +61,7 @@ impl ParseInput {
       if using_long_name {
         let arg_option_name: &str = arg.strip_prefix(prefix).unwrap();
 
+        // TODO: Add a unit test for this
         if arg_option_name.eq("") {
           unrecognized_set.insert(String::from(""));
 
@@ -99,12 +100,19 @@ impl ParseInput {
 
       let equals_index_option = arg_option_names_with_equals.find('=');
 
-      let arg_option_names: String = if equals_index_option.is_some() {
-        arg_option_names_with_equals[0..equals_index_option.unwrap()]
-          .to_string()
-      } else {
-        arg_option_names_with_equals
-      };
+      let arg_option_names: String =
+        if let Some(equals_index) = equals_index_option {
+          arg_option_names_with_equals[0..equals_index].to_string()
+        } else {
+          arg_option_names_with_equals
+        };
+
+      // TODO: Add a unit test for this
+      if arg_option_names.eq("") {
+        unrecognized_set.insert(String::from(""));
+
+        continue;
+      }
 
       'middle: for arg_option_name in arg_option_names.chars() {
         for recognized_option in recognized_options {

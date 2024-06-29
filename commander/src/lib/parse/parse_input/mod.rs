@@ -3,10 +3,10 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-06-26
+//! - Updated: 2024-06-29
 //!
-//! [`CroftSoft Inc`]: https://www.croftsoft.com/
-//! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
+//! [`CroftSoft Inc`]: https://www.CroftSoft.com/
+//! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/
 //==============================================================================
 
 use ::std::collections::HashSet;
@@ -29,7 +29,9 @@ pub struct ParseInput {
 }
 
 impl ParseInput {
+  //----------------------------------------------------------------------------
   /// A slice of the command-line arguments with a skip of zero
+  //----------------------------------------------------------------------------
   pub fn from_slice(args_slice: &[&str]) -> Self {
     let args: Vec<String> =
       args_slice.iter().map(|arg| arg.to_string()).collect();
@@ -49,7 +51,7 @@ impl ParseInput {
   ) -> Vec<String> {
     let mut unrecognized_set: HashSet<String> = HashSet::new();
 
-    'outer: for arg in self.args.iter().skip(self.skip) {
+    for arg in self.args.iter().skip(self.skip) {
       let (prefix, using_long_name) = if arg.starts_with("--") {
         ("--", true)
       } else if arg.starts_with('-') {
@@ -58,56 +60,27 @@ impl ParseInput {
         continue;
       };
 
+      let arg_stripped: &str = arg.strip_prefix(prefix).unwrap();
+
       if using_long_name {
-        let arg_option_name: &str = arg.strip_prefix(prefix).unwrap();
-
-        // TODO: Add a unit test for this
-        if arg_option_name.eq("") {
-          unrecognized_set.insert(String::from(""));
-
-          continue;
+        if !Self::matches_recognized_long(recognized_options, arg_stripped) {
+          unrecognized_set.insert(arg_stripped.to_string());
         }
-
-        for recognized_option in recognized_options {
-          let name_long_option = recognized_option.name.get_name_long();
-
-          if name_long_option.is_none() {
-            continue;
-          }
-
-          let recognized_option_name: String =
-            name_long_option.unwrap().to_string();
-
-          if arg_option_name.eq(&recognized_option_name) {
-            continue 'outer;
-          }
-
-          let recognized_option_name_equals: String =
-            format!("{recognized_option_name}=");
-
-          if arg_option_name.starts_with(&recognized_option_name_equals) {
-            continue 'outer;
-          }
-        }
-
-        unrecognized_set.insert(String::from(arg_option_name));
 
         continue;
       }
 
-      let arg_option_names_with_equals: String =
-        arg.strip_prefix(prefix).unwrap().to_string();
+      let equals_index_option = arg_stripped.find('=');
 
-      let equals_index_option = arg_option_names_with_equals.find('=');
-
-      let arg_option_names: String =
+      let arg_option_names: &str =
         if let Some(equals_index) = equals_index_option {
-          arg_option_names_with_equals[0..equals_index].to_string()
+          &arg_stripped[0..equals_index]
         } else {
-          arg_option_names_with_equals
+          arg_stripped
         };
 
       // TODO: Add a unit test for this
+      // TODO: Is this necessary?
       if arg_option_names.eq("") {
         unrecognized_set.insert(String::from(""));
 
@@ -134,6 +107,35 @@ impl ParseInput {
     }
 
     Vec::from_iter(unrecognized_set)
+  }
+
+  // ---------------------------------------------------------------------------
+  // private functions
+  // ---------------------------------------------------------------------------
+
+  fn matches_recognized_long(
+    recognized_options: &Vec<ParseOptionConfig>,
+    option_long_name: &str,
+  ) -> bool {
+    // TODO: Add a unit test for when arg_option_name is an empty string
+
+    for recognized_option in recognized_options {
+      let Some(recognized_name) = recognized_option.name.get_name_long() else {
+        continue;
+      };
+
+      if option_long_name.eq(recognized_name) {
+        return true;
+      }
+
+      let recognized_name_with_equals: String = format!("{recognized_name}=");
+
+      if option_long_name.starts_with(&recognized_name_with_equals) {
+        return true;
+      }
+    }
+
+    false
   }
 }
 

@@ -3,7 +3,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-06-29
+//! - Updated: 2024-06-30
 //!
 //! [`CroftSoft Inc`]: https://www.CroftSoft.com/
 //! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/
@@ -70,41 +70,12 @@ impl ParseInput {
         continue;
       }
 
-      let equals_index_option = arg_stripped.find('=');
-
-      let arg_option_names: &str =
-        if let Some(equals_index) = equals_index_option {
-          &arg_stripped[0..equals_index]
-        } else {
-          arg_stripped
-        };
-
-      // TODO: Add a unit test for this
-      // TODO: Is this necessary?
-      if arg_option_names.eq("") {
-        unrecognized_set.insert(String::from(""));
-
-        continue;
-      }
-
-      'middle: for arg_option_name in arg_option_names.chars() {
-        for recognized_option in recognized_options {
-          let name_short_option = recognized_option.name.get_name_short();
-
-          if name_short_option.is_none() {
-            continue;
-          }
-
-          let recognized_option_name: char = name_short_option.unwrap();
-
-          if arg_option_name == recognized_option_name {
-            continue 'middle;
-          }
-        }
-
-        unrecognized_set.insert(String::from(arg_option_name));
+      if !Self::matches_recognized_short(recognized_options, arg_stripped) {
+        unrecognized_set.insert(arg_stripped.to_string());
       }
     }
+
+    // TODO: Can this return a Set instead of an ordered Vec?
 
     Vec::from_iter(unrecognized_set)
   }
@@ -128,10 +99,45 @@ impl ParseInput {
         return true;
       }
 
+      // TODO: Should the argument be stripped of equals before here?
+
       let recognized_name_with_equals: String = format!("{recognized_name}=");
 
       if option_long_name.starts_with(&recognized_name_with_equals) {
         return true;
+      }
+    }
+
+    false
+  }
+
+  fn matches_recognized_short(
+    recognized_options: &Vec<ParseOptionConfig>,
+    option_short_names: &str,
+  ) -> bool {
+    // TODO: Should the argument be stripped of equals before here?
+
+    let equals_index_option = option_short_names.find('=');
+
+    let arg_option_names: &str = if let Some(equals_index) = equals_index_option
+    {
+      &option_short_names[0..equals_index]
+    } else {
+      option_short_names
+    };
+
+    // TODO: Add a unit test for empty string
+
+    for recognized_option in recognized_options {
+      let Some(recognized_name) = recognized_option.name.get_name_short()
+      else {
+        continue;
+      };
+
+      for arg_option_name in arg_option_names.chars() {
+        if arg_option_name == recognized_name {
+          return true;
+        }
       }
     }
 

@@ -3,7 +3,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-06-30
+//! - Updated: 2024-07-01
 //!
 //! [`CroftSoft Inc`]: https://www.CroftSoft.com/
 //! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/
@@ -45,6 +45,7 @@ impl ParseInput {
   //----------------------------------------------------------------------------
   /// Returns a list of unrecognized options from the command-line arguments
   //----------------------------------------------------------------------------
+  // TODO: maybe rename to parse_unknown()
   pub fn parse_unrecognized(
     &self,
     recognized_options: &Vec<ParseOptionConfig>,
@@ -60,18 +61,18 @@ impl ParseInput {
         continue;
       };
 
-      let arg_stripped: &str = arg.strip_prefix(prefix).unwrap();
+      let arg_trimmed: &str = Self::trim_arg(arg, prefix);
 
       if using_long_name {
-        if !Self::matches_recognized_long(recognized_options, arg_stripped) {
-          unrecognized_set.insert(arg_stripped.to_string());
+        if !Self::matches_recognized_long(recognized_options, arg_trimmed) {
+          unrecognized_set.insert(arg_trimmed.to_string());
         }
 
         continue;
       }
 
-      if !Self::matches_recognized_short(recognized_options, arg_stripped) {
-        unrecognized_set.insert(arg_stripped.to_string());
+      if !Self::matches_recognized_short(recognized_options, arg_trimmed) {
+        unrecognized_set.insert(arg_trimmed.to_string());
       }
     }
 
@@ -98,14 +99,6 @@ impl ParseInput {
       if option_long_name.eq(recognized_name) {
         return true;
       }
-
-      // TODO: Should the argument be stripped of equals before here?
-
-      let recognized_name_with_equals: String = format!("{recognized_name}=");
-
-      if option_long_name.starts_with(&recognized_name_with_equals) {
-        return true;
-      }
     }
 
     false
@@ -115,17 +108,6 @@ impl ParseInput {
     recognized_options: &Vec<ParseOptionConfig>,
     option_short_names: &str,
   ) -> bool {
-    // TODO: Should the argument be stripped of equals before here?
-
-    let equals_index_option = option_short_names.find('=');
-
-    let arg_option_names: &str = if let Some(equals_index) = equals_index_option
-    {
-      &option_short_names[0..equals_index]
-    } else {
-      option_short_names
-    };
-
     // TODO: Add a unit test for empty string
 
     for recognized_option in recognized_options {
@@ -134,7 +116,7 @@ impl ParseInput {
         continue;
       };
 
-      for arg_option_name in arg_option_names.chars() {
+      for arg_option_name in option_short_names.chars() {
         if arg_option_name == recognized_name {
           return true;
         }
@@ -142,6 +124,24 @@ impl ParseInput {
     }
 
     false
+  }
+
+  //----------------------------------------------------------------------------
+  /// Returns everything before the equals sign except for the prefix.
+  /// Example: For a prefix of "--", "--abc=123" becomes "abc"
+  //----------------------------------------------------------------------------
+  fn trim_arg<'a>(
+    arg: &'a str,
+    prefix: &str,
+  ) -> &'a str {
+    let arg_stripped: &str = arg.strip_prefix(prefix).unwrap();
+
+    let split_option: Option<(&str, &str)> = arg_stripped.split_once('=');
+
+    match split_option {
+      Some((before_equals, _)) => before_equals,
+      None => arg_stripped,
+    }
   }
 }
 

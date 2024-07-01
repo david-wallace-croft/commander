@@ -5,7 +5,7 @@
 //! - Author: [`David Wallace Croft`]
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Created: 2024-04-06
-//! - Updated: 2024-06-27
+//! - Updated: 2024-07-01
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -153,5 +153,5 @@ fn test_output_args_unrecognized_option_value() {
     // TODO: Should this be failure?
     .success()
     // TODO: Should this go to standard error?
-    .stdout("Unrecognized option: \"unrecognized=true\"\n");
+    .stdout("Unrecognized option: \"unrecognized\"\n");
 }

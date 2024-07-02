@@ -3,7 +3,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-01
+//! - Updated: 2024-07-02
 //!
 //! [`CroftSoft Inc`]: https://www.CroftSoft.com/
 //! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/
@@ -71,8 +71,13 @@ impl ParseInput {
         continue;
       }
 
-      if !Self::matches_recognized_short(recognized_options, arg_trimmed) {
-        unrecognized_set.insert(arg_trimmed.to_string());
+      for option_name_short in arg_trimmed.chars() {
+        if !Self::matches_recognized_short(
+          recognized_options,
+          option_name_short,
+        ) {
+          unrecognized_set.insert(option_name_short.to_string());
+        }
       }
     }
 
@@ -106,7 +111,7 @@ impl ParseInput {
 
   fn matches_recognized_short(
     recognized_options: &Vec<ParseOptionConfig>,
-    option_short_names: &str,
+    option_short_name: char,
   ) -> bool {
     // TODO: Add a unit test for empty string
 
@@ -116,10 +121,8 @@ impl ParseInput {
         continue;
       };
 
-      for arg_option_name in option_short_names.chars() {
-        if arg_option_name == recognized_name {
-          return true;
-        }
+      if option_short_name == recognized_name {
+        return true;
       }
     }
 

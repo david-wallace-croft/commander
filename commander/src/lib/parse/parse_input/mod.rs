@@ -71,6 +71,12 @@ impl ParseInput {
         continue;
       }
 
+      if arg_trimmed.is_empty() {
+        unrecognized_set.insert("".to_string());
+
+        continue;
+      }
+
       for option_name_short in arg_trimmed.chars() {
         if !Self::matches_recognized_short(
           recognized_options,

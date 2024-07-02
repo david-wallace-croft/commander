@@ -26,6 +26,12 @@ const TEST_PARSE_OPTION_CONFIG_0: ParseOptionConfig = ParseOptionConfig {
   value_usage: ValueUsage::Optional,
 };
 
+const TEST_PARSE_OPTION_CONFIG_1: ParseOptionConfig = ParseOptionConfig {
+  // TODO: Add this as an example to the README.md
+  name: ParseOptionName::Long(""),
+  value_usage: ValueUsage::Verboten,
+};
+
 #[test]
 fn test_default_0() {
   let expected: usize = 1;
@@ -81,6 +87,60 @@ fn test_parse_unrecognized_1() {
   };
 
   let expected: Vec<String> = vec!["U".to_string()];
+
+  let actual: Vec<String> =
+    test_parse_input.parse_unrecognized(test_recognized_options);
+
+  assert_eq!(actual, expected);
+}
+
+#[test]
+fn test_parse_unrecognized_2() {
+  let test_recognized_options: &Vec<ParseOptionConfig> =
+    &vec![TEST_PARSE_OPTION_CONFIG_0];
+
+  let test_parse_input: ParseInput = ParseInput {
+    args: vec!["--".to_string()],
+    skip: 0,
+  };
+
+  let expected: Vec<String> = vec!["".to_string()];
+
+  let actual: Vec<String> =
+    test_parse_input.parse_unrecognized(test_recognized_options);
+
+  assert_eq!(actual, expected);
+}
+
+#[test]
+fn test_parse_unrecognized_3() {
+  let test_recognized_options: &Vec<ParseOptionConfig> =
+    &vec![TEST_PARSE_OPTION_CONFIG_0];
+
+  let test_parse_input: ParseInput = ParseInput {
+    args: vec!["-".to_string()],
+    skip: 0,
+  };
+
+  let expected: Vec<String> = vec!["".to_string()];
+
+  let actual: Vec<String> =
+    test_parse_input.parse_unrecognized(test_recognized_options);
+
+  assert_eq!(actual, expected);
+}
+
+#[test]
+fn test_parse_unrecognized_4() {
+  let test_recognized_options: &Vec<ParseOptionConfig> =
+    &vec![TEST_PARSE_OPTION_CONFIG_1];
+
+  let test_parse_input: ParseInput = ParseInput {
+    args: vec!["--".to_string()],
+    skip: 0,
+  };
+
+  let expected: Vec<String> = vec![];
 
   let actual: Vec<String> =
     test_parse_input.parse_unrecognized(test_recognized_options);

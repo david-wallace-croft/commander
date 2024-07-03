@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-06-26
+//! - Updated: 2024-07-03
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -91,34 +91,10 @@ impl ParseOptionConfig<'_> {
         continue;
       };
 
-      if hyphenation_type == HyphenationType::Short {
-        let parse_output: ParseOutput = self.parse_short(arg, arg_index);
-
-        if parse_output.index.is_some() {
-          return parse_output;
-        }
-
-        continue;
-      }
-
-      // TODO: Move everything that follows to a parse_long()
-      //   and use a match statement on the hyphenation_type to
-      //   determine which parse function to call
-
-      let hyphenated_option_name_option: Option<String> =
-        self.make_hyphenated_option_name(hyphenation_type);
-
-      let Some(hyphenated_option_name) = hyphenated_option_name_option else {
-        continue;
+      let parse_output: ParseOutput = match hyphenation_type {
+        HyphenationType::Long => self.parse_long(arg, arg_index),
+        HyphenationType::Short => self.parse_short(arg, arg_index),
       };
-
-      let parse_output: ParseOutput =
-        ParseOptionConfig::parse_hyphenated_option_name(
-          arg,
-          arg_index,
-          &hyphenated_option_name,
-          self.value_usage,
-        );
 
       if parse_output.index.is_some() {
         return parse_output;
@@ -128,7 +104,9 @@ impl ParseOptionConfig<'_> {
     ParseOutput::default()
   }
 
+  // ===========================================================================
   // private functions and methods
+  // ===========================================================================
 
   fn make_hyphenated_option_name(
     &self,
@@ -197,6 +175,26 @@ impl ParseOptionConfig<'_> {
       index: index_option,
       value: value_option,
     }
+  }
+
+  fn parse_long(
+    &self,
+    arg: &str,
+    arg_index: usize,
+  ) -> ParseOutput {
+    let hyphenated_option_name_option: Option<String> =
+      self.make_hyphenated_option_name(HyphenationType::Long);
+
+    let Some(hyphenated_option_name) = hyphenated_option_name_option else {
+      return ParseOutput::default();
+    };
+
+    ParseOptionConfig::parse_hyphenated_option_name(
+      arg,
+      arg_index,
+      &hyphenated_option_name,
+      self.value_usage,
+    )
   }
 
   // TODO: Update README.md to show examples then update the standard output

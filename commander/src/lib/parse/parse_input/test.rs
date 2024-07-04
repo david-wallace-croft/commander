@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-31
-//! - Updated: 2024-07-02
+//! - Updated: 2024-07-04
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -68,9 +68,14 @@ fn test_parse_unrecognized_0() {
     skip: 0,
   };
 
-  let expected: Vec<String> = vec!["UNRECOGNIZED".to_string()];
+  let expected: Vec<ParseUnrecognizedOutput> = vec![
+    ParseUnrecognizedOutput {
+      index: 1,
+      name: "UNRECOGNIZED".to_string(),
+    },
+  ];
 
-  let actual: Vec<String> =
+  let actual: Vec<ParseUnrecognizedOutput> =
     test_parse_input.parse_unrecognized(test_recognized_options);
 
   assert_eq!(actual, expected);
@@ -86,9 +91,14 @@ fn test_parse_unrecognized_1() {
     skip: 0,
   };
 
-  let expected: Vec<String> = vec!["U".to_string()];
+  let expected: Vec<ParseUnrecognizedOutput> = vec![
+    ParseUnrecognizedOutput {
+      index: 0,
+      name: "U".to_string(),
+    },
+  ];
 
-  let actual: Vec<String> =
+  let actual: Vec<ParseUnrecognizedOutput> =
     test_parse_input.parse_unrecognized(test_recognized_options);
 
   assert_eq!(actual, expected);
@@ -104,9 +114,14 @@ fn test_parse_unrecognized_2() {
     skip: 0,
   };
 
-  let expected: Vec<String> = vec!["".to_string()];
+  let expected: Vec<ParseUnrecognizedOutput> = vec![
+    ParseUnrecognizedOutput {
+      index: 0,
+      name: "".to_string(),
+    },
+  ];
 
-  let actual: Vec<String> =
+  let actual: Vec<ParseUnrecognizedOutput> =
     test_parse_input.parse_unrecognized(test_recognized_options);
 
   assert_eq!(actual, expected);
@@ -122,9 +137,14 @@ fn test_parse_unrecognized_3() {
     skip: 0,
   };
 
-  let expected: Vec<String> = vec!["".to_string()];
+  let expected: Vec<ParseUnrecognizedOutput> = vec![
+    ParseUnrecognizedOutput {
+      index: 0,
+      name: "".to_string(),
+    },
+  ];
 
-  let actual: Vec<String> =
+  let actual: Vec<ParseUnrecognizedOutput> =
     test_parse_input.parse_unrecognized(test_recognized_options);
 
   assert_eq!(actual, expected);
@@ -140,9 +160,9 @@ fn test_parse_unrecognized_4() {
     skip: 0,
   };
 
-  let expected: Vec<String> = vec![];
+  let expected: Vec<ParseUnrecognizedOutput> = vec![];
 
-  let actual: Vec<String> =
+  let actual: Vec<ParseUnrecognizedOutput> =
     test_parse_input.parse_unrecognized(test_recognized_options);
 
   assert_eq!(actual, expected);

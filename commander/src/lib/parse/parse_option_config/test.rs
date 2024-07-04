@@ -5,13 +5,14 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-02
-//! - Updated: 2024-06-23
+//! - Updated: 2024-07-04
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
 use crate::parse::parse_error::ParseError;
+use crate::parse::parse_input::ParseUnrecognizedOutput;
 
 use super::*;
 
@@ -774,9 +775,14 @@ fn test_parse_unrecognized_long() {
 
   let test_parse_input = &ParseInput::from_slice(&["--unrecognized"]);
 
-  let expected: Vec<String> = vec![String::from("unrecognized")];
+  let expected: Vec<ParseUnrecognizedOutput> = vec![
+    ParseUnrecognizedOutput {
+      index: 0,
+      name: "unrecognized".to_string(),
+    },
+  ];
 
-  let actual: Vec<String> =
+  let actual: Vec<ParseUnrecognizedOutput> =
     test_parse_input.parse_unrecognized(&recognized_options);
 
   assert_eq!(actual, expected);
@@ -796,9 +802,14 @@ fn test_parse_unrecognized_short() {
 
   let test_parse_input = &ParseInput::from_slice(&["-u"]);
 
-  let expected: Vec<String> = vec![String::from("u")];
+  let expected: Vec<ParseUnrecognizedOutput> = vec![
+    ParseUnrecognizedOutput {
+      index: 0,
+      name: "u".to_string(),
+    },
+  ];
 
-  let actual: Vec<String> =
+  let actual: Vec<ParseUnrecognizedOutput> =
     test_parse_input.parse_unrecognized(&recognized_options);
 
   assert_eq!(actual, expected);

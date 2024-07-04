@@ -5,7 +5,7 @@
 //! - Author: [`David Wallace Croft`]
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Created: 2024-04-06
-//! - Updated: 2024-07-01
+//! - Updated: 2024-07-04
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -131,7 +131,7 @@ fn test_output_args_unrecognized_long() {
     // TODO: Should this be failure?
     .success()
     // TODO: Should this go to standard error?
-    .stdout("Unrecognized option: \"unrecognized\"\n");
+    .stdout("Unrecognized option at position 1: \"unrecognized\"\n");
 }
 
 #[test]
@@ -142,7 +142,7 @@ fn test_output_args_unrecognized_short() {
     // TODO: Should this be failure?
     .success()
     // TODO: Should this go to standard error?
-    .stdout("Unrecognized option: \"u\"\n");
+    .stdout("Unrecognized option at position 1: \"u\"\n");
 }
 
 #[test]
@@ -153,5 +153,5 @@ fn test_output_args_unrecognized_option_value() {
     // TODO: Should this be failure?
     .success()
     // TODO: Should this go to standard error?
-    .stdout("Unrecognized option: \"unrecognized\"\n");
+    .stdout("Unrecognized option at position 1: \"unrecognized\"\n");
 }

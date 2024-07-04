@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-06-25
+//! - Updated: 2024-07-04
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -13,6 +13,7 @@
 
 use clap::{Arg, ArgMatches, Command};
 
+use commander::parse::parse_input::ParseUnrecognizedOutput;
 use croftsoft_commander_examples::constants::*;
 use croftsoft_commander_examples::OptionValues;
 
@@ -61,7 +62,7 @@ pub fn parse_option_values_using_clap() -> OptionValues {
   let name_option: Option<String> =
     arg_match_name.map(|name: &str| name.to_string());
 
-  let unrecognized: Vec<String> = Vec::new();
+  let unrecognized: Vec<ParseUnrecognizedOutput> = Vec::new();
 
   OptionValues {
     help_wanted: false,

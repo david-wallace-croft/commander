@@ -23,6 +23,7 @@ mod test;
 pub struct ParseOutput {
   pub error: Option<ParseError>,
   // TODO: Might use a 2nd index for multiple short names in a single argument
+  // TODO: Instead of Option for index, maybe Option for ParseOutput
   pub index: Option<usize>,
   // TODO: Does this need to be OsString?
   pub value: Option<String>,

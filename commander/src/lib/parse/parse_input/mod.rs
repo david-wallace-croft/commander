@@ -3,7 +3,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-04
+//! - Updated: 2024-07-05
 //!
 //! [`CroftSoft Inc`]: https://www.CroftSoft.com/
 //! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/
@@ -52,6 +52,44 @@ impl ParseInput {
       skip: 0,
     }
   }
+
+  // TODO: To be useful, needs to return the ParseOptionConfig matched
+  // pub fn parse(
+  //   &self,
+  //   parse_option_configs: &[ParseOptionConfig],
+  // ) -> Vec<ParseOutput> {
+  //   let mut parse_output_vec = Vec::<ParseOutput>::new();
+  //
+  //   'outer: for (arg_index, arg) in self.args.iter().enumerate().skip(self.skip)
+  //   {
+  //     for parse_option_config in parse_option_configs {
+  //       let parse_input = ParseInput {
+  //         args: vec![arg.clone()],
+  //         skip: 0,
+  //       };
+  //
+  //       // TODO: Use something more efficient than parse_next
+  //       let parse_output: ParseOutput =
+  //         parse_option_config.parse_next(&parse_input);
+  //
+  //       if parse_output.index.is_some() {
+  //         let new_parse_output = ParseOutput {
+  //           error: parse_output.error,
+  //           index: Some(arg_index),
+  //           value: parse_output.value,
+  //         };
+  //
+  //         parse_output_vec.push(new_parse_output);
+  //
+  //         continue 'outer;
+  //       }
+  //     }
+  //
+  //     // TODO: Attempt to parse unrecognized
+  //   }
+  //
+  //   parse_output_vec
+  // }
 
   //----------------------------------------------------------------------------
   /// Returns a list of unrecognized options from the command-line arguments

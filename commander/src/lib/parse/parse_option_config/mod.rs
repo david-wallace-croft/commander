@@ -31,6 +31,8 @@ pub struct ParseOptionConfig<'a> {
 }
 
 impl ParseOptionConfig<'_> {
+  // TODO: Move this to ParseInput so that it can return known=false;
+  //   it would take in a slice of ParseOptionConfig as its input
   pub fn parse(
     &self,
     parse_input: &ParseInput,

@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-05
+//! - Updated: 2024-07-06
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -42,15 +42,15 @@ impl ParseOptionConfig<'_> {
     let mut parse_input_next: ParseInput = parse_input.clone();
 
     loop {
-      let parse_output = self.parse_next(&parse_input_next);
+      let parse_output_option = self.parse_next(&parse_input_next);
 
-      if parse_output.index.is_none() {
+      let Some(parse_output) = parse_output_option else {
         return parse_output_vec;
-      }
+      };
 
       parse_input_next = ParseInput {
         args: parse_input.args.clone(),
-        skip: parse_output.index.unwrap() + 1,
+        skip: parse_output.index + 1,
       };
 
       parse_output_vec.push(parse_output);
@@ -60,20 +60,10 @@ impl ParseOptionConfig<'_> {
   pub fn parse_last(
     &self,
     parse_input: &ParseInput,
-  ) -> ParseOutput {
+  ) -> Option<ParseOutput> {
     let mut parse_output_vec: Vec<ParseOutput> = self.parse(parse_input);
 
-    let parse_output_option: Option<ParseOutput> = parse_output_vec.pop();
-
-    if let Some(parse_output) = parse_output_option {
-      return parse_output;
-    }
-
-    ParseOutput {
-      error: None,
-      index: None,
-      value: None,
-    }
+    parse_output_vec.pop()
   }
 
   //----------------------------------------------------------------------------
@@ -82,7 +72,7 @@ impl ParseOptionConfig<'_> {
   pub fn parse_next(
     &self,
     parse_input: &ParseInput,
-  ) -> ParseOutput {
+  ) -> Option<ParseOutput> {
     for (arg_index, arg) in
       parse_input.args.iter().enumerate().skip(parse_input.skip)
     {
@@ -93,17 +83,17 @@ impl ParseOptionConfig<'_> {
         continue;
       };
 
-      let parse_output: ParseOutput = match hyphenation_type {
+      let parse_output_option: Option<ParseOutput> = match hyphenation_type {
         HyphenationType::Long => self.parse_long(arg, arg_index),
         HyphenationType::Short => self.parse_short(arg, arg_index),
       };
 
-      if parse_output.index.is_some() {
-        return parse_output;
-      }
+      if parse_output_option.is_some() {
+        return parse_output_option;
+      };
     }
 
-    ParseOutput::default()
+    None
   }
 
   // ===========================================================================
@@ -139,7 +129,7 @@ impl ParseOptionConfig<'_> {
     arg_index: usize,
     hyphenated_option_name: &str,
     value_usage: ValueUsage,
-  ) -> ParseOutput {
+  ) -> Option<ParseOutput> {
     let hyphenated_option_name_equals: &String =
       &format!("{}=", hyphenated_option_name);
 
@@ -172,24 +162,24 @@ impl ParseOptionConfig<'_> {
       }
     }
 
-    ParseOutput {
+    let index = index_option?;
+
+    Some(ParseOutput {
       error: error_option,
-      index: index_option,
+      index,
       value: value_option,
-    }
+    })
   }
 
   fn parse_long(
     &self,
     arg: &str,
     arg_index: usize,
-  ) -> ParseOutput {
+  ) -> Option<ParseOutput> {
     let hyphenated_option_name_option: Option<String> =
       self.make_hyphenated_option_name(HyphenationType::Long);
 
-    let Some(hyphenated_option_name) = hyphenated_option_name_option else {
-      return ParseOutput::default();
-    };
+    let hyphenated_option_name = hyphenated_option_name_option?;
 
     ParseOptionConfig::parse_hyphenated_option_name(
       arg,
@@ -205,45 +195,37 @@ impl ParseOptionConfig<'_> {
     &self,
     arg: &str,
     arg_index: usize,
-  ) -> ParseOutput {
+  ) -> Option<ParseOutput> {
     // TODO: What if there are multiple short names within one argument?
     //   Might need to return the sub_index in the ParseOutput.
 
-    if self.name.get_name_short().is_none() {
-      return ParseOutput::default();
-    }
-
-    let name_short: char = self.name.get_name_short().unwrap();
+    let name_short: char = self.name.get_name_short()?;
 
     let equals_index_option = arg.find('=');
 
     if equals_index_option.is_none() {
-      if arg.find(name_short).is_none() {
-        return ParseOutput::default();
-      };
+      arg.find(name_short)?;
 
       if self.value_usage == ValueUsage::Required {
-        return ParseOutput {
+        return Some(ParseOutput {
           error: Some(ParseError::RequiredValueMissing),
-          index: Some(arg_index),
+          index: arg_index,
           value: None,
-        };
+        });
       }
 
-      return ParseOutput {
+      return Some(ParseOutput {
         error: None,
-        index: Some(arg_index),
+        index: arg_index,
         value: None,
-      };
+      });
     }
 
     let equals_index: usize = equals_index_option.unwrap();
 
     let arg_prefix: &str = &arg[0..equals_index];
 
-    let Some(sub_index) = arg_prefix.find(name_short) else {
-      return ParseOutput::default();
-    };
+    let sub_index = arg_prefix.find(name_short)?;
 
     if sub_index != arg_prefix.len() - 1 {
       let error: Option<ParseError> =
@@ -253,21 +235,21 @@ impl ParseOptionConfig<'_> {
           None
         };
 
-      return ParseOutput {
+      return Some(ParseOutput {
         error,
-        index: Some(arg_index),
+        index: arg_index,
         value: None,
-      };
+      });
     }
 
     let value: &str = &arg[equals_index + 1..];
 
     if value.eq("") {
-      return ParseOutput {
+      return Some(ParseOutput {
         error: Some(ParseError::ValueMissingAfterEquals),
-        index: Some(arg_index),
+        index: arg_index,
         value: None,
-      };
+      });
     }
 
     let error: Option<ParseError> = if self.value_usage == ValueUsage::Verboten
@@ -277,10 +259,10 @@ impl ParseOptionConfig<'_> {
       None
     };
 
-    ParseOutput {
+    Some(ParseOutput {
       error,
-      index: Some(arg_index),
+      index: arg_index,
       value: Some(value.to_string()),
-    }
+    })
   }
 }

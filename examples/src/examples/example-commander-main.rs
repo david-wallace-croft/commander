@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-07-04
+//! - Updated: 2024-07-06
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -34,31 +34,56 @@ fn main() {
 pub fn parse_option_values_using_commander() -> OptionValues {
   let parse_input = &ParseInput::default();
 
-  let help_wanted_result: Result<bool, ParseError> = OPTION_CONFIG_H
-    .parse_last(parse_input)
-    .to_bool_result(false);
+  let help_wanted_parse_output_option: Option<ParseOutput> =
+    OPTION_CONFIG_H.parse_last(parse_input);
 
-  // TODO: Show the user the parse error
-  let help_wanted: bool = help_wanted_result.unwrap_or(false);
+  let help_wanted: bool =
+    if let Some(help_wanted_parse_output) = help_wanted_parse_output_option {
+      let help_wanted_result: Result<bool, ParseError> =
+        help_wanted_parse_output.to_bool_result();
+
+      // TODO: Show the user the parse error
+      help_wanted_result.unwrap_or(false)
+    } else {
+      false
+    };
+
+  let interactive_parse_output_option: Option<ParseOutput> =
+    OPTION_CONFIG_I.parse_last(parse_input);
 
   let interactive: Result<bool, ParseError> =
-    OPTION_CONFIG_I.parse_last(parse_input).to_bool_result(true);
+    if let Some(interactive_parse_output) = interactive_parse_output_option {
+      interactive_parse_output.to_bool_result()
+    } else {
+      Ok(true)
+    };
 
   // TODO: parse_option_type_string_with_default_value
 
-  let parse_output: ParseOutput = OPTION_CONFIG_N.parse_last(parse_input);
+  let name_parse_output_option: Option<ParseOutput> =
+    OPTION_CONFIG_N.parse_last(parse_input);
 
-  let name_option: Option<String> = parse_output.value;
+  let name_option: Option<String> =
+    if let Some(name_parse_output) = name_parse_output_option {
+      name_parse_output.value
+    } else {
+      None
+    };
 
   let arg_option_vector: Vec<ParseOptionConfig> = OPTION_CONFIGS
     .map(|config| config.parse_option_config)
     .to_vec();
 
+  let quiet_parse_output_option: Option<ParseOutput> =
+    OPTION_CONFIG_Q.parse_next(parse_input);
+
   // TODO: Show the user the parse error
-  let quiet = OPTION_CONFIG_Q
-    .parse_next(parse_input)
-    .to_bool_result(false)
-    .unwrap_or(false);
+  let quiet: bool = if let Some(quiet_parse_output) = quiet_parse_output_option
+  {
+    quiet_parse_output.to_bool_result().unwrap_or(false)
+  } else {
+    false
+  };
 
   let unrecognized: Vec<ParseUnrecognizedOutput> =
     parse_input.parse_unrecognized(&arg_option_vector);

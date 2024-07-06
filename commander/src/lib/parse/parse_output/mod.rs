@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-05
+//! - Updated: 2024-07-06
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -24,7 +24,9 @@ pub struct ParseOutput {
   pub error: Option<ParseError>,
   // TODO: Might use a 2nd index for multiple short names in a single argument
   // TODO: Instead of Option for index, maybe Option for ParseOutput
-  pub index: Option<usize>,
+  // TODO: Instead of index, an enum for short and long with
+  //   arg index and long name or arg index, sub-index, and short name
+  pub index: usize,
   // TODO: Does this need to be OsString?
   pub value: Option<String>,
 }
@@ -36,22 +38,14 @@ impl ParseOutput {
   /// Converts the ParseOutput to a boolean value
   ///
   /// - Returns the error if the error is Some
-  /// - Returns the default boolean value if the option index is None
   /// - Returns true if the option value is None
   /// - Returns false if the option value is 0, f, false, n, no, or off
   /// - Returns true if the option value is 1, on, t, true, y, or yes
   /// - Returns an InvalidValue error if the option value is anything else
   //----------------------------------------------------------------------------
-  pub fn to_bool_result(
-    self,
-    default: bool,
-  ) -> Result<bool, ParseError> {
+  pub fn to_bool_result(self) -> Result<bool, ParseError> {
     if let Some(error) = self.error {
       return Err(error);
-    }
-
-    if self.index.is_none() {
-      return Ok(default);
     }
 
     if self.value.is_none() {

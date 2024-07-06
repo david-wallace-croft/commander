@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-06-21
+//! - Updated: 2024-07-06
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -85,12 +85,12 @@ fn test_parse_0() {
   let expected = vec![
     ParseOutput {
       error: None,
-      index: Some(0),
+      index: 0,
       value: Some("A".to_string()),
     },
     ParseOutput {
       error: None,
-      index: Some(1),
+      index: 1,
       value: Some("B".to_string()),
     },
   ];
@@ -110,13 +110,14 @@ fn test_parse_last_0() {
     skip: 0,
   };
 
-  let expected = ParseOutput {
+  let expected = Some(ParseOutput {
     error: None,
-    index: Some(1),
+    index: 1,
     value: Some("B".to_string()),
-  };
+  });
 
-  let actual: ParseOutput = TEST_OPTION_CONFIG_0.parse_last(&test_parse_input);
+  let actual: Option<ParseOutput> =
+    TEST_OPTION_CONFIG_0.parse_last(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
@@ -131,13 +132,14 @@ fn test_parse_next_0() {
     skip: 1,
   };
 
-  let expected = ParseOutput {
+  let expected = Some(ParseOutput {
     error: None,
-    index: Some(1),
+    index: 1,
     value: Some("B".to_string()),
-  };
+  });
 
-  let actual: ParseOutput = TEST_OPTION_CONFIG_0.parse_next(&test_parse_input);
+  let actual: Option<ParseOutput> =
+    TEST_OPTION_CONFIG_0.parse_next(&test_parse_input);
 
   assert_eq!(actual, expected);
 }

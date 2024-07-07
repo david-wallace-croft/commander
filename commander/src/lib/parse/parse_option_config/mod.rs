@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-06
+//! - Updated: 2024-07-07
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -15,7 +15,7 @@ use super::hyphenation_type::HyphenationType;
 use super::parse_error::ParseError;
 use super::parse_input::ParseInput;
 use super::parse_option_name::ParseOptionName;
-use super::parse_output::ParseOutput;
+use super::parse_output::{ParseFound, ParseOutput};
 use super::value_usage::ValueUsage;
 
 #[cfg(test)]
@@ -48,9 +48,23 @@ impl ParseOptionConfig<'_> {
         return parse_output_vec;
       };
 
+      // TODO: Modify to iterate over chars in an arg with multiple short names
+      // TODO: Use a parse_output.get_arg_index() function
+
+      let skip: usize = match parse_output.found {
+        ParseFound::Long {
+          arg_index,
+          ..
+        } => arg_index,
+        ParseFound::Short {
+          arg_index,
+          ..
+        } => arg_index,
+      } + 1;
+
       parse_input_next = ParseInput {
         args: parse_input.args.clone(),
-        skip: parse_output.index + 1,
+        skip,
       };
 
       parse_output_vec.push(parse_output);
@@ -124,53 +138,6 @@ impl ParseOptionConfig<'_> {
     }
   }
 
-  fn parse_hyphenated_option_name(
-    arg: &str,
-    arg_index: usize,
-    hyphenated_option_name: &str,
-    value_usage: ValueUsage,
-  ) -> Option<ParseOutput> {
-    let hyphenated_option_name_equals: &String =
-      &format!("{}=", hyphenated_option_name);
-
-    let mut index_option: Option<usize> = None;
-
-    let mut error_option: Option<ParseError> = None;
-
-    let mut value_option: Option<String> = None;
-
-    if arg.starts_with(hyphenated_option_name_equals) {
-      index_option = Some(arg_index);
-
-      let value: &str =
-        arg.strip_prefix(hyphenated_option_name_equals).unwrap();
-
-      if value.eq("") {
-        error_option = Some(ParseError::ValueMissingAfterEquals);
-      } else {
-        value_option = Some(value.to_string());
-
-        if value_usage == ValueUsage::Verboten {
-          error_option = Some(ParseError::VerbotenValuePresent);
-        }
-      }
-    } else if arg.eq(hyphenated_option_name) {
-      index_option = Some(arg_index);
-
-      if value_usage == ValueUsage::Required {
-        error_option = Some(ParseError::RequiredValueMissing);
-      }
-    }
-
-    let index = index_option?;
-
-    Some(ParseOutput {
-      error: error_option,
-      index,
-      value: value_option,
-    })
-  }
-
   fn parse_long(
     &self,
     arg: &str,
@@ -181,12 +148,52 @@ impl ParseOptionConfig<'_> {
 
     let hyphenated_option_name = hyphenated_option_name_option?;
 
-    ParseOptionConfig::parse_hyphenated_option_name(
-      arg,
+    let hyphenated_option_name_equals: &String =
+      &format!("{}=", hyphenated_option_name);
+
+    let mut found: bool = false;
+
+    let mut error_option: Option<ParseError> = None;
+
+    let mut value_option: Option<String> = None;
+
+    if arg.starts_with(hyphenated_option_name_equals) {
+      found = true;
+
+      let value: &str =
+        arg.strip_prefix(hyphenated_option_name_equals).unwrap();
+
+      if value.eq("") {
+        error_option = Some(ParseError::ValueMissingAfterEquals);
+      } else {
+        value_option = Some(value.to_string());
+
+        if self.value_usage == ValueUsage::Verboten {
+          error_option = Some(ParseError::VerbotenValuePresent);
+        }
+      }
+    } else if arg.eq(&hyphenated_option_name) {
+      found = true;
+
+      if self.value_usage == ValueUsage::Required {
+        error_option = Some(ParseError::RequiredValueMissing);
+      }
+    }
+
+    if !found {
+      return None;
+    }
+
+    let parse_found: ParseFound = ParseFound::Long {
       arg_index,
-      &hyphenated_option_name,
-      self.value_usage,
-    )
+      name_long: self.name.get_name_long().unwrap().to_string(),
+    };
+
+    Some(ParseOutput {
+      error: error_option,
+      found: parse_found,
+      value: value_option,
+    })
   }
 
   // TODO: Update README.md to show examples then update the standard output
@@ -196,38 +203,21 @@ impl ParseOptionConfig<'_> {
     arg: &str,
     arg_index: usize,
   ) -> Option<ParseOutput> {
-    // TODO: What if there are multiple short names within one argument?
-    //   Might need to return the sub_index in the ParseOutput.
-
     let name_short: char = self.name.get_name_short()?;
 
-    let equals_index_option = arg.find('=');
+    let arg_without_prefix: &str = arg.strip_prefix('-').unwrap();
+
+    let equals_index_option = arg_without_prefix.find('=');
 
     if equals_index_option.is_none() {
-      arg.find(name_short)?;
+      let char_index: usize = arg_without_prefix.find(name_short)?;
 
-      if self.value_usage == ValueUsage::Required {
-        return Some(ParseOutput {
-          error: Some(ParseError::RequiredValueMissing),
-          index: arg_index,
-          value: None,
-        });
-      }
+      let found = ParseFound::Short {
+        arg_index,
+        char_index,
+        name_short,
+      };
 
-      return Some(ParseOutput {
-        error: None,
-        index: arg_index,
-        value: None,
-      });
-    }
-
-    let equals_index: usize = equals_index_option.unwrap();
-
-    let arg_prefix: &str = &arg[0..equals_index];
-
-    let sub_index = arg_prefix.find(name_short)?;
-
-    if sub_index != arg_prefix.len() - 1 {
       let error: Option<ParseError> =
         if self.value_usage == ValueUsage::Required {
           Some(ParseError::RequiredValueMissing)
@@ -237,17 +227,44 @@ impl ParseOptionConfig<'_> {
 
       return Some(ParseOutput {
         error,
-        index: arg_index,
+        found,
         value: None,
       });
     }
 
-    let value: &str = &arg[equals_index + 1..];
+    let equals_index: usize = equals_index_option.unwrap();
+
+    let arg_prefix: &str = &arg_without_prefix[0..equals_index];
+
+    let char_index = arg_prefix.find(name_short)?;
+
+    let found = ParseFound::Short {
+      arg_index,
+      char_index,
+      name_short,
+    };
+
+    if char_index != arg_prefix.len() - 1 {
+      let error: Option<ParseError> =
+        if self.value_usage == ValueUsage::Required {
+          Some(ParseError::RequiredValueMissing)
+        } else {
+          None
+        };
+
+      return Some(ParseOutput {
+        error,
+        found,
+        value: None,
+      });
+    }
+
+    let value: &str = &arg_without_prefix[equals_index + 1..];
 
     if value.eq("") {
       return Some(ParseOutput {
         error: Some(ParseError::ValueMissingAfterEquals),
-        index: arg_index,
+        found,
         value: None,
       });
     }
@@ -261,7 +278,7 @@ impl ParseOptionConfig<'_> {
 
     Some(ParseOutput {
       error,
-      index: arg_index,
+      found,
       value: Some(value.to_string()),
     })
   }

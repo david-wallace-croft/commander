@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-06
+//! - Updated: 2024-07-07
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -16,17 +16,27 @@ use super::parse_error::ParseError;
 #[cfg(test)]
 mod test;
 
+// TODO: Move this to its own module; maybe add function get_arg_index(&self)
+#[derive(Clone, Debug, PartialEq)]
+pub enum ParseFound {
+  Long {
+    arg_index: usize,
+    name_long: String,
+  },
+  Short {
+    arg_index: usize,
+    char_index: usize,
+    name_short: char,
+  },
+}
+
 //------------------------------------------------------------------------------
 /// The output of parsing an option from the command-line arguments
 //------------------------------------------------------------------------------
-#[derive(Debug, Default, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct ParseOutput {
   pub error: Option<ParseError>,
-  // TODO: Might use a 2nd index for multiple short names in a single argument
-  // TODO: Instead of Option for index, maybe Option for ParseOutput
-  // TODO: Instead of index, an enum for short and long with
-  //   arg index and long name or arg index, sub-index, and short name
-  pub index: usize,
+  pub found: ParseFound,
   // TODO: Does this need to be OsString?
   pub value: Option<String>,
 }

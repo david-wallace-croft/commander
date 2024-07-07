@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-02
-//! - Updated: 2024-07-06
+//! - Updated: 2024-07-07
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -107,17 +107,29 @@ fn test_parse_0() {
   let expected: Vec<ParseOutput> = vec![
     ParseOutput {
       error: None,
-      index: 1,
+      found: ParseFound::Short {
+        arg_index: 1,
+        char_index: 0,
+        name_short: 'T',
+      },
       value: None,
     },
     ParseOutput {
       error: None,
-      index: 3,
+      found: ParseFound::Short {
+        arg_index: 3,
+        char_index: 0,
+        name_short: 'T',
+      },
       value: Some("A".to_string()),
     },
     ParseOutput {
       error: None,
-      index: 5,
+      found: ParseFound::Short {
+        arg_index: 5,
+        char_index: 0,
+        name_short: 'T',
+      },
       value: Some("B".to_string()),
     },
   ];
@@ -146,115 +158,117 @@ fn test_parse_1() {
 // parse_hyphenated_option_name() unit tests
 //------------------------------------------------------------------------------
 
-#[test]
-fn test_parse_hyphenated_option_name_0() {
-  let expected: Option<ParseOutput> = None;
+// TODO: Convert these old tests to parse_long() unit tests?
 
-  let actual: Option<ParseOutput> =
-    ParseOptionConfig::parse_hyphenated_option_name(
-      "--UNRECOGNIZED",
-      0,
-      "--TEST",
-      ValueUsage::Optional,
-    );
-
-  assert_eq!(actual, expected);
-}
-
-#[test]
-fn test_parse_hyphenated_option_name_1() {
-  let expected: Option<ParseOutput> = Some(ParseOutput {
-    error: None,
-    index: 0,
-    value: None,
-  });
-
-  let actual: Option<ParseOutput> =
-    ParseOptionConfig::parse_hyphenated_option_name(
-      "--TEST",
-      0,
-      "--TEST",
-      ValueUsage::Optional,
-    );
-
-  assert_eq!(actual, expected);
-}
-
-#[test]
-fn test_parse_hyphenated_option_name_2() {
-  let expected: Option<ParseOutput> = Some(ParseOutput {
-    error: Some(ParseError::ValueMissingAfterEquals),
-    index: 0,
-    value: None,
-  });
-
-  let actual: Option<ParseOutput> =
-    ParseOptionConfig::parse_hyphenated_option_name(
-      "--TEST=",
-      0,
-      "--TEST",
-      ValueUsage::Optional,
-    );
-
-  assert_eq!(actual, expected);
-}
-
-#[test]
-fn test_parse_hyphenated_option_name_3() {
-  let expected: Option<ParseOutput> = Some(ParseOutput {
-    error: None,
-    index: 0,
-    value: Some("VALUE".to_string()),
-  });
-
-  let actual: Option<ParseOutput> =
-    ParseOptionConfig::parse_hyphenated_option_name(
-      "--TEST=VALUE",
-      0,
-      "--TEST",
-      ValueUsage::Optional,
-    );
-
-  assert_eq!(actual, expected);
-}
-
-#[test]
-fn test_parse_hyphenated_option_name_4() {
-  let expected: Option<ParseOutput> = Some(ParseOutput {
-    error: Some(ParseError::VerbotenValuePresent),
-    index: 0,
-    value: Some("VALUE".to_string()),
-  });
-
-  let actual: Option<ParseOutput> =
-    ParseOptionConfig::parse_hyphenated_option_name(
-      "--TEST=VALUE",
-      0,
-      "--TEST",
-      ValueUsage::Verboten,
-    );
-
-  assert_eq!(actual, expected);
-}
-
-#[test]
-fn test_parse_hyphenated_option_name_5() {
-  let expected: Option<ParseOutput> = Some(ParseOutput {
-    error: Some(ParseError::RequiredValueMissing),
-    index: 0,
-    value: None,
-  });
-
-  let actual: Option<ParseOutput> =
-    ParseOptionConfig::parse_hyphenated_option_name(
-      "--TEST",
-      0,
-      "--TEST",
-      ValueUsage::Required,
-    );
-
-  assert_eq!(actual, expected);
-}
+// #[test]
+// fn test_parse_hyphenated_option_name_0() {
+//   let expected: Option<ParseOutput> = None;
+//
+//   let actual: Option<ParseOutput> =
+//     ParseOptionConfig::parse_hyphenated_option_name(
+//       "--UNRECOGNIZED",
+//       0,
+//       "--TEST",
+//       ValueUsage::Optional,
+//     );
+//
+//   assert_eq!(actual, expected);
+// }
+//
+// #[test]
+// fn test_parse_hyphenated_option_name_1() {
+//   let expected: Option<ParseOutput> = Some(ParseOutput {
+//     error: None,
+//     index: 0,
+//     value: None,
+//   });
+//
+//   let actual: Option<ParseOutput> =
+//     ParseOptionConfig::parse_hyphenated_option_name(
+//       "--TEST",
+//       0,
+//       "--TEST",
+//       ValueUsage::Optional,
+//     );
+//
+//   assert_eq!(actual, expected);
+// }
+//
+// #[test]
+// fn test_parse_hyphenated_option_name_2() {
+//   let expected: Option<ParseOutput> = Some(ParseOutput {
+//     error: Some(ParseError::ValueMissingAfterEquals),
+//     index: 0,
+//     value: None,
+//   });
+//
+//   let actual: Option<ParseOutput> =
+//     ParseOptionConfig::parse_hyphenated_option_name(
+//       "--TEST=",
+//       0,
+//       "--TEST",
+//       ValueUsage::Optional,
+//     );
+//
+//   assert_eq!(actual, expected);
+// }
+//
+// #[test]
+// fn test_parse_hyphenated_option_name_3() {
+//   let expected: Option<ParseOutput> = Some(ParseOutput {
+//     error: None,
+//     index: 0,
+//     value: Some("VALUE".to_string()),
+//   });
+//
+//   let actual: Option<ParseOutput> =
+//     ParseOptionConfig::parse_hyphenated_option_name(
+//       "--TEST=VALUE",
+//       0,
+//       "--TEST",
+//       ValueUsage::Optional,
+//     );
+//
+//   assert_eq!(actual, expected);
+// }
+//
+// #[test]
+// fn test_parse_hyphenated_option_name_4() {
+//   let expected: Option<ParseOutput> = Some(ParseOutput {
+//     error: Some(ParseError::VerbotenValuePresent),
+//     index: 0,
+//     value: Some("VALUE".to_string()),
+//   });
+//
+//   let actual: Option<ParseOutput> =
+//     ParseOptionConfig::parse_hyphenated_option_name(
+//       "--TEST=VALUE",
+//       0,
+//       "--TEST",
+//       ValueUsage::Verboten,
+//     );
+//
+//   assert_eq!(actual, expected);
+// }
+//
+// #[test]
+// fn test_parse_hyphenated_option_name_5() {
+//   let expected: Option<ParseOutput> = Some(ParseOutput {
+//     error: Some(ParseError::RequiredValueMissing),
+//     index: 0,
+//     value: None,
+//   });
+//
+//   let actual: Option<ParseOutput> =
+//     ParseOptionConfig::parse_hyphenated_option_name(
+//       "--TEST",
+//       0,
+//       "--TEST",
+//       ValueUsage::Required,
+//     );
+//
+//   assert_eq!(actual, expected);
+// }
 
 //------------------------------------------------------------------------------
 // parse_last() unit tests
@@ -268,7 +282,11 @@ fn test_parse_last_0() {
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
-    index: 5,
+    found: ParseFound::Short {
+      arg_index: 5,
+      char_index: 0,
+      name_short: 'T',
+    },
     value: Some("B".to_string()),
   });
 
@@ -304,7 +322,11 @@ fn test_parse_next_option_0() {
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
-    index: 1,
+    found: ParseFound::Short {
+      arg_index: 1,
+      char_index: 0,
+      name_short: 'T',
+    },
     value: None,
   });
 
@@ -320,7 +342,11 @@ fn test_parse_next_option_1() {
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
-    index: 0,
+    found: ParseFound::Short {
+      arg_index: 0,
+      char_index: 0,
+      name_short: 'T',
+    },
     value: Some("value".to_string()),
   });
 
@@ -336,7 +362,11 @@ fn test_parse_next_option_2() {
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
-    index: 0,
+    found: ParseFound::Short {
+      arg_index: 0,
+      char_index: 0,
+      name_short: 'T',
+    },
     value: None,
   });
 
@@ -352,7 +382,11 @@ fn test_parse_next_option_3() {
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: Some(ParseError::ValueMissingAfterEquals),
-    index: 0,
+    found: ParseFound::Short {
+      arg_index: 0,
+      char_index: 0,
+      name_short: 'T',
+    },
     value: None,
   });
 
@@ -373,7 +407,10 @@ fn test_parse_next_option_4() {
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
-    index: 1,
+    found: ParseFound::Long {
+      arg_index: 1,
+      name_long: "TEST".to_string(),
+    },
     value: None,
   });
 
@@ -389,7 +426,10 @@ fn test_parse_next_option_5() {
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
-    index: 0,
+    found: ParseFound::Long {
+      arg_index: 0,
+      name_long: "TEST".to_string(),
+    },
     value: Some("value".to_string()),
   });
 
@@ -405,7 +445,10 @@ fn test_parse_next_option_6() {
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
-    index: 0,
+    found: ParseFound::Long {
+      arg_index: 0,
+      name_long: "TEST".to_string(),
+    },
     value: None,
   });
 
@@ -421,7 +464,10 @@ fn test_parse_next_option_7() {
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: Some(ParseError::ValueMissingAfterEquals),
-    index: 0,
+    found: ParseFound::Long {
+      arg_index: 0,
+      name_long: "TEST".to_string(),
+    },
     value: None,
   });
 
@@ -437,7 +483,11 @@ fn test_parse_next_option_8() {
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
-    index: 0,
+    found: ParseFound::Short {
+      arg_index: 0,
+      char_index: 1,
+      name_short: 'T',
+    },
     value: Some("value".to_string()),
   });
 
@@ -453,7 +503,11 @@ fn test_parse_next_option_9() {
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
-    index: 0,
+    found: ParseFound::Short {
+      arg_index: 0,
+      char_index: 1,
+      name_short: 'T',
+    },
     value: None,
   });
 
@@ -471,7 +525,11 @@ fn test_parse_next_required_0() {
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: Some(ParseError::RequiredValueMissing),
-    index: 0,
+    found: ParseFound::Short {
+      arg_index: 0,
+      char_index: 0,
+      name_short: 'T',
+    },
     value: None,
   });
 
@@ -487,7 +545,11 @@ fn test_parse_next_required_1() {
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: Some(ParseError::RequiredValueMissing),
-    index: 0,
+    found: ParseFound::Short {
+      arg_index: 0,
+      char_index: 0,
+      name_short: 'T',
+    },
     value: None,
   });
 
@@ -503,7 +565,11 @@ fn test_parse_next_required_2() {
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
-    index: 0,
+    found: ParseFound::Short {
+      arg_index: 0,
+      char_index: 1,
+      name_short: 'T',
+    },
     value: Some("value".to_string()),
   });
 
@@ -519,7 +585,11 @@ fn test_parse_next_required_3() {
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: Some(ParseError::RequiredValueMissing),
-    index: 0,
+    found: ParseFound::Short {
+      arg_index: 0,
+      char_index: 1,
+      name_short: 'T',
+    },
     value: None,
   });
 
@@ -541,7 +611,11 @@ fn test_parse_next_required_multiple_0() {
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
-    index: 0,
+    found: ParseFound::Short {
+      arg_index: 0,
+      char_index: 0,
+      name_short: 'T',
+    },
     value: Some("0".to_string()),
   });
 
@@ -563,7 +637,11 @@ fn test_parse_next_required_multiple_1() {
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
-    index: 1,
+    found: ParseFound::Short {
+      arg_index: 1,
+      char_index: 0,
+      name_short: 'T',
+    },
     value: Some("1".to_string()),
   });
 
@@ -597,7 +675,11 @@ fn test_parse_next_verboten_0() {
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
-    index: 0,
+    found: ParseFound::Short {
+      arg_index: 0,
+      char_index: 0,
+      name_short: 'T',
+    },
     value: None,
   });
 
@@ -615,7 +697,11 @@ fn test_parse_next_verboten_1() {
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
-    index: 0,
+    found: ParseFound::Short {
+      arg_index: 0,
+      char_index: 0,
+      name_short: 'T',
+    },
     value: None,
   });
 
@@ -631,7 +717,11 @@ fn test_parse_next_verboten_2() {
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: Some(ParseError::VerbotenValuePresent),
-    index: 0,
+    found: ParseFound::Short {
+      arg_index: 0,
+      char_index: 0,
+      name_short: 'T',
+    },
     value: Some("value".to_string()),
   });
 
@@ -647,7 +737,10 @@ fn test_parse_next_verboten_3() {
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
-    index: 0,
+    found: ParseFound::Long {
+      arg_index: 0,
+      name_long: "TEST".to_string(),
+    },
     value: None,
   });
 
@@ -665,7 +758,10 @@ fn test_parse_next_verboten_4() {
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
-    index: 0,
+    found: ParseFound::Long {
+      arg_index: 0,
+      name_long: "TEST".to_string(),
+    },
     value: None,
   });
 
@@ -681,7 +777,10 @@ fn test_parse_next_verboten_5() {
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: Some(ParseError::VerbotenValuePresent),
-    index: 0,
+    found: ParseFound::Long {
+      arg_index: 0,
+      name_long: "TEST".to_string(),
+    },
     value: Some("value".to_string()),
   });
 
@@ -697,7 +796,11 @@ fn test_parse_next_verboten_6() {
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: Some(ParseError::ValueMissingAfterEquals),
-    index: 0,
+    found: ParseFound::Short {
+      arg_index: 0,
+      char_index: 0,
+      name_short: 'T',
+    },
     value: None,
   });
 
@@ -713,7 +816,10 @@ fn test_parse_next_verboten_7() {
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: Some(ParseError::ValueMissingAfterEquals),
-    index: 0,
+    found: ParseFound::Long {
+      arg_index: 0,
+      name_long: "TEST".to_string(),
+    },
     value: None,
   });
 
@@ -729,7 +835,11 @@ fn test_parse_next_verboten_8() {
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: Some(ParseError::VerbotenValuePresent),
-    index: 0,
+    found: ParseFound::Short {
+      arg_index: 0,
+      char_index: 1,
+      name_short: 'T',
+    },
     value: Some("value".to_string()),
   });
 
@@ -745,7 +855,11 @@ fn test_parse_next_verboten_9() {
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
-    index: 0,
+    found: ParseFound::Short {
+      arg_index: 0,
+      char_index: 1,
+      name_short: 'T',
+    },
     value: None,
   });
 

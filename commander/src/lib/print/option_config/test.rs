@@ -5,13 +5,14 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-07-06
+//! - Updated: 2024-07-07
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
 use crate::parse::parse_option_name::ParseOptionName;
+use crate::parse::parse_output::ParseFound;
 use crate::parse::value_usage::ValueUsage;
 
 use super::*;
@@ -85,12 +86,20 @@ fn test_parse_0() {
   let expected = vec![
     ParseOutput {
       error: None,
-      index: 0,
+      found: ParseFound::Short {
+        arg_index: 0,
+        char_index: 0,
+        name_short: '0',
+      },
       value: Some("A".to_string()),
     },
     ParseOutput {
       error: None,
-      index: 1,
+      found: ParseFound::Short {
+        arg_index: 1,
+        char_index: 0,
+        name_short: '0',
+      },
       value: Some("B".to_string()),
     },
   ];
@@ -112,7 +121,11 @@ fn test_parse_last_0() {
 
   let expected = Some(ParseOutput {
     error: None,
-    index: 1,
+    found: ParseFound::Short {
+      arg_index: 1,
+      char_index: 0,
+      name_short: '0',
+    },
     value: Some("B".to_string()),
   });
 
@@ -134,7 +147,11 @@ fn test_parse_next_0() {
 
   let expected = Some(ParseOutput {
     error: None,
-    index: 1,
+    found: ParseFound::Short {
+      arg_index: 1,
+      char_index: 0,
+      name_short: '0',
+    },
     value: Some("B".to_string()),
   });
 

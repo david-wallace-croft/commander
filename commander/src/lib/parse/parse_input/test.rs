@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-31
-//! - Updated: 2024-07-05
+//! - Updated: 2024-07-08
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -36,7 +36,7 @@ const TEST_PARSE_OPTION_CONFIG_1: ParseOptionConfig = ParseOptionConfig {
 fn test_default_0() {
   let expected: usize = 1;
 
-  let actual: usize = ParseInput::default().skip;
+  let actual: usize = ParseInput::default().skip_arg;
 
   assert_eq!(actual, expected);
 }
@@ -47,7 +47,8 @@ fn test_from_slice_0() {
 
   let expected: ParseInput = ParseInput {
     args: vec!["TEST".to_string()],
-    skip: 0,
+    skip_arg: 0,
+    skip_char: 0,
   };
 
   let actual: ParseInput = ParseInput::from_slice(test_args_slice);
@@ -96,7 +97,8 @@ fn test_parse_unrecognized_0() {
       "--TEST".to_string(),
       "--UNRECOGNIZED".to_string(),
     ],
-    skip: 0,
+    skip_arg: 0,
+    skip_char: 0,
   };
 
   let expected: Vec<ParseUnrecognizedOutput> = vec![
@@ -119,7 +121,8 @@ fn test_parse_unrecognized_1() {
 
   let test_parse_input: ParseInput = ParseInput {
     args: vec!["-TU".to_string()],
-    skip: 0,
+    skip_arg: 0,
+    skip_char: 0,
   };
 
   let expected: Vec<ParseUnrecognizedOutput> = vec![
@@ -142,7 +145,8 @@ fn test_parse_unrecognized_2() {
 
   let test_parse_input: ParseInput = ParseInput {
     args: vec!["--".to_string()],
-    skip: 0,
+    skip_arg: 0,
+    skip_char: 0,
   };
 
   let expected: Vec<ParseUnrecognizedOutput> = vec![
@@ -165,7 +169,8 @@ fn test_parse_unrecognized_3() {
 
   let test_parse_input: ParseInput = ParseInput {
     args: vec!["-".to_string()],
-    skip: 0,
+    skip_arg: 0,
+    skip_char: 0,
   };
 
   let expected: Vec<ParseUnrecognizedOutput> = vec![
@@ -188,7 +193,8 @@ fn test_parse_unrecognized_4() {
 
   let test_parse_input: ParseInput = ParseInput {
     args: vec!["--".to_string()],
-    skip: 0,
+    skip_arg: 0,
+    skip_char: 0,
   };
 
   let expected: Vec<ParseUnrecognizedOutput> = vec![];

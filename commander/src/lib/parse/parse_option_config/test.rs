@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-02
-//! - Updated: 2024-07-07
+//! - Updated: 2024-07-08
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -606,7 +606,8 @@ fn test_parse_next_required_multiple_0() {
       "-T=0".to_string(),
       "-T=1".to_string(),
     ],
-    skip: 0,
+    skip_arg: 0,
+    skip_char: 0,
   };
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
@@ -632,7 +633,8 @@ fn test_parse_next_required_multiple_1() {
       "-T=0".to_string(),
       "-T=1".to_string(),
     ],
-    skip: 1,
+    skip_arg: 1,
+    skip_char: 0,
   };
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
@@ -658,7 +660,8 @@ fn test_parse_next_required_multiple_2() {
       "-T=0".to_string(),
       "-T=1".to_string(),
     ],
-    skip: usize::MAX,
+    skip_arg: usize::MAX,
+    skip_char: 0,
   };
 
   let expected: Option<ParseOutput> = None;

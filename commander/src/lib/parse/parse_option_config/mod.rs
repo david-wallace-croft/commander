@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-07
+//! - Updated: 2024-07-08
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -64,7 +64,8 @@ impl ParseOptionConfig<'_> {
 
       parse_input_next = ParseInput {
         args: parse_input.args.clone(),
-        skip,
+        skip_arg: skip,
+        skip_char: 0,
       };
 
       parse_output_vec.push(parse_output);
@@ -87,8 +88,11 @@ impl ParseOptionConfig<'_> {
     &self,
     parse_input: &ParseInput,
   ) -> Option<ParseOutput> {
-    for (arg_index, arg) in
-      parse_input.args.iter().enumerate().skip(parse_input.skip)
+    for (arg_index, arg) in parse_input
+      .args
+      .iter()
+      .enumerate()
+      .skip(parse_input.skip_arg)
     {
       let hyphenation_type_option: Option<HyphenationType> =
         HyphenationType::determine_hyphenation_type(arg);
@@ -96,6 +100,8 @@ impl ParseOptionConfig<'_> {
       let Some(hyphenation_type) = hyphenation_type_option else {
         continue;
       };
+
+      // TODO: Update to use skip_char
 
       let parse_output_option: Option<ParseOutput> = match hyphenation_type {
         HyphenationType::Long => self.parse_long(arg, arg_index),

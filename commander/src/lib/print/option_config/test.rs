@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-07-07
+//! - Updated: 2024-07-08
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -80,7 +80,8 @@ fn test_parse_0() {
       "-0=A".to_string(),
       "-0=B".to_string(),
     ],
-    skip: 0,
+    skip_arg: 0,
+    skip_char: 0,
   };
 
   let expected = vec![
@@ -116,7 +117,8 @@ fn test_parse_last_0() {
       "-0=A".to_string(),
       "-0=B".to_string(),
     ],
-    skip: 0,
+    skip_arg: 0,
+    skip_char: 0,
   };
 
   let expected = Some(ParseOutput {
@@ -142,7 +144,8 @@ fn test_parse_next_0() {
       "-0=A".to_string(),
       "-0=B".to_string(),
     ],
-    skip: 1,
+    skip_arg: 1,
+    skip_char: 0,
   };
 
   let expected = Some(ParseOutput {

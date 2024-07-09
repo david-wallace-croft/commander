@@ -3,7 +3,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-05
+//! - Updated: 2024-07-08
 //!
 //! [`CroftSoft Inc`]: https://www.CroftSoft.com/
 //! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/
@@ -33,15 +33,19 @@ pub struct ParseUnrecognizedOutput {
 //------------------------------------------------------------------------------
 #[derive(Clone, Debug, PartialEq)]
 pub struct ParseInput {
+  // TODO: Can the args be immutable between calls to parse_next()?
   /// The command-line arguments
   pub args: Vec<String>,
+  // TODO: Maybe make a ParseCursor struct
   /// How many command-line arguments to skip before searching for an option
-  pub skip: usize,
+  pub skip_arg: usize,
+  /// How many chars within an argument to skip before searching for an option
+  pub skip_char: usize,
 }
 
 impl ParseInput {
   //----------------------------------------------------------------------------
-  /// A slice of the command-line arguments with a skip of zero
+  /// A slice of the command-line arguments with skips of zero
   //----------------------------------------------------------------------------
   pub fn from_slice(args_slice: &[&str]) -> Self {
     let args: Vec<String> =
@@ -49,7 +53,8 @@ impl ParseInput {
 
     Self {
       args,
-      skip: 0,
+      skip_arg: 0,
+      skip_char: 0,
     }
   }
 
@@ -101,7 +106,7 @@ impl ParseInput {
   ) -> Vec<ParseUnrecognizedOutput> {
     let mut unrecognized_vec: Vec<ParseUnrecognizedOutput> = Vec::new();
 
-    for (arg_index, arg) in self.args.iter().enumerate().skip(self.skip) {
+    for (arg_index, arg) in self.args.iter().enumerate().skip(self.skip_arg) {
       let (prefix, using_long_name) = if arg.starts_with("--") {
         ("--", true)
       } else if arg.starts_with('-') {
@@ -219,12 +224,13 @@ impl ParseInput {
 
 impl Default for ParseInput {
   //----------------------------------------------------------------------------
-  /// The command-line arguments with a skip of one
+  /// The command-line arguments with a skip_arg of one and skip_char of zero
   //----------------------------------------------------------------------------
   fn default() -> Self {
     Self {
       args: env::args().collect(),
-      skip: 1,
+      skip_arg: 1,
+      skip_char: 0,
     }
   }
 }

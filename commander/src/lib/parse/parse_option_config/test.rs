@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-02
-//! - Updated: 2024-07-08
+//! - Updated: 2024-07-09
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -147,6 +147,48 @@ fn test_parse_1() {
   ]);
 
   let expected: Vec<ParseOutput> = vec![];
+
+  let actual: Vec<ParseOutput> =
+    PARSE_OPTION_CONFIG_OPTION.parse(test_parse_input);
+
+  assert_eq!(actual, expected);
+}
+
+#[test]
+fn test_parse_2() {
+  let test_parse_input = &ParseInput::from_slice(&[
+    "-WTXT=A", "-YT=B", "-Z",
+  ]);
+
+  let expected: Vec<ParseOutput> = vec![
+    ParseOutput {
+      error: None,
+      found: ParseFound::Short {
+        arg_index: 0,
+        char_index: 1,
+        name_short: 'T',
+      },
+      value: None,
+    },
+    ParseOutput {
+      error: None,
+      found: ParseFound::Short {
+        arg_index: 0,
+        char_index: 3,
+        name_short: 'T',
+      },
+      value: Some("A".to_string()),
+    },
+    ParseOutput {
+      error: None,
+      found: ParseFound::Short {
+        arg_index: 1,
+        char_index: 1,
+        name_short: 'T',
+      },
+      value: Some("B".to_string()),
+    },
+  ];
 
   let actual: Vec<ParseOutput> =
     PARSE_OPTION_CONFIG_OPTION.parse(test_parse_input);
@@ -873,8 +915,42 @@ fn test_parse_next_verboten_9() {
 }
 
 //------------------------------------------------------------------------------
+// parse_short() unit tests
+//------------------------------------------------------------------------------
+
+#[test]
+fn test_parse_short_0() {
+  let expected: Option<ParseOutput> = Some(ParseOutput {
+    error: None,
+    found: ParseFound::Short {
+      arg_index: 0,
+      char_index: 1,
+      name_short: 'T',
+    },
+    value: None,
+  });
+
+  let actual: Option<ParseOutput> =
+    PARSE_OPTION_CONFIG_VERBOTEN.parse_short("-XTX=value", 0, 1);
+
+  assert_eq!(actual, expected);
+}
+
+#[test]
+fn test_parse_short_1() {
+  let expected: Option<ParseOutput> = None;
+
+  let actual: Option<ParseOutput> =
+    PARSE_OPTION_CONFIG_VERBOTEN.parse_short("-XTX=value", 0, 2);
+
+  assert_eq!(actual, expected);
+}
+
+//------------------------------------------------------------------------------
 // parse_unrecognized() unit tests
 //------------------------------------------------------------------------------
+
+// TODO: Should these tests be moved to another test module?
 
 #[test]
 fn test_parse_unrecognized_long() {

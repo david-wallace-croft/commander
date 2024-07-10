@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-02
-//! - Updated: 2024-07-09
+//! - Updated: 2024-07-10
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -112,6 +112,7 @@ fn test_parse_0() {
         char_index: 0,
         name_short: 'T',
       },
+      known: true,
       value: None,
     },
     ParseOutput {
@@ -121,6 +122,7 @@ fn test_parse_0() {
         char_index: 0,
         name_short: 'T',
       },
+      known: true,
       value: Some("A".to_string()),
     },
     ParseOutput {
@@ -130,6 +132,7 @@ fn test_parse_0() {
         char_index: 0,
         name_short: 'T',
       },
+      known: true,
       value: Some("B".to_string()),
     },
   ];
@@ -157,7 +160,7 @@ fn test_parse_1() {
 #[test]
 fn test_parse_2() {
   let test_parse_input = &ParseInput::from_slice(&[
-    "-WTXT=A", "-YT=B", "-Z",
+    "-STAT=A", "-YT=B", "-Z",
   ]);
 
   let expected: Vec<ParseOutput> = vec![
@@ -168,6 +171,7 @@ fn test_parse_2() {
         char_index: 1,
         name_short: 'T',
       },
+      known: true,
       value: None,
     },
     ParseOutput {
@@ -177,6 +181,7 @@ fn test_parse_2() {
         char_index: 3,
         name_short: 'T',
       },
+      known: true,
       value: Some("A".to_string()),
     },
     ParseOutput {
@@ -186,6 +191,7 @@ fn test_parse_2() {
         char_index: 1,
         name_short: 'T',
       },
+      known: true,
       value: Some("B".to_string()),
     },
   ];
@@ -329,6 +335,7 @@ fn test_parse_last_0() {
       char_index: 0,
       name_short: 'T',
     },
+    known: true,
     value: Some("B".to_string()),
   });
 
@@ -369,6 +376,7 @@ fn test_parse_next_option_0() {
       char_index: 0,
       name_short: 'T',
     },
+    known: true,
     value: None,
   });
 
@@ -389,6 +397,7 @@ fn test_parse_next_option_1() {
       char_index: 0,
       name_short: 'T',
     },
+    known: true,
     value: Some("value".to_string()),
   });
 
@@ -409,6 +418,7 @@ fn test_parse_next_option_2() {
       char_index: 0,
       name_short: 'T',
     },
+    known: true,
     value: None,
   });
 
@@ -429,6 +439,7 @@ fn test_parse_next_option_3() {
       char_index: 0,
       name_short: 'T',
     },
+    known: true,
     value: None,
   });
 
@@ -453,6 +464,7 @@ fn test_parse_next_option_4() {
       arg_index: 1,
       name_long: "TEST".to_string(),
     },
+    known: true,
     value: None,
   });
 
@@ -472,6 +484,7 @@ fn test_parse_next_option_5() {
       arg_index: 0,
       name_long: "TEST".to_string(),
     },
+    known: true,
     value: Some("value".to_string()),
   });
 
@@ -491,6 +504,7 @@ fn test_parse_next_option_6() {
       arg_index: 0,
       name_long: "TEST".to_string(),
     },
+    known: true,
     value: None,
   });
 
@@ -510,6 +524,7 @@ fn test_parse_next_option_7() {
       arg_index: 0,
       name_long: "TEST".to_string(),
     },
+    known: true,
     value: None,
   });
 
@@ -530,6 +545,7 @@ fn test_parse_next_option_8() {
       char_index: 1,
       name_short: 'T',
     },
+    known: true,
     value: Some("value".to_string()),
   });
 
@@ -550,6 +566,7 @@ fn test_parse_next_option_9() {
       char_index: 1,
       name_short: 'T',
     },
+    known: true,
     value: None,
   });
 
@@ -572,6 +589,7 @@ fn test_parse_next_required_0() {
       char_index: 0,
       name_short: 'T',
     },
+    known: true,
     value: None,
   });
 
@@ -592,6 +610,7 @@ fn test_parse_next_required_1() {
       char_index: 0,
       name_short: 'T',
     },
+    known: true,
     value: None,
   });
 
@@ -612,6 +631,7 @@ fn test_parse_next_required_2() {
       char_index: 1,
       name_short: 'T',
     },
+    known: true,
     value: Some("value".to_string()),
   });
 
@@ -632,6 +652,7 @@ fn test_parse_next_required_3() {
       char_index: 1,
       name_short: 'T',
     },
+    known: true,
     value: None,
   });
 
@@ -659,6 +680,7 @@ fn test_parse_next_required_multiple_0() {
       char_index: 0,
       name_short: 'T',
     },
+    known: true,
     value: Some("0".to_string()),
   });
 
@@ -686,6 +708,7 @@ fn test_parse_next_required_multiple_1() {
       char_index: 0,
       name_short: 'T',
     },
+    known: true,
     value: Some("1".to_string()),
   });
 
@@ -725,6 +748,7 @@ fn test_parse_next_verboten_0() {
       char_index: 0,
       name_short: 'T',
     },
+    known: true,
     value: None,
   });
 
@@ -747,6 +771,7 @@ fn test_parse_next_verboten_1() {
       char_index: 0,
       name_short: 'T',
     },
+    known: true,
     value: None,
   });
 
@@ -767,6 +792,7 @@ fn test_parse_next_verboten_2() {
       char_index: 0,
       name_short: 'T',
     },
+    known: true,
     value: Some("value".to_string()),
   });
 
@@ -786,6 +812,7 @@ fn test_parse_next_verboten_3() {
       arg_index: 0,
       name_long: "TEST".to_string(),
     },
+    known: true,
     value: None,
   });
 
@@ -807,6 +834,7 @@ fn test_parse_next_verboten_4() {
       arg_index: 0,
       name_long: "TEST".to_string(),
     },
+    known: true,
     value: None,
   });
 
@@ -826,6 +854,7 @@ fn test_parse_next_verboten_5() {
       arg_index: 0,
       name_long: "TEST".to_string(),
     },
+    known: true,
     value: Some("value".to_string()),
   });
 
@@ -846,6 +875,7 @@ fn test_parse_next_verboten_6() {
       char_index: 0,
       name_short: 'T',
     },
+    known: true,
     value: None,
   });
 
@@ -865,6 +895,7 @@ fn test_parse_next_verboten_7() {
       arg_index: 0,
       name_long: "TEST".to_string(),
     },
+    known: true,
     value: None,
   });
 
@@ -885,6 +916,7 @@ fn test_parse_next_verboten_8() {
       char_index: 1,
       name_short: 'T',
     },
+    known: true,
     value: Some("value".to_string()),
   });
 
@@ -905,6 +937,7 @@ fn test_parse_next_verboten_9() {
       char_index: 1,
       name_short: 'T',
     },
+    known: true,
     value: None,
   });
 
@@ -927,6 +960,7 @@ fn test_parse_short_0() {
       char_index: 1,
       name_short: 'T',
     },
+    known: true,
     value: None,
   });
 

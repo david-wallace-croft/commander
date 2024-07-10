@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-09
+//! - Updated: 2024-07-10
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -200,6 +200,7 @@ impl ParseOptionConfig<'_> {
     Some(ParseOutput {
       error: error_option,
       found: parse_found,
+      known: true,
       value: value_option,
     })
   }
@@ -242,6 +243,7 @@ impl ParseOptionConfig<'_> {
         return Some(ParseOutput {
           error,
           found,
+          known: true,
           value: None,
         });
       }
@@ -275,6 +277,7 @@ impl ParseOptionConfig<'_> {
         return Some(ParseOutput {
           error,
           found,
+          known: true,
           value: None,
         });
       }
@@ -285,6 +288,7 @@ impl ParseOptionConfig<'_> {
         return Some(ParseOutput {
           error: Some(ParseError::ValueMissingAfterEquals),
           found,
+          known: true,
           value: None,
         });
       }
@@ -299,6 +303,7 @@ impl ParseOptionConfig<'_> {
       return Some(ParseOutput {
         error,
         found,
+        known: true,
         value: Some(value.to_string()),
       });
     }

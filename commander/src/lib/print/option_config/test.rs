@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-07-08
+//! - Updated: 2024-07-10
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -92,6 +92,7 @@ fn test_parse_0() {
         char_index: 0,
         name_short: '0',
       },
+      known: true,
       value: Some("A".to_string()),
     },
     ParseOutput {
@@ -101,6 +102,7 @@ fn test_parse_0() {
         char_index: 0,
         name_short: '0',
       },
+      known: true,
       value: Some("B".to_string()),
     },
   ];
@@ -128,6 +130,7 @@ fn test_parse_last_0() {
       char_index: 0,
       name_short: '0',
     },
+    known: true,
     value: Some("B".to_string()),
   });
 
@@ -155,6 +158,7 @@ fn test_parse_next_0() {
       char_index: 0,
       name_short: '0',
     },
+    known: true,
     value: Some("B".to_string()),
   });
 

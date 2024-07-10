@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-07
+//! - Updated: 2024-07-10
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -37,6 +37,8 @@ pub enum ParseFound {
 pub struct ParseOutput {
   pub error: Option<ParseError>,
   pub found: ParseFound,
+  /// Whether the option name found matches a known option configuration
+  pub known: bool,
   // TODO: Does this need to be OsString?
   pub value: Option<String>,
 }

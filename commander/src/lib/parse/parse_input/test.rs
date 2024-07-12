@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-31
-//! - Updated: 2024-07-08
+//! - Updated: 2024-07-11
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -101,14 +101,19 @@ fn test_parse_unrecognized_0() {
     skip_char: 0,
   };
 
-  let expected: Vec<ParseUnrecognizedOutput> = vec![
-    ParseUnrecognizedOutput {
-      index: 1,
-      name: "UNRECOGNIZED".to_string(),
+  let expected: Vec<ParseOutput> = vec![
+    ParseOutput {
+      error: None,
+      found: ParseFound::Long {
+        arg_index: 1,
+        name_long: "UNRECOGNIZED".to_string(),
+      },
+      known: false,
+      value: None,
     },
   ];
 
-  let actual: Vec<ParseUnrecognizedOutput> =
+  let actual: Vec<ParseOutput> =
     test_parse_input.parse_unrecognized(test_recognized_options);
 
   assert_eq!(actual, expected);
@@ -125,14 +130,20 @@ fn test_parse_unrecognized_1() {
     skip_char: 0,
   };
 
-  let expected: Vec<ParseUnrecognizedOutput> = vec![
-    ParseUnrecognizedOutput {
-      index: 0,
-      name: "U".to_string(),
+  let expected: Vec<ParseOutput> = vec![
+    ParseOutput {
+      error: None,
+      found: ParseFound::Short {
+        arg_index: 0,
+        char_index: 0, // TODO: should be 1
+        name_short: 'U',
+      },
+      known: false,
+      value: None,
     },
   ];
 
-  let actual: Vec<ParseUnrecognizedOutput> =
+  let actual: Vec<ParseOutput> =
     test_parse_input.parse_unrecognized(test_recognized_options);
 
   assert_eq!(actual, expected);
@@ -149,14 +160,19 @@ fn test_parse_unrecognized_2() {
     skip_char: 0,
   };
 
-  let expected: Vec<ParseUnrecognizedOutput> = vec![
-    ParseUnrecognizedOutput {
-      index: 0,
-      name: "".to_string(),
+  let expected: Vec<ParseOutput> = vec![
+    ParseOutput {
+      error: None,
+      found: ParseFound::Long {
+        arg_index: 0,
+        name_long: "".to_string(),
+      },
+      known: false,
+      value: None,
     },
   ];
 
-  let actual: Vec<ParseUnrecognizedOutput> =
+  let actual: Vec<ParseOutput> =
     test_parse_input.parse_unrecognized(test_recognized_options);
 
   assert_eq!(actual, expected);
@@ -173,14 +189,19 @@ fn test_parse_unrecognized_3() {
     skip_char: 0,
   };
 
-  let expected: Vec<ParseUnrecognizedOutput> = vec![
-    ParseUnrecognizedOutput {
-      index: 0,
-      name: "".to_string(),
+  let expected: Vec<ParseOutput> = vec![
+    ParseOutput {
+      error: None,
+      found: ParseFound::Long {
+        arg_index: 0,
+        name_long: "-".to_string(),
+      },
+      known: false,
+      value: None,
     },
   ];
 
-  let actual: Vec<ParseUnrecognizedOutput> =
+  let actual: Vec<ParseOutput> =
     test_parse_input.parse_unrecognized(test_recognized_options);
 
   assert_eq!(actual, expected);
@@ -197,9 +218,19 @@ fn test_parse_unrecognized_4() {
     skip_char: 0,
   };
 
-  let expected: Vec<ParseUnrecognizedOutput> = vec![];
+  let expected: Vec<ParseOutput> = vec![
+    ParseOutput {
+      error: None,
+      found: ParseFound::Long {
+        arg_index: 0,
+        name_long: "".to_string(),
+      },
+      known: false,
+      value: None,
+    },
+  ];
 
-  let actual: Vec<ParseUnrecognizedOutput> =
+  let actual: Vec<ParseOutput> =
     test_parse_input.parse_unrecognized(test_recognized_options);
 
   assert_eq!(actual, expected);

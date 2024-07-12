@@ -3,7 +3,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-08
+//! - Updated: 2024-07-11
 //!
 //! [`CroftSoft Inc`]: https://www.CroftSoft.com/
 //! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/
@@ -11,22 +11,24 @@
 
 use ::std::env;
 
+use crate::parse::parse_output::{ParseFound, ParseOutput};
+
 use super::parse_option_config::ParseOptionConfig;
 
 #[cfg(test)]
 mod test;
 
-// TODO: Move this to its own file
-#[derive(Clone, Debug, PartialEq)]
-pub struct ParseUnrecognizedOutput {
-  // TODO: Maybe create an UnrecognizedOptionError and move to parse()
-  // TODO: Maybe use this to replace ParseOutput with a boolean if recognized
-  // TODO: add value after equals sign
-  // TODO: add error for parsing value
-  // TODO: include a sub-index for multiple short names in a single arg
-  pub index: usize,
-  pub name: String,
-}
+// // TODO: Move this to its own file
+// #[derive(Clone, Debug, PartialEq)]
+// pub struct ParseUnrecognizedOutput {
+//   // TODO: Maybe create an UnrecognizedOptionError and move to parse()
+//   // TODO: Maybe use this to replace ParseOutput with a boolean if recognized
+//   // TODO: add value after equals sign
+//   // TODO: add error for parsing value
+//   // TODO: include a sub-index for multiple short names in a single arg
+//   pub index: usize,
+//   pub name: String,
+// }
 
 //------------------------------------------------------------------------------
 /// The input to parsing an option from the command-line arguments
@@ -103,8 +105,8 @@ impl ParseInput {
   pub fn parse_unrecognized(
     &self,
     recognized_options: &Vec<ParseOptionConfig>,
-  ) -> Vec<ParseUnrecognizedOutput> {
-    let mut unrecognized_vec: Vec<ParseUnrecognizedOutput> = Vec::new();
+  ) -> Vec<ParseOutput> {
+    let mut unrecognized_vec: Vec<ParseOutput> = Vec::new();
 
     for (arg_index, arg) in self.args.iter().enumerate().skip(self.skip_arg) {
       let (prefix, using_long_name) = if arg.starts_with("--") {
@@ -117,26 +119,46 @@ impl ParseInput {
 
       let arg_trimmed: &str = Self::trim_arg(arg, prefix);
 
-      if using_long_name {
-        if !Self::matches_recognized_long(recognized_options, arg_trimmed) {
-          let parse_unrecognized_output = ParseUnrecognizedOutput {
-            index: arg_index,
-            name: arg_trimmed.to_string(),
-          };
+      if arg_trimmed.is_empty() {
+        // TODO: unit tests
 
-          unrecognized_vec.push(parse_unrecognized_output);
-        }
+        let name_long = if using_long_name {
+          "".to_string()
+        } else {
+          "-".to_string()
+        };
+
+        let parse_output = ParseOutput {
+          error: None,
+          found: ParseFound::Long {
+            arg_index,
+            name_long,
+          },
+          known: false,
+          value: None,
+        };
+
+        unrecognized_vec.push(parse_output);
 
         continue;
       }
 
-      if arg_trimmed.is_empty() {
-        let parse_unrecognized_output = ParseUnrecognizedOutput {
-          index: arg_index,
-          name: "".to_string(),
-        };
+      // TODO: parse the value
 
-        unrecognized_vec.push(parse_unrecognized_output);
+      if using_long_name {
+        if !Self::matches_recognized_long(recognized_options, arg_trimmed) {
+          let parse_output = ParseOutput {
+            error: None,
+            found: ParseFound::Long {
+              arg_index,
+              name_long: arg_trimmed.to_string(),
+            },
+            known: false,
+            value: None,
+          };
+
+          unrecognized_vec.push(parse_output);
+        }
 
         continue;
       }
@@ -146,13 +168,19 @@ impl ParseInput {
           recognized_options,
           option_name_short,
         ) {
-          let parse_unrecognized_output = ParseUnrecognizedOutput {
-            index: arg_index,
-            // TODO: Should this be a char?
-            name: option_name_short.to_string(),
+          let parse_output = ParseOutput {
+            error: None,
+            found: ParseFound::Short {
+              arg_index,
+              // TODO: get actual char_index
+              char_index: 0,
+              name_short: option_name_short,
+            },
+            known: false,
+            value: None,
           };
 
-          unrecognized_vec.push(parse_unrecognized_output);
+          unrecognized_vec.push(parse_output);
         }
       }
     }

@@ -5,17 +5,19 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-10
+//! - Updated: 2024-07-12
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
+use crate::parse::parse_found::ParseFound;
+
 use super::hyphenation_type::HyphenationType;
 use super::parse_error::ParseError;
 use super::parse_input::ParseInput;
 use super::parse_option_name::ParseOptionName;
-use super::parse_output::{ParseFound, ParseOutput};
+use super::parse_output::ParseOutput;
 use super::value_usage::ValueUsage;
 
 #[cfg(test)]
@@ -26,6 +28,8 @@ mod test;
 //------------------------------------------------------------------------------
 #[derive(Clone, Copy, Debug)]
 pub struct ParseOptionConfig<'a> {
+  // TODO: Add a generic for an enum uniquely identifying the option found to
+  //   the ParseOutput; this would permit multiple names per option
   pub name: ParseOptionName<'a>,
   pub value_usage: ValueUsage,
 }

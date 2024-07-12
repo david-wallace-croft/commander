@@ -3,7 +3,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-11
+//! - Updated: 2024-07-12
 //!
 //! [`CroftSoft Inc`]: https://www.CroftSoft.com/
 //! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/
@@ -11,7 +11,8 @@
 
 use ::std::env;
 
-use crate::parse::parse_output::{ParseFound, ParseOutput};
+use crate::parse::parse_found::ParseFound;
+use crate::parse::parse_output::ParseOutput;
 
 use super::parse_option_config::ParseOptionConfig;
 

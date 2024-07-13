@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-12
+//! - Updated: 2024-07-13
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -25,8 +25,8 @@ mod test;
 pub struct ParseOutput {
   pub error: Option<ParseError>,
   pub found: ParseFound,
-  /// Whether the option name found matches a known option configuration
-  pub known: bool,
+  /// The id of the option configuration that matched
+  pub known: Option<String>,
   // TODO: Does this need to be OsString?
   pub value: Option<String>,
 }

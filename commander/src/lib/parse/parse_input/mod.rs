@@ -3,7 +3,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-12
+//! - Updated: 2024-07-13
 //!
 //! [`CroftSoft Inc`]: https://www.CroftSoft.com/
 //! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/
@@ -135,7 +135,7 @@ impl ParseInput {
             arg_index,
             name_long,
           },
-          known: false,
+          known: None,
           value: None,
         };
 
@@ -154,7 +154,7 @@ impl ParseInput {
               arg_index,
               name_long: arg_trimmed.to_string(),
             },
-            known: false,
+            known: None,
             value: None,
           };
 
@@ -177,7 +177,7 @@ impl ParseInput {
               char_index: 0,
               name_short: option_name_short,
             },
-            known: false,
+            known: None,
             value: None,
           };
 

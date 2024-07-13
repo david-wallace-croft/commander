@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-12
+//! - Updated: 2024-07-13
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -28,8 +28,8 @@ mod test;
 //------------------------------------------------------------------------------
 #[derive(Clone, Copy, Debug)]
 pub struct ParseOptionConfig<'a> {
-  // TODO: Add a generic for an enum uniquely identifying the option found to
-  //   the ParseOutput; this would permit multiple names per option
+  // TODO: Maybe make id any uniquely identifiable object
+  pub id: &'a str,
   pub name: ParseOptionName<'a>,
   pub value_usage: ValueUsage,
 }
@@ -204,7 +204,7 @@ impl ParseOptionConfig<'_> {
     Some(ParseOutput {
       error: error_option,
       found: parse_found,
-      known: true,
+      known: Some(self.id.to_string()),
       value: value_option,
     })
   }
@@ -247,7 +247,7 @@ impl ParseOptionConfig<'_> {
         return Some(ParseOutput {
           error,
           found,
-          known: true,
+          known: Some(self.id.to_string()),
           value: None,
         });
       }
@@ -281,7 +281,7 @@ impl ParseOptionConfig<'_> {
         return Some(ParseOutput {
           error,
           found,
-          known: true,
+          known: Some(self.id.to_string()),
           value: None,
         });
       }
@@ -292,7 +292,7 @@ impl ParseOptionConfig<'_> {
         return Some(ParseOutput {
           error: Some(ParseError::ValueMissingAfterEquals),
           found,
-          known: true,
+          known: Some(self.id.to_string()),
           value: None,
         });
       }
@@ -307,7 +307,7 @@ impl ParseOptionConfig<'_> {
       return Some(ParseOutput {
         error,
         found,
-        known: true,
+        known: Some(self.id.to_string()),
         value: Some(value.to_string()),
       });
     }

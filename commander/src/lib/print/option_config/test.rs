@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-07-12
+//! - Updated: 2024-07-13
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -17,11 +17,18 @@ use crate::parse::value_usage::ValueUsage;
 
 use super::*;
 
+const TEST_ID_0: &str = "TEST_ID_0";
+const TEST_ID_1: &str = "TEST_ID_1";
+
+const TEST_NAME_LONG_0: &str = "TEST_NAME_LONG_0";
+const TEST_NAME_LONG_1: &str = "TEST_NAME_LONG_ABC_1";
+
 const TEST_OPTION_CONFIG_0: OptionConfig = OptionConfig {
   brief_description: Some("TEST_BRIEF_DESCRIPTION_0"),
   parse_option_config: ParseOptionConfig {
+    id: TEST_ID_0,
     name: ParseOptionName::Both {
-      name_long: "TEST_NAME_LONG_0",
+      name_long: TEST_NAME_LONG_0,
       name_short: '0',
     },
     value_usage: ValueUsage::Required,
@@ -31,8 +38,9 @@ const TEST_OPTION_CONFIG_0: OptionConfig = OptionConfig {
 const TEST_OPTION_CONFIG_1: OptionConfig = OptionConfig {
   brief_description: Some("TEST_BRIEF_DESCRIPTION_1"),
   parse_option_config: ParseOptionConfig {
+    id: TEST_ID_1,
     name: ParseOptionName::Both {
-      name_long: "TEST_NAME_LONG_ABC_1",
+      name_long: TEST_NAME_LONG_1,
       name_short: '1',
     },
     value_usage: ValueUsage::Verboten,
@@ -92,7 +100,7 @@ fn test_parse_0() {
         char_index: 0,
         name_short: '0',
       },
-      known: true,
+      known: Some("TEST_ID_0".to_string()),
       value: Some("A".to_string()),
     },
     ParseOutput {
@@ -102,7 +110,7 @@ fn test_parse_0() {
         char_index: 0,
         name_short: '0',
       },
-      known: true,
+      known: Some("TEST_ID_0".to_string()),
       value: Some("B".to_string()),
     },
   ];
@@ -130,7 +138,7 @@ fn test_parse_last_0() {
       char_index: 0,
       name_short: '0',
     },
-    known: true,
+    known: Some("TEST_ID_0".to_string()),
     value: Some("B".to_string()),
   });
 
@@ -158,7 +166,7 @@ fn test_parse_next_0() {
       char_index: 0,
       name_short: '0',
     },
-    known: true,
+    known: Some("TEST_ID_0".to_string()),
     value: Some("B".to_string()),
   });
 

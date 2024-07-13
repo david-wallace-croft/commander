@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-29
-//! - Updated: 2024-07-10
+//! - Updated: 2024-07-13
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -21,7 +21,7 @@ fn test_to_bool_result_0() {
       arg_index: 0,
       name_long: String::new(),
     },
-    known: true,
+    known: None,
     value: None,
   };
 
@@ -40,7 +40,7 @@ fn test_to_bool_result_1() {
       arg_index: 0,
       name_long: String::new(),
     },
-    known: true,
+    known: None,
     value: Some("0".to_string()),
   };
 
@@ -59,7 +59,7 @@ fn test_to_bool_result_2() {
       arg_index: 0,
       name_long: String::new(),
     },
-    known: true,
+    known: None,
     value: Some("1".to_string()),
   };
 

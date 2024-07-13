@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-31
-//! - Updated: 2024-07-11
+//! - Updated: 2024-07-13
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -19,6 +19,7 @@ use crate::parse::value_usage::ValueUsage;
 use super::*;
 
 const TEST_PARSE_OPTION_CONFIG_0: ParseOptionConfig = ParseOptionConfig {
+  id: "TEST_0",
   name: ParseOptionName::Both {
     name_long: "TEST",
     name_short: 'T',
@@ -27,6 +28,7 @@ const TEST_PARSE_OPTION_CONFIG_0: ParseOptionConfig = ParseOptionConfig {
 };
 
 const TEST_PARSE_OPTION_CONFIG_1: ParseOptionConfig = ParseOptionConfig {
+  id: "TEST_1",
   // TODO: Add this as an example to the README.md
   name: ParseOptionName::Long(""),
   value_usage: ValueUsage::Verboten,
@@ -108,7 +110,7 @@ fn test_parse_unrecognized_0() {
         arg_index: 1,
         name_long: "UNRECOGNIZED".to_string(),
       },
-      known: false,
+      known: None,
       value: None,
     },
   ];
@@ -138,7 +140,7 @@ fn test_parse_unrecognized_1() {
         char_index: 0, // TODO: should be 1
         name_short: 'U',
       },
-      known: false,
+      known: None,
       value: None,
     },
   ];
@@ -167,7 +169,7 @@ fn test_parse_unrecognized_2() {
         arg_index: 0,
         name_long: "".to_string(),
       },
-      known: false,
+      known: None,
       value: None,
     },
   ];
@@ -196,7 +198,7 @@ fn test_parse_unrecognized_3() {
         arg_index: 0,
         name_long: "-".to_string(),
       },
-      known: false,
+      known: None,
       value: None,
     },
   ];
@@ -225,7 +227,7 @@ fn test_parse_unrecognized_4() {
         arg_index: 0,
         name_long: "".to_string(),
       },
-      known: false,
+      known: None,
       value: None,
     },
   ];

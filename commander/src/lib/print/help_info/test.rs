@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-08
-//! - Updated: 2024-06-21
+//! - Updated: 2024-07-13
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -27,6 +27,7 @@ const TEST_APP_INFO_0: AppInfo = AppInfo {
 const ARG_OPTION_TEST_0: OptionConfig = OptionConfig {
   brief_description: Some("TEST_BRIEF_DESCRIPTION_0"),
   parse_option_config: ParseOptionConfig {
+    id: "TEST_ID_0",
     name: ParseOptionName::Both {
       name_long: "TEST_NAME_LONG_0",
       name_short: '0',
@@ -38,6 +39,7 @@ const ARG_OPTION_TEST_0: OptionConfig = OptionConfig {
 const ARG_OPTION_TEST_1: OptionConfig = OptionConfig {
   brief_description: Some("TEST_BRIEF_DESCRIPTION_1"),
   parse_option_config: ParseOptionConfig {
+    id: "TEST_ID_1",
     name: ParseOptionName::Both {
       name_long: "TEST_NAME_LONG_1",
       name_short: '1',

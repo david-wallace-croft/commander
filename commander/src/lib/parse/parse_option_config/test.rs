@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-02
-//! - Updated: 2024-07-11
+//! - Updated: 2024-07-13
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -16,11 +16,13 @@ use crate::parse::parse_error::ParseError;
 use super::*;
 
 const TEST_PARSE_OPTION_CONFIG_LONG: ParseOptionConfig = ParseOptionConfig {
+  id: "TEST_ID_0",
   name: ParseOptionName::Long("TEST"),
   value_usage: ValueUsage::Optional,
 };
 
 const PARSE_OPTION_CONFIG_OPTION: ParseOptionConfig = ParseOptionConfig {
+  id: "TEST_ID_1",
   name: ParseOptionName::Both {
     name_long: "TEST",
     name_short: 'T',
@@ -29,6 +31,7 @@ const PARSE_OPTION_CONFIG_OPTION: ParseOptionConfig = ParseOptionConfig {
 };
 
 const PARSE_OPTION_CONFIG_REQUIRED: ParseOptionConfig = ParseOptionConfig {
+  id: "TEST_ID_2",
   name: ParseOptionName::Both {
     name_long: "TEST",
     name_short: 'T',
@@ -37,11 +40,13 @@ const PARSE_OPTION_CONFIG_REQUIRED: ParseOptionConfig = ParseOptionConfig {
 };
 
 const TEST_PARSE_OPTION_CONFIG_SHORT: ParseOptionConfig = ParseOptionConfig {
+  id: "TEST_ID_3",
   name: ParseOptionName::Short('T'),
   value_usage: ValueUsage::Optional,
 };
 
 const PARSE_OPTION_CONFIG_VERBOTEN: ParseOptionConfig = ParseOptionConfig {
+  id: "TEST_ID_4",
   name: ParseOptionName::Both {
     name_long: "TEST",
     name_short: 'T',
@@ -111,7 +116,7 @@ fn test_parse_0() {
         char_index: 0,
         name_short: 'T',
       },
-      known: true,
+      known: Some("TEST_ID_1".to_string()),
       value: None,
     },
     ParseOutput {
@@ -121,7 +126,7 @@ fn test_parse_0() {
         char_index: 0,
         name_short: 'T',
       },
-      known: true,
+      known: Some("TEST_ID_1".to_string()),
       value: Some("A".to_string()),
     },
     ParseOutput {
@@ -131,7 +136,7 @@ fn test_parse_0() {
         char_index: 0,
         name_short: 'T',
       },
-      known: true,
+      known: Some("TEST_ID_1".to_string()),
       value: Some("B".to_string()),
     },
   ];
@@ -170,7 +175,7 @@ fn test_parse_2() {
         char_index: 1,
         name_short: 'T',
       },
-      known: true,
+      known: Some("TEST_ID_1".to_string()),
       value: None,
     },
     ParseOutput {
@@ -180,7 +185,7 @@ fn test_parse_2() {
         char_index: 3,
         name_short: 'T',
       },
-      known: true,
+      known: Some("TEST_ID_1".to_string()),
       value: Some("A".to_string()),
     },
     ParseOutput {
@@ -190,7 +195,7 @@ fn test_parse_2() {
         char_index: 1,
         name_short: 'T',
       },
-      known: true,
+      known: Some("TEST_ID_1".to_string()),
       value: Some("B".to_string()),
     },
   ];
@@ -334,7 +339,7 @@ fn test_parse_last_0() {
       char_index: 0,
       name_short: 'T',
     },
-    known: true,
+    known: Some("TEST_ID_1".to_string()),
     value: Some("B".to_string()),
   });
 
@@ -375,7 +380,7 @@ fn test_parse_next_option_0() {
       char_index: 0,
       name_short: 'T',
     },
-    known: true,
+    known: Some("TEST_ID_1".to_string()),
     value: None,
   });
 
@@ -396,7 +401,7 @@ fn test_parse_next_option_1() {
       char_index: 0,
       name_short: 'T',
     },
-    known: true,
+    known: Some("TEST_ID_1".to_string()),
     value: Some("value".to_string()),
   });
 
@@ -417,7 +422,7 @@ fn test_parse_next_option_2() {
       char_index: 0,
       name_short: 'T',
     },
-    known: true,
+    known: Some("TEST_ID_1".to_string()),
     value: None,
   });
 
@@ -438,7 +443,7 @@ fn test_parse_next_option_3() {
       char_index: 0,
       name_short: 'T',
     },
-    known: true,
+    known: Some("TEST_ID_1".to_string()),
     value: None,
   });
 
@@ -463,7 +468,7 @@ fn test_parse_next_option_4() {
       arg_index: 1,
       name_long: "TEST".to_string(),
     },
-    known: true,
+    known: Some("TEST_ID_1".to_string()),
     value: None,
   });
 
@@ -483,7 +488,7 @@ fn test_parse_next_option_5() {
       arg_index: 0,
       name_long: "TEST".to_string(),
     },
-    known: true,
+    known: Some("TEST_ID_1".to_string()),
     value: Some("value".to_string()),
   });
 
@@ -503,7 +508,7 @@ fn test_parse_next_option_6() {
       arg_index: 0,
       name_long: "TEST".to_string(),
     },
-    known: true,
+    known: Some("TEST_ID_1".to_string()),
     value: None,
   });
 
@@ -523,7 +528,7 @@ fn test_parse_next_option_7() {
       arg_index: 0,
       name_long: "TEST".to_string(),
     },
-    known: true,
+    known: Some("TEST_ID_1".to_string()),
     value: None,
   });
 
@@ -544,7 +549,7 @@ fn test_parse_next_option_8() {
       char_index: 1,
       name_short: 'T',
     },
-    known: true,
+    known: Some("TEST_ID_1".to_string()),
     value: Some("value".to_string()),
   });
 
@@ -565,7 +570,7 @@ fn test_parse_next_option_9() {
       char_index: 1,
       name_short: 'T',
     },
-    known: true,
+    known: Some("TEST_ID_1".to_string()),
     value: None,
   });
 
@@ -588,7 +593,7 @@ fn test_parse_next_required_0() {
       char_index: 0,
       name_short: 'T',
     },
-    known: true,
+    known: Some("TEST_ID_2".to_string()),
     value: None,
   });
 
@@ -609,7 +614,7 @@ fn test_parse_next_required_1() {
       char_index: 0,
       name_short: 'T',
     },
-    known: true,
+    known: Some("TEST_ID_2".to_string()),
     value: None,
   });
 
@@ -630,7 +635,7 @@ fn test_parse_next_required_2() {
       char_index: 1,
       name_short: 'T',
     },
-    known: true,
+    known: Some("TEST_ID_2".to_string()),
     value: Some("value".to_string()),
   });
 
@@ -651,7 +656,7 @@ fn test_parse_next_required_3() {
       char_index: 1,
       name_short: 'T',
     },
-    known: true,
+    known: Some("TEST_ID_2".to_string()),
     value: None,
   });
 
@@ -679,7 +684,7 @@ fn test_parse_next_required_multiple_0() {
       char_index: 0,
       name_short: 'T',
     },
-    known: true,
+    known: Some("TEST_ID_2".to_string()),
     value: Some("0".to_string()),
   });
 
@@ -707,7 +712,7 @@ fn test_parse_next_required_multiple_1() {
       char_index: 0,
       name_short: 'T',
     },
-    known: true,
+    known: Some("TEST_ID_2".to_string()),
     value: Some("1".to_string()),
   });
 
@@ -747,7 +752,7 @@ fn test_parse_next_verboten_0() {
       char_index: 0,
       name_short: 'T',
     },
-    known: true,
+    known: Some("TEST_ID_4".to_string()),
     value: None,
   });
 
@@ -770,7 +775,7 @@ fn test_parse_next_verboten_1() {
       char_index: 0,
       name_short: 'T',
     },
-    known: true,
+    known: Some("TEST_ID_4".to_string()),
     value: None,
   });
 
@@ -791,7 +796,7 @@ fn test_parse_next_verboten_2() {
       char_index: 0,
       name_short: 'T',
     },
-    known: true,
+    known: Some("TEST_ID_4".to_string()),
     value: Some("value".to_string()),
   });
 
@@ -811,7 +816,7 @@ fn test_parse_next_verboten_3() {
       arg_index: 0,
       name_long: "TEST".to_string(),
     },
-    known: true,
+    known: Some("TEST_ID_4".to_string()),
     value: None,
   });
 
@@ -833,7 +838,7 @@ fn test_parse_next_verboten_4() {
       arg_index: 0,
       name_long: "TEST".to_string(),
     },
-    known: true,
+    known: Some("TEST_ID_4".to_string()),
     value: None,
   });
 
@@ -853,7 +858,7 @@ fn test_parse_next_verboten_5() {
       arg_index: 0,
       name_long: "TEST".to_string(),
     },
-    known: true,
+    known: Some("TEST_ID_4".to_string()),
     value: Some("value".to_string()),
   });
 
@@ -874,7 +879,7 @@ fn test_parse_next_verboten_6() {
       char_index: 0,
       name_short: 'T',
     },
-    known: true,
+    known: Some("TEST_ID_4".to_string()),
     value: None,
   });
 
@@ -894,7 +899,7 @@ fn test_parse_next_verboten_7() {
       arg_index: 0,
       name_long: "TEST".to_string(),
     },
-    known: true,
+    known: Some("TEST_ID_4".to_string()),
     value: None,
   });
 
@@ -915,7 +920,7 @@ fn test_parse_next_verboten_8() {
       char_index: 1,
       name_short: 'T',
     },
-    known: true,
+    known: Some("TEST_ID_4".to_string()),
     value: Some("value".to_string()),
   });
 
@@ -936,7 +941,7 @@ fn test_parse_next_verboten_9() {
       char_index: 1,
       name_short: 'T',
     },
-    known: true,
+    known: Some("TEST_ID_4".to_string()),
     value: None,
   });
 
@@ -959,7 +964,7 @@ fn test_parse_short_0() {
       char_index: 1,
       name_short: 'T',
     },
-    known: true,
+    known: Some("TEST_ID_4".to_string()),
     value: None,
   });
 
@@ -988,6 +993,7 @@ fn test_parse_short_1() {
 #[test]
 fn test_parse_unrecognized_long() {
   const ARG_OPTION_TEST: ParseOptionConfig = ParseOptionConfig {
+    id: "TEST",
     name: ParseOptionName::Both {
       name_long: "TEST",
       name_short: 'T',
@@ -1006,7 +1012,7 @@ fn test_parse_unrecognized_long() {
         arg_index: 0,
         name_long: "unrecognized".to_string(),
       },
-      known: false,
+      known: None,
       value: None,
     },
   ];
@@ -1020,6 +1026,7 @@ fn test_parse_unrecognized_long() {
 #[test]
 fn test_parse_unrecognized_short() {
   const ARG_OPTION_TEST: ParseOptionConfig = ParseOptionConfig {
+    id: "TEST",
     name: ParseOptionName::Both {
       name_long: "TEST",
       name_short: 'T',
@@ -1039,7 +1046,7 @@ fn test_parse_unrecognized_short() {
         char_index: 0,
         name_short: 'u',
       },
-      known: false,
+      known: None,
       value: None,
     },
   ];

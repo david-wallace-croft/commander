@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-07-11
+//! - Updated: 2024-07-13
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -30,16 +30,16 @@ fn main() {
 /// Uses the clap library to parse the application options
 //------------------------------------------------------------------------------
 pub fn parse_option_values_using_clap() -> OptionValues {
-  let interactive_arg: Arg = Arg::new(ARG_INTERACTIVE_NAME)
+  let interactive_arg: Arg = Arg::new(ARG_INTERACTIVE_NAME_LONG)
     .help(ARG_INTERACTIVE_HELP)
-    .long(ARG_INTERACTIVE_NAME)
-    .short(ARG_INTERACTIVE_SHORT)
+    .long(ARG_INTERACTIVE_NAME_LONG)
+    .short(ARG_INTERACTIVE_NAME_SHORT)
     .takes_value(ARG_INTERACTIVE_TAKES_VALUE);
 
-  let name_arg: Arg = Arg::new(ARG_NAME_NAME)
+  let name_arg: Arg = Arg::new(ARG_NAME_NAME_LONG)
     .help(ARG_NAME_HELP)
-    .long(ARG_NAME_NAME)
-    .short(ARG_NAME_SHORT)
+    .long(ARG_NAME_NAME_LONG)
+    .short(ARG_NAME_NAME_SHORT)
     .takes_value(ARG_NAME_TAKES_VALUE);
 
   let app_name: String = format!("{} {}", APP_INFO_NAME, APP_INFO_COPYRIGHT);
@@ -53,9 +53,9 @@ pub fn parse_option_values_using_clap() -> OptionValues {
   let arg_matches: ArgMatches = command.get_matches();
 
   let arg_match_interactive: Option<&str> =
-    arg_matches.value_of(ARG_INTERACTIVE_NAME);
+    arg_matches.value_of(ARG_INTERACTIVE_NAME_LONG);
 
-  let arg_match_name: Option<&str> = arg_matches.value_of(ARG_NAME_NAME);
+  let arg_match_name: Option<&str> = arg_matches.value_of(ARG_NAME_NAME_LONG);
 
   let interactive: bool = !matches!(arg_match_interactive, Some("false"));
 

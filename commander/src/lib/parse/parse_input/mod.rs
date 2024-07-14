@@ -3,7 +3,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-13
+//! - Updated: 2024-07-14
 //!
 //! [`CroftSoft Inc`]: https://www.CroftSoft.com/
 //! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/
@@ -11,6 +11,7 @@
 
 use ::std::env;
 
+use crate::parse::hyphenation_type::HyphenationType;
 use crate::parse::parse_found::ParseFound;
 use crate::parse::parse_output::ParseOutput;
 
@@ -18,18 +19,6 @@ use super::parse_option_config::ParseOptionConfig;
 
 #[cfg(test)]
 mod test;
-
-// // TODO: Move this to its own file
-// #[derive(Clone, Debug, PartialEq)]
-// pub struct ParseUnrecognizedOutput {
-//   // TODO: Maybe create an UnrecognizedOptionError and move to parse()
-//   // TODO: Maybe use this to replace ParseOutput with a boolean if recognized
-//   // TODO: add value after equals sign
-//   // TODO: add error for parsing value
-//   // TODO: include a sub-index for multiple short names in a single arg
-//   pub index: usize,
-//   pub name: String,
-// }
 
 //------------------------------------------------------------------------------
 /// The input to parsing an option from the command-line arguments
@@ -59,6 +48,43 @@ impl ParseInput {
       skip_arg: 0,
       skip_char: 0,
     }
+  }
+
+  // TODO: Add unit tests
+  // TODO: Implement the parse() and parse_last() methods using this
+  // TODO: Replace parse_unrecognized() with filtered parse()
+  pub fn parse_next(
+    &self,
+    parse_option_configs: &[ParseOptionConfig],
+  ) -> Option<ParseOutput> {
+    let mut skip_char = self.skip_char;
+
+    for (arg_index, arg) in self.args.iter().enumerate().skip(self.skip_arg) {
+      let hyphenation_type_option: Option<HyphenationType> =
+        HyphenationType::determine_hyphenation_type(arg);
+
+      let Some(hyphenation_type) = hyphenation_type_option else {
+        continue;
+      };
+
+      match hyphenation_type {
+        HyphenationType::Long => {
+          return Some(self.parse_long(arg, arg_index, parse_option_configs));
+        },
+        HyphenationType::Short => {
+          let parse_output_option =
+            self.parse_short(arg, arg_index, parse_option_configs, skip_char);
+
+          if parse_output_option.is_some() {
+            return parse_output_option;
+          }
+        },
+      };
+
+      skip_char = 0;
+    }
+
+    None
   }
 
   // TODO: To be useful, needs to return the ParseOptionConfig matched
@@ -107,6 +133,7 @@ impl ParseInput {
     &self,
     recognized_options: &Vec<ParseOptionConfig>,
   ) -> Vec<ParseOutput> {
+    // TODO: Maybe implement by filtering ParseInput.parse()
     let mut unrecognized_vec: Vec<ParseOutput> = Vec::new();
 
     for (arg_index, arg) in self.args.iter().enumerate().skip(self.skip_arg) {
@@ -230,6 +257,78 @@ impl ParseInput {
     }
 
     false
+  }
+
+  fn parse_long(
+    &self,
+    arg: &str,
+    arg_index: usize,
+    parse_option_configs: &[ParseOptionConfig],
+  ) -> ParseOutput {
+    for parse_option_config in parse_option_configs {
+      if let Some(parse_output) = parse_option_config.parse_long(arg, arg_index)
+      {
+        return parse_output;
+      }
+    }
+
+    let name_long = arg.to_string();
+
+    // TODO: parse value
+    // TODO: set error if value is empty string
+
+    ParseOutput {
+      error: None,
+      found: ParseFound::Long {
+        arg_index,
+        name_long,
+      },
+      known: None,
+      value: None,
+    }
+  }
+
+  pub(crate) fn parse_short(
+    &self,
+    arg: &str,
+    arg_index: usize,
+    parse_option_configs: &[ParseOptionConfig],
+    skip_char: usize,
+  ) -> Option<ParseOutput> {
+    let arg_without_prefix: &str = arg.strip_prefix('-').unwrap();
+
+    let equals_index_option = arg_without_prefix.find('=');
+
+    let mut arg_trimmed: &str = arg_without_prefix;
+
+    let value_option: Option<&str> = if equals_index_option.is_none() {
+      None
+    } else {
+      let equals_index: usize = equals_index_option.unwrap();
+
+      arg_trimmed = &arg_without_prefix[0..equals_index];
+
+      if skip_char != equals_index - 1 {
+        None
+      } else {
+        let value_str: &str = &arg_without_prefix[equals_index + 1..];
+
+        Some(value_str)
+      }
+    };
+
+    for (char_index, c) in arg_trimmed.chars().enumerate().skip(skip_char) {
+      for parse_option_config in parse_option_configs {
+        let parse_output_option: Option<ParseOutput> = parse_option_config
+          .parse_short_char(arg_index, c, char_index, value_option);
+
+        if parse_output_option.is_some() {
+          return parse_output_option;
+        }
+      }
+    }
+
+    None
   }
 
   //----------------------------------------------------------------------------

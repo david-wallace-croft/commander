@@ -3,7 +3,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-14
+//! - Updated: 2024-07-15
 //!
 //! [`CroftSoft Inc`]: https://www.CroftSoft.com/
 //! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/
@@ -12,6 +12,7 @@
 use ::std::env;
 
 use crate::parse::hyphenation_type::HyphenationType;
+use crate::parse::parse_error::ParseError;
 use crate::parse::parse_found::ParseFound;
 use crate::parse::parse_output::ParseOutput;
 
@@ -272,19 +273,35 @@ impl ParseInput {
       }
     }
 
-    let name_long = arg.to_string();
+    let mut error: Option<ParseError> = None;
 
-    // TODO: parse value
-    // TODO: set error if value is empty string
+    let name_long_with_value: String = arg[2..].to_string();
+
+    let mut name_long = name_long_with_value.clone();
+
+    let mut value: Option<String> = None;
+
+    let split_option: Option<(&str, &str)> =
+      name_long_with_value.split_once('=');
+
+    if let Some((split_name, split_value)) = split_option {
+      name_long = split_name.to_string();
+
+      if split_value.is_empty() {
+        error = Some(ParseError::ValueMissingAfterEquals);
+      } else {
+        value = Some(split_value.to_string());
+      }
+    }
 
     ParseOutput {
-      error: None,
+      error,
       found: ParseFound::Long {
         arg_index,
         name_long,
       },
       known: None,
-      value: None,
+      value,
     }
   }
 

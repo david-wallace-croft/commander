@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-14
+//! - Updated: 2024-07-17
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -336,41 +336,45 @@ impl ParseOptionConfig<'_> {
       name_short,
     };
 
-    let error: Option<ParseError> = match self.value_usage {
-      ValueUsage::Optional => None,
-      ValueUsage::Required => {
-        if value_option.is_none() {
-          Some(ParseError::RequiredValueMissing)
-        } else if let Some(value_str) = value_option {
-          if value_str == "" {
-            Some(ParseError::ValueMissingAfterEquals)
-          } else {
-            None
-          }
-        } else {
-          None
-        }
-      },
-      ValueUsage::Verboten => {
-        if value_option.is_some() {
-          Some(ParseError::VerbotenValuePresent)
-        } else {
-          None
-        }
-      },
-    };
+    let mut error: Option<ParseError> = None;
 
     let value: Option<String> = if let Some(value_str) = value_option {
-      Some(value_str.to_string())
+      if value_str.is_empty() {
+        error = Some(ParseError::ValueMissingAfterEquals);
+
+        None
+      } else {
+        Some(value_str.to_string())
+      }
     } else {
       None
     };
 
-    return Some(ParseOutput {
+    if error.is_none() {
+      error = match self.value_usage {
+        ValueUsage::Optional => None,
+        ValueUsage::Required => {
+          if value_option.is_none() {
+            Some(ParseError::RequiredValueMissing)
+          } else {
+            None
+          }
+        },
+        ValueUsage::Verboten => {
+          if value_option.is_some() {
+            Some(ParseError::VerbotenValuePresent)
+          } else {
+            None
+          }
+        },
+      };
+    }
+
+    Some(ParseOutput {
       error,
       found,
       known: Some(self.id.to_string()),
       value,
-    });
+    })
   }
 }

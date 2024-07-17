@@ -334,8 +334,6 @@ fn test_parse_next_7() {
   assert_eq!(actual, expected);
 }
 
-// TODO: failing
-#[ignore]
 #[test]
 fn test_parse_next_8() {
   let test_recognized_options: &Vec<ParseOptionConfig> =

@@ -3,7 +3,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-16
+//! - Updated: 2024-07-17
 //!
 //! [`CroftSoft Inc`]: https://www.CroftSoft.com/
 //! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/
@@ -51,7 +51,6 @@ impl ParseInput {
     }
   }
 
-  // TODO: Add unit tests
   // TODO: Implement the parse() and parse_last() methods using this
   // TODO: Replace parse_unrecognized() with filtered parse()
   pub fn parse_next(
@@ -318,7 +317,9 @@ impl ParseInput {
 
     let mut arg_trimmed: &str = arg_without_prefix;
 
-    let value_option: Option<&str> = if equals_index_option.is_none() {
+    let mut error: Option<ParseError> = None;
+
+    let mut value_option: Option<&str> = if equals_index_option.is_none() {
       None
     } else {
       let equals_index: usize = equals_index_option.unwrap();
@@ -347,11 +348,19 @@ impl ParseInput {
       }
     }
 
+    if let Some(value_str) = value_option {
+      if value_str.is_empty() {
+        error = Some(ParseError::ValueMissingAfterEquals);
+
+        value_option = None;
+      }
+    }
+
     let value: Option<String> =
       value_option.map(|value_str| value_str.to_string());
 
     Some(ParseOutput {
-      error: None,
+      error,
       found: ParseFound::Short {
         arg_index,
         char_index: skip_char,

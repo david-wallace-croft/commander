@@ -3,7 +3,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-15
+//! - Updated: 2024-07-16
 //!
 //! [`CroftSoft Inc`]: https://www.CroftSoft.com/
 //! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/
@@ -334,18 +334,32 @@ impl ParseInput {
       }
     };
 
-    for (char_index, c) in arg_trimmed.chars().enumerate().skip(skip_char) {
-      for parse_option_config in parse_option_configs {
-        let parse_output_option: Option<ParseOutput> = parse_option_config
-          .parse_short_char(arg_index, c, char_index, value_option);
+    let c_option: Option<char> = arg_trimmed.chars().nth(skip_char);
 
-        if parse_output_option.is_some() {
-          return parse_output_option;
-        }
+    let c = c_option?;
+
+    for parse_option_config in parse_option_configs {
+      let parse_output_option: Option<ParseOutput> = parse_option_config
+        .parse_short_char(arg_index, c, skip_char, value_option);
+
+      if parse_output_option.is_some() {
+        return parse_output_option;
       }
     }
 
-    None
+    let value: Option<String> =
+      value_option.map(|value_str| value_str.to_string());
+
+    Some(ParseOutput {
+      error: None,
+      found: ParseFound::Short {
+        arg_index,
+        char_index: skip_char,
+        name_short: c,
+      },
+      known: None,
+      value,
+    })
   }
 
   //----------------------------------------------------------------------------

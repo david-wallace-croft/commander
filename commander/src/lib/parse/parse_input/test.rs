@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-31
-//! - Updated: 2024-07-15
+//! - Updated: 2024-07-16
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -210,7 +210,67 @@ fn test_parse_next_3() {
   assert_eq!(actual, expected);
 }
 
-// TODO: parse_next() for short option names including multiple in one argument
+#[test]
+fn test_parse_next_4() {
+  let test_recognized_options: &Vec<ParseOptionConfig> =
+    &vec![TEST_PARSE_OPTION_CONFIG_0];
+
+  let test_parse_input: ParseInput = ParseInput {
+    args: vec![
+      "-T".to_string(),
+      "-U".to_string(),
+    ],
+    skip_arg: 0,
+    skip_char: 0,
+  };
+
+  let expected: Option<ParseOutput> = Some(ParseOutput {
+    error: None,
+    found: ParseFound::Short {
+      arg_index: 0,
+      char_index: 0,
+      name_short: 'T',
+    },
+    known: Some("TEST_ID_0".to_string()),
+    value: None,
+  });
+
+  let actual: Option<ParseOutput> =
+    test_parse_input.parse_next(test_recognized_options);
+
+  assert_eq!(actual, expected);
+}
+
+#[test]
+fn test_parse_next_5() {
+  let test_recognized_options: &Vec<ParseOptionConfig> =
+    &vec![TEST_PARSE_OPTION_CONFIG_0];
+
+  let test_parse_input: ParseInput = ParseInput {
+    args: vec![
+      "-T".to_string(),
+      "-U".to_string(),
+    ],
+    skip_arg: 1,
+    skip_char: 0,
+  };
+
+  let expected: Option<ParseOutput> = Some(ParseOutput {
+    error: None,
+    found: ParseFound::Short {
+      arg_index: 1,
+      char_index: 0,
+      name_short: 'U',
+    },
+    known: None,
+    value: None,
+  });
+
+  let actual: Option<ParseOutput> =
+    test_parse_input.parse_next(test_recognized_options);
+
+  assert_eq!(actual, expected);
+}
 
 #[test]
 fn test_parse_unrecognized_0() {

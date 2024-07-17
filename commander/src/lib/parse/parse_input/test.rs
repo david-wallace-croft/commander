@@ -365,8 +365,6 @@ fn test_parse_next_8() {
   assert_eq!(actual, expected);
 }
 
-// TODO: failing
-#[ignore]
 #[test]
 fn test_parse_next_9() {
   let test_recognized_options: &Vec<ParseOptionConfig> =
@@ -386,7 +384,7 @@ fn test_parse_next_9() {
     found: ParseFound::Short {
       arg_index: 1,
       char_index: 0,
-      name_short: 'T',
+      name_short: 'U',
     },
     known: None,
     value: None,
@@ -510,8 +508,6 @@ fn test_parse_next_13() {
   assert_eq!(actual, expected);
 }
 
-// TODO: failing
-#[ignore]
 #[test]
 fn test_parse_next_14() {
   let test_recognized_options: &Vec<ParseOptionConfig> =
@@ -568,8 +564,6 @@ fn test_parse_next_15() {
   assert_eq!(actual, expected);
 }
 
-// TODO: failing
-#[ignore]
 #[test]
 fn test_parse_next_16() {
   let test_recognized_options: &Vec<ParseOptionConfig> =

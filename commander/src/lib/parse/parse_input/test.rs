@@ -273,6 +273,336 @@ fn test_parse_next_5() {
 }
 
 #[test]
+fn test_parse_next_6() {
+  let test_recognized_options: &Vec<ParseOptionConfig> =
+    &vec![TEST_PARSE_OPTION_CONFIG_0];
+
+  let test_parse_input: ParseInput = ParseInput {
+    args: vec![
+      "-T=TEST_VALUE".to_string(),
+      "-U".to_string(),
+    ],
+    skip_arg: 0,
+    skip_char: 0,
+  };
+
+  let expected: Option<ParseOutput> = Some(ParseOutput {
+    error: None,
+    found: ParseFound::Short {
+      arg_index: 0,
+      char_index: 0,
+      name_short: 'T',
+    },
+    known: Some("TEST_ID_0".to_string()),
+    value: Some("TEST_VALUE".to_string()),
+  });
+
+  let actual: Option<ParseOutput> =
+    test_parse_input.parse_next(test_recognized_options);
+
+  assert_eq!(actual, expected);
+}
+
+// TODO: failing
+#[ignore]
+#[test]
+fn test_parse_next_7() {
+  let test_recognized_options: &Vec<ParseOptionConfig> =
+    &vec![TEST_PARSE_OPTION_CONFIG_0];
+
+  let test_parse_input: ParseInput = ParseInput {
+    args: vec![
+      "-T".to_string(),
+      "-U=TEST_VALUE".to_string(),
+    ],
+    skip_arg: 1,
+    skip_char: 0,
+  };
+
+  let expected: Option<ParseOutput> = Some(ParseOutput {
+    error: None,
+    found: ParseFound::Short {
+      arg_index: 1,
+      char_index: 0,
+      name_short: 'T',
+    },
+    known: None,
+    value: Some("TEST_VALUE".to_string()),
+  });
+
+  let actual: Option<ParseOutput> =
+    test_parse_input.parse_next(test_recognized_options);
+
+  assert_eq!(actual, expected);
+}
+
+// TODO: failing
+#[ignore]
+#[test]
+fn test_parse_next_8() {
+  let test_recognized_options: &Vec<ParseOptionConfig> =
+    &vec![TEST_PARSE_OPTION_CONFIG_0];
+
+  let test_parse_input: ParseInput = ParseInput {
+    args: vec![
+      "-T=".to_string(),
+      "-U".to_string(),
+    ],
+    skip_arg: 0,
+    skip_char: 0,
+  };
+
+  let expected: Option<ParseOutput> = Some(ParseOutput {
+    error: Some(ParseError::ValueMissingAfterEquals),
+    found: ParseFound::Short {
+      arg_index: 0,
+      char_index: 0,
+      name_short: 'T',
+    },
+    known: Some("TEST_ID_0".to_string()),
+    value: None,
+  });
+
+  let actual: Option<ParseOutput> =
+    test_parse_input.parse_next(test_recognized_options);
+
+  assert_eq!(actual, expected);
+}
+
+// TODO: failing
+#[ignore]
+#[test]
+fn test_parse_next_9() {
+  let test_recognized_options: &Vec<ParseOptionConfig> =
+    &vec![TEST_PARSE_OPTION_CONFIG_0];
+
+  let test_parse_input: ParseInput = ParseInput {
+    args: vec![
+      "-T".to_string(),
+      "-U=".to_string(),
+    ],
+    skip_arg: 1,
+    skip_char: 0,
+  };
+
+  let expected: Option<ParseOutput> = Some(ParseOutput {
+    error: Some(ParseError::ValueMissingAfterEquals),
+    found: ParseFound::Short {
+      arg_index: 1,
+      char_index: 0,
+      name_short: 'T',
+    },
+    known: None,
+    value: None,
+  });
+
+  let actual: Option<ParseOutput> =
+    test_parse_input.parse_next(test_recognized_options);
+
+  assert_eq!(actual, expected);
+}
+
+#[test]
+fn test_parse_next_10() {
+  let test_recognized_options: &Vec<ParseOptionConfig> =
+    &vec![TEST_PARSE_OPTION_CONFIG_0];
+
+  let test_parse_input: ParseInput = ParseInput {
+    args: vec!["-TU".to_string()],
+    skip_arg: 0,
+    skip_char: 0,
+  };
+
+  let expected: Option<ParseOutput> = Some(ParseOutput {
+    error: None,
+    found: ParseFound::Short {
+      arg_index: 0,
+      char_index: 0,
+      name_short: 'T',
+    },
+    known: Some("TEST_ID_0".to_string()),
+    value: None,
+  });
+
+  let actual: Option<ParseOutput> =
+    test_parse_input.parse_next(test_recognized_options);
+
+  assert_eq!(actual, expected);
+}
+
+#[test]
+fn test_parse_next_11() {
+  let test_recognized_options: &Vec<ParseOptionConfig> =
+    &vec![TEST_PARSE_OPTION_CONFIG_0];
+
+  let test_parse_input: ParseInput = ParseInput {
+    args: vec!["-TU".to_string()],
+    skip_arg: 0,
+    skip_char: 1,
+  };
+
+  let expected: Option<ParseOutput> = Some(ParseOutput {
+    error: None,
+    found: ParseFound::Short {
+      arg_index: 0,
+      char_index: 1,
+      name_short: 'U',
+    },
+    known: None,
+    value: None,
+  });
+
+  let actual: Option<ParseOutput> =
+    test_parse_input.parse_next(test_recognized_options);
+
+  assert_eq!(actual, expected);
+}
+
+#[test]
+fn test_parse_next_12() {
+  let test_recognized_options: &Vec<ParseOptionConfig> =
+    &vec![TEST_PARSE_OPTION_CONFIG_0];
+
+  let test_parse_input: ParseInput = ParseInput {
+    args: vec!["-UT".to_string()],
+    skip_arg: 0,
+    skip_char: 1,
+  };
+
+  let expected: Option<ParseOutput> = Some(ParseOutput {
+    error: None,
+    found: ParseFound::Short {
+      arg_index: 0,
+      char_index: 1,
+      name_short: 'T',
+    },
+    known: Some("TEST_ID_0".to_string()),
+    value: None,
+  });
+
+  let actual: Option<ParseOutput> =
+    test_parse_input.parse_next(test_recognized_options);
+
+  assert_eq!(actual, expected);
+}
+
+#[test]
+fn test_parse_next_13() {
+  let test_recognized_options: &Vec<ParseOptionConfig> =
+    &vec![TEST_PARSE_OPTION_CONFIG_0];
+
+  let test_parse_input: ParseInput = ParseInput {
+    args: vec!["-UT=TEST_VALUE".to_string()],
+    skip_arg: 0,
+    skip_char: 1,
+  };
+
+  let expected: Option<ParseOutput> = Some(ParseOutput {
+    error: None,
+    found: ParseFound::Short {
+      arg_index: 0,
+      char_index: 1,
+      name_short: 'T',
+    },
+    known: Some("TEST_ID_0".to_string()),
+    value: Some("TEST_VALUE".to_string()),
+  });
+
+  let actual: Option<ParseOutput> =
+    test_parse_input.parse_next(test_recognized_options);
+
+  assert_eq!(actual, expected);
+}
+
+// TODO: failing
+#[ignore]
+#[test]
+fn test_parse_next_14() {
+  let test_recognized_options: &Vec<ParseOptionConfig> =
+    &vec![TEST_PARSE_OPTION_CONFIG_0];
+
+  let test_parse_input: ParseInput = ParseInput {
+    args: vec!["-UT=".to_string()],
+    skip_arg: 0,
+    skip_char: 1,
+  };
+
+  let expected: Option<ParseOutput> = Some(ParseOutput {
+    error: Some(ParseError::ValueMissingAfterEquals),
+    found: ParseFound::Short {
+      arg_index: 0,
+      char_index: 1,
+      name_short: 'T',
+    },
+    known: Some("TEST_ID_0".to_string()),
+    value: None,
+  });
+
+  let actual: Option<ParseOutput> =
+    test_parse_input.parse_next(test_recognized_options);
+
+  assert_eq!(actual, expected);
+}
+
+#[test]
+fn test_parse_next_15() {
+  let test_recognized_options: &Vec<ParseOptionConfig> =
+    &vec![TEST_PARSE_OPTION_CONFIG_0];
+
+  let test_parse_input: ParseInput = ParseInput {
+    args: vec!["-TU=TEST_VALUE".to_string()],
+    skip_arg: 0,
+    skip_char: 1,
+  };
+
+  let expected: Option<ParseOutput> = Some(ParseOutput {
+    error: None,
+    found: ParseFound::Short {
+      arg_index: 0,
+      char_index: 1,
+      name_short: 'U',
+    },
+    known: None,
+    value: Some("TEST_VALUE".to_string()),
+  });
+
+  let actual: Option<ParseOutput> =
+    test_parse_input.parse_next(test_recognized_options);
+
+  assert_eq!(actual, expected);
+}
+
+// TODO: failing
+#[ignore]
+#[test]
+fn test_parse_next_16() {
+  let test_recognized_options: &Vec<ParseOptionConfig> =
+    &vec![TEST_PARSE_OPTION_CONFIG_0];
+
+  let test_parse_input: ParseInput = ParseInput {
+    args: vec!["-TU=".to_string()],
+    skip_arg: 0,
+    skip_char: 1,
+  };
+
+  let expected: Option<ParseOutput> = Some(ParseOutput {
+    error: Some(ParseError::ValueMissingAfterEquals),
+    found: ParseFound::Short {
+      arg_index: 0,
+      char_index: 1,
+      name_short: 'U',
+    },
+    known: None,
+    value: None,
+  });
+
+  let actual: Option<ParseOutput> =
+    test_parse_input.parse_next(test_recognized_options);
+
+  assert_eq!(actual, expected);
+}
+
+#[test]
 fn test_parse_unrecognized_0() {
   let test_recognized_options: &Vec<ParseOptionConfig> =
     &vec![TEST_PARSE_OPTION_CONFIG_0];

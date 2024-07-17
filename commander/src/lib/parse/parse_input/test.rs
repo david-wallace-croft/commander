@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-31
-//! - Updated: 2024-07-16
+//! - Updated: 2024-07-17
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -303,8 +303,6 @@ fn test_parse_next_6() {
   assert_eq!(actual, expected);
 }
 
-// TODO: failing
-#[ignore]
 #[test]
 fn test_parse_next_7() {
   let test_recognized_options: &Vec<ParseOptionConfig> =
@@ -324,7 +322,7 @@ fn test_parse_next_7() {
     found: ParseFound::Short {
       arg_index: 1,
       char_index: 0,
-      name_short: 'T',
+      name_short: 'U',
     },
     known: None,
     value: Some("TEST_VALUE".to_string()),

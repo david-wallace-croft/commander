@@ -3,7 +3,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-17
+//! - Updated: 2024-07-18
 //!
 //! [`CroftSoft Inc`]: https://www.CroftSoft.com/
 //! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/
@@ -51,8 +51,49 @@ impl ParseInput {
     }
   }
 
-  // TODO: Implement the parse() and parse_last() methods using this
-  // TODO: Replace parse_unrecognized() with filtered parse()
+  // TODO: more unit tests
+  pub fn parse(
+    &self,
+    parse_option_configs: &[ParseOptionConfig],
+  ) -> Vec<ParseOutput> {
+    let mut parse_output_vec = Vec::<ParseOutput>::new();
+
+    let mut parse_output_option: Option<ParseOutput> =
+      self.parse_next(parse_option_configs);
+
+    loop {
+      let Some(parse_output) = parse_output_option else {
+        break;
+      };
+
+      let parse_input: ParseInput = match &parse_output.found {
+        ParseFound::Long {
+          arg_index,
+          ..
+        } => ParseInput {
+          args: self.args.clone(),
+          skip_arg: arg_index + 1,
+          skip_char: 0,
+        },
+        ParseFound::Short {
+          arg_index,
+          char_index,
+          ..
+        } => ParseInput {
+          args: self.args.clone(),
+          skip_arg: *arg_index,
+          skip_char: char_index + 1,
+        },
+      };
+
+      parse_output_vec.push(parse_output);
+
+      parse_output_option = parse_input.parse_next(parse_option_configs);
+    }
+
+    parse_output_vec
+  }
+
   pub fn parse_next(
     &self,
     parse_option_configs: &[ParseOptionConfig],
@@ -87,47 +128,10 @@ impl ParseInput {
     None
   }
 
-  // TODO: To be useful, needs to return the ParseOptionConfig matched
-  // pub fn parse(
-  //   &self,
-  //   parse_option_configs: &[ParseOptionConfig],
-  // ) -> Vec<ParseOutput> {
-  //   let mut parse_output_vec = Vec::<ParseOutput>::new();
-  //
-  //   'outer: for (arg_index, arg) in self.args.iter().enumerate().skip(self.skip)
-  //   {
-  //     for parse_option_config in parse_option_configs {
-  //       let parse_input = ParseInput {
-  //         args: vec![arg.clone()],
-  //         skip: 0,
-  //       };
-  //
-  //       // TODO: Use something more efficient than parse_next
-  //       let parse_output: ParseOutput =
-  //         parse_option_config.parse_next(&parse_input);
-  //
-  //       if parse_output.index.is_some() {
-  //         let new_parse_output = ParseOutput {
-  //           error: parse_output.error,
-  //           index: Some(arg_index),
-  //           value: parse_output.value,
-  //         };
-  //
-  //         parse_output_vec.push(new_parse_output);
-  //
-  //         continue 'outer;
-  //       }
-  //     }
-  //
-  //     // TODO: Attempt to parse unrecognized
-  //   }
-  //
-  //   parse_output_vec
-  // }
-
   //----------------------------------------------------------------------------
   /// Returns a list of unrecognized options from the command-line arguments
   //----------------------------------------------------------------------------
+  // TODO: Replace parse_unrecognized() with filtered parse()
   // TODO: maybe rename to parse_unknown()
   pub fn parse_unrecognized(
     &self,

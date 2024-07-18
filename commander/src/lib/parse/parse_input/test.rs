@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-31
-//! - Updated: 2024-07-17
+//! - Updated: 2024-07-18
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -59,36 +59,46 @@ fn test_from_slice_0() {
   assert_eq!(actual, expected);
 }
 
-// #[test]
-// fn test_parse_0() {
-//   let test_parse_input: ParseInput = ParseInput {
-//     args: vec![
-//       "TEST".to_string(),
-//       "T".to_string(),
-//     ],
-//     skip: 0,
-//   };
-//
-//   let test_parse_option_configs = vec![TEST_PARSE_OPTION_CONFIG_0];
-//
-//   let expected: Vec<ParseOutput> = vec![
-//     ParseOutput {
-//       error: None,
-//       index: Some(0),
-//       value: Some("TEST".to_string()),
-//     },
-//     ParseOutput {
-//       error: None,
-//       index: Some(0),
-//       value: Some("T".to_string()),
-//     },
-//   ];
-//
-//   let actual: Vec<ParseOutput> =
-//     test_parse_input.parse(&test_parse_option_configs);
-//
-//   assert_eq!(actual, expected);
-// }
+#[test]
+fn test_parse_0() {
+  let test_parse_input: ParseInput = ParseInput {
+    args: vec![
+      "--TEST".to_string(),
+      "-T".to_string(),
+    ],
+    skip_arg: 0,
+    skip_char: 0,
+  };
+
+  let test_parse_option_configs = vec![TEST_PARSE_OPTION_CONFIG_0];
+
+  let expected: Vec<ParseOutput> = vec![
+    ParseOutput {
+      error: None,
+      found: ParseFound::Long {
+        arg_index: 0,
+        name_long: "TEST".to_string(),
+      },
+      known: Some("TEST_ID_0".to_string()),
+      value: None,
+    },
+    ParseOutput {
+      error: None,
+      found: ParseFound::Short {
+        arg_index: 1,
+        char_index: 0,
+        name_short: 'T',
+      },
+      known: Some("TEST_ID_0".to_string()),
+      value: None,
+    },
+  ];
+
+  let actual: Vec<ParseOutput> =
+    test_parse_input.parse(&test_parse_option_configs);
+
+  assert_eq!(actual, expected);
+}
 
 #[test]
 fn test_parse_next_0() {

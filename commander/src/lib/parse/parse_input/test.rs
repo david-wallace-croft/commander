@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-31
-//! - Updated: 2024-07-18
+//! - Updated: 2024-07-19
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -70,7 +70,8 @@ fn test_parse_0() {
     skip_char: 0,
   };
 
-  let test_parse_option_configs = vec![TEST_PARSE_OPTION_CONFIG_0];
+  let test_parse_option_configs: Vec<&ParseOptionConfig> =
+    vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let expected: Vec<ParseOutput> = vec![
     ParseOutput {
@@ -102,8 +103,8 @@ fn test_parse_0() {
 
 #[test]
 fn test_parse_next_0() {
-  let test_recognized_options: &Vec<ParseOptionConfig> =
-    &vec![TEST_PARSE_OPTION_CONFIG_0];
+  let test_recognized_options: &Vec<&ParseOptionConfig> =
+    &vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: vec![
@@ -132,8 +133,8 @@ fn test_parse_next_0() {
 
 #[test]
 fn test_parse_next_1() {
-  let test_recognized_options: &Vec<ParseOptionConfig> =
-    &vec![TEST_PARSE_OPTION_CONFIG_0];
+  let test_recognized_options: &Vec<&ParseOptionConfig> =
+    &vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: vec![
@@ -162,8 +163,8 @@ fn test_parse_next_1() {
 
 #[test]
 fn test_parse_next_2() {
-  let test_recognized_options: &Vec<ParseOptionConfig> =
-    &vec![TEST_PARSE_OPTION_CONFIG_0];
+  let test_recognized_options: &Vec<&ParseOptionConfig> =
+    &vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: vec![
@@ -192,8 +193,8 @@ fn test_parse_next_2() {
 
 #[test]
 fn test_parse_next_3() {
-  let test_recognized_options: &Vec<ParseOptionConfig> =
-    &vec![TEST_PARSE_OPTION_CONFIG_0];
+  let test_recognized_options: &Vec<&ParseOptionConfig> =
+    &vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: vec![
@@ -222,8 +223,8 @@ fn test_parse_next_3() {
 
 #[test]
 fn test_parse_next_4() {
-  let test_recognized_options: &Vec<ParseOptionConfig> =
-    &vec![TEST_PARSE_OPTION_CONFIG_0];
+  let test_recognized_options: &Vec<&ParseOptionConfig> =
+    &vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: vec![
@@ -253,8 +254,8 @@ fn test_parse_next_4() {
 
 #[test]
 fn test_parse_next_5() {
-  let test_recognized_options: &Vec<ParseOptionConfig> =
-    &vec![TEST_PARSE_OPTION_CONFIG_0];
+  let test_recognized_options: &Vec<&ParseOptionConfig> =
+    &vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: vec![
@@ -284,8 +285,8 @@ fn test_parse_next_5() {
 
 #[test]
 fn test_parse_next_6() {
-  let test_recognized_options: &Vec<ParseOptionConfig> =
-    &vec![TEST_PARSE_OPTION_CONFIG_0];
+  let test_recognized_options: &Vec<&ParseOptionConfig> =
+    &vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: vec![
@@ -315,8 +316,8 @@ fn test_parse_next_6() {
 
 #[test]
 fn test_parse_next_7() {
-  let test_recognized_options: &Vec<ParseOptionConfig> =
-    &vec![TEST_PARSE_OPTION_CONFIG_0];
+  let test_recognized_options: &Vec<&ParseOptionConfig> =
+    &vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: vec![
@@ -346,8 +347,8 @@ fn test_parse_next_7() {
 
 #[test]
 fn test_parse_next_8() {
-  let test_recognized_options: &Vec<ParseOptionConfig> =
-    &vec![TEST_PARSE_OPTION_CONFIG_0];
+  let test_recognized_options: &Vec<&ParseOptionConfig> =
+    &vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: vec![
@@ -377,8 +378,8 @@ fn test_parse_next_8() {
 
 #[test]
 fn test_parse_next_9() {
-  let test_recognized_options: &Vec<ParseOptionConfig> =
-    &vec![TEST_PARSE_OPTION_CONFIG_0];
+  let test_recognized_options: &Vec<&ParseOptionConfig> =
+    &vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: vec![
@@ -408,8 +409,8 @@ fn test_parse_next_9() {
 
 #[test]
 fn test_parse_next_10() {
-  let test_recognized_options: &Vec<ParseOptionConfig> =
-    &vec![TEST_PARSE_OPTION_CONFIG_0];
+  let test_recognized_options: &Vec<&ParseOptionConfig> =
+    &vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: vec!["-TU".to_string()],
@@ -436,8 +437,8 @@ fn test_parse_next_10() {
 
 #[test]
 fn test_parse_next_11() {
-  let test_recognized_options: &Vec<ParseOptionConfig> =
-    &vec![TEST_PARSE_OPTION_CONFIG_0];
+  let test_recognized_options: &Vec<&ParseOptionConfig> =
+    &vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: vec!["-TU".to_string()],
@@ -464,8 +465,8 @@ fn test_parse_next_11() {
 
 #[test]
 fn test_parse_next_12() {
-  let test_recognized_options: &Vec<ParseOptionConfig> =
-    &vec![TEST_PARSE_OPTION_CONFIG_0];
+  let test_recognized_options: &Vec<&ParseOptionConfig> =
+    &vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: vec!["-UT".to_string()],
@@ -492,8 +493,8 @@ fn test_parse_next_12() {
 
 #[test]
 fn test_parse_next_13() {
-  let test_recognized_options: &Vec<ParseOptionConfig> =
-    &vec![TEST_PARSE_OPTION_CONFIG_0];
+  let test_recognized_options: &Vec<&ParseOptionConfig> =
+    &vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: vec!["-UT=TEST_VALUE".to_string()],
@@ -520,8 +521,8 @@ fn test_parse_next_13() {
 
 #[test]
 fn test_parse_next_14() {
-  let test_recognized_options: &Vec<ParseOptionConfig> =
-    &vec![TEST_PARSE_OPTION_CONFIG_0];
+  let test_recognized_options: &Vec<&ParseOptionConfig> =
+    &vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: vec!["-UT=".to_string()],
@@ -548,8 +549,8 @@ fn test_parse_next_14() {
 
 #[test]
 fn test_parse_next_15() {
-  let test_recognized_options: &Vec<ParseOptionConfig> =
-    &vec![TEST_PARSE_OPTION_CONFIG_0];
+  let test_recognized_options: &Vec<&ParseOptionConfig> =
+    &vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: vec!["-TU=TEST_VALUE".to_string()],
@@ -576,8 +577,8 @@ fn test_parse_next_15() {
 
 #[test]
 fn test_parse_next_16() {
-  let test_recognized_options: &Vec<ParseOptionConfig> =
-    &vec![TEST_PARSE_OPTION_CONFIG_0];
+  let test_recognized_options: &Vec<&ParseOptionConfig> =
+    &vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: vec!["-TU=".to_string()],

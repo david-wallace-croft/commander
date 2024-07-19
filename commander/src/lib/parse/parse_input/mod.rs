@@ -3,7 +3,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-18
+//! - Updated: 2024-07-19
 //!
 //! [`CroftSoft Inc`]: https://www.CroftSoft.com/
 //! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/
@@ -54,7 +54,7 @@ impl ParseInput {
   // TODO: more unit tests
   pub fn parse(
     &self,
-    parse_option_configs: &[ParseOptionConfig],
+    parse_option_configs: &[&ParseOptionConfig],
   ) -> Vec<ParseOutput> {
     let mut parse_output_vec = Vec::<ParseOutput>::new();
 
@@ -96,7 +96,7 @@ impl ParseInput {
 
   pub fn parse_next(
     &self,
-    parse_option_configs: &[ParseOptionConfig],
+    parse_option_configs: &[&ParseOptionConfig],
   ) -> Option<ParseOutput> {
     let mut skip_char = self.skip_char;
 
@@ -267,7 +267,7 @@ impl ParseInput {
     &self,
     arg: &str,
     arg_index: usize,
-    parse_option_configs: &[ParseOptionConfig],
+    parse_option_configs: &[&ParseOptionConfig],
   ) -> ParseOutput {
     for parse_option_config in parse_option_configs {
       if let Some(parse_output) = parse_option_config.parse_long(arg, arg_index)
@@ -312,7 +312,7 @@ impl ParseInput {
     &self,
     arg: &str,
     arg_index: usize,
-    parse_option_configs: &[ParseOptionConfig],
+    parse_option_configs: &[&ParseOptionConfig],
     skip_char: usize,
   ) -> Option<ParseOutput> {
     let arg_without_prefix: &str = arg.strip_prefix('-').unwrap();

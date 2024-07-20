@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-07-11
+//! - Updated: 2024-07-20
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -70,9 +70,10 @@ pub fn parse_option_values_using_commander() -> OptionValues {
       None
     };
 
-  let arg_option_vector: Vec<ParseOptionConfig> = OPTION_CONFIGS
-    .map(|config| config.parse_option_config)
-    .to_vec();
+  let arg_option_vector: Vec<&ParseOptionConfig> = OPTION_CONFIGS
+    .iter()
+    .map(|config| &config.parse_option_config)
+    .collect();
 
   let quiet_parse_output_option: Option<ParseOutput> =
     OPTION_CONFIG_Q.parse_next(parse_input);

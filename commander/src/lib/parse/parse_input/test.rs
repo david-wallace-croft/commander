@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-31
-//! - Updated: 2024-07-19
+//! - Updated: 2024-07-20
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -605,8 +605,8 @@ fn test_parse_next_16() {
 
 #[test]
 fn test_parse_unrecognized_0() {
-  let test_recognized_options: &Vec<ParseOptionConfig> =
-    &vec![TEST_PARSE_OPTION_CONFIG_0];
+  let test_recognized_options: &Vec<&ParseOptionConfig> =
+    &vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: vec![
@@ -637,8 +637,8 @@ fn test_parse_unrecognized_0() {
 
 #[test]
 fn test_parse_unrecognized_1() {
-  let test_recognized_options: &Vec<ParseOptionConfig> =
-    &vec![TEST_PARSE_OPTION_CONFIG_0];
+  let test_recognized_options: &Vec<&ParseOptionConfig> =
+    &vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: vec!["-TU".to_string()],
@@ -667,8 +667,8 @@ fn test_parse_unrecognized_1() {
 
 #[test]
 fn test_parse_unrecognized_2() {
-  let test_recognized_options: &Vec<ParseOptionConfig> =
-    &vec![TEST_PARSE_OPTION_CONFIG_0];
+  let test_recognized_options: &Vec<&ParseOptionConfig> =
+    &vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: vec!["--".to_string()],
@@ -696,8 +696,8 @@ fn test_parse_unrecognized_2() {
 
 #[test]
 fn test_parse_unrecognized_3() {
-  let test_recognized_options: &Vec<ParseOptionConfig> =
-    &vec![TEST_PARSE_OPTION_CONFIG_0];
+  let test_recognized_options: &Vec<&ParseOptionConfig> =
+    &vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: vec!["-".to_string()],
@@ -725,8 +725,8 @@ fn test_parse_unrecognized_3() {
 
 #[test]
 fn test_parse_unrecognized_4() {
-  let test_recognized_options: &Vec<ParseOptionConfig> =
-    &vec![TEST_PARSE_OPTION_CONFIG_1];
+  let test_recognized_options: &Vec<&ParseOptionConfig> =
+    &vec![&TEST_PARSE_OPTION_CONFIG_1];
 
   let test_parse_input: ParseInput = ParseInput {
     args: vec!["--".to_string()],

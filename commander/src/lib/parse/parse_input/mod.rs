@@ -3,7 +3,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-19
+//! - Updated: 2024-07-20
 //!
 //! [`CroftSoft Inc`]: https://www.CroftSoft.com/
 //! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/
@@ -131,11 +131,11 @@ impl ParseInput {
   //----------------------------------------------------------------------------
   /// Returns a list of unrecognized options from the command-line arguments
   //----------------------------------------------------------------------------
-  // TODO: Replace parse_unrecognized() with filtered parse()
+  // TODO: Replace implementation of parse_unrecognized() with filtered parse()
   // TODO: maybe rename to parse_unknown()
   pub fn parse_unrecognized(
     &self,
-    recognized_options: &Vec<ParseOptionConfig>,
+    recognized_options: &Vec<&ParseOptionConfig>,
   ) -> Vec<ParseOutput> {
     // TODO: Maybe implement by filtering ParseInput.parse()
     let mut unrecognized_vec: Vec<ParseOutput> = Vec::new();
@@ -225,7 +225,7 @@ impl ParseInput {
   // ---------------------------------------------------------------------------
 
   fn matches_recognized_long(
-    recognized_options: &Vec<ParseOptionConfig>,
+    recognized_options: &Vec<&ParseOptionConfig>,
     option_long_name: &str,
   ) -> bool {
     // TODO: Add a unit test for when arg_option_name is an empty string
@@ -244,7 +244,7 @@ impl ParseInput {
   }
 
   fn matches_recognized_short(
-    recognized_options: &Vec<ParseOptionConfig>,
+    recognized_options: &Vec<&ParseOptionConfig>,
     option_short_name: char,
   ) -> bool {
     // TODO: Add a unit test for empty string

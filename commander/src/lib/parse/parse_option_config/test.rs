@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-02
-//! - Updated: 2024-07-13
+//! - Updated: 2024-07-20
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -1001,7 +1001,7 @@ fn test_parse_unrecognized_long() {
     value_usage: ValueUsage::Optional,
   };
 
-  let recognized_options: Vec<ParseOptionConfig> = vec![ARG_OPTION_TEST];
+  let recognized_options: Vec<&ParseOptionConfig> = vec![&ARG_OPTION_TEST];
 
   let test_parse_input = &ParseInput::from_slice(&["--unrecognized"]);
 
@@ -1034,7 +1034,7 @@ fn test_parse_unrecognized_short() {
     value_usage: ValueUsage::Optional,
   };
 
-  let recognized_options: Vec<ParseOptionConfig> = vec![ARG_OPTION_TEST];
+  let recognized_options: Vec<&ParseOptionConfig> = vec![&ARG_OPTION_TEST];
 
   let test_parse_input = &ParseInput::from_slice(&["-u"]);
 

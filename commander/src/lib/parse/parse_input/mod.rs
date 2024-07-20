@@ -133,6 +133,7 @@ impl ParseInput {
   //----------------------------------------------------------------------------
   // TODO: Replace implementation of parse_unrecognized() with filtered parse()
   // TODO: maybe rename to parse_unknown()
+  // TODO: Could this take a slice as input instead of a Vec?
   pub fn parse_unrecognized(
     &self,
     recognized_options: &Vec<&ParseOptionConfig>,

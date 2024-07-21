@@ -5,7 +5,7 @@
 //! - Author: [`David Wallace Croft`]
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Created: 2024-04-06
-//! - Updated: 2024-07-04
+//! - Updated: 2024-07-21
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -124,34 +124,34 @@ fn test_output_args_non_interactive_name_predicate() {
 }
 
 #[test]
-fn test_output_args_unrecognized_long() {
+fn test_output_args_unknown_long() {
   make_command()
-    .args(["--unrecognized"])
+    .args(["--unknown"])
     .assert()
     // TODO: Should this be failure?
     .success()
     // TODO: Should this go to standard error?
-    .stdout("Unrecognized option at position 1: \"unrecognized\"\n");
+    .stdout("Unknown option at position 1: \"unknown\"\n");
 }
 
 #[test]
-fn test_output_args_unrecognized_short() {
+fn test_output_args_unknown_short() {
   make_command()
     .args(["-u"])
     .assert()
     // TODO: Should this be failure?
     .success()
     // TODO: Should this go to standard error?
-    .stdout("Unrecognized option at position 1: \"u\"\n");
+    .stdout("Unknown option at position 1: \"u\"\n");
 }
 
 #[test]
-fn test_output_args_unrecognized_option_value() {
+fn test_output_args_unknown_option_value() {
   make_command()
-    .args(["--unrecognized=true"])
+    .args(["--unknown=true"])
     .assert()
     // TODO: Should this be failure?
     .success()
     // TODO: Should this go to standard error?
-    .stdout("Unrecognized option at position 1: \"unrecognized\"\n");
+    .stdout("Unknown option at position 1: \"unknown\"\n");
 }

@@ -3,7 +3,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-20
+//! - Updated: 2024-07-21
 //!
 //! [`CroftSoft Inc`]: https://www.CroftSoft.com/
 //! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/
@@ -129,140 +129,22 @@ impl ParseInput {
   }
 
   //----------------------------------------------------------------------------
-  /// Returns a list of unrecognized options from the command-line arguments
+  /// Returns a list of unknown options from the command-line arguments
   //----------------------------------------------------------------------------
-  // TODO: Replace implementation of parse_unrecognized() with filtered parse()
-  // TODO: maybe rename to parse_unknown()
-  // TODO: Could this take a slice as input instead of a Vec?
-  pub fn parse_unrecognized(
+  pub fn parse_unknown(
     &self,
-    recognized_options: &Vec<&ParseOptionConfig>,
+    recognized_options: &[&ParseOptionConfig],
   ) -> Vec<ParseOutput> {
-    // TODO: Maybe implement by filtering ParseInput.parse()
-    let mut unrecognized_vec: Vec<ParseOutput> = Vec::new();
-
-    for (arg_index, arg) in self.args.iter().enumerate().skip(self.skip_arg) {
-      let (prefix, using_long_name) = if arg.starts_with("--") {
-        ("--", true)
-      } else if arg.starts_with('-') {
-        ("-", false)
-      } else {
-        continue;
-      };
-
-      let arg_trimmed: &str = Self::trim_arg(arg, prefix);
-
-      if arg_trimmed.is_empty() {
-        // TODO: unit tests
-
-        let name_long = if using_long_name {
-          "".to_string()
-        } else {
-          "-".to_string()
-        };
-
-        let parse_output = ParseOutput {
-          error: None,
-          found: ParseFound::Long {
-            arg_index,
-            name_long,
-          },
-          known: None,
-          value: None,
-        };
-
-        unrecognized_vec.push(parse_output);
-
-        continue;
-      }
-
-      // TODO: parse the value
-
-      if using_long_name {
-        if !Self::matches_recognized_long(recognized_options, arg_trimmed) {
-          let parse_output = ParseOutput {
-            error: None,
-            found: ParseFound::Long {
-              arg_index,
-              name_long: arg_trimmed.to_string(),
-            },
-            known: None,
-            value: None,
-          };
-
-          unrecognized_vec.push(parse_output);
-        }
-
-        continue;
-      }
-
-      for option_name_short in arg_trimmed.chars() {
-        if !Self::matches_recognized_short(
-          recognized_options,
-          option_name_short,
-        ) {
-          let parse_output = ParseOutput {
-            error: None,
-            found: ParseFound::Short {
-              arg_index,
-              // TODO: get actual char_index
-              char_index: 0,
-              name_short: option_name_short,
-            },
-            known: None,
-            value: None,
-          };
-
-          unrecognized_vec.push(parse_output);
-        }
-      }
-    }
-
-    unrecognized_vec
+    self
+      .parse(recognized_options)
+      .into_iter()
+      .filter(|parse_output| parse_output.known.is_none())
+      .collect()
   }
 
   // ---------------------------------------------------------------------------
   // private functions
   // ---------------------------------------------------------------------------
-
-  fn matches_recognized_long(
-    recognized_options: &Vec<&ParseOptionConfig>,
-    option_long_name: &str,
-  ) -> bool {
-    // TODO: Add a unit test for when arg_option_name is an empty string
-
-    for recognized_option in recognized_options {
-      let Some(recognized_name) = recognized_option.name.get_name_long() else {
-        continue;
-      };
-
-      if option_long_name.eq(recognized_name) {
-        return true;
-      }
-    }
-
-    false
-  }
-
-  fn matches_recognized_short(
-    recognized_options: &Vec<&ParseOptionConfig>,
-    option_short_name: char,
-  ) -> bool {
-    // TODO: Add a unit test for empty string
-
-    for recognized_option in recognized_options {
-      let Some(recognized_name) = recognized_option.name.get_name_short()
-      else {
-        continue;
-      };
-
-      if option_short_name == recognized_name {
-        return true;
-      }
-    }
-
-    false
-  }
 
   fn parse_long(
     &self,
@@ -309,6 +191,7 @@ impl ParseInput {
     }
   }
 
+  // TODO: Can this be private?
   pub(crate) fn parse_short(
     &self,
     arg: &str,
@@ -377,22 +260,22 @@ impl ParseInput {
   }
 
   //----------------------------------------------------------------------------
-  /// Returns everything before the equals sign except for the prefix.
-  /// Example: For a prefix of "--", "--abc=123" becomes "abc"
+  // Returns everything before the equals sign except for the prefix.
+  // Example: For a prefix of "--", "--abc=123" becomes "abc"
   //----------------------------------------------------------------------------
-  fn trim_arg<'a>(
-    arg: &'a str,
-    prefix: &str,
-  ) -> &'a str {
-    let arg_stripped: &str = arg.strip_prefix(prefix).unwrap();
-
-    let split_option: Option<(&str, &str)> = arg_stripped.split_once('=');
-
-    match split_option {
-      Some((before_equals, _)) => before_equals,
-      None => arg_stripped,
-    }
-  }
+  // fn trim_arg<'a>(
+  //   arg: &'a str,
+  //   prefix: &str,
+  // ) -> &'a str {
+  //   let arg_stripped: &str = arg.strip_prefix(prefix).unwrap();
+  //
+  //   let split_option: Option<(&str, &str)> = arg_stripped.split_once('=');
+  //
+  //   match split_option {
+  //     Some((before_equals, _)) => before_equals,
+  //     None => arg_stripped,
+  //   }
+  // }
 }
 
 impl Default for ParseInput {

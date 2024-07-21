@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-07-20
+//! - Updated: 2024-07-21
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -86,14 +86,13 @@ pub fn parse_option_values_using_commander() -> OptionValues {
     false
   };
 
-  let unrecognized: Vec<ParseOutput> =
-    parse_input.parse_unrecognized(&arg_option_vector);
+  let unknown: Vec<ParseOutput> = parse_input.parse_unknown(&arg_option_vector);
 
   OptionValues {
     help_wanted,
     interactive,
     name_option,
     quiet,
-    unrecognized,
+    unknown,
   }
 }

@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-02
-//! - Updated: 2024-07-20
+//! - Updated: 2024-07-21
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -218,7 +218,7 @@ fn test_parse_2() {
 //
 //   let actual: Option<ParseOutput> =
 //     ParseOptionConfig::parse_hyphenated_option_name(
-//       "--UNRECOGNIZED",
+//       "--UNKNOWN",
 //       0,
 //       "--TEST",
 //       ValueUsage::Optional,
@@ -985,13 +985,13 @@ fn test_parse_short_1() {
 }
 
 //------------------------------------------------------------------------------
-// parse_unrecognized() unit tests
+// parse_unknown() unit tests
 //------------------------------------------------------------------------------
 
 // TODO: Should these tests be moved to another test module?
 
 #[test]
-fn test_parse_unrecognized_long() {
+fn test_parse_unknown_long() {
   const ARG_OPTION_TEST: ParseOptionConfig = ParseOptionConfig {
     id: "TEST",
     name: ParseOptionName::Both {
@@ -1003,14 +1003,14 @@ fn test_parse_unrecognized_long() {
 
   let recognized_options: Vec<&ParseOptionConfig> = vec![&ARG_OPTION_TEST];
 
-  let test_parse_input = &ParseInput::from_slice(&["--unrecognized"]);
+  let test_parse_input = &ParseInput::from_slice(&["--unknown"]);
 
   let expected: Vec<ParseOutput> = vec![
     ParseOutput {
       error: None,
       found: ParseFound::Long {
         arg_index: 0,
-        name_long: "unrecognized".to_string(),
+        name_long: "unknown".to_string(),
       },
       known: None,
       value: None,
@@ -1018,13 +1018,13 @@ fn test_parse_unrecognized_long() {
   ];
 
   let actual: Vec<ParseOutput> =
-    test_parse_input.parse_unrecognized(&recognized_options);
+    test_parse_input.parse_unknown(&recognized_options);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
-fn test_parse_unrecognized_short() {
+fn test_parse_unknown_short() {
   const ARG_OPTION_TEST: ParseOptionConfig = ParseOptionConfig {
     id: "TEST",
     name: ParseOptionName::Both {
@@ -1052,7 +1052,7 @@ fn test_parse_unrecognized_short() {
   ];
 
   let actual: Vec<ParseOutput> =
-    test_parse_input.parse_unrecognized(&recognized_options);
+    test_parse_input.parse_unknown(&recognized_options);
 
   assert_eq!(actual, expected);
 }

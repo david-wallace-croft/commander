@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-07-13
+//! - Updated: 2024-07-21
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -62,7 +62,7 @@ pub fn parse_option_values_using_clap() -> OptionValues {
   let name_option: Option<String> =
     arg_match_name.map(|name: &str| name.to_string());
 
-  let unrecognized: Vec<ParseOutput> = Vec::new();
+  let unknown: Vec<ParseOutput> = Vec::new();
 
   OptionValues {
     help_wanted: false,
@@ -70,6 +70,6 @@ pub fn parse_option_values_using_clap() -> OptionValues {
     name_option,
     // TODO: parse quiet
     quiet: false,
-    unrecognized,
+    unknown,
   }
 }

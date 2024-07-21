@@ -46,9 +46,9 @@
 - cargo run --example example-commander -- --name=World
   - Provide the default name
 - cargo run --example example-commander -- -u
-  - Show an error message for the unrecognized option
-- cargo run --example example-commander -- --unrecognized
-  - Show an error message for the unrecognized option
+  - Show an error message for the unknown option
+- cargo run --example example-commander -- --unknown
+  - Show an error message for the unknown option
 - cargo run --example example-commander -- --help=true
   - Show an error message for an invalid option value
 

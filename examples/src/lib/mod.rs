@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-07-11
+//! - Updated: 2024-07-21
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -15,7 +15,7 @@ use std::io::{Error, stdin, Stdin, stdout, Write};
 
 use commander::parse::parse_error::ParseError;
 use commander::parse::parse_output::ParseOutput;
-use commander::print::print_unrecognized_options;
+use commander::print::print_unknown_options;
 use constants::*;
 
 pub mod constants;
@@ -29,7 +29,7 @@ pub struct OptionValues {
   pub interactive: Result<bool, ParseError>,
   pub name_option: Option<String>,
   pub quiet: bool,
-  pub unrecognized: Vec<ParseOutput>,
+  pub unknown: Vec<ParseOutput>,
 }
 
 pub fn ask(
@@ -71,8 +71,8 @@ pub fn main(option_values: OptionValues) {
     return;
   }
 
-  if !option_values.unrecognized.is_empty() {
-    print_unrecognized_options(&option_values.unrecognized);
+  if !option_values.unknown.is_empty() {
+    print_unknown_options(&option_values.unknown);
 
     return;
   }

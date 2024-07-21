@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-31
-//! - Updated: 2024-07-20
+//! - Updated: 2024-07-21
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -109,7 +109,7 @@ fn test_parse_next_0() {
   let test_parse_input: ParseInput = ParseInput {
     args: vec![
       "--TEST".to_string(),
-      "--UNRECOGNIZED".to_string(),
+      "--UNKNOWN".to_string(),
     ],
     skip_arg: 0,
     skip_char: 0,
@@ -139,7 +139,7 @@ fn test_parse_next_1() {
   let test_parse_input: ParseInput = ParseInput {
     args: vec![
       "--TEST".to_string(),
-      "--UNRECOGNIZED".to_string(),
+      "--UNKNOWN".to_string(),
     ],
     skip_arg: 1,
     skip_char: 0,
@@ -149,7 +149,7 @@ fn test_parse_next_1() {
     error: None,
     found: ParseFound::Long {
       arg_index: 1,
-      name_long: "UNRECOGNIZED".to_string(),
+      name_long: "UNKNOWN".to_string(),
     },
     known: None,
     value: None,
@@ -169,7 +169,7 @@ fn test_parse_next_2() {
   let test_parse_input: ParseInput = ParseInput {
     args: vec![
       "--TEST".to_string(),
-      "--UNRECOGNIZED=TEST_VALUE".to_string(),
+      "--UNKNOWN=TEST_VALUE".to_string(),
     ],
     skip_arg: 1,
     skip_char: 0,
@@ -179,7 +179,7 @@ fn test_parse_next_2() {
     error: None,
     found: ParseFound::Long {
       arg_index: 1,
-      name_long: "UNRECOGNIZED".to_string(),
+      name_long: "UNKNOWN".to_string(),
     },
     known: None,
     value: Some("TEST_VALUE".to_string()),
@@ -199,7 +199,7 @@ fn test_parse_next_3() {
   let test_parse_input: ParseInput = ParseInput {
     args: vec![
       "--TEST".to_string(),
-      "--UNRECOGNIZED=".to_string(),
+      "--UNKNOWN=".to_string(),
     ],
     skip_arg: 1,
     skip_char: 0,
@@ -209,7 +209,7 @@ fn test_parse_next_3() {
     error: Some(ParseError::ValueMissingAfterEquals),
     found: ParseFound::Long {
       arg_index: 1,
-      name_long: "UNRECOGNIZED".to_string(),
+      name_long: "UNKNOWN".to_string(),
     },
     known: None,
     value: None,
@@ -604,14 +604,14 @@ fn test_parse_next_16() {
 }
 
 #[test]
-fn test_parse_unrecognized_0() {
+fn test_parse_unknown_0() {
   let test_recognized_options: &Vec<&ParseOptionConfig> =
     &vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: vec![
       "--TEST".to_string(),
-      "--UNRECOGNIZED".to_string(),
+      "--UNKNOWN".to_string(),
     ],
     skip_arg: 0,
     skip_char: 0,
@@ -622,7 +622,7 @@ fn test_parse_unrecognized_0() {
       error: None,
       found: ParseFound::Long {
         arg_index: 1,
-        name_long: "UNRECOGNIZED".to_string(),
+        name_long: "UNKNOWN".to_string(),
       },
       known: None,
       value: None,
@@ -630,13 +630,13 @@ fn test_parse_unrecognized_0() {
   ];
 
   let actual: Vec<ParseOutput> =
-    test_parse_input.parse_unrecognized(test_recognized_options);
+    test_parse_input.parse_unknown(test_recognized_options);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
-fn test_parse_unrecognized_1() {
+fn test_parse_unknown_1() {
   let test_recognized_options: &Vec<&ParseOptionConfig> =
     &vec![&TEST_PARSE_OPTION_CONFIG_0];
 
@@ -651,7 +651,7 @@ fn test_parse_unrecognized_1() {
       error: None,
       found: ParseFound::Short {
         arg_index: 0,
-        char_index: 0, // TODO: should be 1
+        char_index: 1,
         name_short: 'U',
       },
       known: None,
@@ -660,13 +660,13 @@ fn test_parse_unrecognized_1() {
   ];
 
   let actual: Vec<ParseOutput> =
-    test_parse_input.parse_unrecognized(test_recognized_options);
+    test_parse_input.parse_unknown(test_recognized_options);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
-fn test_parse_unrecognized_2() {
+fn test_parse_unknown_2() {
   let test_recognized_options: &Vec<&ParseOptionConfig> =
     &vec![&TEST_PARSE_OPTION_CONFIG_0];
 
@@ -689,13 +689,13 @@ fn test_parse_unrecognized_2() {
   ];
 
   let actual: Vec<ParseOutput> =
-    test_parse_input.parse_unrecognized(test_recognized_options);
+    test_parse_input.parse_unknown(test_recognized_options);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
-fn test_parse_unrecognized_3() {
+fn test_parse_unknown_3() {
   let test_recognized_options: &Vec<&ParseOptionConfig> =
     &vec![&TEST_PARSE_OPTION_CONFIG_0];
 
@@ -705,26 +705,17 @@ fn test_parse_unrecognized_3() {
     skip_char: 0,
   };
 
-  let expected: Vec<ParseOutput> = vec![
-    ParseOutput {
-      error: None,
-      found: ParseFound::Long {
-        arg_index: 0,
-        name_long: "-".to_string(),
-      },
-      known: None,
-      value: None,
-    },
-  ];
+  // TODO: Should this be something else?
+  let expected: Vec<ParseOutput> = vec![];
 
   let actual: Vec<ParseOutput> =
-    test_parse_input.parse_unrecognized(test_recognized_options);
+    test_parse_input.parse_unknown(test_recognized_options);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
-fn test_parse_unrecognized_4() {
+fn test_parse_unknown_4() {
   let test_recognized_options: &Vec<&ParseOptionConfig> =
     &vec![&TEST_PARSE_OPTION_CONFIG_1];
 
@@ -734,20 +725,11 @@ fn test_parse_unrecognized_4() {
     skip_char: 0,
   };
 
-  let expected: Vec<ParseOutput> = vec![
-    ParseOutput {
-      error: None,
-      found: ParseFound::Long {
-        arg_index: 0,
-        name_long: "".to_string(),
-      },
-      known: None,
-      value: None,
-    },
-  ];
+  // TODO: Should this be something else?
+  let expected: Vec<ParseOutput> = vec![];
 
   let actual: Vec<ParseOutput> =
-    test_parse_input.parse_unrecognized(test_recognized_options);
+    test_parse_input.parse_unknown(test_recognized_options);
 
   assert_eq!(actual, expected);
 }

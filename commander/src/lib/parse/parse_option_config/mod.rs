@@ -39,39 +39,11 @@ impl ParseOptionConfig<'_> {
     &self,
     parse_input: &ParseInput,
   ) -> Vec<ParseOutput> {
-    let mut parse_output_vec = Vec::<ParseOutput>::new();
-
-    let mut parse_input_next: ParseInput = parse_input.clone();
-
-    loop {
-      let parse_output_option = self.parse_next(&parse_input_next);
-
-      let Some(parse_output) = parse_output_option else {
-        return parse_output_vec;
-      };
-
-      parse_input_next = match parse_output.found {
-        ParseFound::Long {
-          arg_index,
-          ..
-        } => ParseInput {
-          args: parse_input.args.clone(),
-          skip_arg: arg_index + 1,
-          skip_char: 0,
-        },
-        ParseFound::Short {
-          arg_index,
-          char_index,
-          ..
-        } => ParseInput {
-          args: parse_input.args.clone(),
-          skip_arg: arg_index,
-          skip_char: char_index + 1,
-        },
-      };
-
-      parse_output_vec.push(parse_output);
-    }
+    parse_input
+      .parse(&[self])
+      .into_iter()
+      .filter(|parse_output| parse_output.known.is_some())
+      .collect()
   }
 
   pub fn parse_last(
@@ -90,6 +62,7 @@ impl ParseOptionConfig<'_> {
     &self,
     parse_input: &ParseInput,
   ) -> Option<ParseOutput> {
+    // TODO: Replace this with a call to ParseInput.parse_next() in a loop
     let mut skip_char: usize = parse_input.skip_char;
 
     for (arg_index, arg) in parse_input

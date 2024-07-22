@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-17
+//! - Updated: 2024-07-22
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -35,8 +35,6 @@ pub struct ParseOptionConfig<'a> {
 }
 
 impl ParseOptionConfig<'_> {
-  // TODO: Move this to ParseInput so that it can return known=false;
-  //   it would take in a slice of ParseOptionConfig as its input
   pub fn parse(
     &self,
     parse_input: &ParseInput,

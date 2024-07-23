@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-02
-//! - Updated: 2024-07-21
+//! - Updated: 2024-07-23
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -947,39 +947,6 @@ fn test_parse_next_verboten_9() {
 
   let actual: Option<ParseOutput> =
     PARSE_OPTION_CONFIG_VERBOTEN.parse_next(test_parse_input);
-
-  assert_eq!(actual, expected);
-}
-
-//------------------------------------------------------------------------------
-// parse_short() unit tests
-//------------------------------------------------------------------------------
-
-#[test]
-fn test_parse_short_0() {
-  let expected: Option<ParseOutput> = Some(ParseOutput {
-    error: None,
-    found: ParseFound::Short {
-      arg_index: 0,
-      char_index: 1,
-      name_short: 'T',
-    },
-    known: Some("TEST_ID_4".to_string()),
-    value: None,
-  });
-
-  let actual: Option<ParseOutput> =
-    PARSE_OPTION_CONFIG_VERBOTEN.parse_short("-XTX=value", 0, 1);
-
-  assert_eq!(actual, expected);
-}
-
-#[test]
-fn test_parse_short_1() {
-  let expected: Option<ParseOutput> = None;
-
-  let actual: Option<ParseOutput> =
-    PARSE_OPTION_CONFIG_VERBOTEN.parse_short("-XTX=value", 0, 2);
 
   assert_eq!(actual, expected);
 }

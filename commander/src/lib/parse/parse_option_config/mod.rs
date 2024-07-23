@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-22
+//! - Updated: 2024-07-23
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -62,35 +62,49 @@ impl ParseOptionConfig<'_> {
     &self,
     parse_input: &ParseInput,
   ) -> Option<ParseOutput> {
-    // TODO: Replace this with a call to ParseInput.parse_next() in a loop
+    // TODO: Make an iterator
+
+    let mut skip_arg: usize = parse_input.skip_arg;
+
     let mut skip_char: usize = parse_input.skip_char;
 
-    for (arg_index, arg) in parse_input
-      .args
-      .iter()
-      .enumerate()
-      .skip(parse_input.skip_arg)
-    {
-      let hyphenation_type_option: Option<HyphenationType> =
-        HyphenationType::determine_hyphenation_type(arg);
-
-      let Some(hyphenation_type) = hyphenation_type_option else {
-        continue;
+    loop {
+      let parse_input_next = ParseInput {
+        args: parse_input.args.clone(),
+        skip_arg,
+        skip_char,
       };
 
-      let parse_output_option: Option<ParseOutput> = match hyphenation_type {
-        HyphenationType::Long => self.parse_long(arg, arg_index),
-        HyphenationType::Short => self.parse_short(arg, arg_index, skip_char),
+      let parse_output_option: Option<ParseOutput> =
+        parse_input_next.parse_next(&[self]);
+
+      let parse_output = parse_output_option?;
+
+      if parse_output.known.is_some() {
+        return Some(parse_output);
+      }
+
+      skip_arg = match parse_output.found {
+        ParseFound::Long {
+          arg_index,
+          ..
+        } => arg_index + 1,
+        ParseFound::Short {
+          arg_index,
+          ..
+        } => arg_index,
       };
 
-      if parse_output_option.is_some() {
-        return parse_output_option;
+      skip_char = match parse_output.found {
+        ParseFound::Long {
+          ..
+        } => 0,
+        ParseFound::Short {
+          char_index,
+          ..
+        } => char_index + 1,
       };
-
-      skip_char = 0;
     }
-
-    None
   }
 
   // ===========================================================================
@@ -180,114 +194,7 @@ impl ParseOptionConfig<'_> {
     })
   }
 
-  // TODO: Update README.md to show examples then update the standard output
-  //   integration tests to test the examples
-  pub(crate) fn parse_short(
-    &self,
-    arg: &str,
-    arg_index: usize,
-    skip_char: usize,
-  ) -> Option<ParseOutput> {
-    let name_short: char = self.name.get_name_short()?;
-
-    let arg_without_prefix: &str = arg.strip_prefix('-').unwrap();
-
-    let equals_index_option = arg_without_prefix.find('=');
-
-    if equals_index_option.is_none() {
-      for (char_index, c) in
-        arg_without_prefix.chars().enumerate().skip(skip_char)
-      {
-        if c != name_short {
-          continue;
-        }
-
-        let found = ParseFound::Short {
-          arg_index,
-          char_index,
-          name_short,
-        };
-
-        let error: Option<ParseError> =
-          if self.value_usage == ValueUsage::Required {
-            Some(ParseError::RequiredValueMissing)
-          } else {
-            None
-          };
-
-        return Some(ParseOutput {
-          error,
-          found,
-          known: Some(self.id.to_string()),
-          value: None,
-        });
-      }
-
-      return None;
-    }
-
-    let equals_index: usize = equals_index_option.unwrap();
-
-    let arg_prefix: &str = &arg_without_prefix[0..equals_index];
-
-    for (char_index, c) in arg_prefix.chars().enumerate().skip(skip_char) {
-      if c != name_short {
-        continue;
-      }
-
-      let found = ParseFound::Short {
-        arg_index,
-        char_index,
-        name_short,
-      };
-
-      if char_index != arg_prefix.len() - 1 {
-        let error: Option<ParseError> =
-          if self.value_usage == ValueUsage::Required {
-            Some(ParseError::RequiredValueMissing)
-          } else {
-            None
-          };
-
-        return Some(ParseOutput {
-          error,
-          found,
-          known: Some(self.id.to_string()),
-          value: None,
-        });
-      }
-
-      let value: &str = &arg_without_prefix[equals_index + 1..];
-
-      if value.eq("") {
-        return Some(ParseOutput {
-          error: Some(ParseError::ValueMissingAfterEquals),
-          found,
-          known: Some(self.id.to_string()),
-          value: None,
-        });
-      }
-
-      let error: Option<ParseError> =
-        if self.value_usage == ValueUsage::Verboten {
-          Some(ParseError::VerbotenValuePresent)
-        } else {
-          None
-        };
-
-      return Some(ParseOutput {
-        error,
-        found,
-        known: Some(self.id.to_string()),
-        value: Some(value.to_string()),
-      });
-    }
-
-    None
-  }
-
-  // TODO: clippy
-  // TODO: Use this in the method above
+  // TODO: Can I move this to where it is used?
   pub(crate) fn parse_short_char(
     &self,
     arg_index: usize,

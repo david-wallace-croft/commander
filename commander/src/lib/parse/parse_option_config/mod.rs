@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-23
+//! - Updated: 2024-07-24
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -191,68 +191,6 @@ impl ParseOptionConfig<'_> {
       found: parse_found,
       known: Some(self.id.to_string()),
       value: value_option,
-    })
-  }
-
-  // TODO: Can I move this to where it is used?
-  pub(crate) fn parse_short_char(
-    &self,
-    arg_index: usize,
-    c: char,
-    char_index: usize,
-    value_option: Option<&str>,
-  ) -> Option<ParseOutput> {
-    let name_short: char = self.name.get_name_short()?;
-
-    if c != name_short {
-      return None;
-    }
-
-    let found = ParseFound::Short {
-      arg_index,
-      char_index,
-      name_short,
-    };
-
-    let mut error: Option<ParseError> = None;
-
-    let value: Option<String> = if let Some(value_str) = value_option {
-      if value_str.is_empty() {
-        error = Some(ParseError::ValueMissingAfterEquals);
-
-        None
-      } else {
-        Some(value_str.to_string())
-      }
-    } else {
-      None
-    };
-
-    if error.is_none() {
-      error = match self.value_usage {
-        ValueUsage::Optional => None,
-        ValueUsage::Required => {
-          if value_option.is_none() {
-            Some(ParseError::RequiredValueMissing)
-          } else {
-            None
-          }
-        },
-        ValueUsage::Verboten => {
-          if value_option.is_some() {
-            Some(ParseError::VerbotenValuePresent)
-          } else {
-            None
-          }
-        },
-      };
-    }
-
-    Some(ParseOutput {
-      error,
-      found,
-      known: Some(self.id.to_string()),
-      value,
     })
   }
 }

@@ -3,7 +3,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-21
+//! - Updated: 2024-07-24
 //!
 //! [`CroftSoft Inc`]: https://www.CroftSoft.com/
 //! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/
@@ -15,6 +15,7 @@ use crate::parse::hyphenation_type::HyphenationType;
 use crate::parse::parse_error::ParseError;
 use crate::parse::parse_found::ParseFound;
 use crate::parse::parse_output::ParseOutput;
+use crate::parse::value_usage::ValueUsage;
 
 use super::parse_option_config::ParseOptionConfig;
 
@@ -228,8 +229,13 @@ impl ParseInput {
     let c = c_option?;
 
     for parse_option_config in parse_option_configs {
-      let parse_output_option: Option<ParseOutput> = parse_option_config
-        .parse_short_char(arg_index, c, skip_char, value_option);
+      let parse_output_option: Option<ParseOutput> = Self::parse_short_char(
+        parse_option_config,
+        arg_index,
+        c,
+        skip_char,
+        value_option,
+      );
 
       if parse_output_option.is_some() {
         return parse_output_option;
@@ -255,6 +261,67 @@ impl ParseInput {
         name_short: c,
       },
       known: None,
+      value,
+    })
+  }
+
+  fn parse_short_char(
+    parse_option_config: &ParseOptionConfig,
+    arg_index: usize,
+    c: char,
+    char_index: usize,
+    value_option: Option<&str>,
+  ) -> Option<ParseOutput> {
+    let name_short: char = parse_option_config.name.get_name_short()?;
+
+    if c != name_short {
+      return None;
+    }
+
+    let found = ParseFound::Short {
+      arg_index,
+      char_index,
+      name_short,
+    };
+
+    let mut error: Option<ParseError> = None;
+
+    let value: Option<String> = if let Some(value_str) = value_option {
+      if value_str.is_empty() {
+        error = Some(ParseError::ValueMissingAfterEquals);
+
+        None
+      } else {
+        Some(value_str.to_string())
+      }
+    } else {
+      None
+    };
+
+    if error.is_none() {
+      error = match parse_option_config.value_usage {
+        ValueUsage::Optional => None,
+        ValueUsage::Required => {
+          if value_option.is_none() {
+            Some(ParseError::RequiredValueMissing)
+          } else {
+            None
+          }
+        },
+        ValueUsage::Verboten => {
+          if value_option.is_some() {
+            Some(ParseError::VerbotenValuePresent)
+          } else {
+            None
+          }
+        },
+      };
+    }
+
+    Some(ParseOutput {
+      error,
+      found,
+      known: Some(parse_option_config.id.to_string()),
       value,
     })
   }

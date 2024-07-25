@@ -3,7 +3,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-24
+//! - Updated: 2024-07-25
 //!
 //! [`CroftSoft Inc`]: https://www.CroftSoft.com/
 //! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/
@@ -192,8 +192,7 @@ impl ParseInput {
     }
   }
 
-  // TODO: Can this be private?
-  pub(crate) fn parse_short(
+  fn parse_short(
     &self,
     arg: &str,
     arg_index: usize,
@@ -325,24 +324,6 @@ impl ParseInput {
       value,
     })
   }
-
-  //----------------------------------------------------------------------------
-  // Returns everything before the equals sign except for the prefix.
-  // Example: For a prefix of "--", "--abc=123" becomes "abc"
-  //----------------------------------------------------------------------------
-  // fn trim_arg<'a>(
-  //   arg: &'a str,
-  //   prefix: &str,
-  // ) -> &'a str {
-  //   let arg_stripped: &str = arg.strip_prefix(prefix).unwrap();
-  //
-  //   let split_option: Option<(&str, &str)> = arg_stripped.split_once('=');
-  //
-  //   match split_option {
-  //     Some((before_equals, _)) => before_equals,
-  //     None => arg_stripped,
-  //   }
-  // }
 }
 
 impl Default for ParseInput {

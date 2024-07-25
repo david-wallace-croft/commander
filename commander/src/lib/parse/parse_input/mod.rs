@@ -30,7 +30,7 @@ pub struct ParseInput {
   // TODO: Can the args be immutable between calls to parse_next()?
   /// The command-line arguments
   pub args: Vec<String>,
-  // TODO: Maybe make a ParseCursor struct
+  // TODO: Maybe make a ParseCursor struct; could used with Iterator
   /// How many command-line arguments to skip before searching for an option
   pub skip_arg: usize,
   /// How many chars within an argument to skip before searching for an option

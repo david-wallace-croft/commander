@@ -3,7 +3,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-25
+//! - Updated: 2024-07-26
 //!
 //! [`CroftSoft Inc`]: https://www.CroftSoft.com/
 //! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/
@@ -27,10 +27,8 @@ mod test;
 //------------------------------------------------------------------------------
 #[derive(Clone, Debug, PartialEq)]
 pub struct ParseInput {
-  // TODO: Can the args be immutable between calls to parse_next()?
   /// The command-line arguments
   pub args: Vec<String>,
-  // TODO: Maybe make a ParseCursor struct; could used with Iterator
   /// How many command-line arguments to skip before searching for an option
   pub skip_arg: usize,
   /// How many chars within an argument to skip before searching for an option
@@ -52,7 +50,6 @@ impl ParseInput {
     }
   }
 
-  // TODO: more unit tests
   pub fn parse(
     &self,
     parse_option_configs: &[&ParseOptionConfig],

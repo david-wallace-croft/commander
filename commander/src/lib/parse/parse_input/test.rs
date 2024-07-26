@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-31
-//! - Updated: 2024-07-21
+//! - Updated: 2024-07-26
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -30,7 +30,6 @@ const TEST_PARSE_OPTION_CONFIG_0: ParseOptionConfig = ParseOptionConfig {
 
 const TEST_PARSE_OPTION_CONFIG_1: ParseOptionConfig = ParseOptionConfig {
   id: "TEST_1",
-  // TODO: Add this as an example to the README.md
   name: ParseOptionName::Long(""),
   value_usage: ValueUsage::Verboten,
 };

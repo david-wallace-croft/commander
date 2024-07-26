@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-02
-//! - Updated: 2024-07-23
+//! - Updated: 2024-07-26
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -205,122 +205,6 @@ fn test_parse_2() {
 
   assert_eq!(actual, expected);
 }
-
-//------------------------------------------------------------------------------
-// parse_hyphenated_option_name() unit tests
-//------------------------------------------------------------------------------
-
-// TODO: Convert these old tests to parse_long() unit tests?
-
-// #[test]
-// fn test_parse_hyphenated_option_name_0() {
-//   let expected: Option<ParseOutput> = None;
-//
-//   let actual: Option<ParseOutput> =
-//     ParseOptionConfig::parse_hyphenated_option_name(
-//       "--UNKNOWN",
-//       0,
-//       "--TEST",
-//       ValueUsage::Optional,
-//     );
-//
-//   assert_eq!(actual, expected);
-// }
-//
-// #[test]
-// fn test_parse_hyphenated_option_name_1() {
-//   let expected: Option<ParseOutput> = Some(ParseOutput {
-//     error: None,
-//     index: 0,
-//     value: None,
-//   });
-//
-//   let actual: Option<ParseOutput> =
-//     ParseOptionConfig::parse_hyphenated_option_name(
-//       "--TEST",
-//       0,
-//       "--TEST",
-//       ValueUsage::Optional,
-//     );
-//
-//   assert_eq!(actual, expected);
-// }
-//
-// #[test]
-// fn test_parse_hyphenated_option_name_2() {
-//   let expected: Option<ParseOutput> = Some(ParseOutput {
-//     error: Some(ParseError::ValueMissingAfterEquals),
-//     index: 0,
-//     value: None,
-//   });
-//
-//   let actual: Option<ParseOutput> =
-//     ParseOptionConfig::parse_hyphenated_option_name(
-//       "--TEST=",
-//       0,
-//       "--TEST",
-//       ValueUsage::Optional,
-//     );
-//
-//   assert_eq!(actual, expected);
-// }
-//
-// #[test]
-// fn test_parse_hyphenated_option_name_3() {
-//   let expected: Option<ParseOutput> = Some(ParseOutput {
-//     error: None,
-//     index: 0,
-//     value: Some("VALUE".to_string()),
-//   });
-//
-//   let actual: Option<ParseOutput> =
-//     ParseOptionConfig::parse_hyphenated_option_name(
-//       "--TEST=VALUE",
-//       0,
-//       "--TEST",
-//       ValueUsage::Optional,
-//     );
-//
-//   assert_eq!(actual, expected);
-// }
-//
-// #[test]
-// fn test_parse_hyphenated_option_name_4() {
-//   let expected: Option<ParseOutput> = Some(ParseOutput {
-//     error: Some(ParseError::VerbotenValuePresent),
-//     index: 0,
-//     value: Some("VALUE".to_string()),
-//   });
-//
-//   let actual: Option<ParseOutput> =
-//     ParseOptionConfig::parse_hyphenated_option_name(
-//       "--TEST=VALUE",
-//       0,
-//       "--TEST",
-//       ValueUsage::Verboten,
-//     );
-//
-//   assert_eq!(actual, expected);
-// }
-//
-// #[test]
-// fn test_parse_hyphenated_option_name_5() {
-//   let expected: Option<ParseOutput> = Some(ParseOutput {
-//     error: Some(ParseError::RequiredValueMissing),
-//     index: 0,
-//     value: None,
-//   });
-//
-//   let actual: Option<ParseOutput> =
-//     ParseOptionConfig::parse_hyphenated_option_name(
-//       "--TEST",
-//       0,
-//       "--TEST",
-//       ValueUsage::Required,
-//     );
-//
-//   assert_eq!(actual, expected);
-// }
 
 //------------------------------------------------------------------------------
 // parse_last() unit tests
@@ -947,79 +831,6 @@ fn test_parse_next_verboten_9() {
 
   let actual: Option<ParseOutput> =
     PARSE_OPTION_CONFIG_VERBOTEN.parse_next(test_parse_input);
-
-  assert_eq!(actual, expected);
-}
-
-//------------------------------------------------------------------------------
-// parse_unknown() unit tests
-//------------------------------------------------------------------------------
-
-// TODO: Should these tests be moved to another test module?
-
-#[test]
-fn test_parse_unknown_long() {
-  const ARG_OPTION_TEST: ParseOptionConfig = ParseOptionConfig {
-    id: "TEST",
-    name: ParseOptionName::Both {
-      name_long: "TEST",
-      name_short: 'T',
-    },
-    value_usage: ValueUsage::Optional,
-  };
-
-  let recognized_options: Vec<&ParseOptionConfig> = vec![&ARG_OPTION_TEST];
-
-  let test_parse_input = &ParseInput::from_slice(&["--unknown"]);
-
-  let expected: Vec<ParseOutput> = vec![
-    ParseOutput {
-      error: None,
-      found: ParseFound::Long {
-        arg_index: 0,
-        name_long: "unknown".to_string(),
-      },
-      known: None,
-      value: None,
-    },
-  ];
-
-  let actual: Vec<ParseOutput> =
-    test_parse_input.parse_unknown(&recognized_options);
-
-  assert_eq!(actual, expected);
-}
-
-#[test]
-fn test_parse_unknown_short() {
-  const ARG_OPTION_TEST: ParseOptionConfig = ParseOptionConfig {
-    id: "TEST",
-    name: ParseOptionName::Both {
-      name_long: "TEST",
-      name_short: 'T',
-    },
-    value_usage: ValueUsage::Optional,
-  };
-
-  let recognized_options: Vec<&ParseOptionConfig> = vec![&ARG_OPTION_TEST];
-
-  let test_parse_input = &ParseInput::from_slice(&["-u"]);
-
-  let expected: Vec<ParseOutput> = vec![
-    ParseOutput {
-      error: None,
-      found: ParseFound::Short {
-        arg_index: 0,
-        char_index: 0,
-        name_short: 'u',
-      },
-      known: None,
-      value: None,
-    },
-  ];
-
-  let actual: Vec<ParseOutput> =
-    test_parse_input.parse_unknown(&recognized_options);
 
   assert_eq!(actual, expected);
 }

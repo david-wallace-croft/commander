@@ -3,7 +3,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-26
+//! - Updated: 2024-07-28
 //!
 //! [`CroftSoft Inc`]: https://www.CroftSoft.com/
 //! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/
@@ -14,6 +14,7 @@ use ::std::env;
 use crate::parse::hyphenation_type::HyphenationType;
 use crate::parse::parse_error::ParseError;
 use crate::parse::parse_found::ParseFound;
+use crate::parse::parse_iterator::ParseIterator;
 use crate::parse::parse_output::ParseOutput;
 use crate::parse::value_usage::ValueUsage;
 
@@ -33,6 +34,7 @@ pub struct ParseInput {
   pub skip_arg: usize,
   /// How many chars within an argument to skip before searching for an option
   pub skip_char: usize,
+  // TODO: ParseInput should have the ParseConfigOptions like ParseIterator
 }
 
 impl ParseInput {
@@ -54,42 +56,14 @@ impl ParseInput {
     &self,
     parse_option_configs: &[&ParseOptionConfig],
   ) -> Vec<ParseOutput> {
-    let mut parse_output_vec = Vec::<ParseOutput>::new();
+    let parse_iterator: ParseIterator = ParseIterator {
+      args: &self.args,
+      parse_option_configs,
+      skip_arg: self.skip_arg,
+      skip_char: self.skip_char,
+    };
 
-    let mut parse_output_option: Option<ParseOutput> =
-      self.parse_next(parse_option_configs);
-
-    loop {
-      let Some(parse_output) = parse_output_option else {
-        break;
-      };
-
-      let parse_input: ParseInput = match &parse_output.found {
-        ParseFound::Long {
-          arg_index,
-          ..
-        } => ParseInput {
-          args: self.args.clone(),
-          skip_arg: arg_index + 1,
-          skip_char: 0,
-        },
-        ParseFound::Short {
-          arg_index,
-          char_index,
-          ..
-        } => ParseInput {
-          args: self.args.clone(),
-          skip_arg: *arg_index,
-          skip_char: char_index + 1,
-        },
-      };
-
-      parse_output_vec.push(parse_output);
-
-      parse_output_option = parse_input.parse_next(parse_option_configs);
-    }
-
-    parse_output_vec
+    parse_iterator.collect()
   }
 
   pub fn parse_next(

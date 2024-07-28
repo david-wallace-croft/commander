@@ -5,11 +5,15 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-07-27
-//! - Updated: 2024-07-27
+//! - Updated: 2024-07-28
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
+
+use std::iter::Iterator;
+use std::string::ToString;
+use std::sync::LazyLock;
 
 use crate::parse::parse_found::ParseFound;
 use crate::parse::parse_iterator::ParseIterator;
@@ -18,9 +22,14 @@ use crate::parse::parse_option_name::ParseOptionName;
 use crate::parse::parse_output::ParseOutput;
 use crate::parse::value_usage::ValueUsage;
 
-const TEST_ARGS_0: &[&str] = &[
-  "-T", "--TEST",
-];
+static TEST_ARGS_0: LazyLock<Vec<String>> = LazyLock::new(|| {
+  [
+    "-T", "--TEST",
+  ]
+  .iter()
+  .map(|s| s.to_string())
+  .collect()
+});
 
 const TEST_PARSE_OPTION_CONFIG_0: ParseOptionConfig = ParseOptionConfig {
   id: "TEST_ID_0",
@@ -37,7 +46,7 @@ const TEST_PARSE_OPTION_CONFIGS_0: &[&ParseOptionConfig] =
 #[test]
 fn test_0() {
   let mut parse_iterator = ParseIterator {
-    args: TEST_ARGS_0,
+    args: &TEST_ARGS_0,
     parse_option_configs: TEST_PARSE_OPTION_CONFIGS_0,
     skip_arg: 0,
     skip_char: 0,
@@ -83,7 +92,7 @@ fn test_0() {
 #[test]
 fn test_1() {
   let parse_iterator = ParseIterator {
-    args: TEST_ARGS_0,
+    args: &TEST_ARGS_0,
     parse_option_configs: TEST_PARSE_OPTION_CONFIGS_0,
     skip_arg: 0,
     skip_char: 0,

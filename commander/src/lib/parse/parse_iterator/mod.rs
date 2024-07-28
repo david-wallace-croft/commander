@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-07-27
-//! - Updated: 2024-07-27
+//! - Updated: 2024-07-28
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -21,7 +21,8 @@ mod test;
 
 pub struct ParseIterator<'a> {
   /// The command-line arguments
-  pub args: &'a [&'a str],
+  // TODO: Maybe this should be Vec<String>
+  pub args: &'a [String],
   /// The known command-line arguments options
   pub parse_option_configs: &'a [&'a ParseOptionConfig<'a>],
   /// How many command-line arguments to skip before searching for an option
@@ -34,7 +35,8 @@ impl<'a> Iterator for ParseIterator<'a> {
   type Item = ParseOutput;
 
   fn next(&mut self) -> Option<Self::Item> {
-    let args = self.args.iter().map(|arg| arg.to_string()).collect();
+    let args: Vec<String> =
+      self.args.iter().map(|arg| arg.to_string()).collect();
 
     let parse_input = ParseInput {
       args,
@@ -52,7 +54,7 @@ impl<'a> Iterator for ParseIterator<'a> {
         arg_index,
         ..
       } => {
-        self.skip_arg += arg_index + 1;
+        self.skip_arg = arg_index + 1;
 
         self.skip_char = 0;
       },
@@ -61,7 +63,7 @@ impl<'a> Iterator for ParseIterator<'a> {
         char_index,
         ..
       } => {
-        self.skip_arg += arg_index;
+        self.skip_arg = *arg_index;
 
         self.skip_char = char_index + 1;
       },

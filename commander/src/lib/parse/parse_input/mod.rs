@@ -3,7 +3,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-28
+//! - Updated: 2024-07-29
 //!
 //! [`CroftSoft Inc`]: https://www.CroftSoft.com/
 //! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/
@@ -29,6 +29,7 @@ mod test;
 #[derive(Clone, Debug, PartialEq)]
 pub struct ParseInput {
   /// The command-line arguments
+  // TODO: maybe change this to &'a [String]
   pub args: Vec<String>,
   /// How many command-line arguments to skip before searching for an option
   pub skip_arg: usize,

@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-24
+//! - Updated: 2024-07-30
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -70,7 +70,7 @@ impl ParseOptionConfig<'_> {
 
     loop {
       let parse_input_next = ParseInput {
-        args: parse_input.args.clone(),
+        args: parse_input.args,
         skip_arg,
         skip_char,
       };

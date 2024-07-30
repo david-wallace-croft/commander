@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-02
-//! - Updated: 2024-07-26
+//! - Updated: 2024-07-30
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -104,9 +104,11 @@ fn test_make_hyphenated_option_name_3() {
 
 #[test]
 fn test_parse_0() {
-  let test_parse_input = &ParseInput::from_slice(&[
+  let test_args: Vec<String> = make_args(&[
     "-W", "-T", "-X", "-T=A", "-Y", "-T=B", "-Z",
   ]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Vec<ParseOutput> = vec![
     ParseOutput {
@@ -142,30 +144,34 @@ fn test_parse_0() {
   ];
 
   let actual: Vec<ParseOutput> =
-    PARSE_OPTION_CONFIG_OPTION.parse(test_parse_input);
+    PARSE_OPTION_CONFIG_OPTION.parse(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
 fn test_parse_1() {
-  let test_parse_input = &ParseInput::from_slice(&[
+  let test_args: Vec<String> = make_args(&[
     "-W", "-X", "-Y", "-Z",
   ]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Vec<ParseOutput> = vec![];
 
   let actual: Vec<ParseOutput> =
-    PARSE_OPTION_CONFIG_OPTION.parse(test_parse_input);
+    PARSE_OPTION_CONFIG_OPTION.parse(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
 fn test_parse_2() {
-  let test_parse_input = &ParseInput::from_slice(&[
+  let test_args = make_args(&[
     "-STAT=A", "-YT=B", "-Z",
   ]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Vec<ParseOutput> = vec![
     ParseOutput {
@@ -201,7 +207,7 @@ fn test_parse_2() {
   ];
 
   let actual: Vec<ParseOutput> =
-    PARSE_OPTION_CONFIG_OPTION.parse(test_parse_input);
+    PARSE_OPTION_CONFIG_OPTION.parse(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
@@ -212,9 +218,11 @@ fn test_parse_2() {
 
 #[test]
 fn test_parse_last_0() {
-  let test_parse_input = &ParseInput::from_slice(&[
+  let test_args = make_args(&[
     "-W", "-T", "-X", "-T=A", "-Y", "-T=B", "-Z",
   ]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
@@ -228,21 +236,23 @@ fn test_parse_last_0() {
   });
 
   let actual: Option<ParseOutput> =
-    PARSE_OPTION_CONFIG_OPTION.parse_last(test_parse_input);
+    PARSE_OPTION_CONFIG_OPTION.parse_last(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
 fn test_parse_last_1() {
-  let test_parse_input = &ParseInput::from_slice(&[
+  let test_args = make_args(&[
     "-W", "-X", "-Y", "-Z",
   ]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Option<ParseOutput> = None;
 
   let actual: Option<ParseOutput> =
-    PARSE_OPTION_CONFIG_OPTION.parse_last(test_parse_input);
+    PARSE_OPTION_CONFIG_OPTION.parse_last(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
@@ -253,9 +263,11 @@ fn test_parse_last_1() {
 
 #[test]
 fn test_parse_next_option_0() {
-  let test_parse_input = &ParseInput::from_slice(&[
+  let test_args = make_args(&[
     "-X", "-T", "value",
   ]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
@@ -269,14 +281,16 @@ fn test_parse_next_option_0() {
   });
 
   let actual: Option<ParseOutput> =
-    PARSE_OPTION_CONFIG_OPTION.parse_next(test_parse_input);
+    PARSE_OPTION_CONFIG_OPTION.parse_next(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
 fn test_parse_next_option_1() {
-  let test_parse_input = &ParseInput::from_slice(&["-T=value"]);
+  let test_args = make_args(&["-T=value"]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
@@ -290,14 +304,16 @@ fn test_parse_next_option_1() {
   });
 
   let actual: Option<ParseOutput> =
-    PARSE_OPTION_CONFIG_OPTION.parse_next(test_parse_input);
+    PARSE_OPTION_CONFIG_OPTION.parse_next(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
 fn test_parse_next_option_2() {
-  let test_parse_input = &ParseInput::from_slice(&["-T"]);
+  let test_args = make_args(&["-T"]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
@@ -311,14 +327,16 @@ fn test_parse_next_option_2() {
   });
 
   let actual: Option<ParseOutput> =
-    PARSE_OPTION_CONFIG_OPTION.parse_next(test_parse_input);
+    PARSE_OPTION_CONFIG_OPTION.parse_next(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
 fn test_parse_next_option_3() {
-  let test_parse_input = &ParseInput::from_slice(&["-T="]);
+  let test_args = make_args(&["-T="]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: Some(ParseError::ValueMissingAfterEquals),
@@ -332,19 +350,21 @@ fn test_parse_next_option_3() {
   });
 
   let actual: Option<ParseOutput> =
-    PARSE_OPTION_CONFIG_OPTION.parse_next(test_parse_input);
+    PARSE_OPTION_CONFIG_OPTION.parse_next(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
 fn test_parse_next_option_4() {
-  let test_parse_input = &ParseInput::from_slice(&[
+  let test_args = make_args(&[
     "--EXCLUDE0",
     "--TEST",
     "value",
     "--EXCLUDE1",
   ]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
@@ -357,14 +377,16 @@ fn test_parse_next_option_4() {
   });
 
   let actual: Option<ParseOutput> =
-    PARSE_OPTION_CONFIG_OPTION.parse_next(test_parse_input);
+    PARSE_OPTION_CONFIG_OPTION.parse_next(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
 fn test_parse_next_option_5() {
-  let test_parse_input = &ParseInput::from_slice(&["--TEST=value"]);
+  let test_args = make_args(&["--TEST=value"]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
@@ -377,14 +399,16 @@ fn test_parse_next_option_5() {
   });
 
   let actual: Option<ParseOutput> =
-    PARSE_OPTION_CONFIG_OPTION.parse_next(test_parse_input);
+    PARSE_OPTION_CONFIG_OPTION.parse_next(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
 fn test_parse_next_option_6() {
-  let test_parse_input = &ParseInput::from_slice(&["--TEST"]);
+  let test_args = make_args(&["--TEST"]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
@@ -397,14 +421,16 @@ fn test_parse_next_option_6() {
   });
 
   let actual: Option<ParseOutput> =
-    PARSE_OPTION_CONFIG_OPTION.parse_next(test_parse_input);
+    PARSE_OPTION_CONFIG_OPTION.parse_next(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
 fn test_parse_next_option_7() {
-  let test_parse_input = &ParseInput::from_slice(&["--TEST="]);
+  let test_args = make_args(&["--TEST="]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: Some(ParseError::ValueMissingAfterEquals),
@@ -417,14 +443,16 @@ fn test_parse_next_option_7() {
   });
 
   let actual: Option<ParseOutput> =
-    PARSE_OPTION_CONFIG_OPTION.parse_next(test_parse_input);
+    PARSE_OPTION_CONFIG_OPTION.parse_next(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
 fn test_parse_next_option_8() {
-  let test_parse_input = &ParseInput::from_slice(&["-XT=value"]);
+  let test_args = make_args(&["-XT=value"]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
@@ -438,14 +466,16 @@ fn test_parse_next_option_8() {
   });
 
   let actual: Option<ParseOutput> =
-    PARSE_OPTION_CONFIG_OPTION.parse_next(test_parse_input);
+    PARSE_OPTION_CONFIG_OPTION.parse_next(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
 fn test_parse_next_option_9() {
-  let test_parse_input = &ParseInput::from_slice(&["-XTX=value"]);
+  let test_args = make_args(&["-XTX=value"]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
@@ -459,16 +489,18 @@ fn test_parse_next_option_9() {
   });
 
   let actual: Option<ParseOutput> =
-    PARSE_OPTION_CONFIG_OPTION.parse_next(test_parse_input);
+    PARSE_OPTION_CONFIG_OPTION.parse_next(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
 fn test_parse_next_required_0() {
-  let test_parse_input = &ParseInput::from_slice(&[
+  let test_args = make_args(&[
     "-T", "value",
   ]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: Some(ParseError::RequiredValueMissing),
@@ -482,14 +514,16 @@ fn test_parse_next_required_0() {
   });
 
   let actual: Option<ParseOutput> =
-    PARSE_OPTION_CONFIG_REQUIRED.parse_next(test_parse_input);
+    PARSE_OPTION_CONFIG_REQUIRED.parse_next(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
 fn test_parse_next_required_1() {
-  let test_parse_input = &ParseInput::from_slice(&["-T"]);
+  let test_args = make_args(&["-T"]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: Some(ParseError::RequiredValueMissing),
@@ -503,14 +537,16 @@ fn test_parse_next_required_1() {
   });
 
   let actual: Option<ParseOutput> =
-    PARSE_OPTION_CONFIG_REQUIRED.parse_next(test_parse_input);
+    PARSE_OPTION_CONFIG_REQUIRED.parse_next(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
 fn test_parse_next_required_2() {
-  let test_parse_input = &ParseInput::from_slice(&["-XT=value"]);
+  let test_args = make_args(&["-XT=value"]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
@@ -524,14 +560,16 @@ fn test_parse_next_required_2() {
   });
 
   let actual: Option<ParseOutput> =
-    PARSE_OPTION_CONFIG_REQUIRED.parse_next(test_parse_input);
+    PARSE_OPTION_CONFIG_REQUIRED.parse_next(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
 fn test_parse_next_required_3() {
-  let test_parse_input = &ParseInput::from_slice(&["-XTX=value"]);
+  let test_args = make_args(&["-XTX=value"]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: Some(ParseError::RequiredValueMissing),
@@ -545,18 +583,19 @@ fn test_parse_next_required_3() {
   });
 
   let actual: Option<ParseOutput> =
-    PARSE_OPTION_CONFIG_REQUIRED.parse_next(test_parse_input);
+    PARSE_OPTION_CONFIG_REQUIRED.parse_next(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
 fn test_parse_next_required_multiple_0() {
-  let test_parse_input = &ParseInput {
-    args: vec![
-      "-T=0".to_string(),
-      "-T=1".to_string(),
-    ],
+  let test_args = make_args(&[
+    "-T=0", "-T=1",
+  ]);
+
+  let test_parse_input = ParseInput {
+    args: &test_args,
     skip_arg: 0,
     skip_char: 0,
   };
@@ -573,18 +612,19 @@ fn test_parse_next_required_multiple_0() {
   });
 
   let actual: Option<ParseOutput> =
-    PARSE_OPTION_CONFIG_REQUIRED.parse_next(test_parse_input);
+    PARSE_OPTION_CONFIG_REQUIRED.parse_next(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
 fn test_parse_next_required_multiple_1() {
-  let test_parse_input = &ParseInput {
-    args: vec![
-      "-T=0".to_string(),
-      "-T=1".to_string(),
-    ],
+  let test_args = make_args(&[
+    "-T=0", "-T=1",
+  ]);
+
+  let test_parse_input = ParseInput {
+    args: &test_args,
     skip_arg: 1,
     skip_char: 0,
   };
@@ -601,18 +641,19 @@ fn test_parse_next_required_multiple_1() {
   });
 
   let actual: Option<ParseOutput> =
-    PARSE_OPTION_CONFIG_REQUIRED.parse_next(test_parse_input);
+    PARSE_OPTION_CONFIG_REQUIRED.parse_next(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
 fn test_parse_next_required_multiple_2() {
-  let test_parse_input = &ParseInput {
-    args: vec![
-      "-T=0".to_string(),
-      "-T=1".to_string(),
-    ],
+  let test_args = make_args(&[
+    "-T=0", "-T=1",
+  ]);
+
+  let test_parse_input = ParseInput {
+    args: &test_args,
     skip_arg: usize::MAX,
     skip_char: 0,
   };
@@ -620,14 +661,16 @@ fn test_parse_next_required_multiple_2() {
   let expected: Option<ParseOutput> = None;
 
   let actual: Option<ParseOutput> =
-    PARSE_OPTION_CONFIG_REQUIRED.parse_next(test_parse_input);
+    PARSE_OPTION_CONFIG_REQUIRED.parse_next(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
 fn test_parse_next_verboten_0() {
-  let test_parse_input = &ParseInput::from_slice(&["-T"]);
+  let test_args = make_args(&["-T"]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
@@ -641,16 +684,18 @@ fn test_parse_next_verboten_0() {
   });
 
   let actual: Option<ParseOutput> =
-    PARSE_OPTION_CONFIG_VERBOTEN.parse_next(test_parse_input);
+    PARSE_OPTION_CONFIG_VERBOTEN.parse_next(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
 fn test_parse_next_verboten_1() {
-  let test_parse_input = &ParseInput::from_slice(&[
+  let test_args = make_args(&[
     "-T", "value",
   ]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
@@ -664,14 +709,16 @@ fn test_parse_next_verboten_1() {
   });
 
   let actual: Option<ParseOutput> =
-    PARSE_OPTION_CONFIG_VERBOTEN.parse_next(test_parse_input);
+    PARSE_OPTION_CONFIG_VERBOTEN.parse_next(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
 fn test_parse_next_verboten_2() {
-  let test_parse_input = &ParseInput::from_slice(&["-T=value"]);
+  let test_args = make_args(&["-T=value"]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: Some(ParseError::VerbotenValuePresent),
@@ -685,14 +732,16 @@ fn test_parse_next_verboten_2() {
   });
 
   let actual: Option<ParseOutput> =
-    PARSE_OPTION_CONFIG_VERBOTEN.parse_next(test_parse_input);
+    PARSE_OPTION_CONFIG_VERBOTEN.parse_next(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
 fn test_parse_next_verboten_3() {
-  let test_parse_input = &ParseInput::from_slice(&["--TEST"]);
+  let test_args = make_args(&["--TEST"]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
@@ -705,16 +754,18 @@ fn test_parse_next_verboten_3() {
   });
 
   let actual: Option<ParseOutput> =
-    PARSE_OPTION_CONFIG_VERBOTEN.parse_next(test_parse_input);
+    PARSE_OPTION_CONFIG_VERBOTEN.parse_next(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
 fn test_parse_next_verboten_4() {
-  let test_parse_input = &ParseInput::from_slice(&[
+  let test_args = make_args(&[
     "--TEST", "value",
   ]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
@@ -727,14 +778,16 @@ fn test_parse_next_verboten_4() {
   });
 
   let actual: Option<ParseOutput> =
-    PARSE_OPTION_CONFIG_VERBOTEN.parse_next(test_parse_input);
+    PARSE_OPTION_CONFIG_VERBOTEN.parse_next(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
 fn test_parse_next_verboten_5() {
-  let test_parse_input = &ParseInput::from_slice(&["--TEST=value"]);
+  let test_args = make_args(&["--TEST=value"]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: Some(ParseError::VerbotenValuePresent),
@@ -747,14 +800,16 @@ fn test_parse_next_verboten_5() {
   });
 
   let actual: Option<ParseOutput> =
-    PARSE_OPTION_CONFIG_VERBOTEN.parse_next(test_parse_input);
+    PARSE_OPTION_CONFIG_VERBOTEN.parse_next(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
 fn test_parse_next_verboten_6() {
-  let test_parse_input = &ParseInput::from_slice(&["-T="]);
+  let test_args = make_args(&["-T="]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: Some(ParseError::ValueMissingAfterEquals),
@@ -768,14 +823,16 @@ fn test_parse_next_verboten_6() {
   });
 
   let actual: Option<ParseOutput> =
-    PARSE_OPTION_CONFIG_VERBOTEN.parse_next(test_parse_input);
+    PARSE_OPTION_CONFIG_VERBOTEN.parse_next(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
 fn test_parse_next_verboten_7() {
-  let test_parse_input = &ParseInput::from_slice(&["--TEST="]);
+  let test_args = make_args(&["--TEST="]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: Some(ParseError::ValueMissingAfterEquals),
@@ -788,14 +845,16 @@ fn test_parse_next_verboten_7() {
   });
 
   let actual: Option<ParseOutput> =
-    PARSE_OPTION_CONFIG_VERBOTEN.parse_next(test_parse_input);
+    PARSE_OPTION_CONFIG_VERBOTEN.parse_next(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
 fn test_parse_next_verboten_8() {
-  let test_parse_input = &ParseInput::from_slice(&["-XT=value"]);
+  let test_args = make_args(&["-XT=value"]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: Some(ParseError::VerbotenValuePresent),
@@ -809,14 +868,16 @@ fn test_parse_next_verboten_8() {
   });
 
   let actual: Option<ParseOutput> =
-    PARSE_OPTION_CONFIG_VERBOTEN.parse_next(test_parse_input);
+    PARSE_OPTION_CONFIG_VERBOTEN.parse_next(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
 
 #[test]
 fn test_parse_next_verboten_9() {
-  let test_parse_input = &ParseInput::from_slice(&["-XTX=value"]);
+  let test_args = make_args(&["-XTX=value"]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
@@ -830,7 +891,7 @@ fn test_parse_next_verboten_9() {
   });
 
   let actual: Option<ParseOutput> =
-    PARSE_OPTION_CONFIG_VERBOTEN.parse_next(test_parse_input);
+    PARSE_OPTION_CONFIG_VERBOTEN.parse_next(&test_parse_input);
 
   assert_eq!(actual, expected);
 }
@@ -841,12 +902,14 @@ fn test_parse_next_verboten_9() {
 
 #[test]
 fn test_to_bool_result_option_0() {
-  let test_parse_input = &ParseInput::from_slice(&["-T=false"]);
+  let test_args = make_args(&["-T=false"]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Result<bool, ParseError> = Ok(false);
 
   let actual: Result<bool, ParseError> = PARSE_OPTION_CONFIG_OPTION
-    .parse_next(test_parse_input)
+    .parse_next(&test_parse_input)
     .unwrap()
     .to_bool_result();
 
@@ -855,14 +918,16 @@ fn test_to_bool_result_option_0() {
 
 #[test]
 fn test_to_bool_result_option_1() {
-  let test_parse_input = &ParseInput::from_slice(&[
+  let test_args = make_args(&[
     "-T", "false",
   ]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Result<bool, ParseError> = Ok(true);
 
   let actual: Result<bool, ParseError> = PARSE_OPTION_CONFIG_OPTION
-    .parse_next(test_parse_input)
+    .parse_next(&test_parse_input)
     .unwrap()
     .to_bool_result();
 
@@ -871,12 +936,14 @@ fn test_to_bool_result_option_1() {
 
 #[test]
 fn test_to_bool_result_option_2() {
-  let test_parse_input = &ParseInput::from_slice(&["-T=invalid"]);
+  let test_args = make_args(&["-T=invalid"]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Result<bool, ParseError> = Err(ParseError::InvalidValue);
 
   let actual: Result<bool, ParseError> = PARSE_OPTION_CONFIG_OPTION
-    .parse_next(test_parse_input)
+    .parse_next(&test_parse_input)
     .unwrap()
     .to_bool_result();
 
@@ -885,12 +952,14 @@ fn test_to_bool_result_option_2() {
 
 #[test]
 fn test_to_bool_result_option_3() {
-  let test_parse_input = &ParseInput::from_slice(&["--TEST=invalid"]);
+  let test_args = make_args(&["--TEST=invalid"]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Result<bool, ParseError> = Err(ParseError::InvalidValue);
 
   let actual: Result<bool, ParseError> = PARSE_OPTION_CONFIG_OPTION
-    .parse_next(test_parse_input)
+    .parse_next(&test_parse_input)
     .unwrap()
     .to_bool_result();
 
@@ -899,12 +968,14 @@ fn test_to_bool_result_option_3() {
 
 #[test]
 fn test_to_bool_result_required_0() {
-  let test_parse_input = &ParseInput::from_slice(&["-T=false"]);
+  let test_args = make_args(&["-T=false"]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Result<bool, ParseError> = Ok(false);
 
   let actual: Result<bool, ParseError> = PARSE_OPTION_CONFIG_REQUIRED
-    .parse_next(test_parse_input)
+    .parse_next(&test_parse_input)
     .unwrap()
     .to_bool_result();
 
@@ -913,12 +984,14 @@ fn test_to_bool_result_required_0() {
 
 #[test]
 fn test_to_bool_result_required_1() {
-  let test_parse_input = &ParseInput::from_slice(&["-T=true"]);
+  let test_args = make_args(&["-T=true"]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Result<bool, ParseError> = Ok(true);
 
   let actual: Result<bool, ParseError> = PARSE_OPTION_CONFIG_REQUIRED
-    .parse_next(test_parse_input)
+    .parse_next(&test_parse_input)
     .unwrap()
     .to_bool_result();
 
@@ -927,12 +1000,14 @@ fn test_to_bool_result_required_1() {
 
 #[test]
 fn test_to_bool_result_required_2() {
-  let test_parse_input = &ParseInput::from_slice(&["-T=invalid"]);
+  let test_args = make_args(&["-T=invalid"]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Result<bool, ParseError> = Err(ParseError::InvalidValue);
 
   let actual: Result<bool, ParseError> = PARSE_OPTION_CONFIG_REQUIRED
-    .parse_next(test_parse_input)
+    .parse_next(&test_parse_input)
     .unwrap()
     .to_bool_result();
 
@@ -941,12 +1016,14 @@ fn test_to_bool_result_required_2() {
 
 #[test]
 fn test_to_bool_result_verboten_0() {
-  let test_parse_input = &ParseInput::from_slice(&["-T"]);
+  let test_args = make_args(&["-T"]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Result<bool, ParseError> = Ok(true);
 
   let actual: Result<bool, ParseError> = PARSE_OPTION_CONFIG_VERBOTEN
-    .parse_next(test_parse_input)
+    .parse_next(&test_parse_input)
     .unwrap()
     .to_bool_result();
 
@@ -955,12 +1032,14 @@ fn test_to_bool_result_verboten_0() {
 
 #[test]
 fn test_to_bool_result_verboten_1() {
-  let test_parse_input = &ParseInput::from_slice(&["--TEST"]);
+  let test_args = make_args(&["--TEST"]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Result<bool, ParseError> = Ok(true);
 
   let actual: Result<bool, ParseError> = PARSE_OPTION_CONFIG_VERBOTEN
-    .parse_next(test_parse_input)
+    .parse_next(&test_parse_input)
     .unwrap()
     .to_bool_result();
 
@@ -969,12 +1048,14 @@ fn test_to_bool_result_verboten_1() {
 
 #[test]
 fn test_to_bool_result_verboten_2() {
-  let test_parse_input = &ParseInput::from_slice(&["-TEST"]);
+  let test_args = make_args(&["-TEST"]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Result<bool, ParseError> = Ok(true);
 
   let actual: Result<bool, ParseError> = PARSE_OPTION_CONFIG_VERBOTEN
-    .parse_next(test_parse_input)
+    .parse_next(&test_parse_input)
     .unwrap()
     .to_bool_result();
 
@@ -983,13 +1064,15 @@ fn test_to_bool_result_verboten_2() {
 
 #[test]
 fn test_to_bool_result_verboten_3() {
-  let test_parse_input = &ParseInput::from_slice(&["-T=true"]);
+  let test_args = make_args(&["-T=true"]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Result<bool, ParseError> =
     Err(ParseError::VerbotenValuePresent);
 
   let actual: Result<bool, ParseError> = PARSE_OPTION_CONFIG_VERBOTEN
-    .parse_next(test_parse_input)
+    .parse_next(&test_parse_input)
     .unwrap()
     .to_bool_result();
 
@@ -998,15 +1081,25 @@ fn test_to_bool_result_verboten_3() {
 
 #[test]
 fn test_to_bool_result_verboten_4() {
-  let test_parse_input = &ParseInput::from_slice(&["--TEST=true"]);
+  let test_args = make_args(&["--TEST=true"]);
+
+  let test_parse_input = ParseInput::from_slice(&test_args);
 
   let expected: Result<bool, ParseError> =
     Err(ParseError::VerbotenValuePresent);
 
   let actual: Result<bool, ParseError> = PARSE_OPTION_CONFIG_VERBOTEN
-    .parse_next(test_parse_input)
+    .parse_next(&test_parse_input)
     .unwrap()
     .to_bool_result();
 
   assert_eq!(actual, expected);
+}
+
+//------------------------------------------------------------------------------
+// supporting functions
+//------------------------------------------------------------------------------
+
+fn make_args(slice: &[&str]) -> Vec<String> {
+  slice.iter().map(|s| s.to_string()).collect()
 }

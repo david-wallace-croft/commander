@@ -3,13 +3,11 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-29
+//! - Updated: 2024-07-30
 //!
 //! [`CroftSoft Inc`]: https://www.CroftSoft.com/
 //! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/
 //==============================================================================
-
-use ::std::env;
 
 use crate::parse::hyphenation_type::HyphenationType;
 use crate::parse::parse_error::ParseError;
@@ -27,10 +25,9 @@ mod test;
 /// The input to parsing an option from the command-line arguments
 //------------------------------------------------------------------------------
 #[derive(Clone, Debug, PartialEq)]
-pub struct ParseInput {
+pub struct ParseInput<'a> {
   /// The command-line arguments
-  // TODO: maybe change this to &'a [String]
-  pub args: Vec<String>,
+  pub args: &'a [String],
   /// How many command-line arguments to skip before searching for an option
   pub skip_arg: usize,
   /// How many chars within an argument to skip before searching for an option
@@ -38,14 +35,11 @@ pub struct ParseInput {
   // TODO: ParseInput should have the ParseConfigOptions like ParseIterator
 }
 
-impl ParseInput {
+impl<'a> ParseInput<'a> {
   //----------------------------------------------------------------------------
   /// A slice of the command-line arguments with skips of zero
   //----------------------------------------------------------------------------
-  pub fn from_slice(args_slice: &[&str]) -> Self {
-    let args: Vec<String> =
-      args_slice.iter().map(|arg| arg.to_string()).collect();
-
+  pub fn from_slice(args: &'a [String]) -> Self {
     Self {
       args,
       skip_arg: 0,
@@ -297,16 +291,17 @@ impl ParseInput {
     })
   }
 }
-
-impl Default for ParseInput {
-  //----------------------------------------------------------------------------
-  /// The command-line arguments with a skip_arg of one and skip_char of zero
-  //----------------------------------------------------------------------------
-  fn default() -> Self {
-    Self {
-      args: env::args().collect(),
-      skip_arg: 1,
-      skip_char: 0,
-    }
-  }
-}
+//
+// impl Default for ParseInput<'_> {
+//   //----------------------------------------------------------------------------
+//   /// The command-line arguments with a skip_arg of one and skip_char of zero
+//   //----------------------------------------------------------------------------
+//   fn default() -> Self {
+//     let args: Vec<String> =
+//     Self {
+//       args: env::args().collect(),
+//       skip_arg: 1,
+//       skip_char: 0,
+//     }
+//   }
+// }

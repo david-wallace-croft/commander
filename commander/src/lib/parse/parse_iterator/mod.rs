@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-07-27
-//! - Updated: 2024-07-28
+//! - Updated: 2024-07-30
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -35,8 +35,8 @@ impl<'a> Iterator for ParseIterator<'a> {
   type Item = ParseOutput;
 
   fn next(&mut self) -> Option<Self::Item> {
-    let args: Vec<String> =
-      self.args.iter().map(|arg| arg.to_string()).collect();
+    let args: &Vec<String> =
+      &self.args.iter().map(|arg| arg.to_string()).collect();
 
     let parse_input = ParseInput {
       args,

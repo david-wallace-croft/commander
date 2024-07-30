@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-07-13
+//! - Updated: 2024-07-30
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -83,11 +83,13 @@ fn test_make_print_string_for_slice_0() {
 
 #[test]
 fn test_parse_0() {
+  let test_args: Vec<String> = vec![
+    "-0=A".to_string(),
+    "-0=B".to_string(),
+  ];
+
   let test_parse_input = ParseInput {
-    args: vec![
-      "-0=A".to_string(),
-      "-0=B".to_string(),
-    ],
+    args: &test_args,
     skip_arg: 0,
     skip_char: 0,
   };
@@ -122,11 +124,13 @@ fn test_parse_0() {
 
 #[test]
 fn test_parse_last_0() {
+  let test_args: Vec<String> = vec![
+    "-0=A".to_string(),
+    "-0=B".to_string(),
+  ];
+
   let test_parse_input = ParseInput {
-    args: vec![
-      "-0=A".to_string(),
-      "-0=B".to_string(),
-    ],
+    args: &test_args,
     skip_arg: 0,
     skip_char: 0,
   };
@@ -150,11 +154,13 @@ fn test_parse_last_0() {
 
 #[test]
 fn test_parse_next_0() {
+  let test_args: Vec<String> = vec![
+    "-0=A".to_string(),
+    "-0=B".to_string(),
+  ];
+
   let test_parse_input = ParseInput {
-    args: vec![
-      "-0=A".to_string(),
-      "-0=B".to_string(),
-    ],
+    args: &test_args,
     skip_arg: 1,
     skip_char: 0,
   };

@@ -167,7 +167,7 @@ fn test_parse_1() {
 
 #[test]
 fn test_parse_2() {
-  let test_args = make_args(&[
+  let test_args: Vec<String> = make_args(&[
     "-STAT=A", "-YT=B", "-Z",
   ]);
 
@@ -218,7 +218,7 @@ fn test_parse_2() {
 
 #[test]
 fn test_parse_last_0() {
-  let test_args = make_args(&[
+  let test_args: Vec<String> = make_args(&[
     "-W", "-T", "-X", "-T=A", "-Y", "-T=B", "-Z",
   ]);
 
@@ -243,7 +243,7 @@ fn test_parse_last_0() {
 
 #[test]
 fn test_parse_last_1() {
-  let test_args = make_args(&[
+  let test_args: Vec<String> = make_args(&[
     "-W", "-X", "-Y", "-Z",
   ]);
 
@@ -263,7 +263,7 @@ fn test_parse_last_1() {
 
 #[test]
 fn test_parse_next_option_0() {
-  let test_args = make_args(&[
+  let test_args: Vec<String> = make_args(&[
     "-X", "-T", "value",
   ]);
 
@@ -288,7 +288,7 @@ fn test_parse_next_option_0() {
 
 #[test]
 fn test_parse_next_option_1() {
-  let test_args = make_args(&["-T=value"]);
+  let test_args: Vec<String> = make_args(&["-T=value"]);
 
   let test_parse_input = ParseInput::from_slice(&test_args);
 
@@ -311,7 +311,7 @@ fn test_parse_next_option_1() {
 
 #[test]
 fn test_parse_next_option_2() {
-  let test_args = make_args(&["-T"]);
+  let test_args: Vec<String> = make_args(&["-T"]);
 
   let test_parse_input = ParseInput::from_slice(&test_args);
 
@@ -334,7 +334,7 @@ fn test_parse_next_option_2() {
 
 #[test]
 fn test_parse_next_option_3() {
-  let test_args = make_args(&["-T="]);
+  let test_args: Vec<String> = make_args(&["-T="]);
 
   let test_parse_input = ParseInput::from_slice(&test_args);
 
@@ -357,7 +357,7 @@ fn test_parse_next_option_3() {
 
 #[test]
 fn test_parse_next_option_4() {
-  let test_args = make_args(&[
+  let test_args: Vec<String> = make_args(&[
     "--EXCLUDE0",
     "--TEST",
     "value",
@@ -384,7 +384,7 @@ fn test_parse_next_option_4() {
 
 #[test]
 fn test_parse_next_option_5() {
-  let test_args = make_args(&["--TEST=value"]);
+  let test_args: Vec<String> = make_args(&["--TEST=value"]);
 
   let test_parse_input = ParseInput::from_slice(&test_args);
 
@@ -406,7 +406,7 @@ fn test_parse_next_option_5() {
 
 #[test]
 fn test_parse_next_option_6() {
-  let test_args = make_args(&["--TEST"]);
+  let test_args: Vec<String> = make_args(&["--TEST"]);
 
   let test_parse_input = ParseInput::from_slice(&test_args);
 
@@ -428,7 +428,7 @@ fn test_parse_next_option_6() {
 
 #[test]
 fn test_parse_next_option_7() {
-  let test_args = make_args(&["--TEST="]);
+  let test_args: Vec<String> = make_args(&["--TEST="]);
 
   let test_parse_input = ParseInput::from_slice(&test_args);
 
@@ -450,7 +450,7 @@ fn test_parse_next_option_7() {
 
 #[test]
 fn test_parse_next_option_8() {
-  let test_args = make_args(&["-XT=value"]);
+  let test_args: Vec<String> = make_args(&["-XT=value"]);
 
   let test_parse_input = ParseInput::from_slice(&test_args);
 
@@ -473,7 +473,7 @@ fn test_parse_next_option_8() {
 
 #[test]
 fn test_parse_next_option_9() {
-  let test_args = make_args(&["-XTX=value"]);
+  let test_args: Vec<String> = make_args(&["-XTX=value"]);
 
   let test_parse_input = ParseInput::from_slice(&test_args);
 
@@ -496,7 +496,7 @@ fn test_parse_next_option_9() {
 
 #[test]
 fn test_parse_next_required_0() {
-  let test_args = make_args(&[
+  let test_args: Vec<String> = make_args(&[
     "-T", "value",
   ]);
 
@@ -521,7 +521,7 @@ fn test_parse_next_required_0() {
 
 #[test]
 fn test_parse_next_required_1() {
-  let test_args = make_args(&["-T"]);
+  let test_args: Vec<String> = make_args(&["-T"]);
 
   let test_parse_input = ParseInput::from_slice(&test_args);
 
@@ -544,7 +544,7 @@ fn test_parse_next_required_1() {
 
 #[test]
 fn test_parse_next_required_2() {
-  let test_args = make_args(&["-XT=value"]);
+  let test_args: Vec<String> = make_args(&["-XT=value"]);
 
   let test_parse_input = ParseInput::from_slice(&test_args);
 
@@ -567,7 +567,7 @@ fn test_parse_next_required_2() {
 
 #[test]
 fn test_parse_next_required_3() {
-  let test_args = make_args(&["-XTX=value"]);
+  let test_args: Vec<String> = make_args(&["-XTX=value"]);
 
   let test_parse_input = ParseInput::from_slice(&test_args);
 
@@ -590,7 +590,7 @@ fn test_parse_next_required_3() {
 
 #[test]
 fn test_parse_next_required_multiple_0() {
-  let test_args = make_args(&[
+  let test_args: Vec<String> = make_args(&[
     "-T=0", "-T=1",
   ]);
 
@@ -619,7 +619,7 @@ fn test_parse_next_required_multiple_0() {
 
 #[test]
 fn test_parse_next_required_multiple_1() {
-  let test_args = make_args(&[
+  let test_args: Vec<String> = make_args(&[
     "-T=0", "-T=1",
   ]);
 
@@ -648,7 +648,7 @@ fn test_parse_next_required_multiple_1() {
 
 #[test]
 fn test_parse_next_required_multiple_2() {
-  let test_args = make_args(&[
+  let test_args: Vec<String> = make_args(&[
     "-T=0", "-T=1",
   ]);
 
@@ -668,7 +668,7 @@ fn test_parse_next_required_multiple_2() {
 
 #[test]
 fn test_parse_next_verboten_0() {
-  let test_args = make_args(&["-T"]);
+  let test_args: Vec<String> = make_args(&["-T"]);
 
   let test_parse_input = ParseInput::from_slice(&test_args);
 
@@ -691,7 +691,7 @@ fn test_parse_next_verboten_0() {
 
 #[test]
 fn test_parse_next_verboten_1() {
-  let test_args = make_args(&[
+  let test_args: Vec<String> = make_args(&[
     "-T", "value",
   ]);
 
@@ -716,7 +716,7 @@ fn test_parse_next_verboten_1() {
 
 #[test]
 fn test_parse_next_verboten_2() {
-  let test_args = make_args(&["-T=value"]);
+  let test_args: Vec<String> = make_args(&["-T=value"]);
 
   let test_parse_input = ParseInput::from_slice(&test_args);
 
@@ -739,7 +739,7 @@ fn test_parse_next_verboten_2() {
 
 #[test]
 fn test_parse_next_verboten_3() {
-  let test_args = make_args(&["--TEST"]);
+  let test_args: Vec<String> = make_args(&["--TEST"]);
 
   let test_parse_input = ParseInput::from_slice(&test_args);
 
@@ -761,7 +761,7 @@ fn test_parse_next_verboten_3() {
 
 #[test]
 fn test_parse_next_verboten_4() {
-  let test_args = make_args(&[
+  let test_args: Vec<String> = make_args(&[
     "--TEST", "value",
   ]);
 
@@ -785,7 +785,7 @@ fn test_parse_next_verboten_4() {
 
 #[test]
 fn test_parse_next_verboten_5() {
-  let test_args = make_args(&["--TEST=value"]);
+  let test_args: Vec<String> = make_args(&["--TEST=value"]);
 
   let test_parse_input = ParseInput::from_slice(&test_args);
 
@@ -807,7 +807,7 @@ fn test_parse_next_verboten_5() {
 
 #[test]
 fn test_parse_next_verboten_6() {
-  let test_args = make_args(&["-T="]);
+  let test_args: Vec<String> = make_args(&["-T="]);
 
   let test_parse_input = ParseInput::from_slice(&test_args);
 
@@ -830,7 +830,7 @@ fn test_parse_next_verboten_6() {
 
 #[test]
 fn test_parse_next_verboten_7() {
-  let test_args = make_args(&["--TEST="]);
+  let test_args: Vec<String> = make_args(&["--TEST="]);
 
   let test_parse_input = ParseInput::from_slice(&test_args);
 
@@ -852,7 +852,7 @@ fn test_parse_next_verboten_7() {
 
 #[test]
 fn test_parse_next_verboten_8() {
-  let test_args = make_args(&["-XT=value"]);
+  let test_args: Vec<String> = make_args(&["-XT=value"]);
 
   let test_parse_input = ParseInput::from_slice(&test_args);
 
@@ -875,7 +875,7 @@ fn test_parse_next_verboten_8() {
 
 #[test]
 fn test_parse_next_verboten_9() {
-  let test_args = make_args(&["-XTX=value"]);
+  let test_args: Vec<String> = make_args(&["-XTX=value"]);
 
   let test_parse_input = ParseInput::from_slice(&test_args);
 
@@ -902,7 +902,7 @@ fn test_parse_next_verboten_9() {
 
 #[test]
 fn test_to_bool_result_option_0() {
-  let test_args = make_args(&["-T=false"]);
+  let test_args: Vec<String> = make_args(&["-T=false"]);
 
   let test_parse_input = ParseInput::from_slice(&test_args);
 
@@ -918,7 +918,7 @@ fn test_to_bool_result_option_0() {
 
 #[test]
 fn test_to_bool_result_option_1() {
-  let test_args = make_args(&[
+  let test_args: Vec<String> = make_args(&[
     "-T", "false",
   ]);
 
@@ -936,7 +936,7 @@ fn test_to_bool_result_option_1() {
 
 #[test]
 fn test_to_bool_result_option_2() {
-  let test_args = make_args(&["-T=invalid"]);
+  let test_args: Vec<String> = make_args(&["-T=invalid"]);
 
   let test_parse_input = ParseInput::from_slice(&test_args);
 
@@ -952,7 +952,7 @@ fn test_to_bool_result_option_2() {
 
 #[test]
 fn test_to_bool_result_option_3() {
-  let test_args = make_args(&["--TEST=invalid"]);
+  let test_args: Vec<String> = make_args(&["--TEST=invalid"]);
 
   let test_parse_input = ParseInput::from_slice(&test_args);
 
@@ -968,7 +968,7 @@ fn test_to_bool_result_option_3() {
 
 #[test]
 fn test_to_bool_result_required_0() {
-  let test_args = make_args(&["-T=false"]);
+  let test_args: Vec<String> = make_args(&["-T=false"]);
 
   let test_parse_input = ParseInput::from_slice(&test_args);
 
@@ -984,7 +984,7 @@ fn test_to_bool_result_required_0() {
 
 #[test]
 fn test_to_bool_result_required_1() {
-  let test_args = make_args(&["-T=true"]);
+  let test_args: Vec<String> = make_args(&["-T=true"]);
 
   let test_parse_input = ParseInput::from_slice(&test_args);
 
@@ -1000,7 +1000,7 @@ fn test_to_bool_result_required_1() {
 
 #[test]
 fn test_to_bool_result_required_2() {
-  let test_args = make_args(&["-T=invalid"]);
+  let test_args: Vec<String> = make_args(&["-T=invalid"]);
 
   let test_parse_input = ParseInput::from_slice(&test_args);
 
@@ -1016,7 +1016,7 @@ fn test_to_bool_result_required_2() {
 
 #[test]
 fn test_to_bool_result_verboten_0() {
-  let test_args = make_args(&["-T"]);
+  let test_args: Vec<String> = make_args(&["-T"]);
 
   let test_parse_input = ParseInput::from_slice(&test_args);
 
@@ -1032,7 +1032,7 @@ fn test_to_bool_result_verboten_0() {
 
 #[test]
 fn test_to_bool_result_verboten_1() {
-  let test_args = make_args(&["--TEST"]);
+  let test_args: Vec<String> = make_args(&["--TEST"]);
 
   let test_parse_input = ParseInput::from_slice(&test_args);
 
@@ -1048,7 +1048,7 @@ fn test_to_bool_result_verboten_1() {
 
 #[test]
 fn test_to_bool_result_verboten_2() {
-  let test_args = make_args(&["-TEST"]);
+  let test_args: Vec<String> = make_args(&["-TEST"]);
 
   let test_parse_input = ParseInput::from_slice(&test_args);
 
@@ -1064,7 +1064,7 @@ fn test_to_bool_result_verboten_2() {
 
 #[test]
 fn test_to_bool_result_verboten_3() {
-  let test_args = make_args(&["-T=true"]);
+  let test_args: Vec<String> = make_args(&["-T=true"]);
 
   let test_parse_input = ParseInput::from_slice(&test_args);
 
@@ -1081,7 +1081,7 @@ fn test_to_bool_result_verboten_3() {
 
 #[test]
 fn test_to_bool_result_verboten_4() {
-  let test_args = make_args(&["--TEST=true"]);
+  let test_args: Vec<String> = make_args(&["--TEST=true"]);
 
   let test_parse_input = ParseInput::from_slice(&test_args);
 

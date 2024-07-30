@@ -291,17 +291,3 @@ impl<'a> ParseInput<'a> {
     })
   }
 }
-//
-// impl Default for ParseInput<'_> {
-//   //----------------------------------------------------------------------------
-//   /// The command-line arguments with a skip_arg of one and skip_char of zero
-//   //----------------------------------------------------------------------------
-//   fn default() -> Self {
-//     let args: Vec<String> =
-//     Self {
-//       args: env::args().collect(),
-//       skip_arg: 1,
-//       skip_char: 0,
-//     }
-//   }
-// }

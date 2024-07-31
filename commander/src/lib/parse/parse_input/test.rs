@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-31
-//! - Updated: 2024-07-30
+//! - Updated: 2024-07-31
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -19,8 +19,12 @@ use crate::parse::value_usage::ValueUsage;
 
 use super::*;
 
+const TEST_ID_0: &str = "TEST_ID_0";
+
+const TEST_ID_1: &str = "TEST_ID_1";
+
 const TEST_PARSE_OPTION_CONFIG_0: ParseOptionConfig = ParseOptionConfig {
-  id: "TEST_ID_0",
+  id: TEST_ID_0,
   name: ParseOptionName::Both {
     name_long: "TEST",
     name_short: 'T',
@@ -29,7 +33,7 @@ const TEST_PARSE_OPTION_CONFIG_0: ParseOptionConfig = ParseOptionConfig {
 };
 
 const TEST_PARSE_OPTION_CONFIG_1: ParseOptionConfig = ParseOptionConfig {
-  id: "TEST_1",
+  id: TEST_ID_1,
   name: ParseOptionName::Long(""),
   value_usage: ValueUsage::Verboten,
 };
@@ -74,7 +78,7 @@ fn test_parse_0() {
         arg_index: 0,
         name_long: "TEST".to_string(),
       },
-      known: Some("TEST_ID_0".to_string()),
+      known: Some(TEST_ID_0.to_string()),
       value: None,
     },
     ParseOutput {
@@ -84,7 +88,7 @@ fn test_parse_0() {
         char_index: 0,
         name_short: 'T',
       },
-      known: Some("TEST_ID_0".to_string()),
+      known: Some(TEST_ID_0.to_string()),
       value: None,
     },
   ];
@@ -117,7 +121,7 @@ fn test_parse_next_0() {
       arg_index: 0,
       name_long: "TEST".to_string(),
     },
-    known: Some("TEST_ID_0".to_string()),
+    known: Some(TEST_ID_0.to_string()),
     value: None,
   });
 
@@ -246,7 +250,7 @@ fn test_parse_next_4() {
       char_index: 0,
       name_short: 'T',
     },
-    known: Some("TEST_ID_0".to_string()),
+    known: Some(TEST_ID_0.to_string()),
     value: None,
   });
 
@@ -312,7 +316,7 @@ fn test_parse_next_6() {
       char_index: 0,
       name_short: 'T',
     },
-    known: Some("TEST_ID_0".to_string()),
+    known: Some(TEST_ID_0.to_string()),
     value: Some("TEST_VALUE".to_string()),
   });
 
@@ -378,7 +382,7 @@ fn test_parse_next_8() {
       char_index: 0,
       name_short: 'T',
     },
-    known: Some("TEST_ID_0".to_string()),
+    known: Some(TEST_ID_0.to_string()),
     value: None,
   });
 
@@ -441,7 +445,7 @@ fn test_parse_next_10() {
       char_index: 0,
       name_short: 'T',
     },
-    known: Some("TEST_ID_0".to_string()),
+    known: Some(TEST_ID_0.to_string()),
     value: None,
   });
 
@@ -501,7 +505,7 @@ fn test_parse_next_12() {
       char_index: 1,
       name_short: 'T',
     },
-    known: Some("TEST_ID_0".to_string()),
+    known: Some(TEST_ID_0.to_string()),
     value: None,
   });
 
@@ -531,7 +535,7 @@ fn test_parse_next_13() {
       char_index: 1,
       name_short: 'T',
     },
-    known: Some("TEST_ID_0".to_string()),
+    known: Some(TEST_ID_0.to_string()),
     value: Some("TEST_VALUE".to_string()),
   });
 
@@ -561,7 +565,7 @@ fn test_parse_next_14() {
       char_index: 1,
       name_short: 'T',
     },
-    known: Some("TEST_ID_0".to_string()),
+    known: Some(TEST_ID_0.to_string()),
     value: None,
   });
 

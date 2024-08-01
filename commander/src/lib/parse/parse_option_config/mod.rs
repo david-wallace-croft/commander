@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-30
+//! - Updated: 2024-08-01
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -26,7 +26,7 @@ mod test;
 //------------------------------------------------------------------------------
 /// Option configuration metadata for parsing
 //------------------------------------------------------------------------------
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct ParseOptionConfig<'a> {
   // TODO: Maybe make id any uniquely identifiable object
   pub id: &'a str,

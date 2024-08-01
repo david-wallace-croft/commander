@@ -3,7 +3,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-30
+//! - Updated: 2024-08-01
 //!
 //! [`CroftSoft Inc`]: https://www.CroftSoft.com/
 //! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/
@@ -24,15 +24,17 @@ mod test;
 //------------------------------------------------------------------------------
 /// The input to parsing an option from the command-line arguments
 //------------------------------------------------------------------------------
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ParseInput<'a> {
   /// The command-line arguments
   pub args: &'a [String],
+  // TODO: ParseInput should have the ParseConfigOptions like ParseIterator
+  /// The known command-line arguments options
+  // pub parse_option_configs: &'a [&'a ParseOptionConfig<'a>],
   /// How many command-line arguments to skip before searching for an option
   pub skip_arg: usize,
   /// How many chars within an argument to skip before searching for an option
   pub skip_char: usize,
-  // TODO: ParseInput should have the ParseConfigOptions like ParseIterator
 }
 
 impl<'a> ParseInput<'a> {

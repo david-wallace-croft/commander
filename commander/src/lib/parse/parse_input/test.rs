@@ -5,19 +5,29 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-31
-//! - Updated: 2024-07-31
+//! - Updated: 2024-08-02
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
 use std::string::ToString;
+use std::sync::LazyLock;
 
 use crate::parse::parse_error::ParseError;
 use crate::parse::parse_option_name::ParseOptionName;
 use crate::parse::value_usage::ValueUsage;
 
 use super::*;
+
+static TEST_ARGS_0: LazyLock<Vec<String>> = LazyLock::new(|| {
+  [
+    "-T", "--TEST",
+  ]
+  .iter()
+  .map(|s| s.to_string())
+  .collect()
+});
 
 const TEST_ID_0: &str = "TEST_ID_0";
 
@@ -38,6 +48,9 @@ const TEST_PARSE_OPTION_CONFIG_1: ParseOptionConfig = ParseOptionConfig {
   value_usage: ValueUsage::Verboten,
 };
 
+const TEST_PARSE_OPTION_CONFIGS_0: &[&ParseOptionConfig] =
+  &[&TEST_PARSE_OPTION_CONFIG_0];
+
 #[test]
 fn test_from_slice_0() {
   let test_args_slice: Vec<String> = vec!["TEST".to_string()];
@@ -46,11 +59,102 @@ fn test_from_slice_0() {
 
   let expected: ParseInput = ParseInput {
     args,
+    parse_option_configs: &[],
     skip_arg: 0,
     skip_char: 0,
   };
 
   let actual: ParseInput = ParseInput::from_slice(&test_args_slice);
+
+  assert_eq!(actual, expected);
+}
+
+#[test]
+fn test_next_0() {
+  let mut parse_input = ParseInput {
+    args: &TEST_ARGS_0,
+    parse_option_configs: TEST_PARSE_OPTION_CONFIGS_0,
+    skip_arg: 0,
+    skip_char: 0,
+  };
+
+  let expected0: Option<ParseOutput> = Some(ParseOutput {
+    error: None,
+    found: ParseFound::Short {
+      arg_index: 0,
+      // TODO: Should this be 1 since the hyphen is at position zero?
+      char_index: 0,
+      name_short: 'T',
+    },
+    known: Some("TEST_ID_0".to_string()),
+    value: None,
+  });
+
+  let expected1: Option<ParseOutput> = Some(ParseOutput {
+    error: None,
+    found: ParseFound::Long {
+      arg_index: 1,
+      name_long: "TEST".to_string(),
+    },
+    known: Some("TEST_ID_0".to_string()),
+    value: None,
+  });
+
+  let expected3: Option<ParseOutput> = None;
+
+  let actual0: Option<ParseOutput> = parse_input.next();
+
+  assert_eq!(actual0, expected0);
+
+  let actual1: Option<ParseOutput> = parse_input.next();
+
+  assert_eq!(actual1, expected1);
+
+  let actual2: Option<ParseOutput> = parse_input.next();
+
+  assert_eq!(actual2, expected3);
+}
+
+#[test]
+fn test_next_1() {
+  let parse_input = ParseInput {
+    args: &TEST_ARGS_0,
+    parse_option_configs: TEST_PARSE_OPTION_CONFIGS_0,
+    skip_arg: 0,
+    skip_char: 0,
+  };
+
+  let expected0: ParseOutput = ParseOutput {
+    error: None,
+    found: ParseFound::Short {
+      arg_index: 0,
+      // TODO: Should this be 1 since the hyphen is at position zero?
+      char_index: 0,
+      name_short: 'T',
+    },
+    known: Some("TEST_ID_0".to_string()),
+    value: None,
+  };
+
+  let expected1: ParseOutput = ParseOutput {
+    error: None,
+    found: ParseFound::Long {
+      arg_index: 1,
+      name_long: "TEST".to_string(),
+    },
+    known: Some("TEST_ID_0".to_string()),
+    value: None,
+  };
+
+  let expected: Vec<ParseOutput> = vec![
+    expected0, expected1,
+  ];
+
+  let mut actual: Vec<ParseOutput> = Vec::new();
+
+  for parse_output in parse_input {
+    actual.push(parse_output);
+  }
 
   assert_eq!(actual, expected);
 }
@@ -62,14 +166,15 @@ fn test_parse_0() {
     "-T".to_string(),
   ];
 
-  let test_parse_input: ParseInput = ParseInput {
+  let test_parse_option_configs: Vec<&ParseOptionConfig> =
+    vec![&TEST_PARSE_OPTION_CONFIG_0];
+
+  let mut test_parse_input = ParseInput {
     args: &test_args,
+    parse_option_configs: &test_parse_option_configs,
     skip_arg: 0,
     skip_char: 0,
   };
-
-  let test_parse_option_configs: Vec<&ParseOptionConfig> =
-    vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let expected: Vec<ParseOutput> = vec![
     ParseOutput {
@@ -93,8 +198,7 @@ fn test_parse_0() {
     },
   ];
 
-  let actual: Vec<ParseOutput> =
-    test_parse_input.parse(&test_parse_option_configs);
+  let actual: Vec<ParseOutput> = test_parse_input.parse();
 
   assert_eq!(actual, expected);
 }
@@ -106,11 +210,12 @@ fn test_parse_next_0() {
     "--UNKNOWN".to_string(),
   ];
 
-  let test_recognized_options: &Vec<&ParseOptionConfig> =
-    &vec![&TEST_PARSE_OPTION_CONFIG_0];
+  let test_known_options: Vec<&ParseOptionConfig> =
+    vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: &test_args,
+    parse_option_configs: &test_known_options,
     skip_arg: 0,
     skip_char: 0,
   };
@@ -125,8 +230,7 @@ fn test_parse_next_0() {
     value: None,
   });
 
-  let actual: Option<ParseOutput> =
-    test_parse_input.parse_next(test_recognized_options);
+  let actual: Option<ParseOutput> = test_parse_input.parse_next();
 
   assert_eq!(actual, expected);
 }
@@ -138,11 +242,12 @@ fn test_parse_next_1() {
     "--UNKNOWN".to_string(),
   ];
 
-  let test_recognized_options: &Vec<&ParseOptionConfig> =
-    &vec![&TEST_PARSE_OPTION_CONFIG_0];
+  let test_known_options: Vec<&ParseOptionConfig> =
+    vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: &test_args,
+    parse_option_configs: &test_known_options,
     skip_arg: 1,
     skip_char: 0,
   };
@@ -157,8 +262,7 @@ fn test_parse_next_1() {
     value: None,
   });
 
-  let actual: Option<ParseOutput> =
-    test_parse_input.parse_next(test_recognized_options);
+  let actual: Option<ParseOutput> = test_parse_input.parse_next();
 
   assert_eq!(actual, expected);
 }
@@ -170,11 +274,12 @@ fn test_parse_next_2() {
     "--UNKNOWN=TEST_VALUE".to_string(),
   ];
 
-  let test_recognized_options: &Vec<&ParseOptionConfig> =
-    &vec![&TEST_PARSE_OPTION_CONFIG_0];
+  let test_known_options: Vec<&ParseOptionConfig> =
+    vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: &test_args,
+    parse_option_configs: &test_known_options,
     skip_arg: 1,
     skip_char: 0,
   };
@@ -189,8 +294,7 @@ fn test_parse_next_2() {
     value: Some("TEST_VALUE".to_string()),
   });
 
-  let actual: Option<ParseOutput> =
-    test_parse_input.parse_next(test_recognized_options);
+  let actual: Option<ParseOutput> = test_parse_input.parse_next();
 
   assert_eq!(actual, expected);
 }
@@ -202,11 +306,12 @@ fn test_parse_next_3() {
     "--UNKNOWN=".to_string(),
   ];
 
-  let test_recognized_options: &Vec<&ParseOptionConfig> =
-    &vec![&TEST_PARSE_OPTION_CONFIG_0];
+  let test_known_options: Vec<&ParseOptionConfig> =
+    vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: &test_args,
+    parse_option_configs: &test_known_options,
     skip_arg: 1,
     skip_char: 0,
   };
@@ -221,8 +326,7 @@ fn test_parse_next_3() {
     value: None,
   });
 
-  let actual: Option<ParseOutput> =
-    test_parse_input.parse_next(test_recognized_options);
+  let actual: Option<ParseOutput> = test_parse_input.parse_next();
 
   assert_eq!(actual, expected);
 }
@@ -234,11 +338,12 @@ fn test_parse_next_4() {
     "-U".to_string(),
   ];
 
-  let test_recognized_options: &Vec<&ParseOptionConfig> =
-    &vec![&TEST_PARSE_OPTION_CONFIG_0];
+  let test_known_options: Vec<&ParseOptionConfig> =
+    vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: &test_args,
+    parse_option_configs: &test_known_options,
     skip_arg: 0,
     skip_char: 0,
   };
@@ -254,8 +359,7 @@ fn test_parse_next_4() {
     value: None,
   });
 
-  let actual: Option<ParseOutput> =
-    test_parse_input.parse_next(test_recognized_options);
+  let actual: Option<ParseOutput> = test_parse_input.parse_next();
 
   assert_eq!(actual, expected);
 }
@@ -267,11 +371,12 @@ fn test_parse_next_5() {
     "-U".to_string(),
   ];
 
-  let test_recognized_options: &Vec<&ParseOptionConfig> =
-    &vec![&TEST_PARSE_OPTION_CONFIG_0];
+  let test_known_options: Vec<&ParseOptionConfig> =
+    vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: &test_args,
+    parse_option_configs: &test_known_options,
     skip_arg: 1,
     skip_char: 0,
   };
@@ -287,8 +392,7 @@ fn test_parse_next_5() {
     value: None,
   });
 
-  let actual: Option<ParseOutput> =
-    test_parse_input.parse_next(test_recognized_options);
+  let actual: Option<ParseOutput> = test_parse_input.parse_next();
 
   assert_eq!(actual, expected);
 }
@@ -300,11 +404,12 @@ fn test_parse_next_6() {
     "-U".to_string(),
   ];
 
-  let test_recognized_options: &Vec<&ParseOptionConfig> =
-    &vec![&TEST_PARSE_OPTION_CONFIG_0];
+  let test_known_options: Vec<&ParseOptionConfig> =
+    vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: &test_args,
+    parse_option_configs: &test_known_options,
     skip_arg: 0,
     skip_char: 0,
   };
@@ -320,8 +425,7 @@ fn test_parse_next_6() {
     value: Some("TEST_VALUE".to_string()),
   });
 
-  let actual: Option<ParseOutput> =
-    test_parse_input.parse_next(test_recognized_options);
+  let actual: Option<ParseOutput> = test_parse_input.parse_next();
 
   assert_eq!(actual, expected);
 }
@@ -333,11 +437,12 @@ fn test_parse_next_7() {
     "-U=TEST_VALUE".to_string(),
   ];
 
-  let test_recognized_options: &Vec<&ParseOptionConfig> =
-    &vec![&TEST_PARSE_OPTION_CONFIG_0];
+  let test_known_options: Vec<&ParseOptionConfig> =
+    vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: &test_args,
+    parse_option_configs: &test_known_options,
     skip_arg: 1,
     skip_char: 0,
   };
@@ -353,8 +458,7 @@ fn test_parse_next_7() {
     value: Some("TEST_VALUE".to_string()),
   });
 
-  let actual: Option<ParseOutput> =
-    test_parse_input.parse_next(test_recognized_options);
+  let actual: Option<ParseOutput> = test_parse_input.parse_next();
 
   assert_eq!(actual, expected);
 }
@@ -366,11 +470,12 @@ fn test_parse_next_8() {
     "-U".to_string(),
   ];
 
-  let test_recognized_options: &Vec<&ParseOptionConfig> =
-    &vec![&TEST_PARSE_OPTION_CONFIG_0];
+  let test_known_options: Vec<&ParseOptionConfig> =
+    vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: &test_args,
+    parse_option_configs: &test_known_options,
     skip_arg: 0,
     skip_char: 0,
   };
@@ -386,8 +491,7 @@ fn test_parse_next_8() {
     value: None,
   });
 
-  let actual: Option<ParseOutput> =
-    test_parse_input.parse_next(test_recognized_options);
+  let actual: Option<ParseOutput> = test_parse_input.parse_next();
 
   assert_eq!(actual, expected);
 }
@@ -399,11 +503,12 @@ fn test_parse_next_9() {
     "-U=".to_string(),
   ];
 
-  let test_recognized_options: &Vec<&ParseOptionConfig> =
-    &vec![&TEST_PARSE_OPTION_CONFIG_0];
+  let test_known_options: Vec<&ParseOptionConfig> =
+    vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: &test_args,
+    parse_option_configs: &test_known_options,
     skip_arg: 1,
     skip_char: 0,
   };
@@ -419,8 +524,7 @@ fn test_parse_next_9() {
     value: None,
   });
 
-  let actual: Option<ParseOutput> =
-    test_parse_input.parse_next(test_recognized_options);
+  let actual: Option<ParseOutput> = test_parse_input.parse_next();
 
   assert_eq!(actual, expected);
 }
@@ -429,11 +533,12 @@ fn test_parse_next_9() {
 fn test_parse_next_10() {
   let test_args: Vec<String> = vec!["-TU".to_string()];
 
-  let test_recognized_options: &Vec<&ParseOptionConfig> =
-    &vec![&TEST_PARSE_OPTION_CONFIG_0];
+  let test_known_options: Vec<&ParseOptionConfig> =
+    vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: &test_args,
+    parse_option_configs: &test_known_options,
     skip_arg: 0,
     skip_char: 0,
   };
@@ -449,8 +554,7 @@ fn test_parse_next_10() {
     value: None,
   });
 
-  let actual: Option<ParseOutput> =
-    test_parse_input.parse_next(test_recognized_options);
+  let actual: Option<ParseOutput> = test_parse_input.parse_next();
 
   assert_eq!(actual, expected);
 }
@@ -459,11 +563,12 @@ fn test_parse_next_10() {
 fn test_parse_next_11() {
   let test_args: Vec<String> = vec!["-TU".to_string()];
 
-  let test_recognized_options: &Vec<&ParseOptionConfig> =
-    &vec![&TEST_PARSE_OPTION_CONFIG_0];
+  let test_known_options: Vec<&ParseOptionConfig> =
+    vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: &test_args,
+    parse_option_configs: &test_known_options,
     skip_arg: 0,
     skip_char: 1,
   };
@@ -479,8 +584,7 @@ fn test_parse_next_11() {
     value: None,
   });
 
-  let actual: Option<ParseOutput> =
-    test_parse_input.parse_next(test_recognized_options);
+  let actual: Option<ParseOutput> = test_parse_input.parse_next();
 
   assert_eq!(actual, expected);
 }
@@ -489,11 +593,12 @@ fn test_parse_next_11() {
 fn test_parse_next_12() {
   let test_args: Vec<String> = vec!["-UT".to_string()];
 
-  let test_recognized_options: &Vec<&ParseOptionConfig> =
-    &vec![&TEST_PARSE_OPTION_CONFIG_0];
+  let test_known_options: Vec<&ParseOptionConfig> =
+    vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: &test_args,
+    parse_option_configs: &test_known_options,
     skip_arg: 0,
     skip_char: 1,
   };
@@ -509,8 +614,7 @@ fn test_parse_next_12() {
     value: None,
   });
 
-  let actual: Option<ParseOutput> =
-    test_parse_input.parse_next(test_recognized_options);
+  let actual: Option<ParseOutput> = test_parse_input.parse_next();
 
   assert_eq!(actual, expected);
 }
@@ -519,11 +623,12 @@ fn test_parse_next_12() {
 fn test_parse_next_13() {
   let test_args: Vec<String> = vec!["-UT=TEST_VALUE".to_string()];
 
-  let test_recognized_options: &Vec<&ParseOptionConfig> =
-    &vec![&TEST_PARSE_OPTION_CONFIG_0];
+  let test_known_options: Vec<&ParseOptionConfig> =
+    vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: &test_args,
+    parse_option_configs: &test_known_options,
     skip_arg: 0,
     skip_char: 1,
   };
@@ -539,8 +644,7 @@ fn test_parse_next_13() {
     value: Some("TEST_VALUE".to_string()),
   });
 
-  let actual: Option<ParseOutput> =
-    test_parse_input.parse_next(test_recognized_options);
+  let actual: Option<ParseOutput> = test_parse_input.parse_next();
 
   assert_eq!(actual, expected);
 }
@@ -549,11 +653,12 @@ fn test_parse_next_13() {
 fn test_parse_next_14() {
   let test_args: Vec<String> = vec!["-UT=".to_string()];
 
-  let test_recognized_options: &Vec<&ParseOptionConfig> =
-    &vec![&TEST_PARSE_OPTION_CONFIG_0];
+  let test_known_options: Vec<&ParseOptionConfig> =
+    vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: &test_args,
+    parse_option_configs: &test_known_options,
     skip_arg: 0,
     skip_char: 1,
   };
@@ -569,8 +674,7 @@ fn test_parse_next_14() {
     value: None,
   });
 
-  let actual: Option<ParseOutput> =
-    test_parse_input.parse_next(test_recognized_options);
+  let actual: Option<ParseOutput> = test_parse_input.parse_next();
 
   assert_eq!(actual, expected);
 }
@@ -579,11 +683,12 @@ fn test_parse_next_14() {
 fn test_parse_next_15() {
   let test_args: Vec<String> = vec!["-TU=TEST_VALUE".to_string()];
 
-  let test_recognized_options: &Vec<&ParseOptionConfig> =
-    &vec![&TEST_PARSE_OPTION_CONFIG_0];
+  let test_known_options: Vec<&ParseOptionConfig> =
+    vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: &test_args,
+    parse_option_configs: &test_known_options,
     skip_arg: 0,
     skip_char: 1,
   };
@@ -599,8 +704,7 @@ fn test_parse_next_15() {
     value: Some("TEST_VALUE".to_string()),
   });
 
-  let actual: Option<ParseOutput> =
-    test_parse_input.parse_next(test_recognized_options);
+  let actual: Option<ParseOutput> = test_parse_input.parse_next();
 
   assert_eq!(actual, expected);
 }
@@ -609,11 +713,12 @@ fn test_parse_next_15() {
 fn test_parse_next_16() {
   let test_args: Vec<String> = vec!["-TU=".to_string()];
 
-  let test_recognized_options: &Vec<&ParseOptionConfig> =
-    &vec![&TEST_PARSE_OPTION_CONFIG_0];
+  let test_known_options: Vec<&ParseOptionConfig> =
+    vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let test_parse_input: ParseInput = ParseInput {
     args: &test_args,
+    parse_option_configs: &test_known_options,
     skip_arg: 0,
     skip_char: 1,
   };
@@ -629,8 +734,7 @@ fn test_parse_next_16() {
     value: None,
   });
 
-  let actual: Option<ParseOutput> =
-    test_parse_input.parse_next(test_recognized_options);
+  let actual: Option<ParseOutput> = test_parse_input.parse_next();
 
   assert_eq!(actual, expected);
 }
@@ -642,11 +746,12 @@ fn test_parse_unknown_0() {
     "--UNKNOWN".to_string(),
   ];
 
-  let test_recognized_options: &Vec<&ParseOptionConfig> =
-    &vec![&TEST_PARSE_OPTION_CONFIG_0];
+  let test_known_options: Vec<&ParseOptionConfig> =
+    vec![&TEST_PARSE_OPTION_CONFIG_0];
 
-  let test_parse_input: ParseInput = ParseInput {
+  let mut test_parse_input: ParseInput = ParseInput {
     args: &test_args,
+    parse_option_configs: &test_known_options,
     skip_arg: 0,
     skip_char: 0,
   };
@@ -663,8 +768,7 @@ fn test_parse_unknown_0() {
     },
   ];
 
-  let actual: Vec<ParseOutput> =
-    test_parse_input.parse_unknown(test_recognized_options);
+  let actual: Vec<ParseOutput> = test_parse_input.parse_unknown();
 
   assert_eq!(actual, expected);
 }
@@ -673,11 +777,12 @@ fn test_parse_unknown_0() {
 fn test_parse_unknown_1() {
   let test_args: Vec<String> = vec!["-TU".to_string()];
 
-  let test_recognized_options: &Vec<&ParseOptionConfig> =
-    &vec![&TEST_PARSE_OPTION_CONFIG_0];
+  let test_known_options: Vec<&ParseOptionConfig> =
+    vec![&TEST_PARSE_OPTION_CONFIG_0];
 
-  let test_parse_input: ParseInput = ParseInput {
+  let mut test_parse_input: ParseInput = ParseInput {
     args: &test_args,
+    parse_option_configs: &test_known_options,
     skip_arg: 0,
     skip_char: 0,
   };
@@ -695,8 +800,7 @@ fn test_parse_unknown_1() {
     },
   ];
 
-  let actual: Vec<ParseOutput> =
-    test_parse_input.parse_unknown(test_recognized_options);
+  let actual: Vec<ParseOutput> = test_parse_input.parse_unknown();
 
   assert_eq!(actual, expected);
 }
@@ -705,11 +809,12 @@ fn test_parse_unknown_1() {
 fn test_parse_unknown_2() {
   let test_args: Vec<String> = vec!["--".to_string()];
 
-  let test_recognized_options: &Vec<&ParseOptionConfig> =
-    &vec![&TEST_PARSE_OPTION_CONFIG_0];
+  let test_known_options: Vec<&ParseOptionConfig> =
+    vec![&TEST_PARSE_OPTION_CONFIG_0];
 
-  let test_parse_input: ParseInput = ParseInput {
+  let mut test_parse_input: ParseInput = ParseInput {
     args: &test_args,
+    parse_option_configs: &test_known_options,
     skip_arg: 0,
     skip_char: 0,
   };
@@ -726,8 +831,7 @@ fn test_parse_unknown_2() {
     },
   ];
 
-  let actual: Vec<ParseOutput> =
-    test_parse_input.parse_unknown(test_recognized_options);
+  let actual: Vec<ParseOutput> = test_parse_input.parse_unknown();
 
   assert_eq!(actual, expected);
 }
@@ -736,11 +840,11 @@ fn test_parse_unknown_2() {
 fn test_parse_unknown_3() {
   let test_args: Vec<String> = vec!["-".to_string()];
 
-  let test_recognized_options: &Vec<&ParseOptionConfig> =
-    &vec![&TEST_PARSE_OPTION_CONFIG_0];
+  let test_known_options = vec![&TEST_PARSE_OPTION_CONFIG_0];
 
-  let test_parse_input: ParseInput = ParseInput {
+  let mut test_parse_input: ParseInput = ParseInput {
     args: &test_args,
+    parse_option_configs: &test_known_options,
     skip_arg: 0,
     skip_char: 0,
   };
@@ -748,8 +852,7 @@ fn test_parse_unknown_3() {
   // TODO: Should this be something else?
   let expected: Vec<ParseOutput> = vec![];
 
-  let actual: Vec<ParseOutput> =
-    test_parse_input.parse_unknown(test_recognized_options);
+  let actual: Vec<ParseOutput> = test_parse_input.parse_unknown();
 
   assert_eq!(actual, expected);
 }
@@ -758,11 +861,12 @@ fn test_parse_unknown_3() {
 fn test_parse_unknown_4() {
   let test_args: Vec<String> = vec!["--".to_string()];
 
-  let test_recognized_options: &Vec<&ParseOptionConfig> =
-    &vec![&TEST_PARSE_OPTION_CONFIG_1];
+  let test_known_options: Vec<&ParseOptionConfig> =
+    vec![&TEST_PARSE_OPTION_CONFIG_1];
 
-  let test_parse_input: ParseInput = ParseInput {
+  let mut test_parse_input: ParseInput = ParseInput {
     args: &test_args,
+    parse_option_configs: &test_known_options,
     skip_arg: 0,
     skip_char: 0,
   };
@@ -770,8 +874,7 @@ fn test_parse_unknown_4() {
   // TODO: Should this be something else?
   let expected: Vec<ParseOutput> = vec![];
 
-  let actual: Vec<ParseOutput> =
-    test_parse_input.parse_unknown(test_recognized_options);
+  let actual: Vec<ParseOutput> = test_parse_input.parse_unknown();
 
   assert_eq!(actual, expected);
 }

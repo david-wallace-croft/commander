@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-07-30
+//! - Updated: 2024-08-02
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -36,8 +36,14 @@ fn main() {
 pub fn parse_option_values_using_commander() -> OptionValues {
   let args: Vec<String> = env::args().collect();
 
-  let parse_input = ParseInput {
+  let arg_option_vector: Vec<&ParseOptionConfig> = OPTION_CONFIGS
+    .iter()
+    .map(|config| &config.parse_option_config)
+    .collect();
+
+  let mut parse_input = ParseInput {
     args: &args,
+    parse_option_configs: &arg_option_vector,
     skip_arg: 1,
     skip_char: 0,
   };
@@ -78,11 +84,6 @@ pub fn parse_option_values_using_commander() -> OptionValues {
       None
     };
 
-  let arg_option_vector: Vec<&ParseOptionConfig> = OPTION_CONFIGS
-    .iter()
-    .map(|config| &config.parse_option_config)
-    .collect();
-
   let quiet_parse_output_option: Option<ParseOutput> =
     OPTION_CONFIG_Q.parse_next(&parse_input);
 
@@ -94,7 +95,7 @@ pub fn parse_option_values_using_commander() -> OptionValues {
     false
   };
 
-  let unknown: Vec<ParseOutput> = parse_input.parse_unknown(&arg_option_vector);
+  let unknown: Vec<ParseOutput> = parse_input.parse_unknown();
 
   OptionValues {
     help_wanted,

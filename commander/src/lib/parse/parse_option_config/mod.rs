@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-08-01
+//! - Updated: 2024-08-02
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -37,10 +37,18 @@ pub struct ParseOptionConfig<'a> {
 impl ParseOptionConfig<'_> {
   pub fn parse(
     &self,
+    // TODO: Should this be mutable?
     parse_input: &ParseInput,
   ) -> Vec<ParseOutput> {
-    parse_input
-      .parse(&[self])
+    let mut inner_parse_input = ParseInput {
+      args: parse_input.args,
+      parse_option_configs: &[self],
+      skip_arg: parse_input.skip_arg,
+      skip_char: parse_input.skip_char,
+    };
+
+    inner_parse_input
+      .parse()
       .into_iter()
       .filter(|parse_output| parse_output.known.is_some())
       .collect()
@@ -71,12 +79,13 @@ impl ParseOptionConfig<'_> {
     loop {
       let parse_input_next = ParseInput {
         args: parse_input.args,
+        parse_option_configs: &[self],
         skip_arg,
         skip_char,
       };
 
       let parse_output_option: Option<ParseOutput> =
-        parse_input_next.parse_next(&[self]);
+        parse_input_next.parse_next();
 
       let parse_output = parse_output_option?;
 

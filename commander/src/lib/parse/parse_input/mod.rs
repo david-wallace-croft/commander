@@ -3,7 +3,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-08-02
+//! - Updated: 2024-08-03
 //!
 //! [`CroftSoft Inc`]: https://www.CroftSoft.com/
 //! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/
@@ -52,37 +52,6 @@ impl<'a> ParseInput<'a> {
 
   pub fn parse(&mut self) -> Vec<ParseOutput> {
     self.collect()
-  }
-
-  // TODO: remove this method; use Iterator next() instead
-  pub fn parse_next(&self) -> Option<ParseOutput> {
-    let mut skip_char = self.skip_char;
-
-    for (arg_index, arg) in self.args.iter().enumerate().skip(self.skip_arg) {
-      let hyphenation_type_option: Option<HyphenationType> =
-        HyphenationType::determine_hyphenation_type(arg);
-
-      let Some(hyphenation_type) = hyphenation_type_option else {
-        continue;
-      };
-
-      match hyphenation_type {
-        HyphenationType::Long => {
-          return Some(self.parse_long(arg, arg_index));
-        },
-        HyphenationType::Short => {
-          let parse_output_option = self.parse_short(arg, arg_index, skip_char);
-
-          if parse_output_option.is_some() {
-            return parse_output_option;
-          }
-        },
-      };
-
-      skip_char = 0;
-    }
-
-    None
   }
 
   //----------------------------------------------------------------------------
@@ -142,6 +111,36 @@ impl<'a> ParseInput<'a> {
       known: None,
       value,
     }
+  }
+
+  fn parse_next(&self) -> Option<ParseOutput> {
+    let mut skip_char = self.skip_char;
+
+    for (arg_index, arg) in self.args.iter().enumerate().skip(self.skip_arg) {
+      let hyphenation_type_option: Option<HyphenationType> =
+        HyphenationType::determine_hyphenation_type(arg);
+
+      let Some(hyphenation_type) = hyphenation_type_option else {
+        continue;
+      };
+
+      match hyphenation_type {
+        HyphenationType::Long => {
+          return Some(self.parse_long(arg, arg_index));
+        },
+        HyphenationType::Short => {
+          let parse_output_option = self.parse_short(arg, arg_index, skip_char);
+
+          if parse_output_option.is_some() {
+            return parse_output_option;
+          }
+        },
+      };
+
+      skip_char = 0;
+    }
+
+    None
   }
 
   fn parse_short(

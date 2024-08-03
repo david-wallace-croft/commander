@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-08-02
+//! - Updated: 2024-08-03
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -77,15 +77,14 @@ impl ParseOptionConfig<'_> {
     let mut skip_char: usize = parse_input.skip_char;
 
     loop {
-      let parse_input_next = ParseInput {
+      let mut parse_input_next = ParseInput {
         args: parse_input.args,
         parse_option_configs: &[self],
         skip_arg,
         skip_char,
       };
 
-      let parse_output_option: Option<ParseOutput> =
-        parse_input_next.parse_next();
+      let parse_output_option: Option<ParseOutput> = parse_input_next.next();
 
       let parse_output = parse_output_option?;
 

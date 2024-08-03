@@ -23,7 +23,9 @@ mod test;
 //------------------------------------------------------------------------------
 /// The input to parsing an option from the command-line arguments
 //------------------------------------------------------------------------------
-// TODO: Rename to ParseIterator
+// TODO: Rename to ParseIterator;
+//   then create a new ParseInput that just has args and parse_option_config;
+//   make the new ParseInput implement IntoIterator
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ParseInput<'a> {
   /// The command-line arguments

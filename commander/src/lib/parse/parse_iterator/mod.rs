@@ -44,9 +44,9 @@ impl<'a> ParseIterator<'a> {
   pub fn from_slice(args: &'a [String]) -> Self {
     Self {
       args,
+      parse_option_configs: &[],
       skip_arg: 0,
       skip_char: 0,
-      parse_option_configs: &[],
     }
   }
 

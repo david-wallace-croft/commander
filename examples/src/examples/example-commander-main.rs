@@ -43,7 +43,7 @@ pub fn parse_option_values_using_commander() -> OptionValues {
 
   let mut parse_iterator = ParseIterator {
     args: &args,
-    parse_option_configs: &arg_option_vector,
+    known_option_configs: &arg_option_vector,
     skip_arg: 1,
     skip_char: 0,
   };

@@ -596,7 +596,7 @@ fn test_parse_next_required_multiple_0() {
 
   let test_parse_iterator = ParseIterator {
     args: &test_args,
-    parse_option_configs: &[],
+    known_option_configs: &[],
     skip_arg: 0,
     skip_char: 0,
   };
@@ -626,7 +626,7 @@ fn test_parse_next_required_multiple_1() {
 
   let test_parse_iterator = ParseIterator {
     args: &test_args,
-    parse_option_configs: &[],
+    known_option_configs: &[],
     skip_arg: 1,
     skip_char: 0,
   };
@@ -656,7 +656,7 @@ fn test_parse_next_required_multiple_2() {
 
   let test_parse_iterator = ParseIterator {
     args: &test_args,
-    parse_option_configs: &[],
+    known_option_configs: &[],
     skip_arg: usize::MAX,
     skip_char: 0,
   };

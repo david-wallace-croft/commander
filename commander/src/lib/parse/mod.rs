@@ -14,6 +14,7 @@
 pub mod hyphenation_type;
 pub mod parse_error;
 pub mod parse_found;
+pub mod parse_input;
 pub mod parse_iterator;
 pub mod parse_option_config;
 pub mod parse_option_name;

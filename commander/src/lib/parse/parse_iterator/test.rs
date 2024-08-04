@@ -59,7 +59,7 @@ fn test_from_slice_0() {
 
   let expected: ParseIterator = ParseIterator {
     args,
-    parse_option_configs: &[],
+    known_option_configs: &[],
     skip_arg: 0,
     skip_char: 0,
   };
@@ -73,7 +73,7 @@ fn test_from_slice_0() {
 fn test_next_0() {
   let mut parse_iterator = ParseIterator {
     args: &TEST_ARGS_0,
-    parse_option_configs: TEST_PARSE_OPTION_CONFIGS_0,
+    known_option_configs: TEST_PARSE_OPTION_CONFIGS_0,
     skip_arg: 0,
     skip_char: 0,
   };
@@ -119,7 +119,7 @@ fn test_next_0() {
 fn test_next_1() {
   let parse_iterator = ParseIterator {
     args: &TEST_ARGS_0,
-    parse_option_configs: TEST_PARSE_OPTION_CONFIGS_0,
+    known_option_configs: TEST_PARSE_OPTION_CONFIGS_0,
     skip_arg: 0,
     skip_char: 0,
   };
@@ -171,7 +171,7 @@ fn test_parse_0() {
 
   let mut test_parse_iterator = ParseIterator {
     args: &test_args,
-    parse_option_configs: &test_parse_option_configs,
+    known_option_configs: &test_parse_option_configs,
     skip_arg: 0,
     skip_char: 0,
   };
@@ -215,7 +215,7 @@ fn test_parse_next_0() {
 
   let test_parse_iterator: ParseIterator = ParseIterator {
     args: &test_args,
-    parse_option_configs: &test_known_options,
+    known_option_configs: &test_known_options,
     skip_arg: 0,
     skip_char: 0,
   };
@@ -247,7 +247,7 @@ fn test_parse_next_1() {
 
   let test_parse_iterator: ParseIterator = ParseIterator {
     args: &test_args,
-    parse_option_configs: &test_known_options,
+    known_option_configs: &test_known_options,
     skip_arg: 1,
     skip_char: 0,
   };
@@ -279,7 +279,7 @@ fn test_parse_next_2() {
 
   let test_parse_iterator: ParseIterator = ParseIterator {
     args: &test_args,
-    parse_option_configs: &test_known_options,
+    known_option_configs: &test_known_options,
     skip_arg: 1,
     skip_char: 0,
   };
@@ -311,7 +311,7 @@ fn test_parse_next_3() {
 
   let test_parse_iterator: ParseIterator = ParseIterator {
     args: &test_args,
-    parse_option_configs: &test_known_options,
+    known_option_configs: &test_known_options,
     skip_arg: 1,
     skip_char: 0,
   };
@@ -343,7 +343,7 @@ fn test_parse_next_4() {
 
   let test_parse_iterator: ParseIterator = ParseIterator {
     args: &test_args,
-    parse_option_configs: &test_known_options,
+    known_option_configs: &test_known_options,
     skip_arg: 0,
     skip_char: 0,
   };
@@ -376,7 +376,7 @@ fn test_parse_next_5() {
 
   let test_parse_iterator: ParseIterator = ParseIterator {
     args: &test_args,
-    parse_option_configs: &test_known_options,
+    known_option_configs: &test_known_options,
     skip_arg: 1,
     skip_char: 0,
   };
@@ -409,7 +409,7 @@ fn test_parse_next_6() {
 
   let test_parse_iterator: ParseIterator = ParseIterator {
     args: &test_args,
-    parse_option_configs: &test_known_options,
+    known_option_configs: &test_known_options,
     skip_arg: 0,
     skip_char: 0,
   };
@@ -442,7 +442,7 @@ fn test_parse_next_7() {
 
   let test_parse_iterator: ParseIterator = ParseIterator {
     args: &test_args,
-    parse_option_configs: &test_known_options,
+    known_option_configs: &test_known_options,
     skip_arg: 1,
     skip_char: 0,
   };
@@ -475,7 +475,7 @@ fn test_parse_next_8() {
 
   let test_parse_iterator: ParseIterator = ParseIterator {
     args: &test_args,
-    parse_option_configs: &test_known_options,
+    known_option_configs: &test_known_options,
     skip_arg: 0,
     skip_char: 0,
   };
@@ -508,7 +508,7 @@ fn test_parse_next_9() {
 
   let test_parse_iterator: ParseIterator = ParseIterator {
     args: &test_args,
-    parse_option_configs: &test_known_options,
+    known_option_configs: &test_known_options,
     skip_arg: 1,
     skip_char: 0,
   };
@@ -538,7 +538,7 @@ fn test_parse_next_10() {
 
   let test_parse_iterator: ParseIterator = ParseIterator {
     args: &test_args,
-    parse_option_configs: &test_known_options,
+    known_option_configs: &test_known_options,
     skip_arg: 0,
     skip_char: 0,
   };
@@ -568,7 +568,7 @@ fn test_parse_next_11() {
 
   let test_parse_iterator: ParseIterator = ParseIterator {
     args: &test_args,
-    parse_option_configs: &test_known_options,
+    known_option_configs: &test_known_options,
     skip_arg: 0,
     skip_char: 1,
   };
@@ -598,7 +598,7 @@ fn test_parse_next_12() {
 
   let test_parse_iterator: ParseIterator = ParseIterator {
     args: &test_args,
-    parse_option_configs: &test_known_options,
+    known_option_configs: &test_known_options,
     skip_arg: 0,
     skip_char: 1,
   };
@@ -628,7 +628,7 @@ fn test_parse_next_13() {
 
   let test_parse_iterator: ParseIterator = ParseIterator {
     args: &test_args,
-    parse_option_configs: &test_known_options,
+    known_option_configs: &test_known_options,
     skip_arg: 0,
     skip_char: 1,
   };
@@ -658,7 +658,7 @@ fn test_parse_next_14() {
 
   let test_parse_iterator: ParseIterator = ParseIterator {
     args: &test_args,
-    parse_option_configs: &test_known_options,
+    known_option_configs: &test_known_options,
     skip_arg: 0,
     skip_char: 1,
   };
@@ -688,7 +688,7 @@ fn test_parse_next_15() {
 
   let test_parse_iterator: ParseIterator = ParseIterator {
     args: &test_args,
-    parse_option_configs: &test_known_options,
+    known_option_configs: &test_known_options,
     skip_arg: 0,
     skip_char: 1,
   };
@@ -718,7 +718,7 @@ fn test_parse_next_16() {
 
   let test_parse_iterator: ParseIterator = ParseIterator {
     args: &test_args,
-    parse_option_configs: &test_known_options,
+    known_option_configs: &test_known_options,
     skip_arg: 0,
     skip_char: 1,
   };
@@ -751,7 +751,7 @@ fn test_parse_unknown_0() {
 
   let mut test_parse_iterator: ParseIterator = ParseIterator {
     args: &test_args,
-    parse_option_configs: &test_known_options,
+    known_option_configs: &test_known_options,
     skip_arg: 0,
     skip_char: 0,
   };
@@ -782,7 +782,7 @@ fn test_parse_unknown_1() {
 
   let mut test_parse_iterator: ParseIterator = ParseIterator {
     args: &test_args,
-    parse_option_configs: &test_known_options,
+    known_option_configs: &test_known_options,
     skip_arg: 0,
     skip_char: 0,
   };
@@ -814,7 +814,7 @@ fn test_parse_unknown_2() {
 
   let mut test_parse_iterator: ParseIterator = ParseIterator {
     args: &test_args,
-    parse_option_configs: &test_known_options,
+    known_option_configs: &test_known_options,
     skip_arg: 0,
     skip_char: 0,
   };
@@ -844,7 +844,7 @@ fn test_parse_unknown_3() {
 
   let mut test_parse_iterator: ParseIterator = ParseIterator {
     args: &test_args,
-    parse_option_configs: &test_known_options,
+    known_option_configs: &test_known_options,
     skip_arg: 0,
     skip_char: 0,
   };
@@ -866,7 +866,7 @@ fn test_parse_unknown_4() {
 
   let mut test_parse_iterator: ParseIterator = ParseIterator {
     args: &test_args,
-    parse_option_configs: &test_known_options,
+    known_option_configs: &test_known_options,
     skip_arg: 0,
     skip_char: 0,
   };

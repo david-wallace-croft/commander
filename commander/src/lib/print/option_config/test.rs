@@ -154,7 +154,7 @@ fn test_parse_next_0() {
 
   let test_parse_iterator = ParseIterator {
     args: &test_args,
-    parse_option_configs: &[],
+    known_option_configs: &[],
     skip_arg: 1,
     skip_char: 0,
   };

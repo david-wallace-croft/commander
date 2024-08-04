@@ -30,7 +30,7 @@ pub struct ParseIterator<'a> {
   /// The command-line arguments
   pub args: &'a [String],
   /// The known command-line arguments options
-  pub known_option_configs: &'a [&'a ParseOptionConfig<'a>],
+  pub parse_option_configs: &'a [&'a ParseOptionConfig<'a>],
   /// How many command-line arguments to skip before searching for an option
   pub skip_arg: usize,
   /// How many chars within an argument to skip before searching for an option
@@ -46,7 +46,7 @@ impl<'a> ParseIterator<'a> {
       args,
       skip_arg: 0,
       skip_char: 0,
-      known_option_configs: &[],
+      parse_option_configs: &[],
     }
   }
 
@@ -74,7 +74,7 @@ impl<'a> ParseIterator<'a> {
     arg: &str,
     arg_index: usize,
   ) -> ParseOutput {
-    for parse_option_config in self.known_option_configs {
+    for parse_option_config in self.parse_option_configs {
       if let Some(parse_output) = parse_option_config.parse_long(arg, arg_index)
       {
         return parse_output;
@@ -177,7 +177,7 @@ impl<'a> ParseIterator<'a> {
 
     let c = c_option?;
 
-    for parse_option_config in self.known_option_configs {
+    for parse_option_config in self.parse_option_configs {
       let parse_output_option: Option<ParseOutput> = Self::parse_short_char(
         parse_option_config,
         arg_index,

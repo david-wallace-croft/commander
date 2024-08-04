@@ -23,7 +23,7 @@ pub struct ParseInput<'a> {
   /// The command-line arguments
   pub args: &'a [String],
   /// The known command-line arguments options
-  pub known_option_configs: &'a [&'a ParseOptionConfig<'a>],
+  pub parse_option_configs: &'a [&'a ParseOptionConfig<'a>],
 }
 
 impl<'a> IntoIterator for &ParseInput<'a> {
@@ -34,7 +34,7 @@ impl<'a> IntoIterator for &ParseInput<'a> {
   fn into_iter(self) -> Self::IntoIter {
     ParseIterator {
       args: self.args,
-      known_option_configs: self.known_option_configs,
+      parse_option_configs: self.parse_option_configs,
       skip_arg: 0,
       skip_char: 0,
     }

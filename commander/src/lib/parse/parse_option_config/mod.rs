@@ -42,7 +42,7 @@ impl ParseOptionConfig<'_> {
   ) -> Vec<ParseOutput> {
     let mut inner_parse_iterator = ParseIterator {
       args: parse_iterator.args,
-      known_option_configs: &[self],
+      parse_option_configs: &[self],
       skip_arg: parse_iterator.skip_arg,
       skip_char: parse_iterator.skip_char,
     };
@@ -79,7 +79,7 @@ impl ParseOptionConfig<'_> {
     loop {
       let mut parse_iterator_next = ParseIterator {
         args: parse_iterator.args,
-        known_option_configs: &[self],
+        parse_option_configs: &[self],
         skip_arg,
         skip_char,
       };

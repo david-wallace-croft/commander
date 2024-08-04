@@ -45,14 +45,14 @@ const TEST_PARSE_OPTION_CONFIGS_0: &[&ParseOptionConfig] =
 static TEST_PARSE_INPUT_0: LazyLock<ParseInput> =
   LazyLock::new(|| ParseInput {
     args: &TEST_ARGS_0,
-    known_option_configs: TEST_PARSE_OPTION_CONFIGS_0,
+    parse_option_configs: TEST_PARSE_OPTION_CONFIGS_0,
   });
 
 #[test]
 fn test0() {
   let expected: ParseIterator = ParseIterator {
     args: &TEST_ARGS_0,
-    known_option_configs: TEST_PARSE_OPTION_CONFIGS_0,
+    parse_option_configs: TEST_PARSE_OPTION_CONFIGS_0,
     skip_arg: 0,
     skip_char: 0,
   };

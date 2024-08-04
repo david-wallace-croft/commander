@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-08-02
+//! - Updated: 2024-08-04
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -88,7 +88,7 @@ fn test_parse_0() {
     "-0=B".to_string(),
   ];
 
-  let test_parse_input = ParseInput::from_slice(&test_args);
+  let test_parse_iterator = ParseIterator::from_slice(&test_args);
 
   let expected = vec![
     ParseOutput {
@@ -113,7 +113,8 @@ fn test_parse_0() {
     },
   ];
 
-  let actual: Vec<ParseOutput> = TEST_OPTION_CONFIG_0.parse(&test_parse_input);
+  let actual: Vec<ParseOutput> =
+    TEST_OPTION_CONFIG_0.parse(&test_parse_iterator);
 
   assert_eq!(actual, expected);
 }
@@ -125,7 +126,7 @@ fn test_parse_last_0() {
     "-0=B".to_string(),
   ];
 
-  let test_parse_input = ParseInput::from_slice(&test_args);
+  let test_parse_iterator = ParseIterator::from_slice(&test_args);
 
   let expected = Some(ParseOutput {
     error: None,
@@ -139,7 +140,7 @@ fn test_parse_last_0() {
   });
 
   let actual: Option<ParseOutput> =
-    TEST_OPTION_CONFIG_0.parse_last(&test_parse_input);
+    TEST_OPTION_CONFIG_0.parse_last(&test_parse_iterator);
 
   assert_eq!(actual, expected);
 }
@@ -151,7 +152,7 @@ fn test_parse_next_0() {
     "-0=B".to_string(),
   ];
 
-  let test_parse_input = ParseInput {
+  let test_parse_iterator = ParseIterator {
     args: &test_args,
     parse_option_configs: &[],
     skip_arg: 1,
@@ -170,7 +171,7 @@ fn test_parse_next_0() {
   });
 
   let actual: Option<ParseOutput> =
-    TEST_OPTION_CONFIG_0.parse_next(&test_parse_input);
+    TEST_OPTION_CONFIG_0.parse_next(&test_parse_iterator);
 
   assert_eq!(actual, expected);
 }

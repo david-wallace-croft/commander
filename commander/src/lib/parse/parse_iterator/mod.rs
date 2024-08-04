@@ -3,7 +3,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-08-03
+//! - Updated: 2024-08-04
 //!
 //! [`CroftSoft Inc`]: https://www.CroftSoft.com/
 //! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/
@@ -23,11 +23,10 @@ mod test;
 //------------------------------------------------------------------------------
 /// The input to parsing an option from the command-line arguments
 //------------------------------------------------------------------------------
-// TODO: Rename to ParseIterator;
-//   then create a new ParseInput that just has args and parse_option_config;
+// TODO: Create a new ParseInput that just has args and parse_option_config;
 //   make the new ParseInput implement IntoIterator
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct ParseInput<'a> {
+pub struct ParseIterator<'a> {
   /// The command-line arguments
   pub args: &'a [String],
   // TODO: Rename to known_option_configs
@@ -39,7 +38,7 @@ pub struct ParseInput<'a> {
   pub skip_char: usize,
 }
 
-impl<'a> ParseInput<'a> {
+impl<'a> ParseIterator<'a> {
   //----------------------------------------------------------------------------
   /// A slice of the command-line arguments with skips of zero
   //----------------------------------------------------------------------------
@@ -278,7 +277,7 @@ impl<'a> ParseInput<'a> {
   }
 }
 
-impl<'a> Iterator for ParseInput<'a> {
+impl<'a> Iterator for ParseIterator<'a> {
   type Item = ParseOutput;
 
   fn next(&mut self) -> Option<Self::Item> {

@@ -5,13 +5,13 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-05
-//! - Updated: 2024-07-06
+//! - Updated: 2024-08-04
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
-use crate::parse::parse_input::ParseInput;
+use crate::parse::parse_iterator::ParseIterator;
 use crate::parse::parse_option_config::ParseOptionConfig;
 use crate::parse::parse_output::ParseOutput;
 
@@ -111,23 +111,23 @@ impl OptionConfig<'_> {
   // TODO: unit tests
   pub fn parse(
     &self,
-    parse_input: &ParseInput,
+    parse_iterator: &ParseIterator,
   ) -> Vec<ParseOutput> {
-    self.parse_option_config.parse(parse_input)
+    self.parse_option_config.parse(parse_iterator)
   }
 
   pub fn parse_last(
     &self,
-    parse_input: &ParseInput,
+    parse_iterator: &ParseIterator,
   ) -> Option<ParseOutput> {
-    self.parse_option_config.parse_last(parse_input)
+    self.parse_option_config.parse_last(parse_iterator)
   }
 
   pub fn parse_next(
     &self,
-    parse_input: &ParseInput,
+    parse_iterator: &ParseIterator,
   ) -> Option<ParseOutput> {
-    self.parse_option_config.parse_next(parse_input)
+    self.parse_option_config.parse_next(parse_iterator)
   }
 
   //----------------------------------------------------------------------------

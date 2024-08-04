@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-08-03
+//! - Updated: 2024-08-04
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -15,7 +15,7 @@ use crate::parse::parse_found::ParseFound;
 
 use super::hyphenation_type::HyphenationType;
 use super::parse_error::ParseError;
-use super::parse_input::ParseInput;
+use super::parse_iterator::ParseIterator;
 use super::parse_option_name::ParseOptionName;
 use super::parse_output::ParseOutput;
 use super::value_usage::ValueUsage;
@@ -38,16 +38,16 @@ impl ParseOptionConfig<'_> {
   pub fn parse(
     &self,
     // TODO: Should this be mutable?
-    parse_input: &ParseInput,
+    parse_iterator: &ParseIterator,
   ) -> Vec<ParseOutput> {
-    let mut inner_parse_input = ParseInput {
-      args: parse_input.args,
+    let mut inner_parse_iterator = ParseIterator {
+      args: parse_iterator.args,
       parse_option_configs: &[self],
-      skip_arg: parse_input.skip_arg,
-      skip_char: parse_input.skip_char,
+      skip_arg: parse_iterator.skip_arg,
+      skip_char: parse_iterator.skip_char,
     };
 
-    inner_parse_input
+    inner_parse_iterator
       .parse()
       .into_iter()
       .filter(|parse_output| parse_output.known.is_some())
@@ -56,9 +56,9 @@ impl ParseOptionConfig<'_> {
 
   pub fn parse_last(
     &self,
-    parse_input: &ParseInput,
+    parse_iterator: &ParseIterator,
   ) -> Option<ParseOutput> {
-    let mut parse_output_vec: Vec<ParseOutput> = self.parse(parse_input);
+    let mut parse_output_vec: Vec<ParseOutput> = self.parse(parse_iterator);
 
     parse_output_vec.pop()
   }
@@ -68,23 +68,23 @@ impl ParseOptionConfig<'_> {
   //----------------------------------------------------------------------------
   pub fn parse_next(
     &self,
-    parse_input: &ParseInput,
+    parse_iterator: &ParseIterator,
   ) -> Option<ParseOutput> {
     // TODO: Make an iterator
 
-    let mut skip_arg: usize = parse_input.skip_arg;
+    let mut skip_arg: usize = parse_iterator.skip_arg;
 
-    let mut skip_char: usize = parse_input.skip_char;
+    let mut skip_char: usize = parse_iterator.skip_char;
 
     loop {
-      let mut parse_input_next = ParseInput {
-        args: parse_input.args,
+      let mut parse_iterator_next = ParseIterator {
+        args: parse_iterator.args,
         parse_option_configs: &[self],
         skip_arg,
         skip_char,
       };
 
-      let parse_output_option: Option<ParseOutput> = parse_input_next.next();
+      let parse_output_option: Option<ParseOutput> = parse_iterator_next.next();
 
       let parse_output = parse_output_option?;
 

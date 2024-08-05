@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-31
-//! - Updated: 2024-08-04
+//! - Updated: 2024-08-05
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -50,6 +50,50 @@ const TEST_PARSE_OPTION_CONFIG_1: ParseOptionConfig = ParseOptionConfig {
 
 const TEST_PARSE_OPTION_CONFIGS_0: &[&ParseOptionConfig] =
   &[&TEST_PARSE_OPTION_CONFIG_0];
+
+#[test]
+fn test_collect_0() {
+  let test_args: Vec<String> = vec![
+    "--TEST".to_string(),
+    "-T".to_string(),
+  ];
+
+  let test_parse_option_configs: Vec<&ParseOptionConfig> =
+    vec![&TEST_PARSE_OPTION_CONFIG_0];
+
+  let test_parse_iterator = ParseIterator {
+    args: &test_args,
+    parse_option_configs: &test_parse_option_configs,
+    skip_arg: 0,
+    skip_char: 0,
+  };
+
+  let expected: Vec<ParseOutput> = vec![
+    ParseOutput {
+      error: None,
+      found: ParseFound::Long {
+        arg_index: 0,
+        name_long: "TEST".to_string(),
+      },
+      known: Some(TEST_ID_0.to_string()),
+      value: None,
+    },
+    ParseOutput {
+      error: None,
+      found: ParseFound::Short {
+        arg_index: 1,
+        char_index: 0,
+        name_short: 'T',
+      },
+      known: Some(TEST_ID_0.to_string()),
+      value: None,
+    },
+  ];
+
+  let actual: Vec<ParseOutput> = test_parse_iterator.collect();
+
+  assert_eq!(actual, expected);
+}
 
 #[test]
 fn test_from_slice_0() {
@@ -155,50 +199,6 @@ fn test_next_1() {
   for parse_output in parse_iterator {
     actual.push(parse_output);
   }
-
-  assert_eq!(actual, expected);
-}
-
-#[test]
-fn test_parse_0() {
-  let test_args: Vec<String> = vec![
-    "--TEST".to_string(),
-    "-T".to_string(),
-  ];
-
-  let test_parse_option_configs: Vec<&ParseOptionConfig> =
-    vec![&TEST_PARSE_OPTION_CONFIG_0];
-
-  let mut test_parse_iterator = ParseIterator {
-    args: &test_args,
-    parse_option_configs: &test_parse_option_configs,
-    skip_arg: 0,
-    skip_char: 0,
-  };
-
-  let expected: Vec<ParseOutput> = vec![
-    ParseOutput {
-      error: None,
-      found: ParseFound::Long {
-        arg_index: 0,
-        name_long: "TEST".to_string(),
-      },
-      known: Some(TEST_ID_0.to_string()),
-      value: None,
-    },
-    ParseOutput {
-      error: None,
-      found: ParseFound::Short {
-        arg_index: 1,
-        char_index: 0,
-        name_short: 'T',
-      },
-      known: Some(TEST_ID_0.to_string()),
-      value: None,
-    },
-  ];
-
-  let actual: Vec<ParseOutput> = test_parse_iterator.parse();
 
   assert_eq!(actual, expected);
 }

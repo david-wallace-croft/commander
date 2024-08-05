@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-08-04
+//! - Updated: 2024-08-05
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -40,7 +40,7 @@ impl ParseOptionConfig<'_> {
     // TODO: Should this be mutable?
     parse_iterator: &ParseIterator,
   ) -> Vec<ParseOutput> {
-    let mut inner_parse_iterator = ParseIterator {
+    let inner_parse_iterator = ParseIterator {
       args: parse_iterator.args,
       parse_option_configs: &[self],
       skip_arg: parse_iterator.skip_arg,
@@ -48,8 +48,6 @@ impl ParseOptionConfig<'_> {
     };
 
     inner_parse_iterator
-      .parse()
-      .into_iter()
       .filter(|parse_output| parse_output.known.is_some())
       .collect()
   }

@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-08-04
+//! - Updated: 2024-08-05
 //!
 //! [`CroftSoft Inc`]: https://www.CroftSoft.com/
 //! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/
@@ -25,7 +25,7 @@ mod test;
 //------------------------------------------------------------------------------
 /// The input to parsing an option from the command-line arguments
 //------------------------------------------------------------------------------
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct ParseIterator<'a> {
   /// The command-line arguments
   pub args: &'a [String],
@@ -50,17 +50,11 @@ impl<'a> ParseIterator<'a> {
     }
   }
 
-  pub fn parse(&mut self) -> Vec<ParseOutput> {
-    self.collect()
-  }
-
   //----------------------------------------------------------------------------
   /// Returns a list of unknown options from the command-line arguments
   //----------------------------------------------------------------------------
   pub fn parse_unknown(&mut self) -> Vec<ParseOutput> {
     self
-      .parse()
-      .into_iter()
       .filter(|parse_output| parse_output.known.is_none())
       .collect()
   }

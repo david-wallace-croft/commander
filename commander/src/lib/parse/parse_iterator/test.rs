@@ -126,7 +126,6 @@ fn test_next_0() {
     error: None,
     found: ParseFound::Short {
       arg_index: 0,
-      // TODO: Should this be 1 since the hyphen is at position zero?
       char_index: 0,
       name_short: 'T',
     },
@@ -172,7 +171,6 @@ fn test_next_1() {
     error: None,
     found: ParseFound::Short {
       arg_index: 0,
-      // TODO: Should this be 1 since the hyphen is at position zero?
       char_index: 0,
       name_short: 'T',
     },

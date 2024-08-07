@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-08-04
+//! - Updated: 2024-08-07
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -88,8 +88,6 @@ fn test_parse_0() {
     "-0=B".to_string(),
   ];
 
-  let test_parse_iterator = ParseIterator::from_slice(&test_args);
-
   let expected = vec![
     ParseOutput {
       error: None,
@@ -113,8 +111,7 @@ fn test_parse_0() {
     },
   ];
 
-  let actual: Vec<ParseOutput> =
-    TEST_OPTION_CONFIG_0.parse(&test_parse_iterator);
+  let actual: Vec<ParseOutput> = TEST_OPTION_CONFIG_0.parse(&test_args);
 
   assert_eq!(actual, expected);
 }
@@ -126,8 +123,6 @@ fn test_parse_last_0() {
     "-0=B".to_string(),
   ];
 
-  let test_parse_iterator = ParseIterator::from_slice(&test_args);
-
   let expected = Some(ParseOutput {
     error: None,
     found: ParseFound::Short {
@@ -139,39 +134,7 @@ fn test_parse_last_0() {
     value: Some("B".to_string()),
   });
 
-  let actual: Option<ParseOutput> =
-    TEST_OPTION_CONFIG_0.parse_last(&test_parse_iterator);
-
-  assert_eq!(actual, expected);
-}
-
-#[test]
-fn test_parse_next_0() {
-  let test_args: Vec<String> = vec![
-    "-0=A".to_string(),
-    "-0=B".to_string(),
-  ];
-
-  let test_parse_iterator = ParseIterator {
-    args: &test_args,
-    parse_option_configs: &[],
-    skip_arg: 1,
-    skip_char: 0,
-  };
-
-  let expected = Some(ParseOutput {
-    error: None,
-    found: ParseFound::Short {
-      arg_index: 1,
-      char_index: 0,
-      name_short: '0',
-    },
-    known: Some("TEST_ID_0".to_string()),
-    value: Some("B".to_string()),
-  });
-
-  let actual: Option<ParseOutput> =
-    TEST_OPTION_CONFIG_0.parse_next(&test_parse_iterator);
+  let actual: Option<ParseOutput> = TEST_OPTION_CONFIG_0.parse_last(&test_args);
 
   assert_eq!(actual, expected);
 }

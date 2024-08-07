@@ -5,13 +5,14 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-08-05
+//! - Updated: 2024-08-07
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
 use crate::parse::parse_found::ParseFound;
+use crate::parse::parse_input::ParseInput;
 
 use super::hyphenation_type::HyphenationType;
 use super::parse_error::ParseError;
@@ -34,83 +35,30 @@ pub struct ParseOptionConfig<'a> {
   pub value_usage: ValueUsage,
 }
 
-impl ParseOptionConfig<'_> {
+impl<'a> ParseOptionConfig<'a> {
   pub fn parse(
     &self,
-    // TODO: Should this be mutable?
-    parse_iterator: &ParseIterator,
+    args: &'a [String],
   ) -> Vec<ParseOutput> {
-    let inner_parse_iterator = ParseIterator {
-      args: parse_iterator.args,
+    let parse_input = ParseInput {
+      args,
       parse_option_configs: &[self],
-      skip_arg: parse_iterator.skip_arg,
-      skip_char: parse_iterator.skip_char,
     };
 
-    inner_parse_iterator
+    let parse_iterator: ParseIterator = parse_input.into_iter();
+
+    parse_iterator
       .filter(|parse_output| parse_output.known.is_some())
       .collect()
   }
 
   pub fn parse_last(
     &self,
-    parse_iterator: &ParseIterator,
+    args: &'a [String],
   ) -> Option<ParseOutput> {
-    let mut parse_output_vec: Vec<ParseOutput> = self.parse(parse_iterator);
+    let mut parse_output_vec: Vec<ParseOutput> = self.parse(args);
 
     parse_output_vec.pop()
-  }
-
-  //----------------------------------------------------------------------------
-  /// Returns the next location of the option in the command-line arguments
-  //----------------------------------------------------------------------------
-  pub fn parse_next(
-    &self,
-    parse_iterator: &ParseIterator,
-  ) -> Option<ParseOutput> {
-    // TODO: Make an iterator
-
-    let mut skip_arg: usize = parse_iterator.skip_arg;
-
-    let mut skip_char: usize = parse_iterator.skip_char;
-
-    loop {
-      let mut parse_iterator_next = ParseIterator {
-        args: parse_iterator.args,
-        parse_option_configs: &[self],
-        skip_arg,
-        skip_char,
-      };
-
-      let parse_output_option: Option<ParseOutput> = parse_iterator_next.next();
-
-      let parse_output = parse_output_option?;
-
-      if parse_output.known.is_some() {
-        return Some(parse_output);
-      }
-
-      skip_arg = match parse_output.found {
-        ParseFound::Long {
-          arg_index,
-          ..
-        } => arg_index + 1,
-        ParseFound::Short {
-          arg_index,
-          ..
-        } => arg_index,
-      };
-
-      skip_char = match parse_output.found {
-        ParseFound::Long {
-          ..
-        } => 0,
-        ParseFound::Short {
-          char_index,
-          ..
-        } => char_index + 1,
-      };
-    }
   }
 
   // ===========================================================================
@@ -141,6 +89,7 @@ impl ParseOptionConfig<'_> {
     }
   }
 
+  // TODO: Can I move this to where it is used?
   pub(crate) fn parse_long(
     &self,
     arg: &str,

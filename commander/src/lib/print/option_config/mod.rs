@@ -5,13 +5,12 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-05
-//! - Updated: 2024-08-04
+//! - Updated: 2024-08-07
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
-use crate::parse::parse_iterator::ParseIterator;
 use crate::parse::parse_option_config::ParseOptionConfig;
 use crate::parse::parse_output::ParseOutput;
 
@@ -28,7 +27,7 @@ pub struct OptionConfig<'a> {
   pub parse_option_config: ParseOptionConfig<'a>,
 }
 
-impl OptionConfig<'_> {
+impl<'a> OptionConfig<'a> {
   //------------------------------------------------------------------------------
   /// String prefix for a command-line option shown for -\-help
   //------------------------------------------------------------------------------
@@ -111,23 +110,16 @@ impl OptionConfig<'_> {
   // TODO: unit tests
   pub fn parse(
     &self,
-    parse_iterator: &ParseIterator,
+    args: &'a [String],
   ) -> Vec<ParseOutput> {
-    self.parse_option_config.parse(parse_iterator)
+    self.parse_option_config.parse(args)
   }
 
   pub fn parse_last(
     &self,
-    parse_iterator: &ParseIterator,
+    args: &'a [String],
   ) -> Option<ParseOutput> {
-    self.parse_option_config.parse_last(parse_iterator)
-  }
-
-  pub fn parse_next(
-    &self,
-    parse_iterator: &ParseIterator,
-  ) -> Option<ParseOutput> {
-    self.parse_option_config.parse_next(parse_iterator)
+    self.parse_option_config.parse_last(args)
   }
 
   //----------------------------------------------------------------------------

@@ -63,13 +63,40 @@ impl<'a> ParseIterator<'a> {
   // private functions
   // ---------------------------------------------------------------------------
 
+  fn make_hyphenated_option_name(
+    hyphenation_type: HyphenationType,
+    parse_option_config: &ParseOptionConfig,
+  ) -> Option<String> {
+    match hyphenation_type {
+      HyphenationType::Long => {
+        let arg_option_name_long: &str =
+          parse_option_config.name.get_name_long()?;
+
+        let hyphenated_option_name: String =
+          format!("--{}", arg_option_name_long);
+
+        Some(hyphenated_option_name)
+      },
+      HyphenationType::Short => {
+        let arg_option_name_short: char =
+          parse_option_config.name.get_name_short()?;
+
+        let hyphenated_option_name: String =
+          format!("-{}", arg_option_name_short);
+
+        Some(hyphenated_option_name)
+      },
+    }
+  }
+
   fn parse_long(
     &self,
     arg: &str,
     arg_index: usize,
   ) -> ParseOutput {
     for parse_option_config in self.parse_option_configs {
-      if let Some(parse_output) = parse_option_config.parse_long(arg, arg_index)
+      if let Some(parse_output) =
+        self.parse_long_2(arg, arg_index, parse_option_config)
       {
         return parse_output;
       }
@@ -105,6 +132,74 @@ impl<'a> ParseIterator<'a> {
       known: None,
       value,
     }
+  }
+
+  // TODO: rename
+  fn parse_long_2(
+    &self,
+    arg: &str,
+    arg_index: usize,
+    parse_option_config: &ParseOptionConfig,
+  ) -> Option<ParseOutput> {
+    let hyphenated_option_name_option: Option<String> =
+      Self::make_hyphenated_option_name(
+        HyphenationType::Long,
+        parse_option_config,
+      );
+
+    let hyphenated_option_name = hyphenated_option_name_option?;
+
+    let hyphenated_option_name_equals: &String =
+      &format!("{}=", hyphenated_option_name);
+
+    let mut found: bool = false;
+
+    let mut error_option: Option<ParseError> = None;
+
+    let mut value_option: Option<String> = None;
+
+    if arg.starts_with(hyphenated_option_name_equals) {
+      found = true;
+
+      let value: &str =
+        arg.strip_prefix(hyphenated_option_name_equals).unwrap();
+
+      if value.eq("") {
+        error_option = Some(ParseError::ValueMissingAfterEquals);
+      } else {
+        value_option = Some(value.to_string());
+
+        if parse_option_config.value_usage == ValueUsage::Verboten {
+          error_option = Some(ParseError::VerbotenValuePresent);
+        }
+      }
+    } else if arg.eq(&hyphenated_option_name) {
+      found = true;
+
+      if parse_option_config.value_usage == ValueUsage::Required {
+        error_option = Some(ParseError::RequiredValueMissing);
+      }
+    }
+
+    if !found {
+      return None;
+    }
+
+    let parse_found: ParseFound = ParseFound::Long {
+      arg_index,
+      name_long: parse_option_config
+        .name
+        .get_name_long()
+        .unwrap()
+        .to_string(),
+    };
+
+    Some(ParseOutput {
+      error: error_option,
+      found: parse_found,
+      known: Some(parse_option_config.id.to_string()),
+      value: value_option,
+    })
   }
 
   fn parse_next(&self) -> Option<ParseOutput> {

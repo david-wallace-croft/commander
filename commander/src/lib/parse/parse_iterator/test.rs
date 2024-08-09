@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-31
-//! - Updated: 2024-08-05
+//! - Updated: 2024-08-08
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -30,8 +30,9 @@ static TEST_ARGS_0: LazyLock<Vec<String>> = LazyLock::new(|| {
 });
 
 const TEST_ID_0: &str = "TEST_ID_0";
-
 const TEST_ID_1: &str = "TEST_ID_1";
+const TEST_ID_2: &str = "TEST_ID_2";
+const TEST_ID_3: &str = "TEST_ID_3";
 
 const TEST_PARSE_OPTION_CONFIG_0: ParseOptionConfig = ParseOptionConfig {
   id: TEST_ID_0,
@@ -46,6 +47,18 @@ const TEST_PARSE_OPTION_CONFIG_1: ParseOptionConfig = ParseOptionConfig {
   id: TEST_ID_1,
   name: ParseOptionName::Long(""),
   value_usage: ValueUsage::Verboten,
+};
+
+const TEST_PARSE_OPTION_CONFIG_LONG: ParseOptionConfig = ParseOptionConfig {
+  id: TEST_ID_2,
+  name: ParseOptionName::Long("TEST"),
+  value_usage: ValueUsage::Optional,
+};
+
+const TEST_PARSE_OPTION_CONFIG_SHORT: ParseOptionConfig = ParseOptionConfig {
+  id: TEST_ID_3,
+  name: ParseOptionName::Short('T'),
+  value_usage: ValueUsage::Optional,
 };
 
 const TEST_PARSE_OPTION_CONFIGS_0: &[&ParseOptionConfig] =
@@ -109,6 +122,58 @@ fn test_from_slice_0() {
   };
 
   let actual: ParseIterator = ParseIterator::from_slice(&test_args_slice);
+
+  assert_eq!(actual, expected);
+}
+
+//------------------------------------------------------------------------------
+// make_hyphenated_option_name() unit tests
+//------------------------------------------------------------------------------
+
+#[test]
+fn test_make_hyphenated_option_name_0() {
+  let expected: Option<String> = Some("--TEST".to_string());
+
+  let actual: Option<String> = ParseIterator::make_hyphenated_option_name(
+    HyphenationType::Long,
+    &TEST_PARSE_OPTION_CONFIG_LONG,
+  );
+
+  assert_eq!(actual, expected);
+}
+
+#[test]
+fn test_make_hyphenated_option_name_1() {
+  let expected: Option<String> = None;
+
+  let actual: Option<String> = ParseIterator::make_hyphenated_option_name(
+    HyphenationType::Short,
+    &TEST_PARSE_OPTION_CONFIG_LONG,
+  );
+
+  assert_eq!(actual, expected);
+}
+
+#[test]
+fn test_make_hyphenated_option_name_2() {
+  let expected: Option<String> = None;
+
+  let actual: Option<String> = ParseIterator::make_hyphenated_option_name(
+    HyphenationType::Long,
+    &TEST_PARSE_OPTION_CONFIG_SHORT,
+  );
+
+  assert_eq!(actual, expected);
+}
+
+#[test]
+fn test_make_hyphenated_option_name_3() {
+  let expected: Option<String> = Some("-T".to_string());
+
+  let actual: Option<String> = ParseIterator::make_hyphenated_option_name(
+    HyphenationType::Short,
+    &TEST_PARSE_OPTION_CONFIG_SHORT,
+  );
 
   assert_eq!(actual, expected);
 }
@@ -847,7 +912,6 @@ fn test_parse_unknown_3() {
     skip_char: 0,
   };
 
-  // TODO: Should this be something else?
   let expected: Vec<ParseOutput> = vec![];
 
   let actual: Vec<ParseOutput> = test_parse_iterator.parse_unknown();
@@ -869,7 +933,6 @@ fn test_parse_unknown_4() {
     skip_char: 0,
   };
 
-  // TODO: Should this be something else?
   let expected: Vec<ParseOutput> = vec![];
 
   let actual: Vec<ParseOutput> = test_parse_iterator.parse_unknown();

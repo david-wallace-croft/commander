@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-08-08
+//! - Updated: 2024-08-09
 //!
 //! [`CroftSoft Inc`]: https://www.CroftSoft.com/
 //! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/
@@ -96,7 +96,7 @@ impl<'a> ParseIterator<'a> {
   ) -> ParseOutput {
     for parse_option_config in self.parse_option_configs {
       if let Some(parse_output) =
-        self.parse_long_2(arg, arg_index, parse_option_config)
+        self.parse_long_for_option(arg, arg_index, parse_option_config)
       {
         return parse_output;
       }
@@ -134,8 +134,7 @@ impl<'a> ParseIterator<'a> {
     }
   }
 
-  // TODO: rename
-  fn parse_long_2(
+  fn parse_long_for_option(
     &self,
     arg: &str,
     arg_index: usize,
@@ -187,11 +186,7 @@ impl<'a> ParseIterator<'a> {
 
     let parse_found: ParseFound = ParseFound::Long {
       arg_index,
-      name_long: parse_option_config
-        .name
-        .get_name_long()
-        .unwrap()
-        .to_string(),
+      name_long: parse_option_config.name.get_name_long()?.to_string(),
     };
 
     Some(ParseOutput {

@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-08-07
+//! - Updated: 2024-08-08
 //!
 //! [`CroftSoft Inc`]: https://www.CroftSoft.com/
 //! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/
@@ -21,8 +21,6 @@ use super::parse_option_config::ParseOptionConfig;
 
 #[cfg(test)]
 mod test;
-
-// TODO: Add a Default implementation
 
 //------------------------------------------------------------------------------
 /// The input to parsing an option from the command-line arguments

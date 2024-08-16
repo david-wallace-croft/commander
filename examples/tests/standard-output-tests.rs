@@ -5,7 +5,7 @@
 //! - Author: [`David Wallace Croft`]
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Created: 2024-04-06
-//! - Updated: 2024-07-21
+//! - Updated: 2024-08-15
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -131,7 +131,7 @@ fn test_output_args_unknown_long() {
     // TODO: Should this be failure?
     .success()
     // TODO: Should this go to standard error?
-    .stdout("Unknown option at position 1: \"unknown\"\n");
+    .stdout("Unknown option at argument index 1: \"unknown\"\n");
 }
 
 #[test]
@@ -142,7 +142,7 @@ fn test_output_args_unknown_short() {
     // TODO: Should this be failure?
     .success()
     // TODO: Should this go to standard error?
-    .stdout("Unknown option at position 1: \"u\"\n");
+    .stdout("Unknown option at argument index 1 character index 0: 'u'\n");
 }
 
 #[test]
@@ -153,5 +153,5 @@ fn test_output_args_unknown_option_value() {
     // TODO: Should this be failure?
     .success()
     // TODO: Should this go to standard error?
-    .stdout("Unknown option at position 1: \"unknown\"\n");
+    .stdout("Unknown option at argument index 1: \"unknown\"\n");
 }

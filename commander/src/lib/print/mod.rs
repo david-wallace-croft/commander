@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-29
-//! - Updated: 2024-08-10
+//! - Updated: 2024-08-15
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -18,18 +18,32 @@ pub mod app_info;
 pub mod help_info;
 pub mod option_config;
 
+#[cfg(test)]
+mod test;
+
 //------------------------------------------------------------------------------
 /// Makes a message about an unknown option.
 //------------------------------------------------------------------------------
 pub fn format_unknown_option(unknown_option: &ParseOutput) -> String {
   let parse_found: &ParseFound = &unknown_option.found;
 
-  // TODO: char_index for short option names
-  format!(
-    "Unknown option at position {}: \"{}\"",
-    parse_found.get_arg_index(),
-    parse_found.get_name(),
-  )
+  match parse_found {
+    ParseFound::Long {
+      arg_index,
+      name_long,
+    } => format!(
+      "Unknown option at argument index {}: \"{}\"",
+      arg_index, name_long,
+    ),
+    ParseFound::Short {
+      arg_index,
+      char_index,
+      name_short,
+    } => format!(
+      "Unknown option at argument index {} character index {}: '{}'",
+      arg_index, char_index, name_short,
+    ),
+  }
 }
 
 //------------------------------------------------------------------------------

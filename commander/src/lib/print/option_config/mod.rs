@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-05
-//! - Updated: 2024-08-07
+//! - Updated: 2024-08-15
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -107,7 +107,6 @@ impl<'a> OptionConfig<'a> {
     print_string
   }
 
-  // TODO: unit tests
   pub fn parse(
     &self,
     args: &'a [String],

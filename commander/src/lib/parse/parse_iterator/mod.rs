@@ -163,7 +163,7 @@ impl<'a> ParseIterator<'a> {
       let value: &str =
         arg.strip_prefix(hyphenated_option_name_equals).unwrap();
 
-      if value.eq("") {
+      if value.is_empty() {
         error_option = Some(ParseError::ValueMissingAfterEquals);
       } else {
         value_option = Some(value.to_string());
@@ -360,7 +360,7 @@ impl<'a> ParseIterator<'a> {
   }
 }
 
-impl<'a> Iterator for ParseIterator<'a> {
+impl Iterator for ParseIterator<'_> {
   type Item = ParseOutput;
 
   fn next(&mut self) -> Option<Self::Item> {

@@ -241,21 +241,20 @@ impl<'a> ParseIterator<'a> {
 
     let mut error: Option<ParseError> = None;
 
-    let mut value_option: Option<&str> = if equals_index_option.is_none() {
-      None
-    } else {
-      let equals_index: usize = equals_index_option.unwrap();
+    let mut value_option: Option<&str> =
+      if let Some(equals_index) = equals_index_option {
+        arg_trimmed = &arg_without_prefix[0..equals_index];
 
-      arg_trimmed = &arg_without_prefix[0..equals_index];
+        if skip_char != equals_index - 1 {
+          None
+        } else {
+          let value_str: &str = &arg_without_prefix[equals_index + 1..];
 
-      if skip_char != equals_index - 1 {
-        None
+          Some(value_str)
+        }
       } else {
-        let value_str: &str = &arg_without_prefix[equals_index + 1..];
-
-        Some(value_str)
-      }
-    };
+        None
+      };
 
     let c_option: Option<char> = arg_trimmed.chars().nth(skip_char);
 

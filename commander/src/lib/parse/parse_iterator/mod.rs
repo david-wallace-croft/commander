@@ -274,12 +274,12 @@ impl<'a> ParseIterator<'a> {
       }
     }
 
-    if let Some(value_str) = value_option {
-      if value_str.is_empty() {
-        error = Some(ParseError::ValueMissingAfterEquals);
+    if let Some(value_str) = value_option
+      && value_str.is_empty()
+    {
+      error = Some(ParseError::ValueMissingAfterEquals);
 
-        value_option = None;
-      }
+      value_option = None;
     }
 
     let value: Option<String> =

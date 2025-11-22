@@ -2,10 +2,10 @@
 //! Unit tests for module parse_option_config
 //!
 //! # Metadata
-//! - Copyright: &copy; 2024 [`CroftSoft Inc`]
+//! - Copyright: &copy; 2024-2025 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-02
-//! - Updated: 2024-08-08
+//! - Updated: 2025-11-21
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -946,5 +946,5 @@ fn test_to_bool_result_verboten_4() {
 //------------------------------------------------------------------------------
 
 fn make_args(slice: &[&str]) -> Vec<String> {
-  slice.iter().map(|s| s.to_string()).collect()
+  slice.iter().map(|s: &&str| s.to_string()).collect()
 }

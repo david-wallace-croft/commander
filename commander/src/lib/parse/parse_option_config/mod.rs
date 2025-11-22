@@ -2,10 +2,10 @@
 //! Module parse_option_config
 //!
 //! # Metadata
-//! - Copyright: &copy; 2024 [`CroftSoft Inc`]
+//! - Copyright: &copy; 2024-2025 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-08-08
+//! - Updated: 2025-11-21
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -35,7 +35,7 @@ impl<'a> ParseOptionConfig<'a> {
     &self,
     args: &'a [String],
   ) -> Vec<ParseOutput> {
-    let parse_input = ParseInput {
+    let parse_input: ParseInput<'_> = ParseInput {
       args,
       parse_option_configs: &[self],
     };
@@ -43,7 +43,7 @@ impl<'a> ParseOptionConfig<'a> {
     let parse_iterator: ParseIterator = parse_input.into_iter();
 
     parse_iterator
-      .filter(|parse_output| parse_output.known.is_some())
+      .filter(|parse_output: &ParseOutput| parse_output.known.is_some())
       .collect()
   }
 

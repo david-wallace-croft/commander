@@ -2,10 +2,10 @@
 //! Module for OptionConfig
 //!
 //! # Metadata
-//! - Copyright: &copy; 2024 [`CroftSoft Inc`]
+//! - Copyright: &copy; 2024-2025 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-05
-//! - Updated: 2024-08-15
+//! - Updated: 2025-11-21
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -38,7 +38,7 @@ impl<'a> OptionConfig<'a> {
 
     let name_short: &Option<char> = &parse_option_config.name.get_name_short();
 
-    let name_long = &parse_option_config.name.get_name_long();
+    let name_long: &Option<&str> = &parse_option_config.name.get_name_long();
 
     if name_short.is_some() {
       prefix.push_str("  -");
@@ -96,7 +96,7 @@ impl<'a> OptionConfig<'a> {
       }
     }
 
-    let mut print_string = String::new();
+    let mut print_string: String = String::new();
 
     for arg_option in arg_options {
       print_string.push_str(&arg_option.make_print_string(prefix_len_max));

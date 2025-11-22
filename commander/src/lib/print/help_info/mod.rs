@@ -2,10 +2,10 @@
 //! Module for HelpInfo
 //!
 //! # Metadata
-//! - Copyright: &copy; 2024 [`CroftSoft Inc`]
+//! - Copyright: &copy; 2024-2025 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-06-08
-//! - Updated: 2024-06-08
+//! - Updated: 2025-11-21
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -28,7 +28,7 @@ pub struct HelpInfo<'a> {
 
 impl HelpInfo<'_> {
   pub fn make_print_string(&self) -> String {
-    let mut print_string = String::from("\n");
+    let mut print_string: String = String::from("\n");
 
     print_string.push_str(&self.app_info.make_print_string());
 

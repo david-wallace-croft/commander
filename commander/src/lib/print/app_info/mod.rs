@@ -2,10 +2,10 @@
 //! Module for AppInfo
 //!
 //! # Metadata
-//! - Copyright: &copy; 2024 [`CroftSoft Inc`]
+//! - Copyright: &copy; 2024-2025 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-07
-//! - Updated: 2024-06-08
+//! - Updated: 2025-11-21
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -27,7 +27,7 @@ pub struct AppInfo<'a> {
 
 impl AppInfo<'_> {
   pub fn make_print_string(&self) -> String {
-    let mut app_info = String::new();
+    let mut app_info: String = String::new();
 
     if self.name.is_some() {
       app_info.push_str(self.name.unwrap());

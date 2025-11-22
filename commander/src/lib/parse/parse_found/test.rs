@@ -2,10 +2,10 @@
 //! Unit tests for module parse_found
 //!
 //! # Metadata
-//! - Copyright: &copy; 2024 [`CroftSoft Inc`]
+//! - Copyright: &copy; 2024-2025 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-07-12
-//! - Updated: 2024-07-12
+//! - Updated: 2025-11-21
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -19,7 +19,7 @@ const TEST_NAME_SHORT: char = 'T';
 
 #[test]
 fn test_get_arg_index_0() {
-  let test_parse_found = ParseFound::Long {
+  let test_parse_found: ParseFound = ParseFound::Long {
     arg_index: 1,
     name_long: TEST_NAME_LONG.to_string(),
   };
@@ -33,7 +33,7 @@ fn test_get_arg_index_0() {
 
 #[test]
 fn test_get_arg_index_1() {
-  let test_parse_found = ParseFound::Short {
+  let test_parse_found: ParseFound = ParseFound::Short {
     arg_index: 1,
     char_index: 2,
     name_short: 's',
@@ -48,7 +48,7 @@ fn test_get_arg_index_1() {
 
 #[test]
 fn test_get_name_0() {
-  let test_parse_found = ParseFound::Long {
+  let test_parse_found: ParseFound = ParseFound::Long {
     arg_index: 1,
     name_long: TEST_NAME_LONG.to_string(),
   };
@@ -62,7 +62,7 @@ fn test_get_name_0() {
 
 #[test]
 fn test_get_name_1() {
-  let test_parse_found = ParseFound::Short {
+  let test_parse_found: ParseFound = ParseFound::Short {
     arg_index: 1,
     char_index: 2,
     name_short: TEST_NAME_SHORT,

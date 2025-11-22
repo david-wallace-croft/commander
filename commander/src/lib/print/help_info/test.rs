@@ -2,10 +2,10 @@
 //! Unit tests for HelpInfo
 //!
 //! # Metadata
-//! - Copyright: &copy; 2024 [`CroftSoft Inc`]
+//! - Copyright: &copy; 2024-2025 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-08
-//! - Updated: 2024-07-13
+//! - Updated: 2025-11-21
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -50,7 +50,7 @@ const ARG_OPTION_TEST_1: OptionConfig = OptionConfig {
 
 #[test]
 fn test_make_print_string_0() {
-  let test_help_info = HelpInfo {
+  let test_help_info: HelpInfo<'_> = HelpInfo {
     app_info: &TEST_APP_INFO_0,
     arg_options: &[
       ARG_OPTION_TEST_0,

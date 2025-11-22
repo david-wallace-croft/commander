@@ -2,10 +2,10 @@
 //! Module for ParseIterator.
 //!
 //! # Metadata
-//! - Copyright: &copy; 2024 [`CroftSoft Inc`]
+//! - Copyright: &copy; 2024-2025 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-08-09
+//! - Updated: 2025-11-21
 //!
 //! [`CroftSoft Inc`]: https://www.CroftSoft.com/
 //! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/
@@ -55,7 +55,7 @@ impl<'a> ParseIterator<'a> {
   //----------------------------------------------------------------------------
   pub fn parse_unknown(&mut self) -> Vec<ParseOutput> {
     self
-      .filter(|parse_output| parse_output.known.is_none())
+      .filter(|parse_output: &ParseOutput| parse_output.known.is_none())
       .collect()
   }
 
@@ -106,7 +106,7 @@ impl<'a> ParseIterator<'a> {
 
     let name_long_with_value: String = arg[2..].to_string();
 
-    let mut name_long = name_long_with_value.clone();
+    let mut name_long: String = name_long_with_value.clone();
 
     let mut value: Option<String> = None;
 
@@ -146,7 +146,7 @@ impl<'a> ParseIterator<'a> {
         parse_option_config,
       );
 
-    let hyphenated_option_name = hyphenated_option_name_option?;
+    let hyphenated_option_name: String = hyphenated_option_name_option?;
 
     let hyphenated_option_name_equals: &String =
       &format!("{}=", hyphenated_option_name);
@@ -198,7 +198,7 @@ impl<'a> ParseIterator<'a> {
   }
 
   fn parse_next(&self) -> Option<ParseOutput> {
-    let mut skip_char = self.skip_char;
+    let mut skip_char: usize = self.skip_char;
 
     for (arg_index, arg) in self.args.iter().enumerate().skip(self.skip_arg) {
       let hyphenation_type_option: Option<HyphenationType> =
@@ -213,7 +213,8 @@ impl<'a> ParseIterator<'a> {
           return Some(self.parse_long(arg, arg_index));
         },
         HyphenationType::Short => {
-          let parse_output_option = self.parse_short(arg, arg_index, skip_char);
+          let parse_output_option: Option<ParseOutput> =
+            self.parse_short(arg, arg_index, skip_char);
 
           if parse_output_option.is_some() {
             return parse_output_option;
@@ -235,7 +236,7 @@ impl<'a> ParseIterator<'a> {
   ) -> Option<ParseOutput> {
     let arg_without_prefix: &str = arg.strip_prefix('-').unwrap();
 
-    let equals_index_option = arg_without_prefix.find('=');
+    let equals_index_option: Option<usize> = arg_without_prefix.find('=');
 
     let mut arg_trimmed: &str = arg_without_prefix;
 
@@ -283,7 +284,7 @@ impl<'a> ParseIterator<'a> {
     }
 
     let value: Option<String> =
-      value_option.map(|value_str| value_str.to_string());
+      value_option.map(|value_str: &str| value_str.to_string());
 
     Some(ParseOutput {
       error,
@@ -310,7 +311,7 @@ impl<'a> ParseIterator<'a> {
       return None;
     }
 
-    let found = ParseFound::Short {
+    let found: ParseFound = ParseFound::Short {
       arg_index,
       char_index,
       name_short,

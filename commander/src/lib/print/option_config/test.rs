@@ -2,10 +2,10 @@
 //! Unit tests module Print module
 //!
 //! # Metadata
-//! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
+//! - Copyright: &copy; 2022-2025 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-04-02
-//! - Updated: 2024-08-07
+//! - Updated: 2025-11-21
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -69,8 +69,7 @@ fn test_make_print_string_0() {
 
 #[test]
 fn test_make_print_string_for_slice_0() {
-  const EXPECTED: &str =
-    "  -0, --TEST_NAME_LONG_0      TEST_BRIEF_DESCRIPTION_0\n  \
+  const EXPECTED: &str = "  -0, --TEST_NAME_LONG_0      TEST_BRIEF_DESCRIPTION_0\n  \
        -1, --TEST_NAME_LONG_ABC_1  TEST_BRIEF_DESCRIPTION_1\n";
 
   let actual: String = OptionConfig::make_print_string_for_slice(&[
@@ -88,7 +87,7 @@ fn test_parse_0() {
     "-0=B".to_string(),
   ];
 
-  let expected = vec![
+  let expected: Vec<ParseOutput> = vec![
     ParseOutput {
       error: None,
       found: ParseFound::Short {
@@ -123,7 +122,7 @@ fn test_parse_last_0() {
     "-0=B".to_string(),
   ];
 
-  let expected = Some(ParseOutput {
+  let expected: Option<ParseOutput> = Some(ParseOutput {
     error: None,
     found: ParseFound::Short {
       arg_index: 1,

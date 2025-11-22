@@ -2,10 +2,10 @@
 //! Unit tests for module parse_iterator
 //!
 //! # Metadata
-//! - Copyright: &copy; 2024 [`CroftSoft Inc`]
+//! - Copyright: &copy; 2024-2025 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-31
-//! - Updated: 2024-08-08
+//! - Updated: 2025-11-21
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -25,7 +25,7 @@ static TEST_ARGS_0: LazyLock<Vec<String>> = LazyLock::new(|| {
     "-T", "--TEST",
   ]
   .iter()
-  .map(|s| s.to_string())
+  .map(|s: &&str| s.to_string())
   .collect()
 });
 
@@ -74,7 +74,7 @@ fn test_collect_0() {
   let test_parse_option_configs: Vec<&ParseOptionConfig> =
     vec![&TEST_PARSE_OPTION_CONFIG_0];
 
-  let test_parse_iterator = ParseIterator {
+  let test_parse_iterator: ParseIterator<'_> = ParseIterator {
     args: &test_args,
     parse_option_configs: &test_parse_option_configs,
     skip_arg: 0,
@@ -112,7 +112,7 @@ fn test_collect_0() {
 fn test_from_slice_0() {
   let test_args_slice: Vec<String> = vec!["TEST".to_string()];
 
-  let args = &vec!["TEST".to_string()];
+  let args: &Vec<String> = &vec!["TEST".to_string()];
 
   let expected: ParseIterator = ParseIterator {
     args,
@@ -180,7 +180,7 @@ fn test_make_hyphenated_option_name_3() {
 
 #[test]
 fn test_next_0() {
-  let mut parse_iterator = ParseIterator {
+  let mut parse_iterator: ParseIterator<'_> = ParseIterator {
     args: &TEST_ARGS_0,
     parse_option_configs: TEST_PARSE_OPTION_CONFIGS_0,
     skip_arg: 0,
@@ -225,7 +225,7 @@ fn test_next_0() {
 
 #[test]
 fn test_next_1() {
-  let parse_iterator = ParseIterator {
+  let parse_iterator: ParseIterator<'_> = ParseIterator {
     args: &TEST_ARGS_0,
     parse_option_configs: TEST_PARSE_OPTION_CONFIGS_0,
     skip_arg: 0,
@@ -903,7 +903,8 @@ fn test_parse_unknown_2() {
 fn test_parse_unknown_3() {
   let test_args: Vec<String> = vec!["-".to_string()];
 
-  let test_known_options = vec![&TEST_PARSE_OPTION_CONFIG_0];
+  let test_known_options: Vec<&ParseOptionConfig<'_>> =
+    vec![&TEST_PARSE_OPTION_CONFIG_0];
 
   let mut test_parse_iterator: ParseIterator = ParseIterator {
     args: &test_args,

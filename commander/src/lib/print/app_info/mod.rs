@@ -29,26 +29,26 @@ impl AppInfo<'_> {
   pub fn make_print_string(&self) -> String {
     let mut app_info: String = String::new();
 
-    if self.name.is_some() {
-      app_info.push_str(self.name.unwrap());
+    if let Some(name) = self.name {
+      app_info.push_str(name);
 
       app_info.push('\n');
     }
 
-    if self.copyright.is_some() {
-      app_info.push_str(self.copyright.unwrap());
+    if let Some(copyright) = self.copyright {
+      app_info.push_str(copyright);
 
       app_info.push('\n');
     }
 
-    if self.contact.is_some() {
-      app_info.push_str(self.contact.unwrap());
+    if let Some(contact) = self.contact {
+      app_info.push_str(contact);
 
       app_info.push('\n');
     }
 
-    if self.about.is_some() {
-      app_info.push_str(self.about.unwrap());
+    if let Some(about) = self.about {
+      app_info.push_str(about);
 
       app_info.push('\n');
     }

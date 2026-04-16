@@ -75,8 +75,8 @@ impl<'a> OptionConfig<'a> {
       line.push(' ');
     }
 
-    if self.brief_description.is_some() {
-      line.push_str(self.brief_description.unwrap());
+    if let Some(brief_description) = self.brief_description {
+      line.push_str(brief_description);
     }
 
     line

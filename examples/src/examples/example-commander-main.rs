@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2022-2026 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2026-04-17
+//! - Updated: 2026-04-18
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -41,6 +41,25 @@ pub fn parse_option_values_using_commander() -> OptionValues {
     .map(|config| &config.parse_option_config)
     .collect();
 
+  // TODO: Use a new(parse_option_configs) function
+  let mut parse_iterator = ParseIterator {
+    args: &args,
+    parse_option_configs: &arg_option_vector,
+    skip_arg: 1,
+    skip_char: 0,
+  };
+
+  let mut errors: Vec<ParseOutput> = parse_iterator.parse_errors();
+
+  let mut parse_iterator = ParseIterator {
+    args: &args,
+    parse_option_configs: &arg_option_vector,
+    skip_arg: 1,
+    skip_char: 0,
+  };
+
+  let unknown: Vec<ParseOutput> = parse_iterator.parse_unknown();
+
   let help_wanted_parse_output_option: Option<ParseOutput> =
     OPTION_CONFIG_H.parse_last(&args);
 
@@ -58,8 +77,21 @@ pub fn parse_option_values_using_commander() -> OptionValues {
     OPTION_CONFIG_I.parse_last(&args);
 
   let interactive: Result<bool, ParseError> =
-    if let Some(interactive_parse_output) = interactive_parse_output_option {
-      interactive_parse_output.to_bool_result()
+    if let Some(mut interactive_parse_output) = interactive_parse_output_option
+    {
+      let interactive_result: Result<bool, ParseError> =
+        interactive_parse_output.to_bool_result();
+
+      match interactive_result {
+        Ok(interactive) => Ok(interactive),
+        Err(parse_error) => {
+          interactive_parse_output.error = Some(parse_error);
+
+          errors.push(interactive_parse_output);
+
+          Ok(false)
+        },
+      }
     } else {
       Ok(true)
     };
@@ -86,25 +118,6 @@ pub fn parse_option_values_using_commander() -> OptionValues {
   } else {
     false
   };
-
-  // TODO: Use a new(parse_option_configs) function
-  let mut parse_iterator = ParseIterator {
-    args: &args,
-    parse_option_configs: &arg_option_vector,
-    skip_arg: 1,
-    skip_char: 0,
-  };
-
-  let errors: Vec<ParseOutput> = parse_iterator.parse_errors();
-
-  let mut parse_iterator = ParseIterator {
-    args: &args,
-    parse_option_configs: &arg_option_vector,
-    skip_arg: 1,
-    skip_char: 0,
-  };
-
-  let unknown: Vec<ParseOutput> = parse_iterator.parse_unknown();
 
   OptionValues {
     errors,

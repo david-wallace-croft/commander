@@ -3,9 +3,9 @@
 //!
 //! # Metadata
 //! - Author: [`David Wallace Croft`]
-//! - Copyright: &copy; 2024 [`CroftSoft Inc`]
+//! - Copyright: &copy; 2024-2026 [`CroftSoft Inc`]
 //! - Created: 2024-04-06
-//! - Updated: 2024-08-15
+//! - Updated: 2026-04-18
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -62,8 +62,18 @@ fn test_output_args_help_verboten() {
     .assert()
     .success()
     .stdout(
-      r#"Verboten value present for option at argument index 1: "help"
-"#,
+      "Verboten value present for option at argument index 1: \"help\"\n",
+    );
+}
+
+#[test]
+fn test_output_args_interactive_invalid() {
+  make_command()
+    .args(["-i=invalid"])
+    .assert()
+    .success()
+    .stdout(
+      "Invalid value for option at argument index 1 character index 0: 'i'\n",
     );
 }
 

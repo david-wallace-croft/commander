@@ -2,10 +2,10 @@
 //! Module for ParseOutput
 //!
 //! # Metadata
-//! - Copyright: &copy; 2024 [`CroftSoft Inc`]
+//! - Copyright: &copy; 2024-2026 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2024-07-13
+//! - Updated: 2026-04-18
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -43,7 +43,7 @@ impl ParseOutput {
   /// - Returns true if the option value is 1, on, t, true, y, or yes
   /// - Returns an InvalidValue error if the option value is anything else
   //----------------------------------------------------------------------------
-  pub fn to_bool_result(self) -> Result<bool, ParseError> {
+  pub fn to_bool_result(&self) -> Result<bool, ParseError> {
     if let Some(error) = self.error {
       return Err(error);
     }
@@ -52,7 +52,7 @@ impl ParseOutput {
       return Ok(true);
     }
 
-    let lowercase_value: String = self.value.unwrap().to_lowercase();
+    let lowercase_value: String = self.value.as_ref().unwrap().to_lowercase();
 
     match lowercase_value.as_str() {
       "0" | "f" | "false" | "n" | "no" | "off" => Ok(false),

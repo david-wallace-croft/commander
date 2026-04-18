@@ -2,20 +2,20 @@
 //! CroftSoft Commander library usage example application
 //!
 //! # Metadata
-//! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
+//! - Copyright: &copy; 2022-2026 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-07-21
+//! - Updated: 2026-04-17
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
 //==============================================================================
 
-use std::io::{Error, stdin, Stdin, stdout, Write};
+use std::io::{Error, Stdin, Write, stdin, stdout};
 
 use commander::parse::parse_error::ParseError;
 use commander::parse::parse_output::ParseOutput;
-use commander::print::print_unknown_options;
+use commander::print;
 use constants::*;
 
 pub mod constants;
@@ -25,6 +25,7 @@ mod test;
 
 #[derive(Debug)]
 pub struct OptionValues {
+  pub errors: Vec<ParseOutput>,
   pub help_wanted: bool,
   pub interactive: Result<bool, ParseError>,
   pub name_option: Option<String>,
@@ -71,15 +72,21 @@ pub fn main(option_values: OptionValues) {
     return;
   }
 
-  if !option_values.unknown.is_empty() {
-    print_unknown_options(&option_values.unknown);
+  if option_values.errors.is_empty() && option_values.unknown.is_empty() {
+    let greeting: String = make_greeting(option_values);
+
+    println!("{}", greeting);
 
     return;
   }
 
-  let greeting: String = make_greeting(option_values);
+  if !option_values.errors.is_empty() {
+    print::print_error_options(&option_values.errors);
+  }
 
-  println!("{}", greeting);
+  if !option_values.unknown.is_empty() {
+    print::print_unknown_options(&option_values.unknown);
+  }
 }
 
 // private functions

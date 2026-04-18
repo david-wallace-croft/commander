@@ -2,10 +2,10 @@
 //! Module for ParseIterator.
 //!
 //! # Metadata
-//! - Copyright: &copy; 2024-2025 [`CroftSoft Inc`]
+//! - Copyright: &copy; 2024-2026 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2025-11-21
+//! - Updated: 2026-04-17
 //!
 //! [`CroftSoft Inc`]: https://www.CroftSoft.com/
 //! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/
@@ -48,6 +48,15 @@ impl<'a> ParseIterator<'a> {
       skip_arg: 0,
       skip_char: 0,
     }
+  }
+
+  //----------------------------------------------------------------------------
+  /// Returns a list of options with errors from the command-line arguments
+  //----------------------------------------------------------------------------
+  pub fn parse_errors(&mut self) -> Vec<ParseOutput> {
+    self
+      .filter(|parse_output: &ParseOutput| parse_output.error.is_some())
+      .collect()
   }
 
   //----------------------------------------------------------------------------

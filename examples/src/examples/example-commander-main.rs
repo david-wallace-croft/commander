@@ -2,10 +2,10 @@
 //! CroftSoft Commander library usage example
 //!
 //! # Metadata
-//! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
+//! - Copyright: &copy; 2022-2026 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-08-07
+//! - Updated: 2026-04-17
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -17,8 +17,8 @@ use commander::parse::parse_error::ParseError;
 use commander::parse::parse_iterator::ParseIterator;
 use commander::parse::parse_option_config::ParseOptionConfig;
 use commander::parse::parse_output::ParseOutput;
-use croftsoft_commander_examples::constants::*;
 use croftsoft_commander_examples::OptionValues;
+use croftsoft_commander_examples::constants::*;
 
 //------------------------------------------------------------------------------
 /// Parses the options using Commander and then runs the example application.
@@ -49,7 +49,6 @@ pub fn parse_option_values_using_commander() -> OptionValues {
       let help_wanted_result: Result<bool, ParseError> =
         help_wanted_parse_output.to_bool_result();
 
-      // TODO: Show the user the parse error
       help_wanted_result.unwrap_or(false)
     } else {
       false
@@ -96,9 +95,19 @@ pub fn parse_option_values_using_commander() -> OptionValues {
     skip_char: 0,
   };
 
+  let errors: Vec<ParseOutput> = parse_iterator.parse_errors();
+
+  let mut parse_iterator = ParseIterator {
+    args: &args,
+    parse_option_configs: &arg_option_vector,
+    skip_arg: 1,
+    skip_char: 0,
+  };
+
   let unknown: Vec<ParseOutput> = parse_iterator.parse_unknown();
 
   OptionValues {
+    errors,
     help_wanted,
     interactive,
     name_option,

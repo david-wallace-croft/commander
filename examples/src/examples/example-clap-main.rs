@@ -2,10 +2,10 @@
 //! Command-Line Arguments Parser (clap) library usage example
 //!
 //! # Metadata
-//! - Copyright: &copy; 2022-2024 [`CroftSoft Inc`]
+//! - Copyright: &copy; 2022-2026 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-01-15
-//! - Updated: 2024-07-21
+//! - Updated: 2026-04-17
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -14,8 +14,8 @@
 use clap::{Arg, ArgMatches, Command};
 
 use commander::parse::parse_output::ParseOutput;
-use croftsoft_commander_examples::constants::*;
 use croftsoft_commander_examples::OptionValues;
+use croftsoft_commander_examples::constants::*;
 
 //------------------------------------------------------------------------------
 /// Parses the option values using clap and then runs the example application.
@@ -62,9 +62,12 @@ pub fn parse_option_values_using_clap() -> OptionValues {
   let name_option: Option<String> =
     arg_match_name.map(|name: &str| name.to_string());
 
+  let errors: Vec<ParseOutput> = Vec::new();
+
   let unknown: Vec<ParseOutput> = Vec::new();
 
   OptionValues {
+    errors,
     help_wanted: false,
     interactive: Ok(interactive),
     name_option,

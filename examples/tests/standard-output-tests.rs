@@ -56,6 +56,18 @@ OPTIONS:
 }
 
 #[test]
+fn test_output_args_help_verboten() {
+  make_command()
+    .args(["--help=true"])
+    .assert()
+    .success()
+    .stdout(
+      r#"Verboten value present for option at argument index 1: "help"
+"#,
+    );
+}
+
+#[test]
 fn test_output_args_name_long() {
   make_command()
     .args(["--name=David"])

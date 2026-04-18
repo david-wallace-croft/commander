@@ -49,10 +49,12 @@
   - Provide the default name
 - cargo run --example example-commander -- -u
   - Show an error message for the unknown option
+- cargo run --example example-commander -- --help=true
+  - Show an error message for a verboten value
+- cargo run --example example-commander -- --interactive=2
+  - Show an error message for an invalid value
 - cargo run --example example-commander -- --unknown
   - Show an error message for the unknown option
-- cargo run --example example-commander -- --help=true
-  - Show an error message for an invalid option value
 
 ### clap Example
 

@@ -5,7 +5,7 @@
 //! - Author: [`David Wallace Croft`]
 //! - Copyright: &copy; 2024-2026 [`CroftSoft Inc`]
 //! - Created: 2024-04-06
-//! - Updated: 2026-04-18
+//! - Updated: 2026-04-19
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -87,12 +87,26 @@ fn test_output_args_name_long() {
 }
 
 #[test]
+fn test_output_args_name_required_value_missing() {
+  make_command().args(["--name"]).assert().success().stdout(
+    "Required value missing for option at argument index 1: \"name\"\n",
+  );
+}
+
+#[test]
 fn test_output_args_name_short() {
   make_command()
     .args(["-n=David"])
     .assert()
     .success()
     .stdout("\nWhat is your name? [David]: Hello, David!\n");
+}
+
+#[test]
+fn test_output_args_name_value_missing_after_equals() {
+  make_command().args(["--name="]).assert().success().stdout(
+    "Value missing after equals for option at argument index 1: \"name\"\n",
+  );
 }
 
 #[test]

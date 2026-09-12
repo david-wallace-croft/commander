@@ -16,7 +16,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Build
-      run: cargo build --verbose --workspace
-    - name: Run tests
-      run: cargo test --verbose --package croftsoft-commander
+    - name: format
+      run: cargo fmt --check
+    - name: clippy
+      run: cargo clippy -- -D warnings
+    - name: test
+      run: cargo test --verbose --workspace

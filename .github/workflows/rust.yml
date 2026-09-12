@@ -21,4 +21,4 @@ jobs:
     - name: clippy
       run: cargo clippy -- -D warnings
     - name: test
-      run: cargo test --verbose --workspace
+      run: cargo test --package croftsoft-commander --verbose

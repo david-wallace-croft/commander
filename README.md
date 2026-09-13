@@ -1,12 +1,12 @@
 # CroftSoft Commander
 
 [![MIT licensed][mit-badge]][mit-url]
-[![Rust][status-badge]][status-url]
+[![Rust][rust-badge]][rust-url]
 
 [mit-badge]: https://img.shields.io/badge/license-MIT-blue.svg
 [mit-url]: https://github.com/david-wallace-croft/commander/blob/main/LICENSE.txt
-[status-badge]: https://github.com/david-wallace-croft/commander/actions/workflows/rust.yml/badge.svg
-[status-url]: https://github.com/david-wallace-croft/commander/actions/workflows/rust.yml
+[rust-badge]: https://github.com/david-wallace-croft/commander/actions/workflows/rust.yml/badge.svg
+[rust-url]: https://github.com/david-wallace-croft/commander/actions/workflows/rust.yml
 
 ## Purpose
 

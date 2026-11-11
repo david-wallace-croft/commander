@@ -11,3 +11,22 @@ version = "0.2.0-SNAPSHOT"
 [lib]
 name = "commander"
 path = "src/lib/mod.rs"
+
+[lints.clippy]
+copy_iterator = "allow"
+doc_markdown = "allow"
+if_not_else = "allow"
+into_iter_without_iter = "allow"
+manual_string_new = "allow"
+match_same_arms = "allow"
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"
+must_use_candidate = "allow"
+needless_pass_by_value = "allow"
+pedantic = { level = "deny", priority = -1 }
+ref_option_ref = "allow"
+semicolon_if_nothing_returned = "allow"
+similar_names = "allow"
+uninlined_format_args = "allow"
+unnecessary_semicolon = "allow"
+unused_self = "allow"

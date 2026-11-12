@@ -32,7 +32,7 @@ impl<'a> OptionConfig<'a> {
   /// String prefix for a command-line option shown for -\-help
   //------------------------------------------------------------------------------
   pub fn make_print_option_prefix(&self) -> String {
-    let mut prefix: String = "".to_string();
+    let mut prefix: String = String::new();
 
     let parse_option_config: &ParseOptionConfig = &self.parse_option_config;
 
@@ -63,7 +63,7 @@ impl<'a> OptionConfig<'a> {
     &self,
     prefix_len_max: usize,
   ) -> String {
-    let mut line: String = "".to_string();
+    let mut line: String = String::new();
 
     let prefix: String = self.make_print_option_prefix();
 

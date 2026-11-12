@@ -255,12 +255,12 @@ impl<'a> ParseIterator<'a> {
       if let Some(equals_index) = equals_index_option {
         arg_trimmed = &arg_without_prefix[0..equals_index];
 
-        if skip_char != equals_index - 1 {
-          None
-        } else {
+        if skip_char == equals_index - 1 {
           let value_str: &str = &arg_without_prefix[equals_index + 1..];
 
           Some(value_str)
+        } else {
+          None
         }
       } else {
         None

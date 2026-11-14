@@ -26,3 +26,14 @@ path = "src/examples/example-commander-main.rs"
 
 [lib]
 path = "src/lib/mod.rs"
+
+[lints.cargo]
+unused_dependencies = "allow"
+
+[lints.clippy]
+doc_markdown = "allow"
+missing_panics_doc = "allow"
+must_use_candidate = "allow"
+pedantic = { level = "deny", priority = -1 }
+uninlined_format_args = "allow"
+wildcard_imports = "allow"

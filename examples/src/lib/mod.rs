@@ -40,7 +40,7 @@ pub fn ask(
   loop {
     println!();
 
-    print!("{} [{}]: ", prompt, default);
+    print!("{prompt} [{default}]: ");
 
     stdout().flush().unwrap();
 
@@ -60,7 +60,7 @@ pub fn ask(
 
         return trimmed_buffer.to_string();
       },
-      Err(error) => println!("ERROR: {}", error),
+      Err(error) => println!("ERROR: {error}"),
     }
   }
 }
@@ -75,7 +75,7 @@ pub fn main(option_values: OptionValues) {
   if option_values.errors.is_empty() && option_values.unknown.is_empty() {
     let greeting: String = make_greeting(option_values);
 
-    println!("{}", greeting);
+    println!("{greeting}");
 
     return;
   }

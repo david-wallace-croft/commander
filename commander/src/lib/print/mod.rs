@@ -117,7 +117,7 @@ pub fn format_unknown_options(unknown_options: &Vec<ParseOutput>) -> String {
 pub fn print_error_options(error_options: &Vec<ParseOutput>) {
   let error_options_string: String = format_error_options(error_options);
 
-  println!("{error_options_string}")
+  println!("{error_options_string}");
 }
 
 //------------------------------------------------------------------------------
@@ -136,5 +136,5 @@ pub fn print_unknown_option(unknown_option: &ParseOutput) {
 pub fn print_unknown_options(unknown_options: &Vec<ParseOutput>) {
   let unknown_options_string: String = format_unknown_options(unknown_options);
 
-  println!("{}", unknown_options_string)
+  println!("{}", unknown_options_string);
 }

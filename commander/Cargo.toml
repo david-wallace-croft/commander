@@ -23,7 +23,6 @@ must_use_candidate = "allow"
 needless_pass_by_value = "allow"
 pedantic = { level = "deny", priority = -1 }
 ref_option_ref = "allow"
-semicolon_if_nothing_returned = "allow"
 similar_names = "allow"
 uninlined_format_args = "allow"
 unnecessary_semicolon = "allow"

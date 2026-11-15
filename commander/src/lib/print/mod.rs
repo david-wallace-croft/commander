@@ -81,10 +81,9 @@ pub fn format_unknown_option(unknown_option: &ParseOutput) -> String {
     ParseFound::Long {
       arg_index,
       name_long,
-    } => format!(
-      "Unknown option at argument index {}: \"{}\"",
-      arg_index, name_long,
-    ),
+    } => {
+      format!("Unknown option at argument index {arg_index}: \"{name_long}\"")
+    },
     ParseFound::Short {
       arg_index,
       char_index,
@@ -127,7 +126,7 @@ pub fn print_unknown_option(unknown_option: &ParseOutput) {
   let unknown_option_string: String = format_unknown_option(unknown_option);
 
   // TODO: Output to standard error?
-  println!("{}", unknown_option_string);
+  println!("{unknown_option_string}");
 }
 
 //------------------------------------------------------------------------------
@@ -136,5 +135,5 @@ pub fn print_unknown_option(unknown_option: &ParseOutput) {
 pub fn print_unknown_options(unknown_options: &Vec<ParseOutput>) {
   let unknown_options_string: String = format_unknown_options(unknown_options);
 
-  println!("{}", unknown_options_string);
+  println!("{unknown_options_string}");
 }

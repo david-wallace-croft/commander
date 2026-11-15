@@ -82,7 +82,7 @@ impl<'a> ParseIterator<'a> {
           parse_option_config.name.get_name_long()?;
 
         let hyphenated_option_name: String =
-          format!("--{}", arg_option_name_long);
+          format!("--{arg_option_name_long}");
 
         Some(hyphenated_option_name)
       },
@@ -91,7 +91,7 @@ impl<'a> ParseIterator<'a> {
           parse_option_config.name.get_name_short()?;
 
         let hyphenated_option_name: String =
-          format!("-{}", arg_option_name_short);
+          format!("-{arg_option_name_short}");
 
         Some(hyphenated_option_name)
       },
@@ -158,7 +158,7 @@ impl<'a> ParseIterator<'a> {
     let hyphenated_option_name: String = hyphenated_option_name_option?;
 
     let hyphenated_option_name_equals: &String =
-      &format!("{}=", hyphenated_option_name);
+      &format!("{hyphenated_option_name}=");
 
     let mut found: bool = false;
 

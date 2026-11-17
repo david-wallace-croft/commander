@@ -25,5 +25,4 @@ pedantic = { level = "deny", priority = -1 }
 ref_option_ref = "allow"
 similar_names = "allow"
 uninlined_format_args = "allow"
-unnecessary_semicolon = "allow"
 unused_self = "allow"

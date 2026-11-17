@@ -229,7 +229,7 @@ impl<'a> ParseIterator<'a> {
             return parse_output_option;
           }
         },
-      };
+      }
 
       skip_char = 0;
     }
@@ -395,7 +395,7 @@ impl Iterator for ParseIterator<'_> {
 
         self.skip_char = char_index + 1;
       },
-    };
+    }
 
     Some(parse_output)
   }

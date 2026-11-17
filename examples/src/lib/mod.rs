@@ -16,7 +16,7 @@ use std::io::{Error, Stdin, Write, stdin, stdout};
 use commander::parse::parse_error::ParseError;
 use commander::parse::parse_output::ParseOutput;
 use commander::print;
-use constants::*;
+use constants::{HELP_INFO, NAME_DEFAULT, NAME_PROMPT};
 
 pub mod constants;
 

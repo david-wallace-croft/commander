@@ -33,6 +33,7 @@ pub struct OptionValues {
   pub unknown: Vec<ParseOutput>,
 }
 
+#[must_use]
 pub fn ask(
   prompt: &str,
   default: &str,

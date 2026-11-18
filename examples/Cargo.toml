@@ -33,6 +33,6 @@ unused_dependencies = "allow"
 [lints.clippy]
 doc_markdown = "allow"
 missing_panics_doc = "allow"
-must_use_candidate = "allow"
+# must_use_candidate = "allow"
 pedantic = { level = "deny", priority = -1 }
 # wildcard_imports = "allow"

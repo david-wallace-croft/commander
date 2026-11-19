@@ -25,6 +25,7 @@ pub enum ParseOptionName<'a> {
 }
 
 impl ParseOptionName<'_> {
+  #[must_use]
   pub fn get_name_long(&self) -> Option<&'_ str> {
     match self {
       ParseOptionName::Both {
@@ -36,6 +37,7 @@ impl ParseOptionName<'_> {
     }
   }
 
+  #[must_use]
   pub fn get_name_short(&self) -> Option<char> {
     match self {
       ParseOptionName::Both {

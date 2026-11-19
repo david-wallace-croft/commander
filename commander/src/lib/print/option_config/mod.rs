@@ -31,6 +31,7 @@ impl<'a> OptionConfig<'a> {
   //------------------------------------------------------------------------------
   /// String prefix for a command-line option shown for -\-help
   //------------------------------------------------------------------------------
+  #[must_use]
   pub fn make_print_option_prefix(&self) -> String {
     let mut prefix: String = String::new();
 
@@ -59,6 +60,7 @@ impl<'a> OptionConfig<'a> {
     prefix
   }
 
+  #[must_use]
   pub fn make_print_string(
     &self,
     prefix_len_max: usize,
@@ -82,6 +84,7 @@ impl<'a> OptionConfig<'a> {
     line
   }
 
+  #[must_use]
   pub fn make_print_string_for_slice(arg_options: &[OptionConfig]) -> String {
     let mut prefix_len_max: usize = 0;
 
@@ -107,6 +110,7 @@ impl<'a> OptionConfig<'a> {
     print_string
   }
 
+  #[must_use]
   pub fn parse(
     &self,
     args: &'a [String],
@@ -114,6 +118,7 @@ impl<'a> OptionConfig<'a> {
     self.parse_option_config.parse(args)
   }
 
+  #[must_use]
   pub fn parse_last(
     &self,
     args: &'a [String],

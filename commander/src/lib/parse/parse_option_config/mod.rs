@@ -31,6 +31,7 @@ pub struct ParseOptionConfig<'a> {
 }
 
 impl<'a> ParseOptionConfig<'a> {
+  #[must_use]
   pub fn parse(
     &self,
     args: &'a [String],
@@ -47,6 +48,7 @@ impl<'a> ParseOptionConfig<'a> {
       .collect()
   }
 
+  #[must_use]
   pub fn parse_last(
     &self,
     args: &'a [String],

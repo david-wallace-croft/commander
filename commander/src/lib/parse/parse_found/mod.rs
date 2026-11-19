@@ -28,6 +28,7 @@ pub enum ParseFound {
 }
 
 impl ParseFound {
+  #[must_use]
   pub fn get_arg_index(&self) -> usize {
     match self {
       ParseFound::Long {
@@ -41,6 +42,7 @@ impl ParseFound {
     }
   }
 
+  #[must_use]
   pub fn get_name(&self) -> String {
     match self {
       ParseFound::Long {

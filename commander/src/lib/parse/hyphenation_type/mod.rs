@@ -19,6 +19,7 @@ pub enum HyphenationType {
 }
 
 impl HyphenationType {
+  #[must_use]
   pub fn determine_hyphenation_type(arg: &str) -> Option<Self> {
     if arg.starts_with("--") {
       Some(Self::Long)

@@ -27,6 +27,7 @@ pub struct HelpInfo<'a> {
 }
 
 impl HelpInfo<'_> {
+  #[must_use]
   pub fn make_print_string(&self) -> String {
     let mut print_string: String = String::from("\n");
 

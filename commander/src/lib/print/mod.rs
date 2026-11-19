@@ -25,6 +25,7 @@ mod test;
 //------------------------------------------------------------------------------
 /// Makes a message about an error option.
 //------------------------------------------------------------------------------
+#[must_use]
 pub fn format_error_option(error_option: &ParseOutput) -> String {
   let parse_error: ParseError = error_option.error.unwrap();
 
@@ -59,6 +60,7 @@ pub fn format_error_option(error_option: &ParseOutput) -> String {
 //------------------------------------------------------------------------------
 /// Makes a message about error options.
 //------------------------------------------------------------------------------
+#[must_use]
 pub fn format_error_options(error_options: &Vec<ParseOutput>) -> String {
   let mut error_options_string: String = String::new();
 
@@ -74,6 +76,7 @@ pub fn format_error_options(error_options: &Vec<ParseOutput>) -> String {
 //------------------------------------------------------------------------------
 /// Makes a message about an unknown option.
 //------------------------------------------------------------------------------
+#[must_use]
 pub fn format_unknown_option(unknown_option: &ParseOutput) -> String {
   let parse_found: &ParseFound = &unknown_option.found;
 
@@ -98,6 +101,7 @@ pub fn format_unknown_option(unknown_option: &ParseOutput) -> String {
 //------------------------------------------------------------------------------
 /// Makes a message about unknown options.
 //------------------------------------------------------------------------------
+#[must_use]
 pub fn format_unknown_options(unknown_options: &Vec<ParseOutput>) -> String {
   let mut unknown_options_string: String = String::new();
 

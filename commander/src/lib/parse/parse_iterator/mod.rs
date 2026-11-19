@@ -41,6 +41,7 @@ impl<'a> ParseIterator<'a> {
   //----------------------------------------------------------------------------
   /// A slice of the command-line arguments with skips of zero
   //----------------------------------------------------------------------------
+  #[must_use]
   pub fn from_slice(args: &'a [String]) -> Self {
     Self {
       args,

@@ -26,6 +26,7 @@ pub struct AppInfo<'a> {
 }
 
 impl AppInfo<'_> {
+  #[must_use]
   pub fn make_print_string(&self) -> String {
     let mut app_info: String = String::new();
 

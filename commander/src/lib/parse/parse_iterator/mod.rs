@@ -25,7 +25,7 @@ mod test;
 //------------------------------------------------------------------------------
 /// The input to parsing an option from the command-line arguments
 //------------------------------------------------------------------------------
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ParseIterator<'a> {
   /// The command-line arguments
   pub args: &'a [String],

@@ -5,7 +5,7 @@
 //! - Copyright: &copy; 2024-2026 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2026-04-17
+//! - Updated: 2026-11-22
 //!
 //! [`CroftSoft Inc`]: https://www.CroftSoft.com/
 //! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/
@@ -74,7 +74,7 @@ impl<'a> ParseIterator<'a> {
   // ---------------------------------------------------------------------------
 
   fn make_hyphenated_option_name(
-    hyphenation_type: HyphenationType,
+    hyphenation_type: &HyphenationType,
     parse_option_config: &ParseOptionConfig,
   ) -> Option<String> {
     match hyphenation_type {
@@ -152,7 +152,7 @@ impl<'a> ParseIterator<'a> {
   ) -> Option<ParseOutput> {
     let hyphenated_option_name_option: Option<String> =
       Self::make_hyphenated_option_name(
-        HyphenationType::Long,
+        &HyphenationType::Long,
         parse_option_config,
       );
 

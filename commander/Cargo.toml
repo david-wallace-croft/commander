@@ -15,7 +15,6 @@ path = "src/lib/mod.rs"
 [lints.clippy]
 doc_markdown = "allow"
 into_iter_without_iter = "allow"
-match_same_arms = "allow"
 missing_errors_doc = "allow"
 missing_panics_doc = "allow"
 needless_pass_by_value = "allow"

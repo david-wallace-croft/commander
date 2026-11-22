@@ -34,8 +34,8 @@ impl ParseFound {
       ParseFound::Long {
         arg_index,
         ..
-      } => *arg_index,
-      ParseFound::Short {
+      }
+      | ParseFound::Short {
         arg_index,
         ..
       } => *arg_index,

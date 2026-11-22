@@ -31,8 +31,8 @@ impl ParseOptionName<'_> {
       ParseOptionName::Both {
         name_long,
         ..
-      } => Some(name_long),
-      ParseOptionName::Long(name_long) => Some(name_long),
+      }
+      | ParseOptionName::Long(name_long) => Some(name_long),
       ParseOptionName::Short(_name_short) => None,
     }
   }
@@ -43,9 +43,9 @@ impl ParseOptionName<'_> {
       ParseOptionName::Both {
         name_short,
         ..
-      } => Some(*name_short),
+      }
+      | ParseOptionName::Short(name_short) => Some(*name_short),
       ParseOptionName::Long(_name_long) => None,
-      ParseOptionName::Short(name_short) => Some(*name_short),
     }
   }
 }

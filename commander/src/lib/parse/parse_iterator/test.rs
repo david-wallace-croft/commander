@@ -2,10 +2,10 @@
 //! Unit tests for module parse_iterator
 //!
 //! # Metadata
-//! - Copyright: &copy; 2024-2025 [`CroftSoft Inc`]
+//! - Copyright: &copy; 2024-2026 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-31
-//! - Updated: 2025-11-21
+//! - Updated: 2026-11-22
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -135,7 +135,7 @@ fn test_make_hyphenated_option_name_0() {
   let expected: Option<String> = Some("--TEST".to_string());
 
   let actual: Option<String> = ParseIterator::make_hyphenated_option_name(
-    HyphenationType::Long,
+    &HyphenationType::Long,
     &TEST_PARSE_OPTION_CONFIG_LONG,
   );
 
@@ -147,7 +147,7 @@ fn test_make_hyphenated_option_name_1() {
   let expected: Option<String> = None;
 
   let actual: Option<String> = ParseIterator::make_hyphenated_option_name(
-    HyphenationType::Short,
+    &HyphenationType::Short,
     &TEST_PARSE_OPTION_CONFIG_LONG,
   );
 
@@ -159,7 +159,7 @@ fn test_make_hyphenated_option_name_2() {
   let expected: Option<String> = None;
 
   let actual: Option<String> = ParseIterator::make_hyphenated_option_name(
-    HyphenationType::Long,
+    &HyphenationType::Long,
     &TEST_PARSE_OPTION_CONFIG_SHORT,
   );
 
@@ -171,7 +171,7 @@ fn test_make_hyphenated_option_name_3() {
   let expected: Option<String> = Some("-T".to_string());
 
   let actual: Option<String> = ParseIterator::make_hyphenated_option_name(
-    HyphenationType::Short,
+    &HyphenationType::Short,
     &TEST_PARSE_OPTION_CONFIG_SHORT,
   );
 

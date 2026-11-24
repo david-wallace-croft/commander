@@ -106,7 +106,7 @@ impl<'a> ParseIterator<'a> {
   ) -> ParseOutput {
     for parse_option_config in self.parse_option_configs {
       if let Some(parse_output) =
-        self.parse_long_for_option(arg, arg_index, parse_option_config)
+        Self::parse_long_for_option(arg, arg_index, parse_option_config)
       {
         return parse_output;
       }
@@ -145,7 +145,6 @@ impl<'a> ParseIterator<'a> {
   }
 
   fn parse_long_for_option(
-    &self,
     arg: &str,
     arg_index: usize,
     parse_option_config: &ParseOptionConfig,

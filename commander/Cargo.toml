@@ -17,8 +17,6 @@ doc_markdown = "allow"
 into_iter_without_iter = "allow"
 missing_errors_doc = "allow"
 missing_panics_doc = "allow"
-# needless_pass_by_value = "allow"
 pedantic = { level = "deny", priority = -1 }
-ref_option_ref = "allow"
 similar_names = "allow"
 uninlined_format_args = "allow"

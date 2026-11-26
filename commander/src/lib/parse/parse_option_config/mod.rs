@@ -1,11 +1,11 @@
 //==============================================================================
-//! Module parse_option_config
+//! Module for [`ParseOptionConfig`]
 //!
 //! # Metadata
-//! - Copyright: &copy; 2024-2025 [`CroftSoft Inc`]
+//! - Copyright: &copy; 2024-2026 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2025-11-21
+//! - Updated: 2026-11-26
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/

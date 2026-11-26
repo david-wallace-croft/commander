@@ -1,11 +1,11 @@
 //==============================================================================
-//! Module for ParseFound
+//! Module for [`ParseFound`]
 //!
 //! # Metadata
 //! - Copyright: &copy; 2024-2026 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-07-12
-//! - Updated: 2026-11-22
+//! - Updated: 2026-11-26
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/

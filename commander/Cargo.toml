@@ -13,7 +13,6 @@ name = "commander"
 path = "src/lib/mod.rs"
 
 [lints.clippy]
-doc_markdown = "allow"
 missing_errors_doc = "allow"
 missing_panics_doc = "allow"
 pedantic = { level = "deny", priority = -1 }

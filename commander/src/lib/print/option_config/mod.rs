@@ -1,11 +1,11 @@
 //==============================================================================
-//! Module for OptionConfig
+//! Module for [`OptionConfig`]
 //!
 //! # Metadata
 //! - Copyright: &copy; 2024-2026 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-05
-//! - Updated: 2026-11-24
+//! - Updated: 2026-11-26
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/

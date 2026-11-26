@@ -1,11 +1,11 @@
 //==============================================================================
-//! Module for ParseIterator.
+//! Module for [`ParseIterator`].
 //!
 //! # Metadata
 //! - Copyright: &copy; 2024-2026 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2026-11-22
+//! - Updated: 2026-11-26
 //!
 //! [`CroftSoft Inc`]: https://www.CroftSoft.com/
 //! [`David Wallace Croft`]: https://www.CroftSoft.com/people/david/

@@ -1,11 +1,11 @@
 //==============================================================================
-//! Module for AppInfo
+//! Module for [`AppInfo`]
 //!
 //! # Metadata
 //! - Copyright: &copy; 2024-2026 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-06-07
-//! - Updated: 2026-04-16
+//! - Updated: 2026-11-26
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/

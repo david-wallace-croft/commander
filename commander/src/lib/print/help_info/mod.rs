@@ -1,11 +1,11 @@
 //==============================================================================
-//! Module for HelpInfo
+//! Module for [`HelpInfo`]
 //!
 //! # Metadata
-//! - Copyright: &copy; 2024-2025 [`CroftSoft Inc`]
+//! - Copyright: &copy; 2024-2026 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2022-06-08
-//! - Updated: 2025-11-21
+//! - Updated: 2026-11-26
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/

@@ -1,11 +1,11 @@
 //==============================================================================
-//! Module for ParseOutput
+//! Module for [`ParseOutput`]
 //!
 //! # Metadata
 //! - Copyright: &copy; 2024-2026 [`CroftSoft Inc`]
 //! - Author: [`David Wallace Croft`]
 //! - Created: 2024-05-27
-//! - Updated: 2026-04-18
+//! - Updated: 2026-11-26
 //!
 //! [`CroftSoft Inc`]: https://www.croftsoft.com/
 //! [`David Wallace Croft`]: https://www.croftsoft.com/people/david/
@@ -35,13 +35,13 @@ pub struct ParseOutput {
 
 impl ParseOutput {
   //----------------------------------------------------------------------------
-  /// Converts the ParseOutput to a boolean value
+  /// Converts the [`ParseOutput`] to a boolean value
   ///
   /// - Returns the error if the error is Some
   /// - Returns true if the option value is None
   /// - Returns false if the option value is 0, f, false, n, no, or off
   /// - Returns true if the option value is 1, on, t, true, y, or yes
-  /// - Returns an InvalidValue error if the option value is anything else
+  /// - Returns an `InvalidValue` error if the option value is anything else
   //----------------------------------------------------------------------------
   pub fn to_bool_result(&self) -> Result<bool, ParseError> {
     if let Some(error) = self.error {

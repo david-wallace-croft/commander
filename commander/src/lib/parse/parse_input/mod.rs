@@ -26,6 +26,13 @@ pub struct ParseInput<'a> {
   pub parse_option_configs: &'a [&'a ParseOptionConfig<'a>],
 }
 
+impl<'a> ParseInput<'a> {
+  #[must_use]
+  pub fn iter(&self) -> ParseIterator<'a> {
+    self.into_iter()
+  }
+}
+
 impl<'a> IntoIterator for &ParseInput<'a> {
   type Item = ParseOutput;
 
